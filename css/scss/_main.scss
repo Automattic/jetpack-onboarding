@@ -1,0 +1,408 @@
+// ==========================================================================
+// Header
+// ==========================================================================
+
+body {
+	background: #f9f9f9;
+}
+
+header {
+	background: #222;
+	height: 33px;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	z-index: 5;
+	
+	.genericon {
+		color: #999;
+		font-size: 24px;
+		height: 24px;
+		margin: 4px 0 0 6px;
+		width: 24px;
+	}
+	.progress {
+		color: #bbb;
+		position: absolute;
+		top: 0;
+		right: 6px;
+		
+		li {
+			background: #555;
+			display: inline-block;
+			height: 12px;
+			list-style: none;
+			margin: 10px 4px 0 0;
+			width: 12px;
+			@include border-radius(1px);
+		}
+		span {
+			float: left;
+			margin: 6px 12px 0 0;
+		}
+		ul {
+			float: left;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+.step1 .progress1,
+.step2 .progress1,
+.step2 .progress2,
+.step3 .progress1,
+.step3 .progress2,
+.step3 .progress3,
+.step4 .progress1,
+.step4 .progress2,
+.step4 .progress3,
+.step4 .progress4 {
+	background: #93d07b;
+}
+
+// ==========================================================================
+// Sections
+// ==========================================================================
+
+section {
+	margin: 73px 0;
+	text-align: center;
+	display: none;
+	
+	.container {
+		margin: 0 auto;
+		text-align: left;
+		width: 90%;
+		
+		h1 {
+			font-weight: 300;
+		}
+		p.step-description {
+			color: #666;
+			margin: -13px 0 33px;
+			padding: 0;
+		}
+		.skip {
+			color: #999;
+			
+			a {
+				color: #999;
+				text-decoration: underline;
+				
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}
+
+.med-icon {
+	float: left;
+	font-size: 23px;
+	margin: 11px 9px 0 0;
+}
+
+.step1 section.step-1, .step2 section.step-2, .step3 section.step-3, .step4 section.step-4 {
+	display: block;
+}
+
+// ==========================================================================
+// Steps 1 & 2
+// ==========================================================================
+
+.options-box,
+.themes-box,
+.social-box {
+	background: #eee;
+	margin-bottom: 33px;
+	overflow: hidden;
+	padding: 3%;
+	
+	.option,
+	.theme {
+		background: #fff;
+		border: 4px solid #eee;
+		color: #999;
+		float: left;
+		font-size: 18px;
+		margin: 2%;
+		padding: 23px;
+		position: relative;
+		text-align: center;
+		width: 29%;
+		@include border-radius(3px);
+		@include transition(all .2s ease-in-out);
+		z-index: 1;
+		
+		&:hover,
+		&.active {
+			background: #eef5fb;
+			border: 4px solid $medium-blue;
+			color: #333;
+		}
+		
+		span.big-icon {
+			display: block;
+			font-size: 43px;
+			margin-bottom: 13px;
+		}
+	}
+	
+	.social-link {
+		float: left;
+		font-size: 18px;
+		margin: 2%;
+		padding: 13px 18px;
+		position: relative;
+		text-align: center;
+		width: 46%;
+		@include border-radius(3px);
+		z-index: 1;
+		
+		&.fb {
+			background: #485ea0;
+		}
+		&.tw {
+			background: #51a4e4;
+		}
+		.bg {
+			background: #fff;
+		}
+		.fa {
+			color: #fff;
+			float: left;
+			font-size: 23px;
+			margin: 2px 8px 0 0;
+		}
+		.title {
+			color: #fff;
+		}
+		.wrap {
+			display: block;
+			position: relative;
+		}
+	}
+	
+	.theme {
+		height: 250px; // Temp hack
+		width: 46%;
+		
+		.small-icon {
+			font-size: 15px;
+			margin-right: 6px;
+		}
+		.theme-buttons {
+			bottom: 13px;
+			position: absolute;
+			right: 13px;
+		}
+	}
+}
+
+// ==========================================================================
+// Step 3
+// ==========================================================================
+
+.col-left {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 35%;
+	
+	iframe {
+		height: 550px;
+		width: 100%;
+	}
+}
+.col-right {
+	float: right;
+	margin: 0;
+	padding: 0;
+	width: 65%;
+	
+	h2 {
+		font-weight: 300;
+		margin: 0.61em 0 1em;
+	}
+	.jetpack-reasons {
+		padding: 0 0 0 4px;
+		
+		li {
+			list-style: none;
+			margin-bottom: 26px;
+			padding-left: 50px;
+			position: relative;
+		}
+		span.fa {
+			color: #555;
+			font-size: 36px;
+			left: 0;
+			position: absolute;
+			top: 3px;
+		}
+		strong {
+			display: block;
+		}
+	}
+}
+.col-wrap {
+	padding: 13px 23px;
+}
+
+// WP.com iframe styles
+.jetpack-login {
+	background: #f6f6f6;
+	border: 1px solid #eee;
+	margin-bottom: 33px;
+	padding: 23px 0;
+	text-align: center;
+	
+	a {
+		color: #999;
+		text-decoration: underline;
+		
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+.jetpack-signup {
+	background: #eee;
+	
+	input[type="text"] {
+		background: #fff;
+		border-color: #ddd;
+		margin: 6px 0 23px;
+	}
+	label {
+		font-weight: bold;
+	}
+}
+.login {
+	.signing-up {
+		display: none;
+	}
+	.logging-in {
+		display: inline-block;
+	}
+}
+.signup {
+	.signing-up {
+		display: inline-block;
+	}
+	.logging-in {
+		display: none;
+	}
+}
+
+// ==========================================================================
+// Step 4
+// ==========================================================================
+
+.step4 {
+	.container {
+		width: 50%;
+	}
+	.submit {
+		display: none;
+		float: left;
+	}
+}
+
+// ==========================================================================
+// Step 4
+// ==========================================================================
+
+.hide-admin-menu .jps-admin-menu {
+	right: -170px;
+}
+.jps-admin-menu {
+	background: #222;
+	bottom: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 160px;
+	@include transition(right .2s ease-in-out);
+	
+	a {
+		color: #fff;
+		
+		&:hover {
+			color: #2ea2cc;
+		}
+	}
+	li {
+		color: #fff;
+		font-size: 14px;
+		line-height: 39px;
+		list-style: none;
+		-webkit-font-smoothing: subpixel-antialiased;
+	}
+	ul {
+		margin: 40px 0 0 13px;
+		padding: 0;
+	}
+	.add-new {
+		background: #111;
+		padding: 8px 13px;
+	}
+}
+.jps-burger {
+	background: #434343;
+	float: right;
+	margin: 5px 8px 0;
+	overflow: hidden;
+	padding: 2px 6px;
+	@include border-radius(3px);
+	
+	&:hover {
+		background: #555;
+		
+		span {
+			color: #ccc;
+		}
+	}
+	&.active {
+		background: #666;
+		
+		span {
+			color: #fff;
+		}
+	}
+	span {
+		color: #999;
+	}
+}
+.mock-site-layout {
+	margin: 73px 0;
+	text-align: center;
+	
+	nav {
+		background: #ccc;
+		float: right;
+		height: 600px;
+		margin: 33px 0;
+		width: 200px;
+	}
+	.container {
+		margin: 0 auto;
+		text-align: left;
+		width: 60%;
+	}
+	.header-image {
+		background: #ccc;
+		height: 200px;
+		width: 100%
+	}
+}
+.right {
+	float: right;
+	
+	img {
+		float: right;
+	}
+}

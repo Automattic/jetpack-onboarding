@@ -1,0 +1,184 @@
+// Below, you can choose from either using global form styles or class-driven
+// form styles. By default, the global styles are on.
+
+%form {
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+}
+
+%form-field {
+	margin: 0;
+	padding: 10px 12px;
+	width: 100%;
+	color: #555;
+	font-size: 15px;
+	line-height: 1.4;
+	border: 1px solid $medium-gray;
+	background: $ultra-light-gray;
+	transition: all .15s ease-in-out;
+	@include box-sizing(border-box);
+	
+	&::placeholder {  
+		color: #aaa;
+	}
+
+	&:hover {
+		border-color: #aaa;
+		background: #fff;
+
+		&::placeholder {  
+			color: #888;
+		}
+	}
+	&:focus {
+		color: #5c6671;
+		border-color: $wordpress-blue;
+		background: #fff;
+		outline: none;
+		box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+
+		&::placeholder {
+			color: #888;
+		}
+	}
+}
+%textarea {
+	min-height: 150px;
+}
+
+// ==========================================================================
+// Global form elements
+// ==========================================================================
+
+form {
+	@extend %form;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+	@extend %form-field;
+}
+textarea {
+	@extend %textarea;
+}
+
+fieldset,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select,
+label {
+	@include box-sizing(border-box);
+}
+
+/*Checkbooms*/
+
+input[type=checkbox], input[type=radio] {
+	border: 1px solid #bbb;
+	background: #fff;
+    clear: none;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    height: 16px;
+    margin: -4px 4px 0 0;
+    outline: 0;
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle;
+    width: 16px;
+    min-width: 16px;
+    -webkit-appearance: none;
+    @include box-sizing(border-box);
+}
+
+input[type=radio] {
+    border-radius: 50%;
+    margin-right: 4px;
+    line-height: 10px
+}
+
+input[type=checkbox]:disabled, input[type=radio]:disabled, input[type=checkbox]:disabled:checked:before,
+input[type=radio]:disabled:checked:before {
+    opacity: .7
+}
+
+input[type=checkbox]:checked:before,
+input[type=radio]:checked:before {
+    float: left;
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    font: 400 23px/1 Noticons;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: $wordpress-blue;
+	-webkit-animation: grow .2s ease-in-out;
+	animation: grow .2s ease-in-out;
+}
+
+input[type=checkbox]:checked:before {
+	content: '\f418';
+    margin: -4px 0 0 -5px;
+}
+
+input[type=radio]:checked:before {
+	float: left;
+	display: inline-block;
+	content: '\2022';
+	margin: 3px;
+	width: 8px;
+	height: 8px;
+	text-indent: -9999px;
+	background: $wordpress-blue;
+	vertical-align: middle;
+	border-radius: 50%;
+	-webkit-animation: grow .2s ease-in-out;
+	animation: grow .2s ease-in-out;
+}
+
+
+@-webkit-keyframes grow {
+	0% {
+		-webkit-transform: scale(0.3);
+		transform: scale(0.3);
+	}
+	
+	60% {
+		-webkit-transform: scale(1.15);
+		transform: scale(1.15);
+	}
+	
+	100% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+}
+
+@keyframes grow {
+	0% {
+		-webkit-transform: scale(0.3);
+		-ms-transform: scale(0.3);
+		transform: scale(0.3);
+	}
+	
+	60% {
+		-webkit-transform: scale(1.15);
+		-ms-transform: scale(1.15);
+		transform: scale(1.15);
+	}
+	
+	100% {
+		-webkit-transform: scale(1);
+		-ms-transform: scale(1);
+		transform: scale(1);
+	}
+}
+
+/* end checkbooms */
