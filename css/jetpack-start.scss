@@ -1,0 +1,13 @@
+// Imported styles
+@import "scss/_variables";
+@import "scss/_mixins";
+@import "scss/_normalize";
+@import "scss/_base";
+@import "scss/_buttons";
+@import "scss/_forms";
+
+// Main styles
+@import "scss/_main";
+
+// Responsive
+@import "scss/_media-queries";
