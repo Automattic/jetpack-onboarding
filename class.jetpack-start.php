@@ -31,6 +31,7 @@ class Jetpack_Start {
 				wp_localize_script( 'jetpack-start', '_JetpackStartSiteTypes', self::get_site_types() );
 				wp_localize_script( 'jetpack-start', '_JetpackStartDefaultSiteType', 'business-website' );
 				wp_localize_script( 'jetpack-start', '_JetpackStartDefaultTheme', get_option( '_jetpackstart_theme' ) );
+				wp_localize_script( 'jetpack-start', '_JetpackStartConnecting', esc_js( __( 'Connecting...' ) ) );
 				wp_localize_script( 'jetpack-start', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 				require_once dirname( __FILE__ ) . '/index.php';
 				die();

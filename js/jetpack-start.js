@@ -20,6 +20,9 @@
 		$('section.step-2').on('click', '.theme', function() {
                         router.navigate('setup/step/2/'+ jps_site_type +'/'+ $(this).data('theme'), true);
                 });
+		$('section.step-4').on('click', '.social-link', function(el) {
+			$(this).find('.title').html(_JetpackStartConnecting);
+		});
 	});
 
 	function selectSiteType() {
