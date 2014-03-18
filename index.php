@@ -47,7 +47,7 @@ $services = array(
 			<p class="step-description"><?php _e( 'Automatically share select links to new posts on Facebook and Twitter.' ) ?></p>
 			<div class="social-box">
 				<?php foreach( $services as $service => $service_details ): ?>
-				<a href="<?php echo esc_url( $publicize->connect_url( $service ) ); ?>" class="social-link <?php echo $service_details['short']; ?>" target="_top">
+				<a href="<?php echo esc_url( $publicize->connect_url( $service ) ); ?>" class="social-link <?php echo $service_details['short']; ?><?php if ( is_connected( $service ) ) : ?> connected<?php endif ?>" target="_top">
 						<span class="wrap">
 							<span class="fa fa-<?php echo $service; ?>"></span>
 							<span class="title"><?php echo ( is_connected( $service ) ) ? __( 'Connected' ) : sprintf( __( 'Connect to %s' ), $service_details['title'] );  ?></span>
