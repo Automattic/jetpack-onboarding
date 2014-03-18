@@ -121,10 +121,10 @@ class Jetpack_Start {
 		?>
 		<div class="jps-admin-menu">
 			<ul>
-				<li><span class="right"><a href="#" class="add-new fa fa-plus"></a></span><a href="#">Pages</a></li>
-				<li><a href="#">Stats</a></li>
-				<li><a href="#">Customize Theme</a></li>
-				<li><a href="#">Change Theme</a></li>
+				<li><span class="right"><a href="#" class="add-new fa fa-plus"></a></span><a href="<?php echo admin_url( 'edit.php?post_type=page' ) ?>">Pages</a></li>
+				<li><a href="<?php echo admin_url( 'admin.php?page=stats' ) ?>">Stats</a></li>
+				<li><a href="<?php echo admin_url( 'customize.php' ) ?>">Customize Theme</a></li>
+				<li><a href="<?php echo admin_url( 'themes.php' ) ?>">Change Theme</a></li>
 			</ul>
 		</div>
 		<?php
