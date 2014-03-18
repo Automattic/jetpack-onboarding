@@ -1191,6 +1191,10 @@ section {
     .themes-box .social-link.tw,
     .social-box .social-link.tw {
       background: #51a4e4; }
+    .options-box .social-link.connected,
+    .themes-box .social-link.connected,
+    .social-box .social-link.connected {
+      background: #73c650 !important; }
     .options-box .social-link .bg,
     .themes-box .social-link .bg,
     .social-box .social-link .bg {

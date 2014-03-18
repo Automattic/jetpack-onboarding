@@ -15,7 +15,7 @@ header {
 	position: fixed;
 	top: 0;
 	z-index: 5;
-	
+
 	.genericon {
 		color: #999;
 		font-size: 24px;
@@ -28,7 +28,7 @@ header {
 		position: absolute;
 		top: 0;
 		right: 6px;
-		
+
 		li {
 			background: #555;
 			display: inline-block;
@@ -70,12 +70,12 @@ section {
 	margin: 73px 0;
 	text-align: center;
 	display: none;
-	
+
 	.container {
 		margin: 0 auto;
 		text-align: left;
 		width: 90%;
-		
+
 		h1 {
 			font-weight: 300;
 		}
@@ -86,11 +86,11 @@ section {
 		}
 		.skip {
 			color: #999;
-			
+
 			a {
 				color: #999;
 				text-decoration: underline;
-				
+
 				&:hover {
 					text-decoration: none;
 				}
@@ -120,7 +120,7 @@ section {
 	margin-bottom: 33px;
 	overflow: hidden;
 	padding: 3%;
-	
+
 	.option,
 	.theme {
 		background: #fff;
@@ -136,21 +136,21 @@ section {
 		@include border-radius(3px);
 		@include transition(all .2s ease-in-out);
 		z-index: 1;
-		
+
 		&:hover,
 		&.active {
 			background: #eef5fb;
 			border: 4px solid $medium-blue;
 			color: #333;
 		}
-		
+
 		span.big-icon {
 			display: block;
 			font-size: 43px;
 			margin-bottom: 13px;
 		}
 	}
-	
+
 	.social-link {
 		float: left;
 		font-size: 18px;
@@ -161,12 +161,15 @@ section {
 		width: 46%;
 		@include border-radius(3px);
 		z-index: 1;
-		
+
 		&.fb {
 			background: #485ea0;
 		}
 		&.tw {
 			background: #51a4e4;
+		}
+		&.connected {
+			background: #73c650 !important;
 		}
 		.bg {
 			background: #fff;
@@ -185,11 +188,11 @@ section {
 			position: relative;
 		}
 	}
-	
+
 	.theme {
 		height: 250px; // Temp hack
 		width: 46%;
-		
+
 		.small-icon {
 			font-size: 15px;
 			margin-right: 6px;
@@ -211,7 +214,7 @@ section {
 	margin: 0;
 	padding: 0;
 	width: 35%;
-	
+
 	iframe {
 		height: 550px;
 		width: 100%;
@@ -222,14 +225,14 @@ section {
 	margin: 0;
 	padding: 0;
 	width: 65%;
-	
+
 	h2 {
 		font-weight: 300;
 		margin: 0.61em 0 1em;
 	}
 	.jetpack-reasons {
 		padding: 0 0 0 4px;
-		
+
 		li {
 			list-style: none;
 			margin-bottom: 26px;
@@ -259,11 +262,11 @@ section {
 	margin-bottom: 33px;
 	padding: 23px 0;
 	text-align: center;
-	
+
 	a {
 		color: #999;
 		text-decoration: underline;
-		
+
 		&:hover {
 			text-decoration: none;
 		}
@@ -271,7 +274,7 @@ section {
 }
 .jetpack-signup {
 	background: #eee;
-	
+
 	input[type="text"] {
 		background: #fff;
 		border-color: #ddd;
@@ -327,10 +330,10 @@ section {
 	top: 0;
 	width: 160px;
 	@include transition(right .2s ease-in-out);
-	
+
 	a {
 		color: #fff;
-		
+
 		&:hover {
 			color: #2ea2cc;
 		}
@@ -358,17 +361,17 @@ section {
 	overflow: hidden;
 	padding: 2px 6px;
 	@include border-radius(3px);
-	
+
 	&:hover {
 		background: #555;
-		
+
 		span {
 			color: #ccc;
 		}
 	}
 	&.active {
 		background: #666;
-		
+
 		span {
 			color: #fff;
 		}
@@ -380,7 +383,7 @@ section {
 .mock-site-layout {
 	margin: 73px 0;
 	text-align: center;
-	
+
 	nav {
 		background: #ccc;
 		float: right;
@@ -401,7 +404,7 @@ section {
 }
 .right {
 	float: right;
-	
+
 	img {
 		float: right;
 	}
