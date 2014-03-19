@@ -25,7 +25,7 @@
 		<% }); %>
 		</script>
 		<div class="themes-box"></div>
-    <a href="<?php echo Jetpack::init()->build_connect_url() ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Next, activate Jetpack' ) ?></a>
+    <a href="<?php echo esc_url( add_query_arg( 'jetpackstart', '', Jetpack::init()->build_connect_url( true ) ) ) ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Next, activate Jetpack' ) ?></a>
   </div>
 </section>
 
