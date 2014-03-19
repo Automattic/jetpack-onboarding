@@ -1302,7 +1302,6 @@ section {
 .step4 .container {
   width: 50%; }
 .step4 .submit {
-  display: none;
   float: left; }
 
 .hide-admin-menu .jps-admin-menu {
