@@ -19,7 +19,7 @@
 		<% _.each(themes,function(theme) { %>
 			<div class="theme" data-theme="<%= theme.stylesheet %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
 				<div class="theme-buttons">
-					<a href="#" class="button theme-preview"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview' ) ?></a>
+					<a href="#" class="button button-large theme-preview"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview' ) ?></a>
 				</div>
 			</div>
 		<% }); %>
