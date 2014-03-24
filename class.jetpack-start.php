@@ -121,7 +121,7 @@ class Jetpack_Start {
 		?>
 		<div class="jps-admin-menu">
 			<ul>
-				<li><span class="right"><a href="#" class="add-new fa fa-plus"></a></span><a href="<?php echo admin_url( 'edit.php?post_type=page' ) ?>">Pages</a></li>
+				<li><span class="right"><a href="<?php echo admin_url( 'post-new.php?post_type=page' ) ?>" class="add-new fa fa-plus"></a></span><a href="<?php echo admin_url( 'edit.php?post_type=page' ) ?>">Pages</a></li>
 				<li><a href="<?php echo admin_url( 'admin.php?page=stats' ) ?>">Stats</a></li>
 				<li><a href="<?php echo admin_url( 'customize.php' ) ?>">Customize Theme</a></li>
 				<li><a href="<?php echo admin_url( 'themes.php' ) ?>">Change Theme</a></li>
@@ -132,6 +132,8 @@ class Jetpack_Start {
 		ob_end_clean();
 		wp_localize_script( 'jetpack-start', '_JetpackStartMenu', $jetpackstart_menu );
 		wp_register_style( 'jetpack-start', plugins_url( 'css/jetpack-start.css', __FILE__ ) );
+		wp_register_style( 'jps-font-awesome', plugins_url( 'css/font-awesome.css', __FILE__ ) );
 		wp_enqueue_style( 'jetpack-start' );
+		wp_enqueue_style( 'jps-font-awesome' );
 	}
 }
