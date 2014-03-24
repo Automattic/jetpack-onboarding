@@ -805,6 +805,36 @@ section .container .skip a:hover { text-decoration: none; }
 /* line 325, scss/_main.scss */
 .step4 .submit { float: left; }
 
+/* line 334, scss/_main.scss */
+.hide-admin-menu .jps-admin-menu { right: -170px; }
+
+/* line 337, scss/_main.scss */
+.jps-admin-menu { background: #222; bottom: 0; position: fixed; right: 0; top: 0; width: 160px; z-index: 99998; -webkit-transition: right 0.2s ease-in-out; -moz-transition: right 0.2s ease-in-out; -ms-transition: right 0.2s ease-in-out; -o-transition: right 0.2s ease-in-out; transition: right 0.2s ease-in-out; }
+/* line 348, scss/_main.scss */
+.jps-admin-menu a, .jps-admin-menu a:visited { color: #fff; }
+/* line 351, scss/_main.scss */
+.jps-admin-menu a:hover, .jps-admin-menu a:visited:hover { color: #2ea2cc; text-decoration: none; }
+/* line 356, scss/_main.scss */
+.jps-admin-menu li { color: #fff; font-size: 14px; line-height: 39px; list-style: none; -webkit-font-smoothing: subpixel-antialiased; }
+/* line 363, scss/_main.scss */
+.jps-admin-menu ul { margin: 40px 0 0 13px; padding: 0; }
+/* line 367, scss/_main.scss */
+.jps-admin-menu .add-new { background: #111; padding: 8px 13px; }
+
+/* line 372, scss/_main.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger { float: right; margin: 0; overflow: hidden; padding: 0 10px 0 8px; }
+/* line 379, scss/_main.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger:hover span { color: #ccc; }
+/* line 384, scss/_main.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger.active span { color: #fff; }
+/* line 388, scss/_main.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger span { color: #999; }
+
+/* line 392, scss/_main.scss */
+.right { float: right; }
+/* line 395, scss/_main.scss */
+.right img { float: right; }
+
 @media (max-width: 1150px) { /* line 5, scss/_media-queries.scss */
   .social-box .social-link { font-size: 15px; }
   /* line 8, scss/_media-queries.scss */
@@ -816,30 +846,36 @@ section .container .skip a:hover { text-decoration: none; }
   /* line 21, scss/_media-queries.scss */
   .col-right { width: 55%; }
   /* line 24, scss/_media-queries.scss */
+  .mock-site-layout .container { width: 70%; }
+  /* line 27, scss/_media-queries.scss */
   .social-box .social-link { width: 95%; } }
-@media (max-width: 768px) { /* line 29, scss/_media-queries.scss */
+@media (max-width: 768px) { /* line 32, scss/_media-queries.scss */
   section .container .options-box .option { width: 46%; }
-  /* line 32, scss/_media-queries.scss */
-  section .container .themes-box .theme { width: 95%; }
   /* line 35, scss/_media-queries.scss */
-  .col-left { width: 55%; }
+  section .container .themes-box .theme { width: 95%; }
   /* line 38, scss/_media-queries.scss */
+  .col-left { width: 55%; }
+  /* line 41, scss/_media-queries.scss */
   .col-right { width: 45%; }
-  /* line 42, scss/_media-queries.scss */
-  .col-right .jetpack-reasons li { padding-left: 24px; }
   /* line 45, scss/_media-queries.scss */
+  .col-right .jetpack-reasons li { padding-left: 24px; }
+  /* line 48, scss/_media-queries.scss */
   .col-right .jetpack-reasons span.fa { font-size: 18px; margin-top: -2px; }
-  /* line 50, scss/_media-queries.scss */
+  /* line 53, scss/_media-queries.scss */
   .col-right .reason-desc { display: none; }
-  /* line 54, scss/_media-queries.scss */
+  /* line 57, scss/_media-queries.scss */
   .step4 .container { width: 90%; } }
-@media (max-width: 530px) { /* line 59, scss/_media-queries.scss */
+@media (max-width: 530px) { /* line 62, scss/_media-queries.scss */
   section .container .options-box .option { width: 95%; }
-  /* line 63, scss/_media-queries.scss */
+  /* line 66, scss/_media-queries.scss */
   .col-left, .col-right { float: none; width: 100%; }
-  /* line 67, scss/_media-queries.scss */
-  .col-left .col-wrap, .col-right .col-wrap { padding: 0; }
   /* line 70, scss/_media-queries.scss */
-  .col-left .jetpack-reasons, .col-right .jetpack-reasons { margin-bottom: 33px; }
+  .col-left .col-wrap, .col-right .col-wrap { padding: 0; }
   /* line 73, scss/_media-queries.scss */
-  .col-left .jetpack-reasons li, .col-right .jetpack-reasons li { margin-bottom: 13px; } }
+  .col-left .jetpack-reasons, .col-right .jetpack-reasons { margin-bottom: 33px; }
+  /* line 76, scss/_media-queries.scss */
+  .col-left .jetpack-reasons li, .col-right .jetpack-reasons li { margin-bottom: 13px; }
+  /* line 82, scss/_media-queries.scss */
+  .mock-site-layout nav { display: none; }
+  /* line 85, scss/_media-queries.scss */
+  .mock-site-layout .container { width: 90%; } }
