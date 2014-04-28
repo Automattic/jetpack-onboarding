@@ -1,1 +1,118 @@
-.hide-admin-menu .jps-admin-menu{right:-170px}.jps-admin-menu{background:#222;bottom:0;position:fixed;right:0;top:0;width:160px;z-index:99998;-webkit-transition:right 0.2s ease-in-out;-moz-transition:right 0.2s ease-in-out;-ms-transition:right 0.2s ease-in-out;-o-transition:right 0.2s ease-in-out;transition:right 0.2s ease-in-out}.jps-admin-menu a,.jps-admin-menu a:visited{color:#fff;text-decoration:none}.jps-admin-menu a:hover,.jps-admin-menu a:visited:hover{color:#2ea2cc;text-decoration:none}.jps-admin-menu li{color:#fff;font-size:14px;line-height:39px;list-style:none;-webkit-font-smoothing:subpixel-antialiased}.jps-admin-menu ul{margin:40px 0 0 13px;padding:0}.jps-admin-menu .add-new{background:#111;padding:8px 13px}.jps-admin-menu .right{float:right}.jps-admin-menu .right img{float:right}#wpadminbar .quicklinks>ul>li>a.jps-burger{float:right;margin:0;overflow:hidden;padding:0 10px 0 8px}#wpadminbar .quicklinks>ul>li>a.jps-burger:hover span{color:#ccc}#wpadminbar .quicklinks>ul>li>a.jps-burger.active span{color:#fff}#wpadminbar .quicklinks>ul>li>a.jps-burger span{color:#999}@media (max-width: 783px){.jps-admin-menu{display:none}}
+/* line 9, scss/_menu.scss */
+.hide-admin-menu .jps-admin-menu {
+  right: -170px;
+}
+
+/* line 12, scss/_menu.scss */
+.jps-admin-menu {
+  background: #222;
+  bottom: 0;
+  position: fixed;
+  right: 0;
+  top: 30px;
+  width: 160px;
+  z-index: 99998;
+  -webkit-transition: right 0.2s ease-in-out;
+  -moz-transition: right 0.2s ease-in-out;
+  -ms-transition: right 0.2s ease-in-out;
+  -o-transition: right 0.2s ease-in-out;
+  transition: right 0.2s ease-in-out;
+}
+/* line 23, scss/_menu.scss */
+.jps-admin-menu a,
+.jps-admin-menu a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+/* line 27, scss/_menu.scss */
+.jps-admin-menu a:hover,
+.jps-admin-menu a:visited:hover {
+  color: #2ea2cc;
+  text-decoration: none;
+}
+/* line 32, scss/_menu.scss */
+.jps-admin-menu li {
+  color: #fff;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 39px;
+  list-style: none;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+/* line 40, scss/_menu.scss */
+.jps-admin-menu ul {
+  margin-left: 13px;
+  padding: 0;
+}
+/* line 44, scss/_menu.scss */
+.jps-admin-menu .add-new {
+  background: #111;
+  padding: 8px 13px;
+}
+/* line 48, scss/_menu.scss */
+.jps-admin-menu .right {
+  float: right;
+}
+/* line 51, scss/_menu.scss */
+.jps-admin-menu .right img {
+  float: right;
+}
+
+/* line 56, scss/_menu.scss */
+.jps-admin-menu-intro {
+  background: #e5e5e5;
+  border-left: 1px solid #cccccc;
+  font-size: 11px;
+  line-height: 18px;
+  padding: 13px;
+}
+/* line 63, scss/_menu.scss */
+.jps-admin-menu-intro p {
+  margin: 0 0 8px;
+}
+/* line 66, scss/_menu.scss */
+.jps-admin-menu-intro strong {
+  display: block;
+  margin-bottom: 6px;
+}
+/* line 70, scss/_menu.scss */
+.jps-admin-menu-intro .right {
+  float: right;
+  margin-top: -2px;
+}
+/* line 74, scss/_menu.scss */
+.jps-admin-menu-intro .right a {
+  color: #999;
+  font-size: 16px;
+}
+
+/* line 80, scss/_menu.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger {
+  float: right;
+  margin: 0;
+  overflow: hidden;
+  padding: 0 10px 0 8px;
+}
+/* line 86, scss/_menu.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger:hover {
+  padding: 0 10px 0 8px;
+}
+/* line 88, scss/_menu.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger:hover span {
+  color: #ccc;
+}
+/* line 93, scss/_menu.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger.active span {
+  color: #fff;
+}
+/* line 97, scss/_menu.scss */
+#wpadminbar .quicklinks > ul > li > a.jps-burger span {
+  color: #999;
+}
+
+@media (max-width: 783px) {
+  /* line 2, scss/_menu-media-queries.scss */
+  .jps-admin-menu {
+    display: none;
+  }
+}

@@ -1,59 +1,73 @@
-(function($) {
-	var jps_step = 1;
-	var jps_site_type = _JetpackStartDefaultSiteType;
-	var jps_theme = ( _JetpackStartDefaultTheme )? _JetpackStartDefaultTheme : _JetpackStartSiteTypes[_JetpackStartDefaultSiteType]['themes'][0]['stylesheet'];
-	var JetpackStartRouter = Backbone.Router.extend({
+(function( $ ) {
+	var siteTypes = new Backbone.Collection( _JetpackStartSiteTypes ),
+		jetpackStartRouter = Backbone.Router.extend( {
 		routes: {
 			"setup/step/:step": "render",
 			"setup/step/:step/:site_type": "render",
-			"setup/step/:step/:site_type/:theme": "render",
+			"setup/step/:step/:site_type/:theme": "render"
 		}
-	});
-	var router;
+	}),
+	router;
 
-	$(document).ready(function() {
-		router = new JetpackStartRouter;
-		router.on('route:render', render);
+	$( document ).ready( function() {
+		router = new jetpackStartRouter;
+		router.on( 'route:render', render );
 
 		Backbone.history.start();
 
-		$('section.step-2').on('click', '.theme', function() {
-                        router.navigate('setup/step/2/'+ jps_site_type +'/'+ $(this).data('theme'), true);
-                });
-		$('section.step-4').on('click', '.social-link', function(el) {
-			$(this).find('.title').html(_JetpackStartConnecting);
+		var step2 = $( 'section.step-2' );
+        step2.on( 'click', '.theme', function() {
+			router.navigate( 'setup/step/3/'+ $( this ).data( 'site_type' ) + '/' + $( this ).data( 'theme' ), true );
+		});
+		// Don't navigate on theme previews
+		step2.on( 'click', '.theme a', function( e ) {
+			e.stopPropagation();
+		});
+		$( 'section.step-3' ).on( 'click', '.social-link', function() {
+			$( this ).find( '.title' ).html( _JetpackStartConnecting );
+		});
+
+		// Preload step 2 images
+		siteTypes.each( function( siteType ) {
+			$.each( siteType.get( 'themes' ), function( i, theme ) {
+				$( '<img />' ).attr( 'src', theme['img_preview'] );
+			});
 		});
 	});
 
-	function selectSiteType() {
-		themes = _JetpackStartSiteTypes[jps_site_type]['themes'];
-		var template = $('#themes_template').html();
-		$("section.step-2 .themes-box").html(_.template(template, {themes: themes}));
-		itemSelection($('[href$="#setup/step/1/' + jps_site_type + '"]'));
-	}
-
-	function selectTheme() {
-		var data = {
-			action: 'jetpackstart_set_theme',
-			stylesheet: jps_theme
+	function selectSiteType( siteType ) {
+		var template = $( '#themes_template' ).html();
+		$( 'section.step-2 .themes-box' )
+			.data( 'site_type', siteType.get( 'name' ) )
+			.html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
+        var data = {
+			action: 'jetpackstart_set_site_type',
+			site_type: siteType.get( 'name' )
 		};
 		$.post( ajaxurl, data );
-		itemSelection($('.theme[data-theme="' +jps_theme+'"]'));
+		return siteType;
 	}
 
-	function itemSelection($this) {
-		$this.siblings().removeClass('active');
-		$this.addClass('active');
+	function setTheme( theme ) {
+		var data = {
+			action: 'jetpackstart_set_theme',
+			stylesheet: theme
+		};
+		$.post( ajaxurl, data );
 	}
 
-	function render(step, site_type, theme) {
-		jps_step = step || jps_step;
-		jps_site_type = site_type || jps_site_type;
-		jps_theme = theme || jps_theme;
-		selectSiteType();
-		selectTheme();
-		$('body').removeClass();
-		$('body').addClass('step' + jps_step);
-	}
+	function render( step, siteTypeName, theme ) {
+		if ( typeof siteTypeName === 'string' ) {
+			if ( typeof theme === 'string' ) {
+				setTheme( theme );
+			} else {
+				selectSiteType( siteTypes.findWhere( { name: siteTypeName } ) );
+			}
+		}
 
-})(jQuery);
+		$( 'body' )
+			.removeClass()
+			.addClass( 'step' + step );
+	}
+	
+}) ( jQuery );
