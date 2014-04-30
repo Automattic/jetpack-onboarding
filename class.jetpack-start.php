@@ -175,7 +175,7 @@ class Jetpack_Start {
 	static function set_theme() {
 		$stylesheet = sanitize_text_field( $_POST['stylesheet'] );
 		do_action( 'jetpack_start_set_theme', $stylesheet );
-		switch_theme( 'pub/' . $stylesheet );
+		switch_theme( $stylesheet );
 		wp_send_json_success();
 	}
 
