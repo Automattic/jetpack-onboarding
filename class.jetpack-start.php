@@ -115,37 +115,37 @@ class Jetpack_Start {
 					'name'		   => 'business-website',
 					'title'        => __( 'Business Website' ),
 					'icon_class'   => 'fa-building-o',
-					'themes'       => array( 'motif' , 'bushwick' , 'skylark', 'twentytwelve' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 				array(
 					'name'		   => 'business-blog',
 					'title'        => __( 'Business Blog' ),
 					'icon_class'   => 'fa-briefcase',
-					'themes'       => array( 'tonal' , 'responsive' , 'hemingway-rewritten', 'twentyfourteen' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 				array(
 					'name'		   => 'personal-blog',
 					'title'        => __( 'Personal Blog' ),
 					'icon_class'   => 'fa-edit',
-					'themes'       => array( 'hexa' , 'writr' , 'sorbet' , 'flounder' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 				array(
 					'name'		   => 'photo-blog',
 					'title'        => __( 'Photo Blog' ),
 					'icon_class'   => 'fa-camera',
-					'themes'       => array( 'spun' , 'fontfolio' , 'autofocus' , 'duotone' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 				array(
 					'name'		   => 'about-me-page',
 					'title'        => __( 'About Me Page' ),
 					'icon_class'   => 'fa-user',
-					'themes'       => array( 'singl' , 'ryu' , 'writr' , 'publish' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 				array(
 					'name'		   => 'family-blog',
 					'title'        => __( 'Family Blog' ),
 					'icon_class'   => 'fa-group',
-					'themes'       => array( 'something-fishy' , 'crafty' , 'chalkboard' , 'pachyderm' )
+					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
 				),
 			);
 
@@ -159,17 +159,16 @@ class Jetpack_Start {
 	static function prepare_themes( $themes ) {
 		$result = array();
 		foreach ( $themes as $theme ) {
-			$result[] = self::prepare_theme( wp_get_theme( 'pub/' . $theme ) );
+			$result[] = self::prepare_theme( wp_get_theme( $theme ) );
 		}
 		return $result;
 	}
 
 	static function prepare_theme( $theme ) {
-		$stylesheet = str_replace( 'pub/', '', $theme->get_stylesheet() );
 		return array(
-			'stylesheet'  => $stylesheet,
+			'stylesheet'  => $theme->get_stylesheet(),
 			'img_preview' => $theme->get_screenshot(),
-			'demo_url' => 'http://' . $string = str_replace('-', '', $stylesheet) . 'demo.wordpress.com?demo',
+			'demo_url' => 'http://' . $string = 'demo.wordpress.com?demo',
 		);
 	}
 
