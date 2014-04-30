@@ -8,7 +8,7 @@ Version: 0.1
 
 add_action( 'init', function() {
 	update_option( 'jpstart_menu', true );
-	if ( get_option( 'jpstart_wizard' ) ) {
+	if ( get_option( 'jpstart_wizard' ) || isset( $_GET['wizard'] ) ) {
 		if ( current_user_can( 'switch_themes' ) ) {
 			if ( is_blog_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 				require_once( __DIR__ . '/jetpack-start/class.jetpack-start.php' );
