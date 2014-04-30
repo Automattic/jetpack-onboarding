@@ -26,7 +26,7 @@ add_action( 'init', function() {
 			} else // check for is_admin_bar_showing so it doesn't get displayed on the cutomizer.
 				global $wp_customize;
 
-				if ( !is_object( $wp_customize ) || isset( $_GET['jps_menu_action'] ) ) {
+				if ( ( !is_admin() &&  !is_object( $wp_customize ) ) || isset( $_GET['jps_menu_action'] ) ) {
 					delete_option( 'jpstart_wizard' );
 					Jetpack_Start::init_menu();
 				}
