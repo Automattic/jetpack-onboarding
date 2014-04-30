@@ -8,11 +8,12 @@ Version: 0.1
 
 add_action( 'init', function() {
 	update_option( 'jpstart_menu', true );
-	if ( get_option( 'jpstart_wizard' ) || isset( $_GET['wizard'] ) ) {
+	if ( !get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['wizard'] ) ) {
 		if ( current_user_can( 'switch_themes' ) ) {
 			if ( is_blog_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 				require_once( __DIR__ . '/jetpack-start/class.jetpack-start.php' );
 				Jetpack_Start::init();
+				update_option( 'jpstart_wizard_has_run', true );
 			} else {
 				update_option( 'jpstart_menu', true );
 			}
@@ -27,7 +28,6 @@ add_action( 'init', function() {
 				global $wp_customize;
 
 				if ( ( !is_admin() &&  !is_object( $wp_customize ) ) || isset( $_GET['jps_menu_action'] ) ) {
-					delete_option( 'jpstart_wizard' );
 					Jetpack_Start::init_menu();
 				}
 		}
