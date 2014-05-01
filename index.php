@@ -68,6 +68,9 @@ $services = array(
 
 $connected = false;
 foreach( $services as $key => $service ) {
+	if ( ! is_object( $publicize ) ) {
+		continue;
+	}
 	$services[ $key ]['connected'] = is_connected( $service['name'] );
 	$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
 	$connected = $services[ $key ]['connected'] || $connected;
