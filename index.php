@@ -55,6 +55,9 @@
 global $publicize;
 function is_connected( $service ) {
 	global $publicize;
+	if ( ! is_object( $publicize ) ) {
+		return false;
+	}
 	$connections = $publicize->get_connections( $service );
 	return ! empty( $connections );
 }
