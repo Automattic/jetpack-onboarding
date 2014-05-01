@@ -37,14 +37,6 @@
 
 <?php
 global $publicize;
-function is_connected( $service ) {
-	global $publicize;
-	if ( ! is_object( $publicize ) ) {
-		return false;
-	}
-	$connections = $publicize->get_connections( $service );
-	return ! empty( $connections );
-}
 $services = array(
 	array( 'name' => 'facebook', 'title' => __( 'Facebook'), 'short' => 'fb' ),
 	array( 'name' => 'twitter', 'title' => __( 'Twitter'), 'short' => 'tw' ),

@@ -17,6 +17,8 @@ class Jetpack_Start {
 		// Add our default steps:
 		add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
 		add_action( 'jetpack-start_step-select_theme',   array( __CLASS__, 'step_select_theme' ) );
+		add_action( 'jetpack-start_step-connect_social', array( __CLASS__, 'step_connect_social' ) );
+
 		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 			if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 				if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
@@ -149,6 +151,15 @@ class Jetpack_Start {
 		</script>
 
 		<?php
+	}
+
+	function is_connected( $service ) {
+		global $publicize;
+		if ( ! is_object( $publicize ) ) {
+			return false;
+		}
+		$connections = $publicize->get_connections( $service );
+		return ! empty( $connections );
 	}
 
 	static function get_site_types() {
