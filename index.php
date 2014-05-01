@@ -35,43 +35,5 @@
 </section>
 <?php endforeach; ?>
 
-<?php
-global $publicize;
-$services = array(
-	array( 'name' => 'facebook', 'title' => __( 'Facebook'), 'short' => 'fb' ),
-	array( 'name' => 'twitter', 'title' => __( 'Twitter'), 'short' => 'tw' ),
-);
-
-$connected = false;
-foreach( $services as $key => $service ) {
-	if ( ! is_object( $publicize ) ) {
-		continue;
-	}
-	$services[ $key ]['connected'] = is_connected( $service['name'] );
-	$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
-	$connected = $services[ $key ]['connected'] || $connected;
-}
-?>
-<section class="step-3" data-step="3">
-	<div class="container">
-		<h1><?php _e( 'Every website needs an audience!' ) ?></h1>
-		<p class="step-description"><?php _e( 'Share your favorite posts effortlessly on Facebook and Twitter.' ) ?></p>
-		<div class="social-box">
-			<?php foreach( $services as $service ): ?>
-				<a href="<?php echo esc_url( $service['connect_url'] ); ?>" class="social-link <?php echo $service['short']; ?><?php if ( $service['connected'] ) : ?> connected<?php endif ?>" target="_top" data-social="<?php echo $service['name'] ?>">
-						<span class="wrap">
-							<span class="fa fa-<?php echo $service['name']; ?>"></span>
-							<span class="title"><?php echo ( $service['connected'] ) ? __( 'Connected' ) : sprintf( __( 'Connect to %s' ), $service['title'] );  ?></span>
-						</span>
-				</a>
-			<?php endforeach; ?>
-		</div>
-		<?php if ( $connected ) : ?>
-			<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'All done, visit your site' ) ?></a>
-		<?php else : ?>
-			<div class="skip"><?php printf( __( 'or, <a href="%s">skip this step</a>'), home_url() ); ?></div>
-		<?php endif ?>
-	</div>
-</section>
 </body>
 </html>
