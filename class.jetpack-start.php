@@ -112,40 +112,40 @@ class Jetpack_Start {
 		if ( is_null( self::$site_types ) ) {
 			self::$site_types = array(
 				array(
-					'name'		   => 'business-website',
-					'title'        => __( 'Business Website' ),
-					'icon_class'   => 'fa-building-o',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'business-website',
+					'title'      => __( 'Business Website' ),
+					'icon_class' => 'fa-building-o',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
-					'name'		   => 'business-blog',
-					'title'        => __( 'Business Blog' ),
-					'icon_class'   => 'fa-briefcase',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'business-blog',
+					'title'      => __( 'Business Blog' ),
+					'icon_class' => 'fa-briefcase',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
-					'name'		   => 'personal-blog',
-					'title'        => __( 'Personal Blog' ),
-					'icon_class'   => 'fa-edit',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'personal-blog',
+					'title'      => __( 'Personal Blog' ),
+					'icon_class' => 'fa-edit',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
-					'name'		   => 'photo-blog',
-					'title'        => __( 'Photo Blog' ),
-					'icon_class'   => 'fa-camera',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'photo-blog',
+					'title'      => __( 'Photo Blog' ),
+					'icon_class' => 'fa-camera',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
-					'name'		   => 'about-me-page',
-					'title'        => __( 'About Me Page' ),
-					'icon_class'   => 'fa-user',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'about-me-page',
+					'title'      => __( 'About Me Page' ),
+					'icon_class' => 'fa-user',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
-					'name'		   => 'family-blog',
-					'title'        => __( 'Family Blog' ),
-					'icon_class'   => 'fa-group',
-					'themes'       => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' )
+					'name'       => 'family-blog',
+					'title'      => __( 'Family Blog' ),
+					'icon_class' => 'fa-group',
+					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 			);
 
