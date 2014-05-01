@@ -30,7 +30,7 @@ class Jetpack_Start {
 				wp_enqueue_script( 'underscore');
 				wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
 				wp_localize_script( 'jetpack-start', '_JetpackStartSiteTypes', self::get_site_types() );
-				wp_localize_script( 'jetpack-start', '_JetpackStartConnecting', esc_js( __( 'Connecting...' ) ) );
+				wp_localize_script( 'jetpack-start', '_JetpackStartConnecting', esc_js( __( 'Connecting...', 'jetpack-start' ) ) );
 				wp_localize_script( 'jetpack-start', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 				wp_dequeue_script( 'devicepx' );
 				require_once dirname( __FILE__ ) . '/index.php';
@@ -74,23 +74,23 @@ class Jetpack_Start {
 							});
 						</script>
 						<div class="jps-admin-menu-intro">
-							<span class="right"><a href="#" class="hide-intro" title="<?php _e( 'Hide this top intro text.'); ?>" data-action="hide-intro">x</a></span>
-							<p><strong><?php _e( 'Congrats!' ); ?></strong><?php _e( 'Welcome to your website! Use the links below to manage your new site.' ); ?></p>
-							<p><?php _e( 'Toggle this menu on/off by clicking the menu icon above (3 horizontal lines).' ); ?></p>
+							<span class="right"><a href="#" class="hide-intro" title="<?php _e( 'Hide this top intro text.', 'jetpack-start' ); ?>" data-action="hide-intro">x</a></span>
+							<p><strong><?php _e( 'Congrats!' ); ?></strong><?php _e( 'Welcome to your website! Use the links below to manage your new site.', 'jetpack-start' ); ?></p>
+							<p><?php _e( 'Toggle this menu on/off by clicking the menu icon above (3 horizontal lines).', 'jetpack-start' ); ?></p>
 						</div>
 					<?php endif ?>
 					<ul>
 						<li>
 							<span class="right"><a href="<?php echo admin_url( 'post-new.php?jps_menu_action=post-new' ); ?>" class="add-new fa fa-plus" data-action="post-new"></a></span>
-							<a href="<?php echo admin_url( 'edit.php?jps_menu_action=posts' ) ?>" data-action="posts"><?php _e( 'Posts' ); ?></a>
+							<a href="<?php echo admin_url( 'edit.php?jps_menu_action=posts' ) ?>" data-action="posts"><?php _e( 'Posts', 'jetpack-start' ); ?></a>
 						</li>
 						<li>
 							<span class="right"><a href="<?php echo admin_url( 'post-new.php?post_type=page&jps_menu_action=page-new' ); ?>" class="add-new fa fa-plus" data-action="page-new"></a></span>
-							<a href="<?php echo admin_url( 'edit.php?post_type=page' ) ?>" data-action="pages"><?php _e( 'Pages' ); ?></a>
+							<a href="<?php echo admin_url( 'edit.php?post_type=page' ) ?>" data-action="pages"><?php _e( 'Pages', 'jetpack-start' ); ?></a>
 						</li>
-						<li><a href="<?php echo admin_url( 'customize.php?jps_menu_action=customize' ); ?>" data-action="customize"><?php _e( 'Customize Theme' ); ?></a></li>
-						<li><a href="<?php echo admin_url( 'themes.php?jps_menu_action=themes' ); ?>" data-action="themes"><?php _e( 'Change Theme' ); ?></a></li>
-						<li><a href="<?php echo admin_url('?jps_menu_action=dashboard' ); ?>" data-action="dashboard"><?php _e( 'View Dashboard' ); ?></a></li>
+						<li><a href="<?php echo admin_url( 'customize.php?jps_menu_action=customize' ); ?>" data-action="customize"><?php _e( 'Customize Theme', 'jetpack-start' ); ?></a></li>
+						<li><a href="<?php echo admin_url( 'themes.php?jps_menu_action=themes' ); ?>" data-action="themes"><?php _e( 'Change Theme', 'jetpack-start' ); ?></a></li>
+						<li><a href="<?php echo admin_url('?jps_menu_action=dashboard' ); ?>" data-action="dashboard"><?php _e( 'View Dashboard', 'jetpack-start' ); ?></a></li>
 					</ul>
 				</div>
 				<?php
@@ -115,9 +115,9 @@ class Jetpack_Start {
 
 	static function get_steps() {
 		$steps = array(
-			'site_type'      => __( 'What type of site are you building?' ),
-			'select_theme'   => __( 'Select a theme:' ),
-			'connect_social' => __( 'Every site needs an audience!' ),
+			'site_type'      => __( 'What type of site are you building?', 'jetpack-start' ),
+			'select_theme'   => __( 'Select a theme:', 'jetpack-start' ),
+			'connect_social' => __( 'Every site needs an audience!', 'jetpack-start' ),
 		);
 		return apply_filters( 'jetpack_start_steps', $steps );
 	}
@@ -137,14 +137,14 @@ class Jetpack_Start {
 	static function step_select_theme() {
 		?>
 
-		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are 250+ themes to choose from).' ) ?></p>
+		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are 250+ themes to choose from).', 'jetpack-start' ) ?></p>
 		<div class="themes-box"></div>
 
 		<script id="themes_template" type="text/template">
 			<% _.each(themes,function(theme) { %>
 				<div class="theme" data-theme="<%= theme.stylesheet %>" data-site_type="<%= site_type %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
 					<div class="theme-buttons">
-						<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview' ) ?></a>
+						<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview', 'jetpack-start' ) ?></a>
 					</div>
 				</div>
 			<% }); %>
@@ -157,19 +157,19 @@ class Jetpack_Start {
 		global $publicize;
 
 		if ( ! is_object( $publicize ) ) {
-			echo '<p>' . esc_html__( 'Error: No publicize detected.' ) . '</p>';
+			echo '<p>' . esc_html__( 'Error: No publicize detected.', 'jetpack-start' ) . '</p>';
 			return;
 		}
 
 		$services = array(
 			array(
 				'name' => 'facebook',
-				'title' => __( 'Facebook'),
+				'title' => __( 'Facebook', 'jetpack-start' ),
 				'short' => 'fb',
 			),
 			array(
 				'name' => 'twitter',
-				'title' => __( 'Twitter'),
+				'title' => __( 'Twitter', 'jetpack-start' ),
 				'short' => 'tw',
 			),
 		);
@@ -182,22 +182,22 @@ class Jetpack_Start {
 		}
 		?>
 
-		<p class="step-description"><?php _e( 'Share your favorite posts effortlessly on Facebook and Twitter.' ) ?></p>
+		<p class="step-description"><?php _e( 'Share your favorite posts effortlessly on Facebook and Twitter.', 'jetpack-start' ) ?></p>
 		<div class="social-box">
 			<?php foreach( $services as $service ): ?>
 				<a href="<?php echo esc_url( $service['connect_url'] ); ?>" class="social-link <?php echo $service['short']; ?><?php if ( $service['connected'] ) : ?> connected<?php endif ?>" target="_top" data-social="<?php echo $service['name'] ?>">
 						<span class="wrap">
 							<span class="fa fa-<?php echo $service['name']; ?>"></span>
-							<span class="title"><?php echo ( $service['connected'] ) ? __( 'Connected' ) : sprintf( __( 'Connect to %s' ), $service['title'] );  ?></span>
+							<span class="title"><?php echo ( $service['connected'] ) ? __( 'Connected', 'jetpack-start' ) : sprintf( __( 'Connect to %s', 'jetpack-start' ), $service['title'] );  ?></span>
 						</span>
 				</a>
 			<?php endforeach; ?>
 		</div>
 
 		<?php if ( $connected ) : ?>
-			<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'All done, visit your site' ) ?></a>
+			<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'All done, visit your site', 'jetpack-start' ) ?></a>
 		<?php else : ?>
-			<div class="skip"><?php printf( __( 'or, <a href="%s">skip this step</a>'), home_url() ); ?></div>
+			<div class="skip"><?php printf( __( 'or, <a href="%s">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
 		<?php endif ?>
 		
 		<?php
@@ -217,37 +217,37 @@ class Jetpack_Start {
 			self::$site_types = apply_filters( 'jetpack_start_site_types', array(
 				array(
 					'name'       => 'business-website',
-					'title'      => __( 'Business Website' ),
+					'title'      => __( 'Business Website', 'jetpack-start' ),
 					'icon_class' => 'fa-building-o',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
 					'name'       => 'business-blog',
-					'title'      => __( 'Business Blog' ),
+					'title'      => __( 'Business Blog', 'jetpack-start' ),
 					'icon_class' => 'fa-briefcase',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
 					'name'       => 'personal-blog',
-					'title'      => __( 'Personal Blog' ),
+					'title'      => __( 'Personal Blog', 'jetpack-start' ),
 					'icon_class' => 'fa-edit',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
 					'name'       => 'photo-blog',
-					'title'      => __( 'Photo Blog' ),
+					'title'      => __( 'Photo Blog', 'jetpack-start' ),
 					'icon_class' => 'fa-camera',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
 					'name'       => 'about-me-page',
-					'title'      => __( 'About Me Page' ),
+					'title'      => __( 'About Me Page', 'jetpack-start' ),
 					'icon_class' => 'fa-user',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
 				array(
 					'name'       => 'family-blog',
-					'title'      => __( 'Family Blog' ),
+					'title'      => __( 'Family Blog', 'jetpack-start' ),
 					'icon_class' => 'fa-group',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),

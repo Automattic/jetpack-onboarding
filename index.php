@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><?php _e( 'Jetpack Start' ); ?></title>
+	<title><?php _e( 'Jetpack Start', 'jetpack-start' ); ?></title>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo plugins_url( 'css/jetpack-start.css', __FILE__ ); ?>" />
 	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700">
@@ -18,7 +18,7 @@
 <header>
 	<span class="genericon genericon-wordpress"></span>
 	<div class="progress">
-		<span><?php _e( 'WordPress Setup Wizard' ) ?></span>
+		<span><?php _e( 'WordPress Setup Wizard', 'jetpack-start' ) ?></span>
 		<ul>
 		<?php foreach ( $steps as $slug => $label ) : ?>
 			<li class="step-<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
