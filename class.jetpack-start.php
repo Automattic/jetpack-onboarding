@@ -156,6 +156,11 @@ class Jetpack_Start {
 	static function step_connect_social() {
 		global $publicize;
 
+		if ( ! is_object( $publicize ) ) {
+			echo '<p>' . esc_html__( 'Error: No publicize detected.' ) . '</p>';
+			return;
+		}
+
 		$services = array(
 			array(
 				'name' => 'facebook',
@@ -171,9 +176,6 @@ class Jetpack_Start {
 
 		$connected = false;
 		foreach( $services as $key => $service ) {
-			if ( ! is_object( $publicize ) ) {
-				continue;
-			}
 			$services[ $key ]['connected'] = self::is_connected( $service['name'] );
 			$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
 			$connected = $services[ $key ]['connected'] || $connected;
