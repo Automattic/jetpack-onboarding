@@ -18,7 +18,7 @@
 <header>
 	<span class="genericon genericon-wordpress"></span>
 	<div class="progress">
-		<span><?php _e( 'WordPress setup wizard' ) ?></span>
+		<span><?php _e( 'WordPress Setup Wizard' ) ?></span>
 		<ul>
 		<?php foreach ( $steps as $slug => $label ) : ?>
 			<li class="step-<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
