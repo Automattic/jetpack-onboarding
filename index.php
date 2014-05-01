@@ -9,6 +9,9 @@
 	<?php wp_print_scripts(); ?>
 </head>
 <body>
+
+<?php $steps = Jetpack_Start::get_steps(); ?>
+
 <header>
 	<span class="genericon genericon-wordpress"></span>
 	<div class="progress">

@@ -108,6 +108,15 @@ class Jetpack_Start {
 		}
 	}
 
+	static function get_steps() {
+		$steps = array(
+			'site_type'      => __( 'What type of site are you building?' ),
+			'select_theme'   => __( 'Select a theme:' ),
+			'connect_social' => __( 'Every site needs an audience!' ),
+		);
+		return apply_filters( 'jetpack_start_steps', $steps );
+	}
+
 	static function get_site_types() {
 		if ( is_null( self::$site_types ) ) {
 			self::$site_types = apply_filters( 'jetpack_start_site_types', array(
