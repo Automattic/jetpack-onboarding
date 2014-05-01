@@ -110,7 +110,7 @@ class Jetpack_Start {
 
 	static function get_site_types() {
 		if ( is_null( self::$site_types ) ) {
-			self::$site_types = array(
+			self::$site_types = apply_filters( 'jetpack_start_site_types', array(
 				array(
 					'name'       => 'business-website',
 					'title'      => __( 'Business Website' ),
@@ -147,7 +147,7 @@ class Jetpack_Start {
 					'icon_class' => 'fa-group',
 					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
 				),
-			);
+			) );
 
 			foreach ( self::$site_types as $key => $sitetype_details  ) {
 				self::$site_types[$key]['themes'] = self::prepare_themes( $sitetype_details['themes'] );
