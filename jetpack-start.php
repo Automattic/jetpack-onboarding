@@ -12,7 +12,7 @@ add_action( 'init', function() {
 	if ( ! get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['wizard'] ) ) {
 		if ( current_user_can( 'switch_themes' ) ) {
 			if ( is_blog_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-				require_once( __DIR__ . '/jetpack-start/class.jetpack-start.php' );
+				require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 				if ( isset( $_GET['wizard'] ) ) {
 					Jetpack_Start::redirect_to_step( 1 );
 				}
@@ -25,7 +25,7 @@ add_action( 'init', function() {
 	if ( get_option( 'jpstart_menu' ) ) {
 		update_option( 'jpstart_wizard_has_run', true );
 		if ( current_user_can( 'switch_themes' ) ) {
-			require_once( __DIR__ . '/jetpack-start/class.jetpack-start.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 				Jetpack_Start::init_menu_ajax();
 			} else // check for is_admin_bar_showing so it doesn't get displayed on the cutomizer.
