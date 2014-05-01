@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title></title>
+	<title><?php _e( 'Jetpack Start' ); ?></title>
 	<link rel="stylesheet" type="text/css" href="<?php echo plugins_url( 'css/jetpack-start.css', __FILE__ ); ?>" />
 	<link rel="stylesheet" type="text/css" href='//fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700'>
 	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
