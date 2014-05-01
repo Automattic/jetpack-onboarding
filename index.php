@@ -35,23 +35,6 @@
 </section>
 <?php endforeach; ?>
 
-<section class="step-2" data-step="2">
-	<div class="container">
-		<h1><?php _e( 'Choose a design' ); ?></h1>
-		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are 250+ themes to choose from).' ) ?></p>
-		<script id="themes_template" type="text/template">
-			<% _.each(themes,function(theme) { %>
-				<div class="theme" data-theme="<%= theme.stylesheet %>" data-site_type="<%= site_type %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
-					<div class="theme-buttons">
-						<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview' ) ?></a>
-					</div>
-				</div>
-			<% }); %>
-		</script>
-		<div class="themes-box"></div>
-	</div>
-</section>
-
 <?php
 global $publicize;
 function is_connected( $service ) {

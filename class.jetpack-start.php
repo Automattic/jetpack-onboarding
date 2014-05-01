@@ -16,6 +16,7 @@ class Jetpack_Start {
 	static function admin_init() {
 		// Add our default steps:
 		add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
+		add_action( 'jetpack-start_step-select_theme',   array( __CLASS__, 'step_select_theme' ) );
 		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 			if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 				if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
@@ -127,6 +128,25 @@ class Jetpack_Start {
 				<a href="#setup/step/2/<?php echo $site_type['name']; ?>" class="option"><span class="big-icon fa <?php echo $site_type['icon_class']; ?>"></span><?php echo $site_type['title']; ?></a>
 			<?php endforeach; ?>
 		</div>
+
+		<?php
+	}
+
+	static function step_select_theme() {
+		?>
+
+		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are 250+ themes to choose from).' ) ?></p>
+		<div class="themes-box"></div>
+
+		<script id="themes_template" type="text/template">
+			<% _.each(themes,function(theme) { %>
+				<div class="theme" data-theme="<%= theme.stylesheet %>" data-site_type="<%= site_type %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
+					<div class="theme-buttons">
+						<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview' ) ?></a>
+					</div>
+				</div>
+			<% }); %>
+		</script>
 
 		<?php
 	}
