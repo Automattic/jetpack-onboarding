@@ -137,7 +137,7 @@ class Jetpack_Start {
 	static function step_select_theme() {
 		?>
 
-		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are 250+ themes to choose from).', 'jetpack-start' ) ?></p>
+		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are over 250 themes to choose from).', 'jetpack-start' ) ?></p>
 		<div class="themes-box"></div>
 
 		<script id="themes_template" type="text/template">
