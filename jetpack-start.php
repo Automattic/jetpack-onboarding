@@ -1,10 +1,10 @@
 <?php
-/*
-Plugin Name: Jetpack Start
-Plugin URI: https://github.com/automattic/jetpack-start
-Description: Jetpack Start Wizard.
-Version: 0.1
-*/
+/**
+ * Plugin Name: Jetpack Start
+ * Plugin URI: https://github.com/automattic/jetpack-start
+ * Description: Jetpack Start Wizard.
+ * Version: 0.1
+ */
 
 add_action( 'init', function() {
 	update_option( 'jpstart_menu', true );
