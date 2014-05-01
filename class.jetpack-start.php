@@ -149,9 +149,10 @@ class Jetpack_Start {
 				),
 			) );
 
-			foreach ( self::$site_types as $key => $sitetype_details  ) {
-				self::$site_types[$key]['themes'] = self::prepare_themes( $sitetype_details['themes'] );
+			foreach ( self::$site_types as $key => $sitetype_details ) {
+				self::$site_types[ $key ]['themes'] = self::prepare_themes( $sitetype_details['themes'] );
 			}
+
 		}
 		return self::$site_types;
 	}
