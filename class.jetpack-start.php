@@ -23,7 +23,7 @@ class Jetpack_Start {
 			} else {
 				add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
 				wp_enqueue_script( 'underscore');
-				wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start.js', array( 'jquery', 'backbone', 'underscore' ) );
+				wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
 				wp_localize_script( 'jetpack-start', '_JetpackStartSiteTypes', self::get_site_types() );
 				wp_localize_script( 'jetpack-start', '_JetpackStartConnecting', esc_js( __( 'Connecting...' ) ) );
 				wp_localize_script( 'jetpack-start', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
