@@ -17,23 +17,23 @@
 	<div class="progress">
 		<span><?php _e( 'WordPress setup wizard' ) ?></span>
 		<ul>
-			<li class="progress1"></li>
-			<li class="progress2"></li>
-			<li class="progress3"></li>
+		<?php foreach ( $steps as $slug => $label ) : ?>
+			<li class="step-<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
+		<?php endforeach; ?>
 		</ul>
 	</div>
 </header>
 
-<section class="step-1" data-step="1">
+<?php foreach ( $step as $slug => $label ) : ?>
+<section class="step-<?php echo esc_attr( $slug ); ?>" data-step="step-<?php echo esc_attr( $slug ); ?>"
 	<div class="container">
-		<h1><?php _e( 'What type of site are you building?' ); ?></h1>
-		<div class="options-box">
-			<?php	foreach ( Jetpack_Start::get_site_types() as $site_type  ): ?>
-				<a href="#setup/step/2/<?php echo $site_type['name']; ?>" class="option"><span class="big-icon fa <?php echo $site_type['icon_class']; ?>"></span><?php echo $site_type['title']; ?></a>
-			<?php	endforeach; ?>
-		</div>
+		<?php if ( ! empty( $label ) ) : ?>
+			<h1><?php echo esc_html( $label ); ?></h1>
+		<?php endif; ?>
+		<?php do_action( "jetpack-start_step-{$slug}" ); ?>
 	</div>
 </section>
+<?php endforeach; ?>
 
 <section class="step-2" data-step="2">
 	<div class="container">

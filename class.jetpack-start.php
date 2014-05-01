@@ -14,6 +14,8 @@ class Jetpack_Start {
 	}
 
 	static function admin_init() {
+		// Add our default steps:
+		add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
 		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 			if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 				if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
@@ -115,6 +117,18 @@ class Jetpack_Start {
 			'connect_social' => __( 'Every site needs an audience!' ),
 		);
 		return apply_filters( 'jetpack_start_steps', $steps );
+	}
+
+	static function step_site_type() {
+		?>
+
+		<div class="options-box">
+			<?php foreach ( self::get_site_types() as $site_type  ): ?>
+				<a href="#setup/step/2/<?php echo $site_type['name']; ?>" class="option"><span class="big-icon fa <?php echo $site_type['icon_class']; ?>"></span><?php echo $site_type['title']; ?></a>
+			<?php endforeach; ?>
+		</div>
+
+		<?php
 	}
 
 	static function get_site_types() {
