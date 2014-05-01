@@ -74,7 +74,7 @@ class Jetpack_Start {
 							});
 						</script>
 						<div class="jps-admin-menu-intro">
-							<span class="right"><a href="#" class="hide-intro" title="<?php _e( 'Hide this top intro text.', 'jetpack-start' ); ?>" data-action="hide-intro">x</a></span>
+							<span class="right"><a href="#" class="hide-intro" title="<?php _e( 'Hide this top intro text.', 'jetpack-start' ); ?>" data-action="hide-intro">&times;</a></span>
 							<p><strong><?php _e( 'Congrats!' ); ?></strong><?php _e( 'Welcome to your website! Use the links below to manage your new site.', 'jetpack-start' ); ?></p>
 							<p><?php _e( 'Toggle this menu on/off by clicking the menu icon above (3 horizontal lines).', 'jetpack-start' ); ?></p>
 						</div>
