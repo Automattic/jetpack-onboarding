@@ -28,7 +28,7 @@
 </header>
 
 <?php foreach ( $steps as $slug => $label ) : ?>
-<section class="step-<?php echo esc_attr( $slug ); ?>" data-step="step-<?php echo esc_attr( $slug ); ?>"
+<section class="step" data-step="<?php echo esc_attr( $slug ); ?>"
 	<div class="container">
 		<?php if ( ! empty( $label ) ) : ?>
 			<h1><?php echo esc_html( $label ); ?></h1>

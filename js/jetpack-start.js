@@ -64,10 +64,12 @@
 				selectSiteType( siteTypes.findWhere( { name: siteTypeName } ) );
 			}
 		}
-
-		$( 'body' )
-			.removeClass()
-			.addClass( 'step' + step );
+		showStep( step );
 	}
-	
+
+	function showStep( step ) {
+		$( 'section.step' ).hide();
+		$( 'section.step[data-step=' + step + ']' ).show();
+	}
+
 }) ( jQuery );
