@@ -1,5 +1,5 @@
 (function( $ ) {
-	var siteTypes = new Backbone.Collection( _JetpackStartSiteTypes ),
+	var siteTypes = new Backbone.Collection( _JetpackStart['site_types'] ),
 		jetpackStartRouter = Backbone.Router.extend( {
 		routes: {
 			"setup/step/:step": "render",
@@ -40,7 +40,7 @@
 		// BEGIN connect social step
 		var stepConnectSocial = $( 'section.step[data-step=connect_social]' );
 		stepConnectSocial.on( 'click', '.social-link', function() {
-			$( this ).find( '.title' ).html( _JetpackStartConnecting );
+			$( this ).find( '.title' ).html(  _JetpackStart['connecting_message'] );
 		});
 		//END connect social step
 
@@ -55,7 +55,7 @@
 			action: 'jetpackstart_set_site_type',
 			site_type: siteType.get( 'name' )
 		};
-		$.post( ajaxurl, data );
+		$.post( _JetpackStart['ajaxurl'], data );
 		return siteType;
 	}
 
@@ -64,7 +64,7 @@
 			action: 'jetpackstart_set_theme',
 			stylesheet: theme
 		};
-		$.post( ajaxurl, data );
+		$.post( _JetpackStart['ajaxurl'], data );
 	}
 
 	function render( step, siteTypeName, theme ) {
