@@ -15,24 +15,35 @@
 
 		Backbone.history.start();
 
-		var step2 = $( 'section.step-2' );
-        step2.on( 'click', '.theme', function() {
-			router.navigate( 'setup/step/3/'+ $( this ).data( 'site_type' ) + '/' + $( this ).data( 'theme' ), true );
-		});
-		// Don't navigate on theme previews
-		step2.on( 'click', '.theme a', function( e ) {
-			e.stopPropagation();
-		});
-		$( 'section.step-3' ).on( 'click', '.social-link', function() {
-			$( this ).find( '.title' ).html( _JetpackStartConnecting );
-		});
+		// BEGIN theme selection step
 
-		// Preload step 2 images
 		siteTypes.each( function( siteType ) {
 			$.each( siteType.get( 'themes' ), function( i, theme ) {
+				// Preload Theme images
 				$( '<img />' ).attr( 'src', theme['img_preview'] );
 			});
 		});
+
+		var stepSetTheme = $( 'section.step[data-step=select_theme]' );
+
+		stepSetTheme.on( 'click', '.theme', function() {
+			setTheme( $( this ).data( 'theme' ) );
+
+			router.navigate( 'setup/step/3/'+ $( this ).data( 'site_type' ) + '/' + $( this ).data( 'theme' ), true );
+		});
+		// Don't navigate on theme previews
+		stepSetTheme.on( 'click', '.theme a', function( e ) {
+			e.stopPropagation();
+		});
+		//END theme selection step
+
+		// BEGIN connect social step
+		var stepConnectSocial = $( 'section.step[data-step=connect_social]' );
+		stepConnectSocial.on( 'click', '.social-link', function() {
+			$( this ).find( '.title' ).html( _JetpackStartConnecting );
+		});
+		//END connect social step
+
 	});
 
 	function selectSiteType( siteType ) {
