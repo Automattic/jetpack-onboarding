@@ -1,16 +1,27 @@
 <?php
-
+error_reporting(-1);
 class Jetpack_Start {
 
 	const HIDE_MENU_INTRO_KEY = 'hide-menu-intro';
 
 	static $site_types;
 
+	private static $instance = null;
+
 	static function init() {
 		if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
 		}
 		self::admin_init_ajax();
+	}
+
+	public static function get_instance() {
+		if( !is_null( self::$instance ) ) {
+			return self::$instance;
+		}
+
+		self::$instance = new Jetpack_Start;
+		return self::$instance;
 	}
 
 	static function admin_init() {
@@ -35,7 +46,7 @@ class Jetpack_Start {
 				$jetpack_start_global_variables['steps'] = self::get_steps();
 				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 				wp_dequeue_script( 'devicepx' );
-				require_once dirname( __FILE__ ) . '/index.php';
+				Jetpack_Start::get_instance()->get_view( 'index' );
 				die();
 			}
 		}
@@ -125,34 +136,11 @@ class Jetpack_Start {
 	}
 
 	static function step_site_type() {
-		?>
-
-		<div class="options-box">
-			<?php foreach ( self::get_site_types() as $site_type  ): ?>
-				<a href="#setup/step/2/<?php echo $site_type['name']; ?>" class="option"><span class="big-icon fa <?php echo $site_type['icon_class']; ?>"></span><?php echo $site_type['title']; ?></a>
-			<?php endforeach; ?>
-		</div>
-
-		<?php
+		$this->get_view( 'step_site_type.php' );	
 	}
 
 	static function step_select_theme() {
-		?>
-
-		<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are over 250 themes to choose from).', 'jetpack-start' ) ?></p>
-		<div class="themes-box"></div>
-
-		<script id="themes_template" type="text/template">
-			<% _.each( themes, function( theme ) { %>
-				<div class="theme" data-theme="<%= theme.stylesheet %>" data-site_type="<%= site_type %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
-					<div class="theme-buttons">
-						<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview', 'jetpack-start' ) ?></a>
-					</div>
-				</div>
-			<% }); %>
-		</script>
-
-		<?php
+		$this->get_view( 'step_select_theme' );
 	}
 
 	static function step_connect_social() {
@@ -182,27 +170,8 @@ class Jetpack_Start {
 			$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
 			$connected = $services[ $key ]['connected'] || $connected;
 		}
-		?>
 
-		<p class="step-description"><?php _e( 'Share your favorite posts effortlessly on Facebook and Twitter.', 'jetpack-start' ) ?></p>
-		<div class="social-box">
-			<?php foreach( $services as $service ): ?>
-				<a href="<?php echo esc_url( $service['connect_url'] ); ?>" class="social-link <?php echo $service['short']; ?><?php if ( $service['connected'] ) : ?> connected<?php endif ?>" target="_top" data-social="<?php echo $service['name'] ?>">
-						<span class="wrap">
-							<span class="fa fa-<?php echo $service['name']; ?>"></span>
-							<span class="title"><?php echo ( $service['connected'] ) ? __( 'Connected', 'jetpack-start' ) : sprintf( __( 'Connect to %s', 'jetpack-start' ), $service['title'] );  ?></span>
-						</span>
-				</a>
-			<?php endforeach; ?>
-		</div>
-
-		<?php if ( $connected ) : ?>
-			<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'All done, visit your site', 'jetpack-start' ) ?></a>
-		<?php else : ?>
-			<div class="skip"><?php printf( __( 'or, <a href="%s">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
-		<?php endif ?>
-		
-		<?php
+		$this->get_view( 'step_connect_social' );
 	}
 
 	function is_connected( $service ) {
@@ -307,6 +276,21 @@ class Jetpack_Start {
 		$result = update_user_option( get_current_user_id(), 'jpstart_menu_status', $menu_status );
 		do_action( 'jetpack_start_menu_status_change', $menu_status );
 		wp_send_json_success( $result );
+	}
+
+	/**
+ 	 * Includes the views template file. This helps keep the class code clean 
+	 * by seperating the logic from the view
+	 *
+	 * Template files are located in the views folder.   
+	 *
+	 * @param string $file - The file name (minus extension)
+	 */
+	private function get_view( $file ) {
+		$file = __DIR__ . '/views/' . $file . '.php';
+		if( file_exists( $file ) ) {
+			require_once( $file );
+		}
 	}
 
 }

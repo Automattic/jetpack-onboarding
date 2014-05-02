@@ -6,6 +6,9 @@
  * Version: 0.1
  */
 
+define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
+define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
+
 add_action( 'init', function() {
 	update_option( 'jpstart_menu', true );
 	update_option( 'jpstart_wizard_has_run', false );
