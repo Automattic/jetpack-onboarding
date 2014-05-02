@@ -6,22 +6,11 @@ class Jetpack_Start {
 
 	static $site_types;
 
-	private static $instance = null;
-
 	static function init() {
 		if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
 		}
 		self::admin_init_ajax();
-	}
-
-	public static function get_instance() {
-		if( !is_null( self::$instance ) ) {
-			return self::$instance;
-		}
-
-		self::$instance = new Jetpack_Start;
-		return self::$instance;
 	}
 
 	static function admin_init() {
@@ -46,7 +35,7 @@ class Jetpack_Start {
 				$jetpack_start_global_variables['steps'] = self::get_steps();
 				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 				wp_dequeue_script( 'devicepx' );
-				Jetpack_Start::get_instance()->get_view( 'index' );
+				self::get_view( 'index' );
 				die();
 			}
 		}
@@ -136,11 +125,11 @@ class Jetpack_Start {
 	}
 
 	static function step_site_type() {
-		$this->get_view( 'step_site_type.php' );	
+		self::get_view( 'step_site_type' );
 	}
 
 	static function step_select_theme() {
-		$this->get_view( 'step_select_theme' );
+		self::get_view( 'step_select_theme' );
 	}
 
 	static function step_connect_social() {
@@ -171,7 +160,7 @@ class Jetpack_Start {
 			$connected = $services[ $key ]['connected'] || $connected;
 		}
 
-		$this->get_view( 'step_connect_social' );
+		self::get_view( 'step_connect_social' );
 	}
 
 	function is_connected( $service ) {
@@ -286,7 +275,7 @@ class Jetpack_Start {
 	 *
 	 * @param string $file - The file name (minus extension)
 	 */
-	private function get_view( $file ) {
+	private static function get_view( $file ) {
 		$file = __DIR__ . '/views/' . $file . '.php';
 		if( file_exists( $file ) ) {
 			require_once( $file );
