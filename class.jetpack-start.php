@@ -32,6 +32,7 @@ class Jetpack_Start {
 				$jetpack_start_global_variables['site_types'] = self::get_site_types();
 				$jetpack_start_global_variables['connecting_message'] = esc_js( __( 'Connecting...', 'jetpack-start' ) );
 				$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
+				$jetpack_start_global_variables['steps'] = self::get_steps();
 				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 				wp_dequeue_script( 'devicepx' );
 				require_once dirname( __FILE__ ) . '/index.php';

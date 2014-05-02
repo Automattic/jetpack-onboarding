@@ -76,11 +76,20 @@
 			}
 		}
 		showStep( step );
+		setProgress( step );
 	}
 
 	function showStep( step ) {
 		$( 'section.step' ).hide();
 		$( 'section.step[data-step=' + step + ']' ).show();
+	}
+
+	function setProgress( step ) {
+		$( 'header .progress li' ).each( function() {
+			var li = $( this ).addClass( 'done' );
+			if ( li.data( 'step' ) == step )
+				return false;
+		});
 	}
 
 }) ( jQuery );

@@ -21,7 +21,7 @@
 		<span><?php _e( 'WordPress Setup Wizard', 'jetpack-start' ) ?></span>
 		<ul>
 		<?php foreach ( $steps as $slug => $label ) : ?>
-			<li class="step-<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
+			<li data-step="<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
 		<?php endforeach; ?>
 		</ul>
 	</div>
