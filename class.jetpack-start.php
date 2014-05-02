@@ -29,9 +29,10 @@ class Jetpack_Start {
 				add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
 				wp_enqueue_script( 'underscore');
 				wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
-				wp_localize_script( 'jetpack-start', '_JetpackStartSiteTypes', self::get_site_types() );
-				wp_localize_script( 'jetpack-start', '_JetpackStartConnecting', esc_js( __( 'Connecting...', 'jetpack-start' ) ) );
-				wp_localize_script( 'jetpack-start', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
+				$jetpack_start_global_variables['site_types'] = self::get_site_types();
+				$jetpack_start_global_variables['connecting_message'] = esc_js( __( 'Connecting...', 'jetpack-start' ) );
+				$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
+				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 				wp_dequeue_script( 'devicepx' );
 				require_once dirname( __FILE__ ) . '/index.php';
 				die();
