@@ -1,19 +1,31 @@
 (function( $ ) {
 	var siteTypes = new Backbone.Collection( _JetpackStart['site_types'] ),
 		jetpackStartRouter = Backbone.Router.extend( {
-		routes: {
-			"setup/step/:step": "render",
-			"setup/step/:step/:site_type": "render",
-			"setup/step/:step/:site_type/:theme": "render"
-		}
-	}),
-	router;
+			routes: {
+				"setup/step/:step": "render",
+				"setup/step/:step/:site_type": "render",
+				"setup/step/:step/:site_type/:theme": "render"
+			}
+		}),
+		current_step,
+		router;
 
 	$( document ).ready( function() {
 		router = new jetpackStartRouter;
 		router.on( 'route:render', render );
 
 		Backbone.history.start();
+
+		// BEGIN site type selection step
+
+		var stepSiteType = $( 'section.step[data-step=select_theme]' );
+
+		stepSiteType.on( 'click', '.site-type', function( e ) {
+			e.preventDefault();
+			selectSiteType( $( this ).data( 'site_type' ) );
+			goToNextStep();
+		});
+		//END site type selection step
 
 		// BEGIN theme selection step
 
@@ -51,7 +63,7 @@
 		$( 'section.step-2 .themes-box' )
 			.data( 'site_type', siteType.get( 'name' ) )
 			.html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
-        var data = {
+		var data = {
 			action: 'jetpackstart_set_site_type',
 			site_type: siteType.get( 'name' )
 		};
@@ -90,6 +102,11 @@
 			if ( li.data( 'step' ) == step )
 				return false;
 		});
+		current_step = step;
+	}
+
+	function goToNextStep() {
+		router.navigate( 'setup/step/'+ current_step, true );
 	}
 
 }) ( jQuery );
