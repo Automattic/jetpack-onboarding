@@ -18,11 +18,10 @@
 
 		// BEGIN site type selection step
 
-		var stepSiteType = $( 'section.step[data-step=select_theme]' );
-
+		var stepSiteType = $( 'section.step[data-step=site_type]' );
 		stepSiteType.on( 'click', '.site-type', function( e ) {
 			e.preventDefault();
-			selectSiteType( $( this ).data( 'site_type' ) );
+			selectSiteType( $( this ).data( 'site-type' ) );
 			goToNextStep();
 		});
 		//END site type selection step
@@ -58,9 +57,12 @@
 
 	});
 
-	function selectSiteType( siteType ) {
+	function selectSiteType( siteTypeName ) {
+		console.log( siteTypeName );
+		var siteType = siteTypes.findWhere( { name: siteTypeName } )
+		console.log( siteType );
 		var template = $( '#themes_template' ).html();
-		$( 'section.step-2 .themes-box' )
+		$( 'section.step[data-step=select_theme]' )
 			.data( 'site_type', siteType.get( 'name' ) )
 			.html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
 		var data = {
