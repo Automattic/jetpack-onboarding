@@ -117,9 +117,18 @@ class Jetpack_Start {
 
 	static function get_steps() {
 		$steps = array(
-			'site_type'      => __( 'What type of site are you building?', 'jetpack-start' ),
-			'select_theme'   => __( 'Select a theme:', 'jetpack-start' ),
-			'connect_social' => __( 'Every site needs an audience!', 'jetpack-start' ),
+			array(
+				'slug'  => 'site_type',
+				'label' => __( 'What type of site are you building?', 'jetpack-start' )
+				),
+			array(
+				'slug'  => 'select_theme',
+				'label' => __( 'Select a theme:', 'jetpack-start' )
+				),
+			array(
+				'slug' =>	'connect_social',
+				'label' => __( 'Every site needs an audience!', 'jetpack-start' )
+			)
 		);
 		return apply_filters( 'jetpack_start_steps', $steps );
 	}
@@ -251,13 +260,11 @@ class Jetpack_Start {
 	}
 
 	static function get_first_step() {
-		$steps = self::get_steps();
-		reset( $steps );
-		return key( $steps );
+		return self::get_steps()[0];
 	}
 
 	static function redirect_to_step( $step ) {
-		wp_safe_redirect( admin_url( "#setup/step/" . $step ) );
+		wp_safe_redirect( admin_url( "#setup/step/" . $step['slug'] ) );
 	}
 
 	static function menu_hide_intro() {
