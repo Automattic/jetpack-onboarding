@@ -20,15 +20,15 @@
 	<div class="progress">
 		<span><?php _e( 'WordPress Setup Wizard', 'jetpack-start' ) ?></span>
 		<ul>
-		<?php foreach ( $steps as $slug => $label ) : ?>
+		<?php foreach ( $steps as $step ) : extract($step); ?>
 			<li data-step="<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
 		<?php endforeach; ?>
 		</ul>
 	</div>
 </header>
 
-<?php foreach ( $steps as $slug => $label ) : ?>
-<section class="step" data-step="<?php echo esc_attr( $slug ); ?>"
+<?php foreach ( $steps as $step ) : extract($step); ?>
+<section class="step" data-step="<?php echo esc_attr( $slug ); ?>">
 	<div class="container">
 		<?php if ( ! empty( $label ) ) : ?>
 			<h1><?php echo esc_html( $label ); ?></h1>

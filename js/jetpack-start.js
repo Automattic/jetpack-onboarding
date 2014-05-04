@@ -58,13 +58,11 @@
 	});
 
 	function selectSiteType( siteTypeName ) {
-		console.log( siteTypeName );
 		var siteType = siteTypes.findWhere( { name: siteTypeName } )
-		console.log( siteType );
 		var template = $( '#themes_template' ).html();
-		$( 'section.step[data-step=select_theme]' )
-			.data( 'site_type', siteType.get( 'name' ) )
-			.html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
+		var step = $( 'section.step[data-step=select_theme]' );
+		step.data( 'site_type', siteType.get( 'name' ) );
+		step.find( '.themes-box' ).html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
 		var data = {
 			action: 'jetpackstart_set_site_type',
 			site_type: siteType.get( 'name' )
@@ -81,7 +79,7 @@
 		$.post( _JetpackStart['ajaxurl'], data );
 	}
 
-	function render( step, siteTypeName, theme ) {
+	function render( step_slug, siteTypeName, theme ) {
 		if ( typeof siteTypeName === 'string' ) {
 			if ( typeof theme === 'string' ) {
 				setTheme( theme );
@@ -89,26 +87,31 @@
 				selectSiteType( siteTypes.findWhere( { name: siteTypeName } ) );
 			}
 		}
-		showStep( step );
-		setProgress( step );
+		showStep( step_slug );
+		setProgress( step_slug );
 	}
 
-	function showStep( step ) {
+	function showStep( step_slug ) {
 		$( 'section.step' ).hide();
-		$( 'section.step[data-step=' + step + ']' ).show();
+		$( 'section.step[data-step=' + step_slug + ']' ).show();
 	}
 
-	function setProgress( step ) {
+	function setProgress( step_slug ) {
+		var step_num = 0;
 		$( 'header .progress li' ).each( function() {
 			var li = $( this ).addClass( 'done' );
-			if ( li.data( 'step' ) == step )
+			if ( li.data( 'step' ) == step_slug ) {
+				current_step = _JetpackStart['steps'][step_num];
 				return false;
+			}
+			step_num++;
 		});
-		current_step = step;
 	}
 
 	function goToNextStep() {
-		router.navigate( 'setup/step/'+ current_step, true );
+		var next_step_num  = _JetpackStart['steps'].indexOf( current_step ) + 1;
+		current_step = _JetpackStart['steps'][ next_step_num ];
+		router.navigate( 'setup/step/'+ current_step['slug'], true );
 	}
 
 }) ( jQuery );
