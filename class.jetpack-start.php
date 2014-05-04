@@ -250,8 +250,14 @@ class Jetpack_Start {
 		wp_send_json_success();
 	}
 
+	static function get_first_step() {
+		$steps = self::get_steps();
+		reset( $steps );
+		return key( $steps );
+	}
+
 	static function redirect_to_step( $step ) {
-		wp_safe_redirect( admin_url( "#setup/step/" . (int) $step ) );
+		wp_safe_redirect( admin_url( "#setup/step/" . $step ) );
 	}
 
 	static function menu_hide_intro() {

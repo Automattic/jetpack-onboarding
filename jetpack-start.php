@@ -17,7 +17,7 @@ add_action( 'init', function() {
 			if ( is_blog_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 				require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 				if ( isset( $_GET['wizard'] ) ) {
-					Jetpack_Start::redirect_to_step( 1 );
+					Jetpack_Start::redirect_to_step( Jetpack_Start::get_first_step() );
 				}
 				Jetpack_Start::init();
 			} else {
