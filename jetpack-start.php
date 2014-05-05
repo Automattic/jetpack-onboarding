@@ -10,26 +10,22 @@ define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
 
 add_action( 'init', function() {
-	update_option( 'jpstart_menu', true );
-	update_option( 'jpstart_wizard_has_run', false );
-	if ( ! get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['wizard'] ) ) {
-		if ( current_user_can( 'switch_themes' ) ) {
-			if ( is_blog_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-				require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
-				if ( isset( $_GET['wizard'] ) ) {
-					Jetpack_Start::redirect_to_step( Jetpack_Start::get_first_step()['slug'] );
-				}
-				Jetpack_Start::init();
-			} else {
-				update_option( 'jpstart_menu', true );
-			}
-		}
+	if ( isset( $_GET['jps_wizard_end'] ) ) {
+		add_option( 'jpstart_wizard_has_run', true );
 	}
-	if ( get_option( 'jpstart_menu' ) ) {
-		update_option( 'jpstart_wizard_has_run', true );
-		if ( current_user_can( 'switch_themes' ) ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-menu.php' );
-			Jetpack_Start_Menu::init();
+
+	if ( ! get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['jps_wizard_start'] ) ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
+		if ( isset( $_GET['jps_wizard_start'] ) ) {
+			delete_option( 'jpstart_wizard_has_run' );
+			Jetpack_Start::redirect_to_step( Jetpack_Start::get_first_step()['slug'] );
 		}
+		Jetpack_Start::init();
+	}
+
+	if ( current_user_can( 'switch_themes' ) ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-menu.php' );
+		Jetpack_Start_Menu::init();
 	}
 });
+

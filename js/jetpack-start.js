@@ -53,6 +53,10 @@
 		stepConnectSocial.on( 'click', '.social-link', function() {
 			$( this ).find( '.title' ).html(  _JetpackStart['connecting_message'] );
 		});
+		stepConnectSocial.on( 'click', 'a.next', function( e ) {
+			e.preventDefault();
+			goToNextStep();
+		});
 		//END connect social step
 
 	});
@@ -110,6 +114,9 @@
 
 	function goToNextStep() {
 		var next_step_num  = _JetpackStart['steps'].indexOf( current_step ) + 1;
+		if ( next_step_num >= _JetpackStart['steps'].length ) {
+			window.location = _JetpackStart['home_url'] + '?jps_wizard_end';
+		}
 		current_step = _JetpackStart['steps'][ next_step_num ];
 		router.navigate( 'setup/step/'+ current_step['slug'], true );
 	}

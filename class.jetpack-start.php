@@ -3,8 +3,10 @@
 class Jetpack_Start {
 
 	static function init() {
-		if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
+		if ( current_user_can( 'switch_themes' ) ) {
+			if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+				add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
+			}
 		}
 	}
 
@@ -16,6 +18,7 @@ class Jetpack_Start {
 
 			$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
 			$jetpack_start_global_variables['steps'] = self::get_steps();
+			$jetpack_start_global_variables['home_url'] = home_url();
 			$jetpack_start_global_variables = apply_filters( 'jetpack_start_js_globals', $jetpack_start_global_variables );
 
 			wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
