@@ -172,7 +172,7 @@ class Jetpack_Start {
 		self::get_view( 'step_connect_social' );
 	}
 
-	function is_connected( $service ) {
+	static function is_connected( $service ) {
 		global $publicize;
 		if ( ! is_object( $publicize ) ) {
 			return false;
