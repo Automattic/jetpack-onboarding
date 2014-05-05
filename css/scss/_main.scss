@@ -37,6 +37,9 @@ header {
 			margin: 10px 4px 0 0;
 			width: 12px;
 			@include border-radius(1px);
+		  &.done {
+			background: #93d07b;
+		  }
 		}
 		span {
 			float: left;
@@ -48,18 +51,6 @@ header {
 			padding: 0;
 		}
 	}
-}
-.step1 .progress1,
-.step2 .progress1,
-.step2 .progress2,
-.step3 .progress1,
-.step3 .progress2,
-.step3 .progress3,
-.step4 .progress1,
-.step4 .progress2,
-.step4 .progress3,
-.step4 .progress4 {
-	background: #93d07b;
 }
 
 // ==========================================================================
