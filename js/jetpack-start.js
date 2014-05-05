@@ -37,10 +37,10 @@
 
 		var stepSetTheme = $( 'section.step[data-step=select_theme]' );
 
-		stepSetTheme.on( 'click', '.theme', function() {
+		stepSetTheme.on( 'click', '.theme', function( e ) {
+			e.preventDefault();
 			setTheme( $( this ).data( 'theme' ) );
-
-			router.navigate( 'setup/step/3/'+ $( this ).data( 'site_type' ) + '/' + $( this ).data( 'theme' ), true );
+			goToNextStep();
 		});
 		// Don't navigate on theme previews
 		stepSetTheme.on( 'click', '.theme a', function( e ) {
