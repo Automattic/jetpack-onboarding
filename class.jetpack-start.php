@@ -141,7 +141,7 @@ class Jetpack_Start {
 		self::get_view( 'step_select_theme' );
 	}
 
-	static function step_connect_social() {
+	static function get_social_services() {
 		global $publicize;
 
 		if ( ! is_object( $publicize ) ) {
@@ -162,13 +162,15 @@ class Jetpack_Start {
 			),
 		);
 
-		$connected = false;
 		foreach( $services as $key => $service ) {
 			$services[ $key ]['connected'] = self::is_connected( $service['name'] );
 			$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
-			$connected = $services[ $key ]['connected'] || $connected;
 		}
 
+		return $services;
+	}
+
+	static function step_connect_social() {
 		self::get_view( 'step_connect_social' );
 	}
 
