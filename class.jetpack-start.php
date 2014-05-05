@@ -14,10 +14,6 @@ class Jetpack_Start {
 	}
 
 	static function admin_init() {
-		// Add our default steps:
-		add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
-		add_action( 'jetpack-start_step-select_theme',   array( __CLASS__, 'step_select_theme' ) );
-		add_action( 'jetpack-start_step-connect_social', array( __CLASS__, 'step_connect_social' ) );
 
 		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 			if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
@@ -35,7 +31,12 @@ class Jetpack_Start {
 				$jetpack_start_global_variables['steps'] = self::get_steps();
 				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 				wp_dequeue_script( 'devicepx' );
-				self::get_view( 'index' );
+
+				// Add our default steps:
+				add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
+				add_action( 'jetpack-start_step-select_theme',   array( __CLASS__, 'step_select_theme' ) );
+				add_action( 'jetpack-start_step-connect_social', array( __CLASS__, 'step_connect_social' ) );
+				self::get_view( 'index.php' );
 				die();
 			}
 		}
@@ -134,11 +135,11 @@ class Jetpack_Start {
 	}
 
 	static function step_site_type() {
-		self::get_view( 'step_site_type' );
+		self::get_step( 'site_type' );
 	}
 
 	static function step_select_theme() {
-		self::get_view( 'step_select_theme' );
+		self::get_step( 'select_theme' );
 	}
 
 	static function get_social_services() {
@@ -171,7 +172,7 @@ class Jetpack_Start {
 	}
 
 	static function step_connect_social() {
-		self::get_view( 'step_connect_social' );
+		self::get_step( 'connect_social' );
 	}
 
 	static function is_connected( $service ) {
@@ -291,10 +292,15 @@ class Jetpack_Start {
 	 * @param string $file - The file name (minus extension)
 	 */
 	private static function get_view( $file ) {
-		$file = __DIR__ . '/views/' . $file . '.php';
+		$file = __DIR__ . '/views/' . $file;
 		if( file_exists( $file ) ) {
 			require_once( $file );
 		}
+	}
+
+	private static function get_step( $step_slug ) {
+		$file = 'steps/' . $step_slug . '.php';
+		self::get_view( $file );
 	}
 
 }
