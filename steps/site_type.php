@@ -12,6 +12,7 @@ class Jetpack_Start_Step_Site_Type extends Jetpack_Start_Step {
 
 	static function init() {
 		add_action( 'jetpack-start_step-site_type', array( __CLASS__, 'render' ) );
+		add_action( 'wp_ajax_jetpackstart_set_site_type', array( __CLASS__, 'set_site_type' ) );
 		add_filter( 'jetpack_start_js_globals', array( __CLASS__, 'jetpack_start_js_globals' ) );
 	}
 

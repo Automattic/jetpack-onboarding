@@ -10,6 +10,7 @@ class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 
 	static function init() {
 		add_action( 'jetpack-start_step-select_theme', array( __CLASS__, 'render' ) );
+		add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
 	}
 
 	static function render() {
