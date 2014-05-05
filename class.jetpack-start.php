@@ -12,7 +12,7 @@ class Jetpack_Start {
 
 	static function admin_init() {
 		self::get_steps();
-		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) && apply_filters( 'jetpack_start_render_wizard', true ) ) {
 			wp_enqueue_script( 'underscore');
 			wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
 

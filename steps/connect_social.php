@@ -3,8 +3,8 @@
  * Label: What type of site are you building?
  * Sort Order: 2
  */
-
 if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
+	add_filter( 'jetpack_start_render_wizard', '__return_false' );
 	if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
 		do_action( 'jetpack_start_connect_service', ( isset( $_GET['service'] ) ) ? sanitize_text_field( $_GET['service'] ) : 'service_not_set' );
 		Jetpack_Start::redirect_to_step( 'connect_social' );
