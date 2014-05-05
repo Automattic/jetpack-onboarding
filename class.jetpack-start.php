@@ -1,5 +1,5 @@
 <?php
-error_reporting(-1);
+
 class Jetpack_Start {
 
 	const HIDE_MENU_INTRO_KEY = 'hide-menu-intro';
