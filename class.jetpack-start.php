@@ -3,29 +3,29 @@
 class Jetpack_Start {
 
 	static function init() {
-		if ( current_user_can( 'switch_themes' ) ) {
+		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+			self::get_steps();
 			if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-				add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
+				if ( apply_filters( 'jetpack_start_render_wizard', true ) ) {
+					add_action( 'admin_init', array( __CLASS__, 'render_wizard' ), 100 );
+				}
 			}
 		}
 	}
 
-	static function admin_init() {
-		self::get_steps();
-		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) && apply_filters( 'jetpack_start_render_wizard', true ) ) {
-			wp_enqueue_script( 'underscore');
-			wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
+	static function render_wizard() {
+		wp_enqueue_script( 'underscore');
+		wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
 
-			$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
-			$jetpack_start_global_variables['steps'] = self::get_steps();
-			$jetpack_start_global_variables['home_url'] = home_url();
-			$jetpack_start_global_variables = apply_filters( 'jetpack_start_js_globals', $jetpack_start_global_variables );
+		$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
+		$jetpack_start_global_variables['steps'] = self::get_steps();
+		$jetpack_start_global_variables['home_url'] = home_url();
+		$jetpack_start_global_variables = apply_filters( 'jetpack_start_js_globals', $jetpack_start_global_variables );
 
-			wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
+		wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
 
-			self::get_view( 'index.php' );
-			die();
-		}
+		self::get_view( 'index.php' );
+		die();
 	}
 
 	static function get_steps() {
