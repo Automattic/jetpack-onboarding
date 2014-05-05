@@ -4,8 +4,6 @@ class Jetpack_Start {
 
 	const HIDE_MENU_INTRO_KEY = 'hide-menu-intro';
 
-	static $site_types;
-
 	static function init() {
 		if ( ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 100 );
@@ -14,32 +12,44 @@ class Jetpack_Start {
 	}
 
 	static function admin_init() {
-
+		self::get_steps();
 		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
-			if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
-				if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
-					do_action( 'jetpack_start_connect_service', ( isset( $_GET['service'] ) ) ? sanitize_text_field( $_GET['service'] ) : 'service_not_set' );
-					self::redirect_to_step( 3 );
-				}
-			} else {
-				add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
-				wp_enqueue_script( 'underscore');
-				wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
-				$jetpack_start_global_variables['site_types'] = self::get_site_types();
-				$jetpack_start_global_variables['connecting_message'] = esc_js( __( 'Connecting...', 'jetpack-start' ) );
-				$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
-				$jetpack_start_global_variables['steps'] = self::get_steps();
-				wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
-				wp_dequeue_script( 'devicepx' );
+			add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
+			wp_enqueue_script( 'underscore');
+			wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore' ) );
 
-				// Add our default steps:
-				add_action( 'jetpack-start_step-site_type',      array( __CLASS__, 'step_site_type' ) );
-				add_action( 'jetpack-start_step-select_theme',   array( __CLASS__, 'step_select_theme' ) );
-				add_action( 'jetpack-start_step-connect_social', array( __CLASS__, 'step_connect_social' ) );
-				self::get_view( 'index.php' );
-				die();
-			}
+			$jetpack_start_global_variables['ajaxurl'] = admin_url( 'admin-ajax.php' );
+			$jetpack_start_global_variables['steps'] = self::get_steps();
+			$jetpack_start_global_variables = apply_filters( 'jetpack_start_js_globals', $jetpack_start_global_variables );
+
+			wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
+			wp_dequeue_script( 'devicepx' );
+			self::get_view( 'index.php' );
+			die();
 		}
+	}
+
+	static function get_steps() {
+		static $steps = null;
+
+		if ( ! isset( $steps ) ) {
+			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-step.php' );
+			$files = self::glob_php( plugin_dir_path( __FILE__ ) . '/steps' );
+			$steps = array();
+
+			foreach ( $files as $file ) {
+				if ( ! $step = self::get_step( $file ) ) {
+					continue;
+				}
+				$steps[] = $step;
+			}
+			function stepSort( $a, $b ) {
+				return $a['sort'] == $b['sort'] ? 0 : ( $a['sort'] > $b['sort'] ) ? 1 : -1;
+			}
+			usort( $steps, 'stepSort' );
+		}
+
+		return apply_filters( 'jetpack_start_steps', $steps );
 	}
 
 	static function admin_init_ajax() {
@@ -116,158 +126,13 @@ class Jetpack_Start {
 		}
 	}
 
-	static function get_steps() {
-		$steps = array(
-			array(
-				'slug'  => 'site_type',
-				'label' => __( 'What type of site are you building?', 'jetpack-start' )
-				),
-			array(
-				'slug'  => 'select_theme',
-				'label' => __( 'Select a theme:', 'jetpack-start' )
-				),
-			array(
-				'slug' =>	'connect_social',
-				'label' => __( 'Every site needs an audience!', 'jetpack-start' )
-			)
-		);
-		return apply_filters( 'jetpack_start_steps', $steps );
-	}
-
-	static function step_site_type() {
-		self::get_step( 'site_type' );
-	}
-
-	static function step_select_theme() {
-		self::get_step( 'select_theme' );
-	}
-
-	static function get_social_services() {
-		global $publicize;
-
-		if ( ! is_object( $publicize ) ) {
-			echo '<p>' . esc_html__( 'Error: No publicize detected.', 'jetpack-start' ) . '</p>';
-			return;
-		}
-
-		$services = array(
-			array(
-				'name' => 'facebook',
-				'title' => __( 'Facebook', 'jetpack-start' ),
-				'short' => 'fb',
-			),
-			array(
-				'name' => 'twitter',
-				'title' => __( 'Twitter', 'jetpack-start' ),
-				'short' => 'tw',
-			),
-		);
-
-		foreach( $services as $key => $service ) {
-			$services[ $key ]['connected'] = self::is_connected( $service['name'] );
-			$services[ $key ]['connect_url'] = $publicize->connect_url( $service['name'] );
-		}
-
-		return $services;
-	}
-
-	static function step_connect_social() {
-		self::get_step( 'connect_social' );
-	}
-
-	static function is_connected( $service ) {
-		global $publicize;
-		if ( ! is_object( $publicize ) ) {
-			return false;
-		}
-		$connections = $publicize->get_connections( $service );
-		return ! empty( $connections );
-	}
-
-	static function get_site_types() {
-		if ( is_null( self::$site_types ) ) {
-			self::$site_types = apply_filters( 'jetpack_start_site_types', array(
-				array(
-					'name'       => 'business-website',
-					'title'      => __( 'Business Website', 'jetpack-start' ),
-					'icon_class' => 'fa-building-o',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-				array(
-					'name'       => 'business-blog',
-					'title'      => __( 'Business Blog', 'jetpack-start' ),
-					'icon_class' => 'fa-briefcase',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-				array(
-					'name'       => 'personal-blog',
-					'title'      => __( 'Personal Blog', 'jetpack-start' ),
-					'icon_class' => 'fa-edit',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-				array(
-					'name'       => 'photo-blog',
-					'title'      => __( 'Photo Blog', 'jetpack-start' ),
-					'icon_class' => 'fa-camera',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-				array(
-					'name'       => 'about-me-page',
-					'title'      => __( 'About Me Page', 'jetpack-start' ),
-					'icon_class' => 'fa-user',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-				array(
-					'name'       => 'family-blog',
-					'title'      => __( 'Family Blog', 'jetpack-start' ),
-					'icon_class' => 'fa-group',
-					'themes'     => array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' ),
-				),
-			) );
-
-			foreach ( self::$site_types as $key => $sitetype_details ) {
-				self::$site_types[ $key ]['themes'] = self::prepare_themes( $sitetype_details['themes'] );
-			}
-
-		}
-		return self::$site_types;
-	}
-
-	static function prepare_themes( $themes ) {
-		$result = array();
-		foreach ( $themes as $theme ) {
-			$result[] = self::prepare_theme( wp_get_theme( $theme ) );
-		}
-		return $result;
-	}
-
-	static function prepare_theme( $theme ) {
-		return array(
-			'stylesheet'  => $theme->get_stylesheet(),
-			'img_preview' => $theme->get_screenshot(),
-			'demo_url' => 'http://' . $string = 'demo.wordpress.com?demo',
-		);
-	}
-
-	static function set_theme() {
-		$stylesheet = sanitize_text_field( $_POST['stylesheet'] );
-		do_action( 'jetpack_start_set_theme', $stylesheet );
-		switch_theme( $stylesheet );
-		wp_send_json_success();
-	}
-
-	static function set_site_type() {
-		$site_type = sanitize_text_field( $_POST['site_type'] );
-		do_action( 'jetpack_start_set_site_type', $site_type );
-		wp_send_json_success();
-	}
-
 	static function get_first_step() {
-		return self::get_steps()[0];
+		$steps = self::get_steps();
+		return reset( $steps );
 	}
 
-	static function redirect_to_step( $step ) {
-		wp_safe_redirect( admin_url( "#setup/step/" . $step['slug'] ) );
+	static function redirect_to_step( $step_slug ) {
+		wp_safe_redirect( admin_url( "#setup/step/" . $step_slug ) );
 	}
 
 	static function menu_hide_intro() {
@@ -291,16 +156,63 @@ class Jetpack_Start {
 	 *
 	 * @param string $file - The file name (minus extension)
 	 */
-	private static function get_view( $file ) {
+	static function get_view( $file ) {
 		$file = plugin_dir_path( __FILE__ ) . '/views/' . $file;
 		if( file_exists( $file ) ) {
 			require_once( $file );
 		}
 	}
 
-	private static function get_step( $step_slug ) {
-		$file = 'steps/' . $step_slug . '.php';
-		self::get_view( $file );
+	/**
+	 * Returns an array of all PHP files in the specified absolute path.
+	 * Equivalent to glob( "$absolute_path/*.php" ).
+	 *
+	 * @param string $absolute_path The absolute path of the directory to search.
+	 * @return array Array of absolute paths to the PHP files.
+	 */
+	public static function glob_php( $absolute_path ) {
+		$absolute_path = untrailingslashit( $absolute_path );
+		$files = array();
+		if ( ! $dir = @opendir( $absolute_path ) ) {
+			return $files;
+		}
+
+		while ( false !== $file = readdir( $dir ) ) {
+			if ( '.' == substr( $file, 0, 1 ) || '.php' != substr( $file, -4 ) ) {
+				continue;
+			}
+
+			$file = "$absolute_path/$file";
+
+			if ( ! is_file( $file ) ) {
+				continue;
+			}
+
+			$files[] = $file;
+		}
+
+		closedir( $dir );
+
+		return $files;
 	}
 
+	public static function get_step( $file ) {
+		if ( ! file_exists( $file ) )
+			return false;
+
+		require_once( $file );
+
+		$headers = array(
+			'label'               => 'Label',
+			'sort'                => 'Sort Order'
+		);
+
+		$step = get_file_data( $file, $headers );
+
+		$step['slug']  = basename( $file, ".php");;
+		$step['label'] = translate( $step['label'], 'jetpack-start' );
+		$step['sort']  = empty( $step['sort'] ) ? 0 : (int) $step['sort'];
+
+		return $step;
+	}
 }
