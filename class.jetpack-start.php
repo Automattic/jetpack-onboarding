@@ -292,7 +292,7 @@ class Jetpack_Start {
 	 * @param string $file - The file name (minus extension)
 	 */
 	private static function get_view( $file ) {
-		$file = __DIR__ . '/views/' . $file;
+		$file = plugin_dir_path( __FILE__ ) . '/views/' . $file;
 		if( file_exists( $file ) ) {
 			require_once( $file );
 		}
