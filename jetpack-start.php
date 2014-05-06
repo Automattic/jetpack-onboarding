@@ -12,6 +12,8 @@ define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE_
 add_action( 'init', function() {
 	if ( isset( $_GET['jps_wizard_end'] ) ) {
 		add_option( 'jpstart_wizard_has_run', true );
+		wp_safe_redirect( remove_query_arg( 'jps_wizard_end' ) );
+		die();
 	}
 
 	if ( ! get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['jps_wizard_start'] ) ) {
