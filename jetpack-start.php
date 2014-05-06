@@ -18,7 +18,8 @@ add_action( 'init', function() {
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 		if ( isset( $_GET['jps_wizard_start'] ) ) {
 			delete_option( 'jpstart_wizard_has_run' );
-			Jetpack_Start::redirect_to_step( Jetpack_Start::get_first_step()['slug'] );
+			$first_step = Jetpack_Start::get_first_step();
+			Jetpack_Start::redirect_to_step( $first_step['slug'] );
 		}
 		Jetpack_Start::init();
 	}
