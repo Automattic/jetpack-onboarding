@@ -2,7 +2,7 @@
 /**
  * Label: What type of site are you building?
  * Sort Order: 2
- * Plugin Dependencies: Jetpack
+ * Plugin Dependencies: jetpack/jetpack.php
  */
 
 if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
