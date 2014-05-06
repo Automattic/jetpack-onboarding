@@ -29,7 +29,7 @@ class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 		return array(
 			'stylesheet'  => $theme->get_stylesheet(),
 			'img_preview' => $theme->get_screenshot(),
-			'demo_url' => 'http://' . $string = 'demo.wordpress.com?demo',
+			'demo_url' => 'http://' .  str_replace( '-', '', $theme->get_stylesheet() ) . 'demo.wordpress.com?demo',
 		);
 	}
 
