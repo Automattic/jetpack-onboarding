@@ -2,9 +2,7 @@
 	var siteTypes = new Backbone.Collection( _JetpackStart['site_types'] ),
 		jetpackStartRouter = Backbone.Router.extend( {
 			routes: {
-				"setup/step/:step": "render",
-				"setup/step/:step/:site_type": "render",
-				"setup/step/:step/:site_type/:theme": "render"
+				"setup/step/:step": "render"
 			}
 		}),
 		current_step,
@@ -83,14 +81,7 @@
 		$.post( _JetpackStart['ajaxurl'], data );
 	}
 
-	function render( step_slug, siteTypeName, theme ) {
-		if ( typeof siteTypeName === 'string' ) {
-			if ( typeof theme === 'string' ) {
-				setTheme( theme );
-			} else {
-				selectSiteType( siteTypes.findWhere( { name: siteTypeName } ) );
-			}
-		}
+	function render( step_slug ) {
 		showStep( step_slug );
 		setProgress( step_slug );
 	}
