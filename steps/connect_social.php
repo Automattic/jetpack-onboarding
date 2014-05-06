@@ -2,7 +2,9 @@
 /**
  * Label: What type of site are you building?
  * Sort Order: 2
+ * Plugin Dependencies: Jetpack
  */
+
 if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 	add_filter( 'jetpack_start_render_wizard', '__return_false' );
 	if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {

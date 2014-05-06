@@ -37,7 +37,8 @@ class Jetpack_Start {
 			$steps = array();
 
 			foreach ( $files as $file ) {
-				if ( ! $step = self::get_step( $file ) ) {
+				$step = self::get_step( $file );
+				if ( ! $step || ! self::is_compatible_step( $step ) ) {
 					continue;
 				}
 				$steps[] = $step;
@@ -49,6 +50,17 @@ class Jetpack_Start {
 		}
 
 		return apply_filters( 'jetpack_start_steps', $steps );
+	}
+
+	static function is_compatible_step( $step ) {
+		if ( ! empty( $step['deps'] ) ) {
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			foreach ( $step['deps'] as $plugin_name ) {
+				if ( ! is_plugin_active( $plugin_name ) )
+					return false;
+			}
+		}
+		return true;
 	}
 
 	static function get_first_step() {
@@ -115,8 +127,9 @@ class Jetpack_Start {
 		require_once( $file );
 
 		$headers = array(
-			'label'               => 'Label',
-			'sort'                => 'Sort Order'
+			'label' => 'Label',
+			'sort'  => 'Sort Order',
+			'deps'  => 'Plugin Dependencies'
 		);
 
 		$step = get_file_data( $file, $headers );
@@ -124,6 +137,13 @@ class Jetpack_Start {
 		$step['slug']  = basename( $file, ".php");;
 		$step['label'] = translate( $step['label'], 'jetpack-start' );
 		$step['sort']  = empty( $step['sort'] ) ? 0 : (int) $step['sort'];
+
+		if ( $step['deps'] ) {
+			$step['deps'] = explode( ',', $step['deps'] );
+			$step['deps'] = array_map( 'trim', $step['deps'] );
+		} else {
+			$step['deps'] = array();
+		}
 
 		return $step;
 	}
