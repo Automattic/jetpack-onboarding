@@ -1685,9 +1685,9 @@ section .container .skip a:hover {
 .options-box .theme .theme-buttons,
 .themes-box .theme .theme-buttons,
 .social-box .theme .theme-buttons {
+  bottom: 13px;
   position: absolute;
   right: 13px;
-  top: 13px;
 }
 
 /* line 198, scss/_main.scss */
