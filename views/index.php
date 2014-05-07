@@ -27,15 +27,20 @@
 	</div>
 </header>
 
-<?php foreach ( $steps as $step ) : extract($step); ?>
+<div id="wizard"></div>
+
+<script id="step-template" type="text/template">
 <section class="step" data-step="<?php echo esc_attr( $slug ); ?>">
 	<div class="container">
 		<?php if ( ! empty( $label ) ) : ?>
 			<h1><?php echo esc_html( $label ); ?></h1>
 		<?php endif; ?>
-		<?php do_action( "jetpack-start_step-{$slug}" ); ?>
 	</div>
 </section>
+</script>
+
+<?php foreach ( $steps as $step ) : extract($step); ?>
+	<?php do_action( "jetpack-start_step-{$slug}" ); ?>
 <?php endforeach; ?>
 
 </body>

@@ -1,115 +1,90 @@
-(function( $ ) {
-	var siteTypes = new Backbone.Collection( _JetpackStart['site_types'] ),
-		jetpackStartRouter = Backbone.Router.extend( {
-			routes: {
-				"setup/step/:step": "render"
-			}
-		}),
-		current_step,
-		router;
+var JetpackStartWizard = Backbone.View.extend({
+	id: 'wizard',
+	_currentStep: false,
 
-	$( document ).ready( function() {
-		router = new jetpackStartRouter;
-		router.on( 'route:render', render );
+	initialize: function() {
+		this.steps = new Backbone.Collection( [], { model: JetpackStartStep } );
+		this.steps.comparator = 'sort';
+	},
 
-		Backbone.history.start();
+	currentStep: function() {
+		if ( this._currentStep === false )
+			this._currentStep = this.steps.first();
+		return this._currentStep;
+	},
 
-		// BEGIN site type selection step
+	goToNextStep: function( event ) {
+		event.preventDefault();
+		if ( this.currentStep() == this.steps.last() ) {
+			window.location = _JetpackStart['home_url'] + '?jps_wizard_end';
+			return;
+		}
+		this.currentStep().getView().remove();
+		this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
+		this.render();
+		return this;
+	},
 
-		var stepSiteType = $( 'section.step[data-step=site_type]' );
-		stepSiteType.on( 'click', '.site-type', function( e ) {
-			e.preventDefault();
-			selectSiteType( $( this ).data( 'site-type' ) );
-			goToNextStep();
-		});
-		//END site type selection step
+	getStep: function( step_slug ) {
+		return this.steps.findWhere( { slug: step_slug } );
+	},
 
-		// BEGIN theme selection step
+	render: function() {
+		jQuery( 'body' ).append( this.currentStep().getView().render().el );
+		this.renderProgress();
+		return this;
+	},
 
-		siteTypes.each( function( siteType ) {
-			$.each( siteType.get( 'themes' ), function( i, theme ) {
-				// Preload Theme images
-				$( '<img />' ).attr( 'src', theme['img_preview'] );
-			});
-		});
-
-		var stepSetTheme = $( 'section.step[data-step=select_theme]' );
-
-		stepSetTheme.on( 'click', '.theme', function( e ) {
-			e.preventDefault();
-			setTheme( $( this ).data( 'theme' ) );
-			goToNextStep();
-		});
-		// Don't navigate on theme previews
-		stepSetTheme.on( 'click', '.theme a', function( e ) {
-			e.stopPropagation();
-		});
-		//END theme selection step
-
-		// BEGIN connect social step
-		var stepConnectSocial = $( 'section.step[data-step=connect_social]' );
-		stepConnectSocial.on( 'click', '.social-link', function() {
-			$( this ).find( '.title' ).html(  _JetpackStart['connecting_message'] );
-		});
-		stepConnectSocial.on( 'click', 'a.next', function( e ) {
-			e.preventDefault();
-			goToNextStep();
-		});
-		//END connect social step
-
-	});
-
-	function selectSiteType( siteTypeName ) {
-		var siteType = siteTypes.findWhere( { name: siteTypeName } )
-		var template = $( '#themes_template' ).html();
-		var step = $( 'section.step[data-step=select_theme]' );
-		step.data( 'site_type', siteType.get( 'name' ) );
-		step.find( '.themes-box' ).html( _.template( template, { themes: siteType.get( 'themes' ), site_type: siteType.get( 'name' ) } ) );
-		var data = {
-			action: 'jetpackstart_set_site_type',
-			site_type: siteType.get( 'name' )
-		};
-		$.post( _JetpackStart['ajaxurl'], data );
-		return siteType;
-	}
-
-	function setTheme( theme ) {
-		var data = {
-			action: 'jetpackstart_set_theme',
-			stylesheet: theme
-		};
-		$.post( _JetpackStart['ajaxurl'], data );
-	}
-
-	function render( step_slug ) {
-		showStep( step_slug );
-		setProgress( step_slug );
-	}
-
-	function showStep( step_slug ) {
-		$( 'section.step' ).hide();
-		$( 'section.step[data-step=' + step_slug + ']' ).show();
-	}
-
-	function setProgress( step_slug ) {
-		var step_num = 0;
-		$( 'header .progress li' ).each( function() {
-			var li = $( this ).addClass( 'done' );
-			if ( li.data( 'step' ) == step_slug ) {
-				current_step = _JetpackStart['steps'][step_num];
+	renderProgress : function() {
+		var slug = this._currentStep.get( 'slug' );
+		jQuery( 'header .progress li' ).each( function () {
+			var li = jQuery( this ).addClass( 'done' );
+			if ( li.data( 'step' ) == slug ) {
 				return false;
 			}
-			step_num++;
-		});
+		} )
+	},
+
+	addStep: function( step ) {
+		this.steps.add( step );
+	}
+});
+
+var jetpackStartWizard = new JetpackStartWizard();
+
+jQuery( document ).ready( function() {
+	jetpackStartWizard.render();
+	Backbone.history.start();
+});
+
+var JetpackStartStepView = Backbone.View.extend({
+	initialize: function() {
+		this.templateBase = _.template( jQuery( '#step-template' ).html() );
+		this.template = _.template( jQuery( this.template_id ).html() );
+	},
+
+	render: function() {
+		this.$el.html( this.templateBase( this.model.toJSON() ) );
+		this.$el.find( '.container').append( this.template( this.model.toJSON() ) );
+		return this;
+	},
+
+	goToNextStep: function( event ) {
+		jetpackStartWizard.goToNextStep( event );
 	}
 
-	function goToNextStep() {
-		var next_step_num  = _JetpackStart['steps'].indexOf( current_step ) + 1;
-		if ( next_step_num >= _JetpackStart['steps'].length ) {
-			window.location = _JetpackStart['home_url'] + '?jps_wizard_end';
+});
+
+var JetpackStartStep = Backbone.Model.extend({
+	defaults: {
+		slug: '',
+		sort: ''
+	},
+	getView: function() {
+		if ( undefined === this.view ) {
+			var View = this.get( 'view' );
+			this.view = new View( { model: this } );
 		}
-		current_step = _JetpackStart['steps'][ next_step_num ];
-		router.navigate( 'setup/step/'+ current_step['slug'], true );
+		return this.view;
 	}
-
-}) ( jQuery );
+});
