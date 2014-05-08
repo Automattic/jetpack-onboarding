@@ -1,5 +1,32 @@
-@media (max-width: 783px) {
+@media (max-width: 1156px) {
+	.nux-options .option {
+		font-size: 16px;
+		padding: 4% 1%;
+		
+		span.big-icon {
+			font-size: 43px;
+		}
+	}
+}
+@media (max-width: 796px) {
 	.jps-admin-menu {
 		display: none;
+	}
+	.nux-options { 
+		h1 {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+		.option {
+			display: block;
+			float: none;
+			font-size: 23px;
+			padding: 6% 1%;
+			width: 94%;
+			
+			span.big-icon {
+				font-size: 53px;
+			}
+		}
 	}
 }

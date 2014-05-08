@@ -1,118 +1,132 @@
-/* line 9, scss/_menu.scss */
-.hide-admin-menu .jps-admin-menu {
-  right: -170px;
-}
-
-/* line 12, scss/_menu.scss */
-.jps-admin-menu {
-  background: #222;
-  bottom: 0;
+/* line 21, scss/_menu.scss */
+.nux-options {
+  background: #eee;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  left: 10%;
+  overflow: hidden;
+  padding: 2%;
   position: fixed;
-  right: 0;
-  top: 30px;
-  width: 160px;
-  z-index: 99998;
-  -webkit-transition: right 0.2s ease-in-out;
-  -moz-transition: right 0.2s ease-in-out;
-  -ms-transition: right 0.2s ease-in-out;
-  -o-transition: right 0.2s ease-in-out;
-  transition: right 0.2s ease-in-out;
-}
-/* line 23, scss/_menu.scss */
-.jps-admin-menu a,
-.jps-admin-menu a:visited {
-  color: #fff;
-  text-decoration: none;
-}
-/* line 27, scss/_menu.scss */
-.jps-admin-menu a:hover,
-.jps-admin-menu a:visited:hover {
-  color: #2ea2cc;
-  text-decoration: none;
+  right: 10%;
+  top: 10%;
+  z-index: 9994;
 }
 /* line 32, scss/_menu.scss */
-.jps-admin-menu li {
-  color: #fff;
-  font-family: "Open Sans", Helvetica, sans-serif;
-  font-size: 14px;
-  line-height: 39px;
-  list-style: none;
-  -webkit-font-smoothing: subpixel-antialiased;
+.nux-options .option {
+  background: #fff;
+  border: 4px solid #e8e8e8;
+  color: #999;
+  float: left;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-size: 22px;
+  margin: 1.5%;
+  padding: 4% 1%;
+  position: relative;
+  text-align: center;
+  width: 27%;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  z-index: 1;
 }
-/* line 40, scss/_menu.scss */
-.jps-admin-menu ul {
-  margin-left: 13px;
-  padding: 0;
+/* line 49, scss/_menu.scss */
+.nux-options .option:hover, .nux-options .option.active {
+  background: #eef5fb;
+  border: 4px solid #00aadc;
+  color: #333;
 }
-/* line 44, scss/_menu.scss */
-.jps-admin-menu .add-new {
-  background: #111;
-  padding: 8px 13px;
+/* line 55, scss/_menu.scss */
+.nux-options .option span.big-icon {
+  display: block;
+  font-size: 63px;
+  margin-bottom: 13px;
 }
-/* line 48, scss/_menu.scss */
-.jps-admin-menu .right {
-  float: right;
-}
-/* line 51, scss/_menu.scss */
-.jps-admin-menu .right img {
-  float: right;
-}
-
-/* line 56, scss/_menu.scss */
-.jps-admin-menu-intro {
-  background: #e5e5e5;
-  border-left: 1px solid #cccccc;
-  font-size: 11px;
-  line-height: 18px;
-  padding: 13px;
-}
-/* line 63, scss/_menu.scss */
-.jps-admin-menu-intro p {
-  margin: 0 0 8px;
+/* line 62, scss/_menu.scss */
+.nux-options a {
+  text-decoration: none;
 }
 /* line 66, scss/_menu.scss */
-.jps-admin-menu-intro strong {
-  display: block;
-  margin-bottom: 6px;
-}
-/* line 70, scss/_menu.scss */
-.jps-admin-menu-intro .right {
-  float: right;
-  margin-top: -2px;
-}
-/* line 74, scss/_menu.scss */
-.jps-admin-menu-intro .right a {
-  color: #999;
-  font-size: 16px;
+.nux-options h1 {
+  color: #222;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-size: 2em;
+  font-weight: normal;
+  margin: 1%;
+  padding: 0 1%;
 }
 
-/* line 80, scss/_menu.scss */
-#wpadminbar .quicklinks > ul > li > a.jps-burger {
-  float: right;
-  margin: 0;
-  overflow: hidden;
-  padding: 0 10px 0 8px;
-}
-/* line 86, scss/_menu.scss */
-#wpadminbar .quicklinks > ul > li > a.jps-burger:hover {
-  padding: 0 10px 0 8px;
-}
-/* line 88, scss/_menu.scss */
-#wpadminbar .quicklinks > ul > li > a.jps-burger:hover span {
-  color: #ccc;
-}
-/* line 93, scss/_menu.scss */
-#wpadminbar .quicklinks > ul > li > a.jps-burger.active span {
-  color: #fff;
-}
-/* line 97, scss/_menu.scss */
-#wpadminbar .quicklinks > ul > li > a.jps-burger span {
+/* line 76, scss/_menu.scss */
+.close-nux-options {
   color: #999;
+  float: right;
+  text-decoration: none;
+}
+/* line 81, scss/_menu.scss */
+.close-nux-options:hover {
+  opacity: 0.7;
+}
+/* line 84, scss/_menu.scss */
+.close-nux-options span:before {
+  font-size: 18px;
 }
 
-@media (max-width: 783px) {
+/* line 89, scss/_menu.scss */
+.nux-shade {
+  background: #222;
+  bottom: 0;
+  cursor: pointer;
+  display: none;
+  left: 0;
+  opacity: 0.7;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9993;
+  -webkit-transition: all 0.5s ease-in;
+  -moz-transition: all 0.5s ease-in;
+  -ms-transition: all 0.5s ease-in;
+  -o-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
+}
+
+@media (max-width: 1156px) {
   /* line 2, scss/_menu-media-queries.scss */
+  .nux-options .option {
+    font-size: 16px;
+    padding: 4% 1%;
+  }
+  /* line 6, scss/_menu-media-queries.scss */
+  .nux-options .option span.big-icon {
+    font-size: 43px;
+  }
+}
+@media (max-width: 796px) {
+  /* line 12, scss/_menu-media-queries.scss */
   .jps-admin-menu {
     display: none;
+  }
+
+  /* line 16, scss/_menu-media-queries.scss */
+  .nux-options h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  /* line 20, scss/_menu-media-queries.scss */
+  .nux-options .option {
+    display: block;
+    float: none;
+    font-size: 23px;
+    padding: 6% 1%;
+    width: 94%;
+  }
+  /* line 27, scss/_menu-media-queries.scss */
+  .nux-options .option span.big-icon {
+    font-size: 53px;
   }
 }
