@@ -62,21 +62,6 @@
 }
 
 /* line 76, scss/_menu.scss */
-.close-nux-options {
-  color: #999;
-  float: right;
-  text-decoration: none;
-}
-/* line 81, scss/_menu.scss */
-.close-nux-options:hover {
-  opacity: 0.7;
-}
-/* line 84, scss/_menu.scss */
-.close-nux-options span:before {
-  font-size: 18px;
-}
-
-/* line 89, scss/_menu.scss */
 .nux-shade {
   background: #222;
   bottom: 0;

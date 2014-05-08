@@ -73,19 +73,6 @@
 	}
 }
 
-.close-nux-options {
-	color: #999;
-	float: right;
-	text-decoration: none;
-	
-	&:hover {
-		opacity: 0.7;
-	}
-	span:before {
-		font-size: 18px;
-	}
-}
-
 .nux-shade {
 	background: #222;
 	bottom: 0;

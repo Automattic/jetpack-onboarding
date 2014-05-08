@@ -1,6 +1,6 @@
 <?php
 /**
- * Label: What type of site are you building?
+ * Label: Every site needs an audience!
  * Sort Order: 2
  * Plugin Dependencies: jetpack/jetpack.php
  */

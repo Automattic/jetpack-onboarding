@@ -5,7 +5,7 @@
 <p class="step-description"><?php _e( 'Share your favorite posts effortlessly on Facebook and Twitter.', 'jetpack-start' ) ?></p>
 <div class="social-box">
 	<?php $connected = false; ?>
-	<?php foreach( Jetpack_Start_Step_connect_social::get_social_services() as $service ): ?>
+	<?php foreach( Jetpack_Start_Step_Connect_Social::get_social_services() as $service ): ?>
 		<a href="<?php echo esc_url( $service['connect_url'] ); ?>" class="social-link <?php echo $service['short']; ?><?php if ( $service['connected'] ) : ?> connected<?php endif ?>" target="_top" data-social="<?php echo $service['name'] ?>">
 				<span class="wrap">
 					<span class="fa fa-<?php echo $service['name']; ?>"></span>
@@ -15,6 +15,7 @@
 	<?php
 		if ( $service['connected'] ) $connected = true;
 	endforeach; ?>
+	<div class="social-assurance"><em><?php _e( "Don't worry. You can select <strong>on a post-by-post basis</strong> what posts you share on Facebook and Twitter." ); ?></em></div>
 </div>
 
 <?php if ( $connected ) : ?>
