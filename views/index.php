@@ -20,8 +20,8 @@
 	<div class="progress">
 		<span><?php _e( 'WordPress Setup Wizard', 'jetpack-start' ) ?></span>
 		<ul>
-		<?php foreach ( $steps as $step ) : extract($step); ?>
-			<li data-step="<?php echo esc_attr( $slug ); ?>" title="<?php echo esc_attr( $label ); ?>"></li>
+		<?php foreach ( $steps as $step ) : ?>
+			<li data-step="<?php echo esc_attr( $step->slug ); ?>" title="<?php echo esc_attr( $step->label ); ?>"></li>
 		<?php endforeach; ?>
 		</ul>
 	</div>
@@ -30,17 +30,14 @@
 <div id="wizard"></div>
 
 <script id="step-template" type="text/template">
-<section class="step" data-step="<?php echo esc_attr( $slug ); ?>">
+<section class="step">
 	<div class="container">
-		<?php if ( ! empty( $label ) ) : ?>
-			<h1><?php echo esc_html( $label ); ?></h1>
-		<?php endif; ?>
 	</div>
 </section>
 </script>
 
-<?php foreach ( $steps as $step ) : extract($step); ?>
-	<?php do_action( "jetpack-start_step-{$slug}" ); ?>
+<?php foreach ( $steps as $step ) : ?>
+	<?php do_action( "jetpack-start_step-{$step->slug}", $step ); ?>
 <?php endforeach; ?>
 
 </body>

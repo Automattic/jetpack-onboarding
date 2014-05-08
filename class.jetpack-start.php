@@ -44,7 +44,7 @@ class Jetpack_Start {
 				$steps[] = $step;
 			}
 			function stepSort( $a, $b ) {
-				return $a['sort'] == $b['sort'] ? 0 : ( $a['sort'] > $b['sort'] ) ? 1 : -1;
+				return $a->sort == $b->sort ? 0 : ( $a->sort > $b->sort ) ? 1 : -1;
 			}
 			usort( $steps, 'stepSort' );
 		}
@@ -53,9 +53,9 @@ class Jetpack_Start {
 	}
 
 	static function is_compatible_step( $step ) {
-		if ( ! empty( $step['deps'] ) ) {
+		if ( ! empty( $step->deps ) ) {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			foreach ( $step['deps'] as $plugin_name ) {
+			foreach ( $step->deps as $plugin_name ) {
 				if ( ! is_plugin_active( $plugin_name ) )
 					return false;
 			}
@@ -66,10 +66,6 @@ class Jetpack_Start {
 	static function get_first_step() {
 		$steps = self::get_steps();
 		return reset( $steps );
-	}
-
-	static function redirect_to_step( $step_slug ) {
-		wp_safe_redirect( admin_url( "#setup/step/" . $step_slug ) );
 	}
 
 	/**
@@ -132,19 +128,22 @@ class Jetpack_Start {
 			'deps'  => 'Plugin Dependencies'
 		);
 
-		$step = get_file_data( $file, $headers );
+		$step_headers = get_file_data( $file, $headers );
 
-		$step['slug']  = basename( $file, ".php");;
-		$step['label'] = translate( $step['label'], 'jetpack-start' );
-		$step['sort']  = empty( $step['sort'] ) ? 0 : (int) $step['sort'];
+		$step_headers['slug']  = basename( $file, ".php");;
+		$step_headers['label'] = translate( $step_headers['label'], 'jetpack-start' );
+		$step_headers['sort']  = empty( $step_headers['sort'] ) ? 0 : (int) $step_headers['sort'];
 
-		if ( $step['deps'] ) {
-			$step['deps'] = explode( ',', $step['deps'] );
-			$step['deps'] = array_map( 'trim', $step['deps'] );
+		if ( $step_headers['deps'] ) {
+			$step_headers['deps'] = explode( ',', $step_headers['deps'] );
+			$step_headers['deps'] = array_map( 'trim', $step_headers['deps'] );
 		} else {
-			$step['deps'] = array();
+			$step_headers['deps'] = array();
 		}
 
+		$step_class_name = 'Jetpack_Start_Step_' . $step_headers['slug'];
+		$step = new $step_class_name;
+		$step->setHeaders( $step_headers );
 		return $step;
 	}
 }

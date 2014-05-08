@@ -1,4 +1,7 @@
 <script type="text/template" id="select_themes_template" >
+<?php if ( ! empty( $step->label ) ) : ?>
+	<h1><?php echo esc_html( $step->label ); ?></h1>
+<?php endif; ?>
 <p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are over 250 themes to choose from).', 'jetpack-start' ) ?></p>
 <div class="themes-box">
 <% _.each( themes, function( theme ) { %>
@@ -25,14 +28,6 @@
 				$.post( _JetpackStart['ajaxurl'], data );
 			},
 
-
-/*			siteTypes.each( function( siteType ) {
-				$.each( siteType.get( 'themes' ), function( i, theme ) {
-					// Preload Theme images
-					$( '<img />' ).attr( 'src', theme['img_preview'] );
-				});
-			});
-*/
 			events: {
 				"click .theme" : "setTheme",
 				"click .theme" : "goToNextStep",
@@ -41,6 +36,9 @@
 		});
 
 		JetpackStartStepSelectTheme = JetpackStartStep.extend({
+			defaults: {
+				themes: []
+			},
 			setThemes : function( themes ) {
 				this.set( { themes : themes } );
 			}
@@ -48,7 +46,8 @@
 
 		jetpackStartWizard.addStep( new JetpackStartStepSelectTheme( {
 			view : StepView,
-			slug : 'select_theme'
+			slug : '<?php echo $step->slug ?>',
+			sort : '<?php echo $step->sort ?>'
 		} ));
 	}) ( jQuery );
 </script>

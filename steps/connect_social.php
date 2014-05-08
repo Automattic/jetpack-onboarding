@@ -13,22 +13,16 @@ if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 	}
 }
 
-class Jetpack_Start_Step_Connect_Social extends Jetpack_Start_Step {
+class Jetpack_Start_Step_connect_social extends Jetpack_Start_Step {
 
-	static $step_slug = 'connect_social';
-
-	static function init() {
-		add_action( 'jetpack-start_step-connect_social', array( __CLASS__, 'render' ) );
-		add_filter( 'jetpack_start_js_globals', array( __CLASS__, 'jetpack_start_js_globals' ) );
+	function __construct() {
+		add_action( 'jetpack-start_step-connect_social', array( $this, 'render' ) );
+		add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
 	}
 
 	static function jetpack_start_js_globals( $jetpack_start_global_variables ) {
 		$jetpack_start_global_variables['connecting_message'] = esc_js( __( 'Connecting...', 'jetpack-start' ) );
 		return $jetpack_start_global_variables;
-	}
-
-	static function render() {
-		parent::render_step( self::$step_slug );
 	}
 
 	static function get_social_services() {
@@ -70,5 +64,3 @@ class Jetpack_Start_Step_Connect_Social extends Jetpack_Start_Step {
 	}
 
 }
-
-Jetpack_Start_Step_Connect_Social::init();

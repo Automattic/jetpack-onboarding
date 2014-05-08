@@ -4,30 +4,24 @@
  * Sort Order: 0
  */
 
-class Jetpack_Start_Step_Site_Type extends Jetpack_Start_Step {
+class Jetpack_Start_Step_site_type extends Jetpack_Start_Step {
 
-	static $step_slug = 'site_type';
+	var $site_types;
 
-	static $site_types;
-
-	static function init() {
-		add_action( 'jetpack-start_step-site_type', array( __CLASS__, 'render' ) );
-		add_action( 'wp_ajax_jetpackstart_set_site_type', array( __CLASS__, 'set_site_type' ) );
-		add_filter( 'jetpack_start_js_globals', array( __CLASS__, 'jetpack_start_js_globals' ) );
+	function __construct() {
+		add_action( 'jetpack-start_step-site_type', array( $this, 'render' ) );
+		add_action( 'wp_ajax_jetpackstart_set_site_type', array( $this, 'set_site_type' ) );
+		add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
 	}
 
-	static function jetpack_start_js_globals( $jetpack_start_global_variables ) {
-		$jetpack_start_global_variables['site_types'] = self::get_site_types();
+	function jetpack_start_js_globals( $jetpack_start_global_variables ) {
+		$jetpack_start_global_variables['site_types'] = $this->get_site_types();
 		return $jetpack_start_global_variables;
 	}
 
-	static function render() {
-		parent::render_step( self::$step_slug );
-	}
-
-	static function get_site_types() {
-		if ( is_null( self::$site_types ) ) {
-			self::$site_types = apply_filters( 'jetpack_start_site_types', array(
+	function get_site_types() {
+		if ( is_null( $this->site_types ) ) {
+			$this->site_types = apply_filters( 'jetpack_start_site_types', array(
 				array(
 					'name'       => 'business-website',
 					'title'      => __( 'Business Website', 'jetpack-start' ),
@@ -66,20 +60,18 @@ class Jetpack_Start_Step_Site_Type extends Jetpack_Start_Step {
 				),
 			) );
 
-			foreach ( self::$site_types as $key => $sitetype_details ) {
-				self::$site_types[ $key ]['themes'] = Jetpack_Start_Step_Select_Theme::prepare_themes( $sitetype_details['themes'] );
+			foreach ( $this->site_types as $key => $sitetype_details ) {
+				$this->site_types[ $key ]['themes'] = Jetpack_Start_Step_Select_Theme::prepare_themes( $sitetype_details['themes'] );
 			}
 
 		}
-		return self::$site_types;
+		return $this->site_types;
 	}
 
-	static function set_site_type() {
+	function set_site_type() {
 		$site_type = sanitize_text_field( $_POST['site_type'] );
 		do_action( 'jetpack_start_set_site_type', $site_type );
 		wp_send_json_success();
 	}
 
 }
-
-Jetpack_Start_Step_Site_Type::init();

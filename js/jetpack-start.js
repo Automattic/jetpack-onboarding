@@ -1,10 +1,25 @@
-var JetpackStartWizard = Backbone.View.extend({
+
+var jetpackStartWizard = new ( Backbone.View.extend({
 	id: 'wizard',
 	_currentStep: false,
 
 	initialize: function() {
 		this.steps = new Backbone.Collection( [], { model: JetpackStartStep } );
 		this.steps.comparator = 'sort';
+		this.router = new ( Backbone.Router.extend( {
+			routes: {
+				'setup/step/:step_slug' : 'render',
+				'*path':  'goToFirstStep'
+			}
+		}) );
+		this.router.on(
+			'route:render',
+			function( step_slug ) {
+				jetpackStartWizard.setStep( step_slug );
+				jetpackStartWizard.render();
+			}
+		);
+		this.router.on( 'route:goToFirstStep', function() { jetpackStartWizard.goToCurrentStep( true ); } );
 	},
 
 	currentStep: function() {
@@ -19,18 +34,32 @@ var JetpackStartWizard = Backbone.View.extend({
 			window.location = _JetpackStart['home_url'] + '?jps_wizard_end';
 			return;
 		}
-		this.currentStep().getView().remove();
 		this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
-		this.render();
+		this.goToCurrentStep();
 		return this;
+	},
+
+	goToCurrentStep: function() {
+		this.router.navigate( "setup/step/" + this.currentStep().get( 'slug' ), { trigger: true } );
+	},
+
+	setStep: function( step_slug ) {
+		this._currentStep = this.getStep( step_slug );
 	},
 
 	getStep: function( step_slug ) {
 		return this.steps.findWhere( { slug: step_slug } );
 	},
 
+	clear: function() {
+		this.steps.each( function( step ) {
+			step.getView().remove();
+		} );
+	},
+
 	render: function() {
-		jQuery( 'body' ).append( this.currentStep().getView().render().el );
+		this.clear();
+		jQuery( 'body' ).append( this.currentStep().getView().render().delegateEvents().el );
 		this.renderProgress();
 		return this;
 	},
@@ -48,12 +77,10 @@ var JetpackStartWizard = Backbone.View.extend({
 	addStep: function( step ) {
 		this.steps.add( step );
 	}
-});
-
-var jetpackStartWizard = new JetpackStartWizard();
+})
+);
 
 jQuery( document ).ready( function() {
-	jetpackStartWizard.render();
 	Backbone.history.start();
 });
 
@@ -71,6 +98,10 @@ var JetpackStartStepView = Backbone.View.extend({
 
 	goToNextStep: function( event ) {
 		jetpackStartWizard.goToNextStep( event );
+	},
+
+	stopPropagation: function( event ) {
+		event.stopPropagation();
 	}
 
 });

@@ -6,15 +6,9 @@
 
 class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 
-	static $step_slug = 'select_theme';
-
-	static function init() {
-		add_action( 'jetpack-start_step-select_theme', array( __CLASS__, 'render' ) );
-		add_action( 'wp_ajax_jetpackstart_set_theme', array( __CLASS__, 'set_theme' ) );
-	}
-
-	static function render() {
-		parent::render_step( self::$step_slug );
+	function __construct() {
+		add_action( 'jetpack-start_step-select_theme', array( $this, 'render' ) );
+		add_action( 'wp_ajax_jetpackstart_set_theme', array( $this, 'set_theme' ) );
 	}
 
 	static function prepare_themes( $themes ) {
@@ -41,5 +35,3 @@ class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 	}
 
 }
-
-Jetpack_Start_Step_Select_Theme::init();
