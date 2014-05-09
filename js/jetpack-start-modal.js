@@ -1,12 +1,10 @@
 (function( $ ) {
 	$(document).ready(function() {
-
-
-		var modal = $('<div/>' ).html( _JetpackStartModal.html ).contents();
-		if ( $.cookie( 'show_jpstart_modal' ) == "true" ) {
-			modal.hide();
-		} else {
+		var modal = $( '<div/>' ).html( _JetpackStartModal.html ).contents();
+		if ( _JetpackStartModal.status == "true" ) {
 			modal.show();
+		} else {
+			modal.hide();
 		}
 		$( 'body' ).append( modal );
 		// Add toolbar toggle link
@@ -20,15 +18,13 @@
 		$( '.jps-burger, .close-nux-options, .nux-shade' ).on( 'click', function () {
 			$( this ).toggleClass( 'active' );
 			modal.toggle();
-			$.cookie( 'hide_jpstart_modal', modal.is(":visible")  );
 			var data = {
 				action: 'jetpackstart_modal_status',
-				menu_status: modal.is(":visible")
-		};
+				modal_status: modal.is(":visible")
+			};
 
-		$.post( _JetpackStartModal.ajaxurl, data );
-		return false;
-
+			$.post( _JetpackStartModal.ajaxurl, data );
+			return false;
 		});
 	});
 }) ( jQuery );

@@ -9,7 +9,7 @@ class Jetpack_Start_Modal {
 				wp_safe_redirect( remove_query_arg( 'jps_modal_action' ) );
 			}
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				Jetpack_Start_Menu::init_menu_ajax();
+				self::init_modal_ajax();
 			}
 			// check for is_admin_bar_showing so it doesn't get displayed on the cutomizer.
 			global $wp_customize;
@@ -21,7 +21,6 @@ class Jetpack_Start_Modal {
 
 	static function render() {
 		wp_register_script( 'jquery-cookie', '/wp-content/mu-plugins/jetpack-start/js/jquery.cookie.js', array( 'jquery' ) );
-		wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start-modal.js', array( 'jquery', 'jquery-cookie', ) );
 		ob_start();
 		?>
 		<div class="nux-shade"></div>
@@ -34,6 +33,7 @@ class Jetpack_Start_Modal {
 		</div>
 		<?php
 		$jetpackstart_modal['html'] = ob_get_contents();
+		$jetpackstart_modal['status'] = get_option( 'jpstart_modal_status', true );
 		$jetpackstart_modal['ajaxurl'] = admin_url( 'admin-ajax.php' );
 		ob_end_clean();
 		wp_localize_script( 'jetpack-start', '_JetpackStartModal', $jetpackstart_modal );
@@ -49,9 +49,9 @@ class Jetpack_Start_Modal {
 		}
 	}
 
-	static function menu_status() {
+	static function modal_status() {
 		$modal_status = sanitize_text_field( $_POST['modal_status'] );
-		$result = update_user_option( get_current_user_id(), 'jpstart_modal_status', $modal_status );
+		$result = update_option( 'jpstart_modal_status', $modal_status );
 		do_action( 'jetpack_start_modal_status_change', $modal_status );
 		wp_send_json_success( $result );
 	}
