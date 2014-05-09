@@ -26,8 +26,8 @@ add_action( 'init', function() {
 	}
 
 	if ( current_user_can( 'switch_themes' ) ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-menu.php' );
-		Jetpack_Start_Menu::init();
+		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-modal.php' );
+		Jetpack_Start_Modal::init();
 	}
 });
 

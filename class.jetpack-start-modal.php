@@ -1,0 +1,59 @@
+<?php
+
+class Jetpack_Start_Modal {
+
+	static function init() {
+		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+			if ( isset( $_GET['jps_modal_action'] ) ) {
+				do_action( 'jetpack_start_modal_action', sanitize_text_field( $_GET['jps_modal_action'] ) );
+				wp_safe_redirect( remove_query_arg( 'jps_modal_action' ) );
+			}
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				Jetpack_Start_Menu::init_menu_ajax();
+			}
+			// check for is_admin_bar_showing so it doesn't get displayed on the cutomizer.
+			global $wp_customize;
+			if ( ( ! is_admin() && ! is_object( $wp_customize ) ) || isset( $_GET['jps_modal_action'] ) ) {
+				self::render();
+			}
+		}
+	}
+
+	static function render() {
+		wp_register_script( 'jquery-cookie', '/wp-content/mu-plugins/jetpack-start/js/jquery.cookie.js', array( 'jquery' ) );
+		wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start-modal.js', array( 'jquery', 'jquery-cookie', ) );
+		ob_start();
+		?>
+		<div class="nux-shade"></div>
+		<div class="nux-options">
+			<a href="#" class="close-nux-options"><span class="icon fa fa-times"></span></a>
+			<h1><?php _e( 'Congrats on your new site!  What will you do next?', 'jetpack-start' ); ?></h1>
+			<a href="<?php echo admin_url( 'post-new.php?jps_menu_action=post-new' ); ?>" class="option next-step" data-action="post-new"><span class="big-icon fa fa-pencil-square-o"></span><?php _e( 'Write my first post', 'jetpack-start' ); ?></a>
+			<a href="<?php echo admin_url( 'customize.php?jps_menu_action=customize' ); ?>" class="option next-step" data-action="customize"><span class="big-icon fa fa-laptop"></span><?php _e( 'Edit my site design', 'jetpack-start' ); ?></a>
+			<a href="<?php echo admin_url( 'themes.php?jps_menu_action=themes' ); ?>" class="option next-step" data-acton="themes"><span class="big-icon fa fa-refresh"></span><?php _e( 'Choose a new design', 'jetpack-start' ); ?></a>
+		</div>
+		<?php
+		$jetpackstart_modal['html'] = ob_get_contents();
+		$jetpackstart_modal['ajaxurl'] = admin_url( 'admin-ajax.php' );
+		ob_end_clean();
+		wp_localize_script( 'jetpack-start', '_JetpackStartModal', $jetpackstart_modal );
+		wp_register_style( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/css/jetpack-start-menu.css' );
+		wp_register_style( 'jps-font-awesome', '/wp-content/mu-plugins/jetpack-start/css/font-awesome.css' );
+		wp_enqueue_style( 'jetpack-start' );
+		wp_enqueue_style( 'jps-font-awesome' );
+	}
+
+	static function init_modal_ajax() {
+		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+			add_action( 'wp_ajax_jetpackstart_modal_status', array( __CLASS__, 'modal_status' ) );
+		}
+	}
+
+	static function menu_status() {
+		$modal_status = sanitize_text_field( $_POST['modal_status'] );
+		$result = update_user_option( get_current_user_id(), 'jpstart_modal_status', $modal_status );
+		do_action( 'jetpack_start_modal_status_change', $modal_status );
+		wp_send_json_success( $result );
+	}
+
+}
