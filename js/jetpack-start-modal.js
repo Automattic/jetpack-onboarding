@@ -1,15 +1,14 @@
 (function( $ ) {
 	$(document).ready(function() {
-        $( '.nux-shade, .nux-options' ).show();
-        $( '.close-nux-options, .nux-shade' ).on('click', function () {
-        	$( '.nux-shade, .nux-options' ).hide();
-        })
 
-		var body = $( 'body' );
-		if ( $.cookie( 'hide_jpstart_modal' ) == "true" ) {
-			body.addClass( 'hide-admin-modal' );
+
+		var modal = $('<div/>' ).html( _JetpackStartModal.html ).contents();
+		if ( $.cookie( 'show_jpstart_modal' ) == "true" ) {
+			modal.hide();
+		} else {
+			modal.show();
 		}
-		body.append( _JetpackStartModal.html );
+		$( 'body' ).append( modal );
 		// Add toolbar toggle link
 		$( '#wp-admin-bar-top-secondary' ).prepend(
 			'<li id="jps-admin-links-toggle" class="jps-admin-links-toggle">' +
@@ -18,16 +17,18 @@
 			'</a>' +
 			'</li>'
 		);
-		$( '.jps-burger' ).on( 'click', function () {
+		$( '.jps-burger, .close-nux-options, .nux-shade' ).on( 'click', function () {
 			$( this ).toggleClass( 'active' );
-			body.toggleClass( 'hide-admin-modal' );
-			$.cookie( 'hide_jpstart_modal', body.hasClass( 'hide-admin-modal' ) );
+			modal.toggle();
+			$.cookie( 'hide_jpstart_modal', modal.is(":visible")  );
 			var data = {
 				action: 'jetpackstart_modal_status',
-				menu_status: body.hasClass( 'hide-admin-modal' )
-			};
-			$.post( _JetpackStartMenu.ajaxurl, data );
-			return false;
+				menu_status: modal.is(":visible")
+		};
+
+		$.post( _JetpackStartModal.ajaxurl, data );
+		return false;
+
 		});
 	});
 }) ( jQuery );
