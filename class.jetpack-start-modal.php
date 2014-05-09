@@ -20,7 +20,6 @@ class Jetpack_Start_Modal {
 	}
 
 	static function render() {
-		wp_register_script( 'jquery-cookie', '/wp-content/mu-plugins/jetpack-start/js/jquery.cookie.js', array( 'jquery' ) );
 		ob_start();
 		?>
 		<div class="nux-shade"></div>
