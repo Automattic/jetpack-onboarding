@@ -36,6 +36,7 @@ class Jetpack_Start_Modal {
 		$jetpackstart_modal['ajaxurl'] = admin_url( 'admin-ajax.php' );
 		ob_end_clean();
 		wp_localize_script( 'jetpack-start', '_JetpackStartModal', $jetpackstart_modal );
+		wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start-modal.js', array( 'jquery', 'jquery-cookie', ) );
 		wp_register_style( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/css/jetpack-start-menu.css' );
 		wp_register_style( 'jps-font-awesome', '/wp-content/mu-plugins/jetpack-start/css/font-awesome.css' );
 		wp_enqueue_style( 'jetpack-start' );
