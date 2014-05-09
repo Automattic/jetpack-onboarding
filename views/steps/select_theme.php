@@ -37,7 +37,7 @@
 
 		JetpackStartStepSelectTheme = JetpackStartStep.extend({
 			defaults: {
-				themes: []
+				themes:  _JetpackStart['themes']
 			},
 			setThemes : function( themes ) {
 				this.set( { themes : themes } );
