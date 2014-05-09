@@ -20,7 +20,8 @@
 		var StepView = JetpackStartStepView.extend({
 			template_id : '#select_themes_template',
 
-			setTheme : function ( theme ) {
+			setTheme : function ( event ) {
+				var theme = $( event.currentTarget ).attr( 'data-theme' );
 				var data = {
 					action: 'jetpackstart_set_theme',
 					stylesheet: theme
@@ -29,8 +30,10 @@
 			},
 
 			events: {
-				"click .theme" : "setTheme",
-				"click .theme" : "goToNextStep",
+				"click .theme" : function( event ) {
+					this.setTheme( event );
+					this.goToNextStep( event );
+				},
 				"click .theme a" : "stopPropagation"
 			}
 		});
