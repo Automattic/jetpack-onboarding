@@ -185,7 +185,7 @@ section {
 		text-align: center;
 		
 		strong {
-			color: #222;
+			color: #000;
 		}
 	}
 
@@ -201,6 +201,10 @@ section {
 			bottom: 13px;
 			position: absolute;
 			right: 13px;
+			
+			a {
+				@include box-shadow(0 0 4px #999);
+			}
 		}
 	}
 }

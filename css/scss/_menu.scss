@@ -18,6 +18,23 @@
 	background-clip: #{$clip}-box;
 }
 
+.close-nux-options {
+	float: right;
+	
+	span:before {
+		color: #999;
+	}
+}
+
+.jps-burger {
+	&:hover {
+		opacity: 0.6;
+	}
+	span:before {
+		color: #999;
+	}
+}
+
 .nux-options {
 	display: none;
 	background: #eee;
