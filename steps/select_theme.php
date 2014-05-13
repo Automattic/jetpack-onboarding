@@ -1,12 +1,12 @@
 <?php
 /**
- * Label: What type of site are you building?
+ * Label: Choose a design
  * Sort Order: 1
  */
 
 class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 
-	var $default_themes = array( 'twentyfourteen' , 'twentythirteen' , 'twentytwelve' , 'twentyeleven' );
+	var $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	var $themes;
 
 	function __construct() {

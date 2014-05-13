@@ -26,7 +26,7 @@ class Jetpack_Start_Modal {
 		<div class="nux-shade"></div>
 		<div class="nux-options">
 			<a href="#" class="close-nux-options"><span class="icon fa fa-times"></span></a>
-			<h1><?php _e( 'Congrats on your new site!  What will you do next?', 'jetpack-start' ); ?></h1>
+			<h1><?php _e( 'Welcome to your new site!  What will you do next?', 'jetpack-start' ); ?></h1>
 			<a href="<?php echo admin_url( 'post-new.php?jps_menu_action=post-new' ); ?>" class="option next-step" data-action="post-new"><span class="big-icon fa fa-pencil-square-o"></span><?php _e( 'Write my first post', 'jetpack-start' ); ?></a>
 			<a href="<?php echo admin_url( 'customize.php?jps_menu_action=customize' ); ?>" class="option next-step" data-action="customize"><span class="big-icon fa fa-laptop"></span><?php _e( 'Edit my site design', 'jetpack-start' ); ?></a>
 			<a href="<?php echo admin_url( 'themes.php?jps_menu_action=themes' ); ?>" class="option next-step" data-acton="themes"><span class="big-icon fa fa-refresh"></span><?php _e( 'Choose a new design', 'jetpack-start' ); ?></a>

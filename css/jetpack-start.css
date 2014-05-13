@@ -1679,7 +1679,7 @@ section .container .skip a:hover {
 .options-box .social-assurance strong,
 .themes-box .social-assurance strong,
 .social-box .social-assurance strong {
-  color: #222;
+  color: #000;
 }
 /* line 192, scss/_main.scss */
 .options-box .theme,
@@ -1703,61 +1703,69 @@ section .container .skip a:hover {
   position: absolute;
   right: 13px;
 }
+/* line 205, scss/_main.scss */
+.options-box .theme .theme-buttons a,
+.themes-box .theme .theme-buttons a,
+.social-box .theme .theme-buttons a {
+  -webkit-box-shadow: 0 0 4px #999999;
+  -moz-box-shadow: 0 0 4px #999999;
+  box-shadow: 0 0 4px #999999;
+}
 
-/* line 207, scss/_main.scss */
+/* line 211, scss/_main.scss */
 .step2 .theme {
   border: 4px solid #ccc;
 }
-/* line 210, scss/_main.scss */
+/* line 214, scss/_main.scss */
 .step2 .theme .theme-preview {
   font-weight: 500;
   -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.2);
   -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.2);
   box-shadow: 0 1px 2px rgba(50, 50, 50, 0.2);
 }
-/* line 214, scss/_main.scss */
+/* line 218, scss/_main.scss */
 .step2 .theme .theme-preview span:before {
   float: left;
   margin-top: 11px;
 }
 
-/* line 225, scss/_main.scss */
+/* line 229, scss/_main.scss */
 .col-left {
   float: left;
   margin: 0;
   padding: 0;
   width: 35%;
 }
-/* line 231, scss/_main.scss */
+/* line 235, scss/_main.scss */
 .col-left iframe {
   height: 550px;
   width: 100%;
 }
 
-/* line 236, scss/_main.scss */
+/* line 240, scss/_main.scss */
 .col-right {
   float: right;
   margin: 0;
   padding: 0;
   width: 65%;
 }
-/* line 242, scss/_main.scss */
+/* line 246, scss/_main.scss */
 .col-right h2 {
   font-weight: 300;
   margin: 0.61em 0 1em;
 }
-/* line 246, scss/_main.scss */
+/* line 250, scss/_main.scss */
 .col-right .jetpack-reasons {
   padding: 0 0 0 4px;
 }
-/* line 249, scss/_main.scss */
+/* line 253, scss/_main.scss */
 .col-right .jetpack-reasons li {
   list-style: none;
   margin-bottom: 26px;
   padding-left: 50px;
   position: relative;
 }
-/* line 255, scss/_main.scss */
+/* line 259, scss/_main.scss */
 .col-right .jetpack-reasons span.fa {
   color: #555;
   font-size: 36px;
@@ -1765,17 +1773,17 @@ section .container .skip a:hover {
   position: absolute;
   top: 3px;
 }
-/* line 262, scss/_main.scss */
+/* line 266, scss/_main.scss */
 .col-right .jetpack-reasons strong {
   display: block;
 }
 
-/* line 267, scss/_main.scss */
+/* line 271, scss/_main.scss */
 .col-wrap {
   padding: 13px 23px;
 }
 
-/* line 272, scss/_main.scss */
+/* line 276, scss/_main.scss */
 .jetpack-login {
   background: #f6f6f6;
   border: 1px solid #eee;
@@ -1783,54 +1791,54 @@ section .container .skip a:hover {
   padding: 23px 0;
   text-align: center;
 }
-/* line 279, scss/_main.scss */
+/* line 283, scss/_main.scss */
 .jetpack-login a {
   color: #999;
   text-decoration: underline;
 }
-/* line 283, scss/_main.scss */
+/* line 287, scss/_main.scss */
 .jetpack-login a:hover {
   text-decoration: none;
 }
 
-/* line 288, scss/_main.scss */
+/* line 292, scss/_main.scss */
 .jetpack-signup {
   background: #eee;
 }
-/* line 291, scss/_main.scss */
+/* line 295, scss/_main.scss */
 .jetpack-signup input[type="text"] {
   background: #fff;
   border-color: #ddd;
   margin: 6px 0 23px;
 }
-/* line 296, scss/_main.scss */
+/* line 300, scss/_main.scss */
 .jetpack-signup label {
   font-weight: bold;
 }
 
-/* line 301, scss/_main.scss */
+/* line 305, scss/_main.scss */
 .login .signing-up {
   display: none;
 }
-/* line 304, scss/_main.scss */
+/* line 308, scss/_main.scss */
 .login .logging-in {
   display: inline-block;
 }
 
-/* line 309, scss/_main.scss */
+/* line 313, scss/_main.scss */
 .signup .signing-up {
   display: inline-block;
 }
-/* line 312, scss/_main.scss */
+/* line 316, scss/_main.scss */
 .signup .logging-in {
   display: none;
 }
 
-/* line 322, scss/_main.scss */
+/* line 326, scss/_main.scss */
 .step4 .container {
   width: 50%;
 }
-/* line 325, scss/_main.scss */
+/* line 329, scss/_main.scss */
 .step4 .submit {
   float: left;
 }

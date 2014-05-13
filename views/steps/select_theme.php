@@ -2,7 +2,7 @@
 <?php if ( ! empty( $step->label ) ) : ?>
 	<h1><?php echo esc_html( $step->label ); ?></h1>
 <?php endif; ?>
-<p class="step-description"><?php _e( 'To get started, select from one of the four themes below. You can always change it later (there are over 250 themes to choose from).', 'jetpack-start' ) ?></p>
+<p class="step-description"><?php _e( 'To get started, select from one of the themes below. You can always change it later (overall, there are over 250 themes to choose from).', 'jetpack-start' ) ?></p>
 <div class="themes-box">
 <% _.each( themes, function( theme ) { %>
 	<div class="theme" data-theme="<%= theme.stylesheet %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
