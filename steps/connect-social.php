@@ -2,21 +2,20 @@
 /**
  * Label: Every site needs an audience!
  * Sort Order: 2
- * Plugin Dependencies: jetpack/jetpack.php
  */
 
 if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 	add_filter( 'jetpack_start_render_wizard', '__return_false' );
 	if ( isset( $_GET['action'] ) && $_GET['action'] == 'completed' ) {
 		do_action( 'jetpack_start_connect_service', ( isset( $_GET['service'] ) ) ? sanitize_text_field( $_GET['service'] ) : 'service_not_set' );
-		Jetpack_Start::redirect_to_step( 'connect_social' );
+		Jetpack_Start::redirect_to_step( 'connect-social' );
 	}
 }
 
 class Jetpack_Start_Step_connect_social extends Jetpack_Start_Step {
 
 	function __construct() {
-		add_action( 'jetpack-start_step-connect_social', array( $this, 'render' ) );
+		add_action( 'jetpack-start_step-connect-social', array( $this, 'render' ) );
 		add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
 	}
 

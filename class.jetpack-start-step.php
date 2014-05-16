@@ -10,7 +10,7 @@ class Jetpack_Start_Step {
 
 	function render() {
 		$step = $this;
-		$file = plugin_dir_path( __FILE__ ) . '/views/steps/' . $this->slug . '.php';
+		$file = plugin_dir_path( __FILE__ ) . 'views/steps/' . $this->slug . '.php';
 		if( file_exists( $file ) ) {
 			require_once( $file );
 		}

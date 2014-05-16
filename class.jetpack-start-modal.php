@@ -27,13 +27,13 @@ class Jetpack_Start_Modal {
 		<div class="nux-options">
 			<a href="#" class="close-nux-options"><span class="icon fa fa-times"></span></a>
 			<h1><?php _e( 'Welcome to your new site!  What will you do next?', 'jetpack-start' ); ?></h1>
-			<a href="<?php echo admin_url( 'post-new.php?jps_menu_action=post-new' ); ?>" class="option next-step" data-action="post-new"><span class="big-icon fa fa-pencil-square-o"></span><?php _e( 'Write my first post', 'jetpack-start' ); ?></a>
-			<a href="<?php echo admin_url( 'customize.php?jps_menu_action=customize' ); ?>" class="option next-step" data-action="customize"><span class="big-icon fa fa-laptop"></span><?php _e( 'Edit my site design', 'jetpack-start' ); ?></a>
-			<a href="<?php echo admin_url( 'themes.php?jps_menu_action=themes' ); ?>" class="option next-step" data-acton="themes"><span class="big-icon fa fa-refresh"></span><?php _e( 'Choose a new design', 'jetpack-start' ); ?></a>
+			<a href="<?php echo admin_url( 'post-new.php?jps_modal_action=post-new' ); ?>" class="option next-step" data-action="post-new"><span class="big-icon fa fa-pencil-square-o"></span><?php _e( 'Write my first post', 'jetpack-start' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'customize.php?jps_modal_action=customize&return=' . home_url() ) ); ?>" class="option next-step" data-action="customize"><span class="big-icon fa fa-laptop"></span><?php _e( 'Edit my site design', 'jetpack-start' ); ?></a>
+			<a href="<?php echo admin_url( 'themes.php?jps_modal_action=themes' ); ?>" class="option next-step" data-acton="themes"><span class="big-icon fa fa-refresh"></span><?php _e( 'Choose a new design', 'jetpack-start' ); ?></a>
 		</div>
 		<?php
 		$jetpackstart_modal['html'] = ob_get_contents();
-		$jetpackstart_modal['status'] = get_option( 'jpstart_modal_status', true );
+		$jetpackstart_modal['status'] = get_option( 'jpstart_modal_status', "true" );
 		$jetpackstart_modal['ajaxurl'] = admin_url( 'admin-ajax.php' );
 		ob_end_clean();
 		wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start-modal.js', array( 'jquery' ) );

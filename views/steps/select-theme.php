@@ -34,7 +34,7 @@
 					this.setTheme( event );
 					this.goToNextStep( event );
 				},
-				"click .theme a" : "stopPropagation"
+				"click .theme a.theme-preview" : "stopPropagation"
 			}
 		});
 

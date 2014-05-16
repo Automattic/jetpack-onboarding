@@ -4,13 +4,14 @@
  * Sort Order: 1
  */
 
-class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
+class Jetpack_Start_Step_select_theme extends Jetpack_Start_Step {
 
 	var $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
+
 	var $themes;
 
 	function __construct() {
-		add_action( 'jetpack-start_step-select_theme', array( $this, 'render' ) );
+		add_action( 'jetpack-start_step-select-theme', array( $this, 'render' ) );
 		add_action( 'wp_ajax_jetpackstart_set_theme', array( $this, 'set_theme' ) );
 		add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
 	}
@@ -38,7 +39,7 @@ class Jetpack_Start_Step_Select_Theme extends Jetpack_Start_Step {
 
 	static function set_theme() {
 		$stylesheet = sanitize_text_field( $_POST['stylesheet'] );
-		do_action( 'jetpack_start_set_theme', $stylesheet );
+		do_action( 'jetpack_start_select_theme', $stylesheet );
 		switch_theme( $stylesheet );
 		wp_send_json_success();
 	}

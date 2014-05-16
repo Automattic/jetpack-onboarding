@@ -23,7 +23,7 @@ class Jetpack_Start {
 		$jetpack_start_global_variables = apply_filters( 'jetpack_start_js_globals', $jetpack_start_global_variables );
 
 		wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
-
+		wp_dequeue_script( 'devicepx' );
 		self::get_view( 'index.php' );
 		die();
 	}
@@ -66,6 +66,10 @@ class Jetpack_Start {
 	static function get_first_step() {
 		$steps = self::get_steps();
 		return reset( $steps );
+	}
+
+	static function redirect_to_step( $step_slug ) {
+		wp_safe_redirect( admin_url( "#setup/step/" . $step_slug ) );
 	}
 
 	/**
@@ -141,7 +145,7 @@ class Jetpack_Start {
 			$step_headers['deps'] = array();
 		}
 
-		$step_class_name = 'Jetpack_Start_Step_' . $step_headers['slug'];
+		$step_class_name = 'Jetpack_Start_Step_' . str_replace( '-', '_', $step_headers['slug'] );
 		$step = new $step_class_name;
 		$step->setHeaders( $step_headers );
 		return $step;
