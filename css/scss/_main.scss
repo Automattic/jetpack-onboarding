@@ -67,26 +67,28 @@ section {
 		width: 90%;
 
 		h1 {
-			font-weight: 300;
-		}
-		p.step-description {
-			color: #666;
-			margin: -13px 0 33px;
-			padding: 0;
-		}
-		.skip {
-			color: #999;
-
-			a {
-				color: #999;
-				text-decoration: underline;
-
-				&:hover {
-					text-decoration: none;
-				}
-			}
+			font: 300 2.57143em/1.4 'Open Sans', Helvetica, sans-serif; // 36px
 		}
 	}
+}
+.skip {
+	color: #999;
+
+	a {
+		color: #999;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+.step-description {
+	color: #666;
+	margin: -13px 0 33px;
+	padding: 0;
+	font-size: 18px;
+	line-height: 1.6;
 }
 
 .med-icon {
@@ -183,7 +185,7 @@ section {
 		color: #666;
 		padding: 4px;
 		text-align: center;
-		
+
 		strong {
 			color: #000;
 		}
@@ -201,76 +203,76 @@ section {
 			bottom: 13px;
 			position: absolute;
 			right: 13px;
-			
+
 			a {
 				@include box-shadow(0 0 4px #999);
 			}
 		}
 	}
 }
-.step2 .theme {
-	border: 4px solid #ccc;
-	
-	.theme-preview {
-		font-weight: 500;
-		@include box-shadow(0 1px 2px rgba(50,50,50,0.2));
-		
-		span:before {
-			float: left;
-			margin-top: 11px;
-		}
-	}
-}
+// .step2 .theme {
+// 	border: 4px solid #ccc;
+//
+// 	.theme-preview {
+// 		font-weight: 500;
+// 		@include box-shadow(0 1px 2px rgba(50,50,50,0.2));
+//
+// 		span:before {
+// 			float: left;
+// 			margin-top: 11px;
+// 		}
+// 	}
+// }
 
 // ==========================================================================
 // Step 3
 // ==========================================================================
 
-.col-left {
-	float: left;
-	margin: 0;
-	padding: 0;
-	width: 35%;
-
-	iframe {
-		height: 550px;
-		width: 100%;
-	}
-}
-.col-right {
-	float: right;
-	margin: 0;
-	padding: 0;
-	width: 65%;
-
-	h2 {
-		font-weight: 300;
-		margin: 0.61em 0 1em;
-	}
-	.jetpack-reasons {
-		padding: 0 0 0 4px;
-
-		li {
-			list-style: none;
-			margin-bottom: 26px;
-			padding-left: 50px;
-			position: relative;
-		}
-		span.fa {
-			color: #555;
-			font-size: 36px;
-			left: 0;
-			position: absolute;
-			top: 3px;
-		}
-		strong {
-			display: block;
-		}
-	}
-}
-.col-wrap {
-	padding: 13px 23px;
-}
+// .col-left {
+// 	float: left;
+// 	margin: 0;
+// 	padding: 0;
+// 	width: 35%;
+//
+// 	iframe {
+// 		height: 550px;
+// 		width: 100%;
+// 	}
+// }
+// .col-right {
+// 	float: right;
+// 	margin: 0;
+// 	padding: 0;
+// 	width: 65%;
+//
+// 	h2 {
+// 		font-weight: 300;
+// 		margin: 0.61em 0 1em;
+// 	}
+// 	.jetpack-reasons {
+// 		padding: 0 0 0 4px;
+//
+// 		li {
+// 			list-style: none;
+// 			margin-bottom: 26px;
+// 			padding-left: 50px;
+// 			position: relative;
+// 		}
+// 		span.fa {
+// 			color: #555;
+// 			font-size: 36px;
+// 			left: 0;
+// 			position: absolute;
+// 			top: 3px;
+// 		}
+// 		strong {
+// 			display: block;
+// 		}
+// 	}
+// }
+// .col-wrap {
+// 	padding: 13px 23px;
+// }
 
 // WP.com iframe styles
 .jetpack-login {
@@ -321,12 +323,103 @@ section {
 // ==========================================================================
 // Step 4
 // ==========================================================================
+//
+// .step4 {
+// 	.container {
+// 		width: 50%;
+// 	}
+// 	.submit {
+// 		float: left;
+// 	}
+// }
 
-.step4 {
-	.container {
-		width: 50%;
+
+// ==========================================================================
+// Connect Jeptpack
+// ==========================================================================
+
+.jetpack-hero {
+	position: relative;
+	overflow: hidden; // lazy clearfix
+	margin: 0 auto;
+	max-width: 650px;
+	background: $jetpack-green;
+	background-image: linear-gradient(top, rgb(129, 168, 68), rgb(142, 183, 78));
+	box-shadow: 0 1px 3px rgba(0,0,0,.2);
+	text-align: center;
+
+	.button--primary {
+		margin-bottom: 8px;
+		font-size: 16px;
 	}
-	.submit {
-		float: left;
+}
+.jetpack-hero__title {
+	position: relative;
+	margin-top: 50px;
+	color: #fff;
+	text-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 1px;
+	// text-align: center;
+	z-index: 2;
+}
+.jetpack-hero__info {
+	position: relative;
+	margin-top: 110px;
+	padding: 60px 30px 30px;
+	background: $jetpack-cloud;
+	z-index: 4;
+
+	// p {
+	// 	max-width: 400px;
+	// 	margin: 0 auto;
+	// }
+	&:before {
+		content: "";
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		width: 100%;
+		height: 93px;
+		margin-bottom: -1px;
+		background: url(../img/the-cloud.svg) center bottom repeat-x;
+		z-index: 4;
+		// background-size: 50%;
+	}
+}
+.flyby {
+	// position: relative;
+	// z-index: 0;
+	@media (max-width: 768px) {
+		display: none;
+	}
+}
+@keyframes "flyer" {
+	 0% {
+		transform: translate3d(0px, 0px, 0px);
+	}
+	100% {
+		transform: translate3d(570px, -570px, 0px);
+	}
+}
+.flyer {
+	position: absolute;
+	top: 220px;
+	left: 10%;
+	z-index: 3;
+	animation: flyer 3.4s 2s ease-in-out;
+
+	&:nth-child(2) {
+		left: 24%;
+		width: 120px;
+		height: 131px;
+		animation-delay: 4.6s;
+		animation-duration: 2.4s;
+	}
+	&:nth-child(3) {
+		left: 18%;
+		width: 60px;
+		height: 66px;
+		animation-delay: 5.8s;
+		animation-duration: 4.5s;
+		z-index: 0;
 	}
 }
