@@ -25,7 +25,7 @@ $dark-gray:						#324155;
 // Secondary Grays
 $white:							#fff;
 $groups-bg:						lighten($light-blue, 30%);
-$text-gray:						tint($dark-gray, 50%);
+// $text-gray:						tint($dark-gray, 50%);
 
 // Oranges
 $fire-orange:					#f0821e;
@@ -37,7 +37,11 @@ $alert-red:						#dd3d36;
 $alert-green:					#4cb420;
 
 // Link hovers
-$link-highlight:				tint($medium-blue, 20%);
+$link-highlight:				#33bbe3;
+
+// Jetpack colors
+$jetpack-green: #81a844;
+$jetpack-cloud: #f9f9f9;
 
 // ==========================================================================
 // Typography

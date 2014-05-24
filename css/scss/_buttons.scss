@@ -1,88 +1,128 @@
-$button-border-top:	shade($ultra-light-gray, 8%);
-$button-border-side: shade($ultra-light-gray, 12%);
-$button-border-bottom: shade($ultra-light-gray, 14%);
+// ==========================================================================
+// Button variables
+// ==========================================================================
 
-.button,
-button,
-input[type="submit"] {
-	background: $ultra-light-gray;
-	border-radius: 2px;
-	color: tint($dark-gray, 30%);
-	cursor: pointer;
+$buttons:(
+	primary__background: $medium-blue,
+	primary__background--hover: $link-highlight,
+	primary__color: $white,
+
+	secondary__background: darken($ultra-light-gray, 5%),
+	secondary__color: #6f7a88,
+	secondary__color--hover: $dark-gray,
+);
+
+// ==========================================================================
+// Button extends
+// ==========================================================================
+
+%button {
 	display: inline-block;
-	font-size: 13px;
-	margin: 0;
-	outline: 0;
 	overflow: hidden;
+	border-radius: 3px;
+	font-size: 13px;
+	line-height: 2;
+	margin: 0;
 	padding: .4em .9em;
 	text-overflow: ellipsis;
 	text-decoration: none;
-	vertical-align: top;
 	white-space: nowrap;
-
-	&:hover,
-	&:focus {
-		color: $dark-gray
-	}
+	outline: 0;
+	vertical-align: top;
+	cursor: pointer;
+	-webkit-appearance: none;
 
 	&.hidden {
 		display: none
 	}
-
-	&.button-white {
-		background: $white;
-	}
-
 	&[disabled],
 	&:disabled {
-		color: #aaa !important;
-		border-color: #ddd !important;
-		text-shadow: 0 1px 0 #fff !important;
 		cursor: default;
 	}
 }
 
-/* Primary buttons */
-.button.button-primary,
-input[type="submit"].button.button-primary {
-	background: $medium-blue;
-	color: $white;
+%button--primary {
+	@extend %button;
+	background: map-get($buttons, primary__background);
+	color: map-get($buttons, primary__color);
 
+	&:active,
 	&:hover,
 	&:focus {
-		background: $link-highlight;
+		color: map-get($buttons, primary__color);
+		background: map-get($buttons, primary__background--hover);
 	}
-
-	&[disabled] {
-		background: #298cba !important;
-		border-color: #1b607f !important;
-		color: #94cde7 !important;
-		cursor: default;
-		text-shadow: 0 -1px 0 rgba(0, 0, 0, .1) !important;
+	&:visited {
+		color: map-get($buttons, primary__color);
+	}
+	&[disabled],
+	&:disabled {
+		background: #298cba;
+		border-color: #1b607f;
+		color: #94cde7;
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, .1);
 	}
 }
 
-/* Custom-sized buttons */
-.button.button-large,
-.button-group.button-large .button,
-input[type="submit"].button.button-large {
+%button--secondary {
+	@extend %button;
+	background: map-get($buttons, secondary__background);
+	color: map-get($buttons, secondary__color);
+
+	&:active,
+	&:hover,
+	&:focus {
+		color: map-get($buttons, secondary__color--hover);
+	}
+	&:visited {
+		color: map-get($buttons, secondary__color);
+	}
+	&[disabled],
+	&:disabled {
+		color: #aaa;
+		border-color: #ddd;
+		text-shadow: 0 1px 0 #fff;
+	}
+}
+
+// ==========================================================================
+// Buttons :)
+// ==========================================================================
+
+.button,
+.button--secondary,
+button,
+input[type="submit"] {
+	@extend %button--secondary;
+}
+
+// Primary buttons
+.button--primary {
+	@extend %button--primary;
+}
+
+.button--jetpack {
+	@extend %button;
+	color: #fff;
+	background: #518d2a;
+	box-shadow: 0 6px 0 #3e6c20, 0 6px 3px rgba(0, 0, 0, 0.4);
+}
+
+// Custom-sized buttons
+.button-large {
 	height: 36px;
 	line-height: 36px;
 	padding: 0 16px 2px
 }
 
-.button.button-small,
-.button-group.button-small .button,
-input[type="submit"].button.button-small {
+.button-small {
 	height: 24px;
 	line-height: 22px;
 	padding: 0 8px 1px;
 	font-size: 11px
 }
 
-.button.button-hero,
-.button-group.button-hero .button,
-input[type="submit"].button.button-hero {
+.button-hero {
 	font-size: 15px;
 	font-weight: 600;
 	height: 46px;
@@ -90,7 +130,7 @@ input[type="submit"].button.button-hero {
 	padding: 0 23px
 }
 
-/* Turn Reset 'buttons' into regular text links */
+// Turn Reset 'buttons' into regular text links
 input {
 	&[type=reset],
 	&[type=reset]:hover,
@@ -103,12 +143,12 @@ input {
 	}
 }
 
-/* Buttons within sentences sit on the text baseline. */
+// Buttons within sentences sit on the text baseline.
 p .button {
 	vertical-align: baseline
 }
 
-/* Firefox Junk */
+// Firefox Junk
 button::-moz-focus-inner,
 input[type=reset]::-moz-focus-inner,
 input[type=button]::-moz-focus-inner,
