@@ -29,7 +29,7 @@ class Jetpack_Start_Step_connect_social extends Jetpack_Start_Step {
 
 		if ( ! is_object( $publicize ) ) {
 			echo '<p>' . esc_html__( 'Error: No publicize detected.', 'jetpack-start' ) . '</p>';
-			return;
+			return array();
 		}
 
 		$services = array(
