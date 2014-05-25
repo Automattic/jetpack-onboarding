@@ -23,7 +23,7 @@
 			<?php $connected = false; ?>
 				<a class="button--primary" href="<?php echo $step->get_jetpack()->build_connect_url() ?>" class="jetpack-link" target="_top"><?php echo  __( 'Connect to WordPress.com', 'jetpack-start' );  ?></a>
 				<div class="skip">
-					<?php printf( __( ' or, <a href="%s">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
+					<?php printf( __( ' or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
 				</div>
 		</div>
 	</div>
@@ -38,6 +38,7 @@
 			events: {
 				"click a.next": "goToNextStep"
 			}
+
 		});
 
 		jetpackStartWizard.addStep( new JetpackStartStep( { view: StepView, slug: '<?php echo $step->slug; ?>', sort: '<?php echo $step->sort; ?>' } ) );
