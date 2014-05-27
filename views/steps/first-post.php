@@ -6,13 +6,21 @@
 global $current_user;
 get_currentuserinfo();
 ?>
-<p class="step-description"><?php echo esc_html( sprintf( __( 'Let\'s create the first post on your blog. We sent a confirmation email to %s – please confirm your email address to enable posting.', 'jetpack-start' ), $current_user->user_email ) ); ?></p>
+
+<p class="step-description">
+	<?php echo esc_html( sprintf( __( 'We sent a confirmation email to', 'jetpack-start' )) ); ?>
+	<strong>
+	<?php echo esc_html( sprintf( __( '%s', 'jetpack-start' ), $current_user->user_email ) ); ?>
+	</strong>
+	<?php echo esc_html( sprintf( __( ' - please confirm your email address to enable posting.', 'jetpack-start' )) ); ?>
+</p>
+
 <div class="post-box">
 	<?php
 	$post = get_default_post_to_edit( 'post', true );
 	$post->post_title = __( 'Introducing my new website' );
 
-	$post_content[] = __( 'Feel free to edit this template or start from scratch.' );
+	$post_content[] = __( '(SAMPLE BLOG POST - Feel free to edit this template text or start from scratch.)' );
 	$post_content[] = __( 'Thanks for stopping by and welcome to my new blog! This is just an introductory post so I’ll keep it short and sweet.' );
 	$post_content[] = __( 'I decided to start a blog because I [what inspired you start a blog?]' );
 	$post_content[] = __( 'Over the next few months I plan to be writing and sharing posts about [what topics will you be writing about?]' );
@@ -78,7 +86,7 @@ get_currentuserinfo();
 	</form>
 	</div>
 
-	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit next"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'All done, visit your site', 'jetpack-start' ) ?></a>
+	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit next"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your site', 'jetpack-start' ) ?></a>
 	<div class="skip"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
 </script>
 <?php
