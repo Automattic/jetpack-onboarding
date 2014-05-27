@@ -2,7 +2,11 @@
 <?php if ( ! empty( $step->label ) ) : ?>
 	<h1><?php echo esc_html( $step->label ); ?></h1>
 <?php endif; ?>
-<p class="step-description"><?php _e( 'Let\'s create the first post on your blog. We sent a confirmation email to email@address.com – please confirm your email address to enable posting.', 'jetpack-start' ) ?></p>
+<?php
+global $current_user;
+get_currentuserinfo();
+?>
+<p class="step-description"><?php echo esc_html( sprintf( __( 'Let\'s create the first post on your blog. We sent a confirmation email to %s – please confirm your email address to enable posting.', 'jetpack-start' ), $current_user->user_email ) ); ?></p>
 <div class="post-box">
 	<?php
 	$post = get_default_post_to_edit( 'post', true );
