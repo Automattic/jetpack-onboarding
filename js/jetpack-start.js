@@ -59,7 +59,9 @@ var jetpackStartWizard = new ( Backbone.View.extend({
 
 	render: function() {
 		this.clear();
-		jQuery( 'body' ).append( this.currentStep().getView().render().delegateEvents().el );
+		var currentStepView = this.currentStep().getView();
+		jQuery( 'body' ).append( currentStepView.render().delegateEvents().el );
+		currentStepView.afterRender();
 		this.renderProgress();
 		return this;
 	},
@@ -95,6 +97,8 @@ var JetpackStartStepView = Backbone.View.extend({
 		this.$el.find( '.container').append( this.template( this.model.toJSON() ) );
 		return this;
 	},
+
+	afterRender: function() {},
 
 	goToNextStep: function( event ) {
 		jetpackStartWizard.goToNextStep( event );
