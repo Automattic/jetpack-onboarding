@@ -109,6 +109,7 @@ get_currentuserinfo();
 			afterRender : function() {
 				switchEditors.go( $( '#content-tmce' ).el );
 				$( '#wp-content-media-buttons' ).remove();
+				$( '#title' ).focus();
 			},
 
 			events: {
