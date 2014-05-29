@@ -31,7 +31,7 @@ var jetpackStartWizard = new ( Backbone.View.extend({
 	goToNextStep: function( event ) {
 		event.preventDefault();
 		if ( this.currentStep() == this.steps.last() ) {
-			window.location = _JetpackStart['home_url'] + '?jps_wizard_end';
+			window.location = _JetpackStart['end_url'];
 			return;
 		}
 		this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
