@@ -113,7 +113,8 @@ get_currentuserinfo();
 			},
 
 			events: {
-				"click a.next": "submitPost"
+				"click a.submit": "submitPost",
+				"click a.next": "goToNextStep"
 			},
 
 			submitPost: function( event ) {
