@@ -81,7 +81,7 @@ get_currentuserinfo();
 	</form>
 	</div>
 
-	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit next"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
+	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
 	<div class="skip skip-post"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
 
 	<p>
