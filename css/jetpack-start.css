@@ -1576,7 +1576,7 @@ section .container h1 {
   display: none;
 }
 
-#title-prompt-text, #mce_48-body, .wp-editor-tabs {
+#title-prompt-text, #mce_48-body, .wp-editor-tabs, #mceu_34 {
   display: none;
 }
 
@@ -1594,7 +1594,7 @@ section .container h1 {
   width: 700px;
 }
 
-#mce_41-body {
+#mce_41-body, #postdivrich {
   border: 1px solid #ddd;
   border-radius: 3px;
   width: 700px;
@@ -1602,6 +1602,12 @@ section .container h1 {
 
 #mce_41 {
   background: #f9f9f9;
+}
+
+.skip-post {
+  display: inline-block;
+  margin-top: 13px;
+  margin-left: 10px;
 }
 
 .jetpack-hero {

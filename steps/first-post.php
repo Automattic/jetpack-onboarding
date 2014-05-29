@@ -1,6 +1,6 @@
 <?php
 /**
- * Label: Create your first post
+ * Label: Finally, say Hello!
  * Sort Order: 4
  */
 
