@@ -120,6 +120,8 @@ get_currentuserinfo();
 			submitPost: function( event ) {
 				event.preventDefault();
 
+				this.$el.find( '.submit' ).html(  _JetpackStart['saving_message'] );
+
 				$.post(
 					$( '#post' ).attr( 'action' ),
 					$( '#post' ).serialize() + "&publish=<?php esc_attr_e( 'Publish' ) ?>",
