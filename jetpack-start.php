@@ -9,7 +9,7 @@
 define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
 
-add_action( 'init', function() {
+function jps_start() {
 	if (current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 		if ( isset( $_GET['jps_wizard_end'] ) ) {
 			add_option( 'jpstart_wizard_has_run', true );
@@ -31,5 +31,6 @@ add_action( 'init', function() {
 			Jetpack_Start_Modal::init();
 		}
 	}
-});
+}
+add_action( 'init',  'jps_start' );
 
