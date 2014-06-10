@@ -10,7 +10,7 @@ define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
 
 add_action( 'init', function() {
-	if (current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+	if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) && 1 !== get_current_blog_id() ) {
 		if ( isset( $_GET['jps_wizard_end'] ) ) {
 			add_option( 'jpstart_wizard_has_run', true );
 			wp_safe_redirect( remove_query_arg( 'jps_wizard_end' ) );
@@ -18,6 +18,10 @@ add_action( 'init', function() {
 		}
 
 		if ( ! get_option( 'jpstart_wizard_has_run' ) || isset( $_GET['jps_wizard_start'] ) ) {
+
+			// Hack to get sure  the welcome panel gets shown.
+			update_user_meta( get_current_user_id(), 'show_welcome_panel', true );
+
 			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 			if ( isset( $_GET['jps_wizard_start'] ) ) {
 				delete_option( 'jpstart_wizard_has_run' );
@@ -26,10 +30,7 @@ add_action( 'init', function() {
 			Jetpack_Start::init();
 		}
 
-		if ( current_user_can( 'switch_themes' ) ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-modal.php' );
-			Jetpack_Start_Modal::init();
-		}
+		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-welcome-panel.php' );
+		Jetpack_Start_Welcome_Panel::init();
 	}
 });
-
