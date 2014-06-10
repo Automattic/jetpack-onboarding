@@ -9,8 +9,8 @@
 define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
 
-add_action( 'init', function() {
-	if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) && 1 !== get_current_blog_id() ) {
+function jps_start() {
+	if (current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
 		if ( isset( $_GET['jps_wizard_end'] ) ) {
 			add_option( 'jpstart_wizard_has_run', true );
 			wp_safe_redirect( remove_query_arg( 'jps_wizard_end' ) );
@@ -33,4 +33,6 @@ add_action( 'init', function() {
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-welcome-panel.php' );
 		Jetpack_Start_Welcome_Panel::init();
 	}
-});
+}
+add_action( 'init',  'jps_start' );
+
