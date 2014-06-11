@@ -1,0 +1,80 @@
+// ==========================================================================
+// Connect Social
+// ==========================================================================
+
+.connect-social {
+	position: relative;
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 30px;
+	background: #eee;
+
+	&:before {
+		$arrow-width: 20px;
+
+		@include arrow--up($arrow-width, #eee);
+		left: 50%;
+		margin-left: -1 * $arrow-width;
+	}
+
+	+ .skip {
+		margin: 15px auto 60px;
+	}
+}
+
+.connections {
+	overflow: hidden;
+}
+
+.connect-social__link {
+	float: left;
+	display: block;
+	margin: 0 2%;
+	padding: 13px 18px;
+	width: 46%;
+	border-radius: 3px;
+	color: #fff;
+	font-size: 18px;
+	text-align: center;
+	background: $wordpress-blue;
+
+	&:hover,
+	&:active,
+	&:visited {
+		color: #fff;
+	}
+	&.fb {
+		background: #485ea0;
+	}
+	&.tw {
+		background: #51a4e4;
+	}
+	&.connected {
+		background: #73c650;
+	}
+	.fa {
+		float: left;
+		position: relative;
+		top: 1px;
+		font-size: 23px;
+	}
+	@include breakpoint(tablet) {
+		float: none;
+		margin: 0 0 10px;
+		width: auto;
+	}
+}
+
+.social-assurance {
+	clear: both;
+	margin: 21px auto 0;
+	padding: 4px;
+	max-width: 440px;
+	color: #666;
+	font-size: 14px;
+	text-align: center;
+
+	strong {
+		color: #000;
+	}
+}

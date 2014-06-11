@@ -57,22 +57,29 @@ header {
 // Sections
 // ==========================================================================
 
-section {
-	margin: 73px 0;
-	text-align: center;
+.step {
+	margin: 33px 0 0;
 
-	.container {
-		margin: 0 auto;
-		text-align: left;
-		width: 90%;
-
-		h1 {
-			font: 300 2.57143em/1.4 'Open Sans', Helvetica, sans-serif; // 36px
-		}
+	h1 {
+		font: 300 2.57143em/1.4 'Open Sans', Helvetica, sans-serif; // 36px
 	}
+}
+.container {
+	overflow: hidden; // lazy clearfix. Can apply real clearfix if needed.
+}
+.step-content {
+	// max-width: 960px;
+	// margin: 0 auto;
+}
+.section-header {
+	margin: 0 auto;
+	padding: 3% 30px;
+	max-width: 650px;
+	text-align: center;
 }
 .skip {
 	color: #999;
+	text-align: center;
 
 	a {
 		color: #999;
@@ -106,16 +113,15 @@ section {
 // ==========================================================================
 
 // Nested a bit deep. Will refactor later
-.options-box,
-.themes-box,
-.social-box {
+// .social-box {
+.options-box {
 	background: #eee;
 	margin-bottom: 33px;
 	overflow: hidden;
 	padding: 2%;
 
-	.option,
-	.theme {
+	// .theme,
+	.option {
 		background: #fff;
 		border: 4px solid #e8e8e8;
 		color: #999;
@@ -191,50 +197,16 @@ section {
 			color: #000;
 		}
 	}
-
-	.theme {
-		height: 220px;
-		width: 46%;
-
-		.small-icon {
-			font-size: 15px;
-			margin-right: 6px;
-		}
-		.theme-buttons {
-			bottom: 13px;
-			position: absolute;
-			right: 13px;
-
-			a {
-				box-shadow: 0 0 4px #999;
-			}
-		}
-	}
-}
-@media (max-width: 1150px) {
-	.social-box .social-link {
-		font-size: 15px;
-
-		.fa {
-			font-size: 18px;
-		}
-	}
 }
 @media (max-width: 990px) {
 	section .container .options-box .option {
 		font-size: 16px;
 		white-space: nowrap;
 	}
-	.social-box .social-link {
-		width: 95%;
-	}
 }
 @media (max-width: 768px) {
 	section .container .options-box .option {
 		width: 46%;
-	}
-	section .container .themes-box .theme {
-		width: 95%;
 	}
 }
 @media (max-width: 530px) {

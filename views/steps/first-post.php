@@ -1,17 +1,18 @@
 <script type="text/template" id="first_post_template">
-<?php if ( ! empty( $step->label ) ) : ?>
-	<h1><?php echo esc_html( $step->label ); ?></h1>
-<?php endif; ?>
-<?php
-global $current_user;
-get_currentuserinfo();
-?>
+<div class="section-header">
+	<?php if ( ! empty( $step->label ) ) : ?>
+		<h1><?php echo esc_html( $step->label ); ?></h1>
+	<?php endif; ?>
+	<?php
+	global $current_user;
+	get_currentuserinfo();
+	?>
 
-<p class="step-description">
-	Introduce your site by editing the sample introduction below or simply start from scratch.
-</p>
-
-<div class="post-box">
+	<p class="step-description">
+		Introduce your site by editing the sample introduction below or simply start from scratch.
+	</p>
+</div>
+<div class="first-post">
 	<?php
 	$post = get_default_post_to_edit( 'post', true );
 	$post->post_title = __( 'Introducing my new website' );
