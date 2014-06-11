@@ -1,0 +1,73 @@
+@import 'variables';
+@import 'extends';
+
+// ==========================================================================
+// Buttons :)
+// ==========================================================================
+
+.button,
+.button--secondary,
+button,
+input[type="submit"] {
+	@extend %button--secondary;
+}
+
+// Primary buttons
+.button--primary {
+	@extend %button--primary;
+}
+
+.button--jetpack {
+	@extend %button;
+	color: #fff;
+	background: #518d2a;
+	box-shadow: 0 6px 0 #3e6c20, 0 6px 3px rgba(0, 0, 0, 0.4);
+}
+
+// Custom-sized buttons
+.button-large {
+	height: 36px;
+	line-height: 36px;
+	padding: 0 16px 2px
+}
+
+.button-small {
+	height: 24px;
+	line-height: 22px;
+	padding: 0 8px 1px;
+	font-size: 11px
+}
+
+.button-hero {
+	font-size: 15px;
+	font-weight: 600;
+	height: 46px;
+	line-height: 44px;
+	padding: 0 23px
+}
+
+// Turn Reset 'buttons' into regular text links
+input {
+	&[type=reset],
+	&[type=reset]:hover,
+	&[type=reset]:active,
+	&[type=reset]:focus {
+		background: 0 0;
+		border: 0;
+		padding: 0 2px 1px;
+		width: auto;
+	}
+}
+
+// Buttons within sentences sit on the text baseline.
+p .button {
+	vertical-align: baseline
+}
+
+// Firefox Junk
+button::-moz-focus-inner,
+input[type=reset]::-moz-focus-inner,
+input[type=button]::-moz-focus-inner,
+input[type=submit]::-moz-focus-inner {
+	padding: 0
+}

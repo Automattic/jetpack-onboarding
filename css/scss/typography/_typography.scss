@@ -1,0 +1,113 @@
+// ==========================================================================
+// Typography
+// ==========================================================================
+
+@import "variables";
+@import "functions";
+
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,600,700);
+
+body,
+button,
+input,
+select,
+textarea {
+	color: map-get($root-font, color);
+	font-family: map-get($root-font, font-family);
+	font-size: map-get($root-font, font-size) * 1px;
+	font-weight: map-get($root-font, font-weight);
+	line-height: map-get($root-font, line-height);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	clear: both;
+	color: #222;
+	font-weight: $bold;
+}
+
+p {
+	margin-bottom: 1.5em;
+}
+
+b,
+strong {
+	font-weight: $bold;
+}
+
+dfn,
+cite,
+em,
+i {
+	font-style: italic;
+}
+
+blockquote {
+	margin: 1em 1.5em;
+	font-size: em(25);
+	font-style: italic;
+}
+
+address {
+	margin: 0 0 1.5em;
+}
+
+pre {
+	background: $color__pre-background;
+	font-family: "Courier 10 Pitch", Courier, monospace;
+	font-size: 15px;
+	font-size: 1.5rem;
+	line-height: 1.6;
+	margin-bottom: 1.6em;
+	max-width: 100%;
+	overflow: auto;
+	padding: 1.6em;
+}
+
+code,
+kbd,
+tt,
+var {
+	font: 15px Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+}
+
+abbr,
+acronym {
+	border-bottom: 1px dotted #666;
+	cursor: help;
+}
+
+mark,
+ins {
+	background: $color__mark-background;
+	text-decoration: none;
+}
+
+sup,
+sub {
+	font-size: 75%;
+	height: 0;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sup {
+	bottom: 1ex;
+}
+
+sub {
+	top: .5ex;
+}
+
+small {
+	font-size: 75%;
+}
+
+big {
+	font-size: 125%;
+}

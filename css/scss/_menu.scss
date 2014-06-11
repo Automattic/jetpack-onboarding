@@ -1,26 +1,6 @@
-@mixin transition($transition...){
-	-webkit-transition: $transition;
-	-moz-transition: $transition;
-	-ms-transition: $transition;
-	-o-transition: $transition;
-	transition: $transition;
-}
-@mixin border-radius($radius: 3px){
-	-webkit-border-radius: $radius;
-	border-radius: $radius;
-
-	// Keeps the background color from leaking outside a border
-	@include background-clip();
-}
-@mixin background-clip($clip: padding){
-	-webkit-background-clip: #{$clip}-box;
-	-moz-background-clip: $clip;
-	background-clip: #{$clip}-box;
-}
-
 .close-nux-options {
 	float: right;
-	
+
 	span:before {
 		color: #999;
 	}
@@ -59,8 +39,8 @@
 		position: relative;
 		text-align: center;
 		width: 27%;
-		@include border-radius(3px);
-		@include transition(all .2s ease-in-out);
+		border-radius: 3px;
+		transition: all .2s ease-in-out;
 		z-index: 1;
 
 		&:hover,
@@ -77,11 +57,11 @@
 			margin-bottom: 13px;
 		}
 	}
-	
+
 	a {
 		text-decoration: none;
 	}
-	
+
 	h1 {
 		color: #222;
 		font-family: 'Open Sans', Helvetica, sans-serif;
@@ -103,5 +83,38 @@
 	right: 0;
 	top: 0;
 	z-index: 9993;
-	@include transition(all .5s ease-in);
+	transition: all .5s ease-in;
+}
+
+@media (max-width: 1156px) {
+	.nux-options .option {
+		font-size: 16px;
+		padding: 4% 1%;
+
+		span.big-icon {
+			font-size: 43px;
+		}
+	}
+}
+@media (max-width: 796px) {
+	.jps-admin-menu {
+		display: none;
+	}
+	.nux-options {
+		h1 {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+		.option {
+			display: block;
+			float: none;
+			font-size: 23px;
+			padding: 6% 1%;
+			width: 94%;
+
+			span.big-icon {
+				font-size: 53px;
+			}
+		}
+	}
 }

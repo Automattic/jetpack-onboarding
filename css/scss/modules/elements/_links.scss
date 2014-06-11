@@ -1,0 +1,20 @@
+// ==========================================================================
+// Links
+// ==========================================================================
+
+a {
+	color: map-get($link-color, color);
+	transition: color .2s;
+	text-decoration: none;
+
+	&:visited {
+		color: map-get($link-color, color--visited);
+	}
+	&:hover,
+	&:active {
+		color: map-get($link-color, color--hover);
+	}
+	&:focus {
+		outline: thin dotted;
+	}
+}

@@ -37,10 +37,8 @@
   text-align: center;
   width: 27%;
   border-radius: 3px;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
   z-index: 1;
 }
 .nux-options .option:hover, .nux-options .option.active {
@@ -77,8 +75,8 @@
   right: 0;
   top: 0;
   z-index: 9993;
-  -webkit-transition: all 0.5s ease-in;
-  transition: all 0.5s ease-in;
+  -webkit-transition: all .5s ease-in;
+  transition: all .5s ease-in;
 }
 
 @media (max-width: 1156px) {

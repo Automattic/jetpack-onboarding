@@ -1,0 +1,13 @@
+// ==========================================================================
+// Button variables
+// ==========================================================================
+
+$buttons:(
+	primary__background: $medium-blue,
+	primary__background--hover: $link-highlight,
+	primary__color: $white,
+
+	secondary__background: darken($ultra-light-gray, 5%),
+	secondary__color: #6f7a88,
+	secondary__color--hover: $dark-gray,
+);

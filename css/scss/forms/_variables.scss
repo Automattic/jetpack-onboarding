@@ -1,0 +1,35 @@
+// ==========================================================================
+// Form variables
+// ==========================================================================
+
+$form-field:(
+	color: #555,
+	color--hover: #222,
+	color--focus: #5c6671,
+
+	border-color: $medium-gray,
+	border-color--hover: #aaa,
+	border-color--focus: $wordpress-blue,
+
+	background: $ultra-light-gray,
+	background--hover: #fff,
+	background--focus: #fff,
+
+	placeholder-color: #aaa,
+	placeholder-color--hover: #888,
+	placeholder-color--focus: #888,
+);
+
+@keyframes grow {
+	0% {
+		transform: scale(0.3);
+	}
+
+	60% {
+		transform: scale(1.15);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}

@@ -1,0 +1,29 @@
+// ==========================================================================
+// Create a Post (Say Hello!)
+// ==========================================================================
+
+#title-prompt-text, #mce_48-body, .wp-editor-tabs, #mceu_34 {display: none;}
+
+#title {
+	font-size: 18px;
+	color:#222;
+	border: 1px solid #ddd;
+	background: #fff;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+	margin-bottom: 20px;
+	width:700px;
+}
+
+
+#mce_41-body, #postdivrich {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	width:700px;
+}
+
+#mce_41 {background: #f9f9f9;}
+
+.skip-post {display:inline-block; margin-top:13px; margin-left:10px;}

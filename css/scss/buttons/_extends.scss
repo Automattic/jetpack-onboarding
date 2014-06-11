@@ -1,0 +1,72 @@
+// ==========================================================================
+// Button extends
+// ==========================================================================
+
+%button {
+	display: inline-block;
+	overflow: hidden;
+	border-radius: 3px;
+	font-size: 13px;
+	line-height: 2;
+	margin: 0;
+	padding: .4em .9em;
+	text-overflow: ellipsis;
+	text-decoration: none;
+	white-space: nowrap;
+	outline: 0;
+	vertical-align: top;
+	cursor: pointer;
+	-webkit-appearance: none;
+
+	&.hidden {
+		display: none
+	}
+	&[disabled],
+	&:disabled {
+		cursor: default;
+	}
+}
+
+%button--primary {
+	@extend %button;
+	background: map-get($buttons, primary__background);
+	color: map-get($buttons, primary__color);
+
+	&:active,
+	&:hover,
+	&:focus {
+		color: map-get($buttons, primary__color);
+		background: map-get($buttons, primary__background--hover);
+	}
+	&:visited {
+		color: map-get($buttons, primary__color);
+	}
+	&[disabled],
+	&:disabled {
+		background: #298cba;
+		border-color: #1b607f;
+		color: #94cde7;
+		text-shadow: 0 -1px 0 rgba(0, 0, 0, .1);
+	}
+}
+
+%button--secondary {
+	@extend %button;
+	background: map-get($buttons, secondary__background);
+	color: map-get($buttons, secondary__color);
+
+	&:active,
+	&:hover,
+	&:focus {
+		color: map-get($buttons, secondary__color--hover);
+	}
+	&:visited {
+		color: map-get($buttons, secondary__color);
+	}
+	&[disabled],
+	&:disabled {
+		color: #aaa;
+		border-color: #ddd;
+		text-shadow: 0 1px 0 #fff;
+	}
+}
