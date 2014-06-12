@@ -21,7 +21,7 @@
 </div>
 
 <?php if ( $connected ) : ?>
-	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit next"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Next', 'jetpack-start' ) ?></a>
+	<a href="<?php echo home_url(); ?>" class="button--primary button--hero submit next"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Next', 'jetpack-start' ) ?></a>
 <?php else : ?>
 	<div class="skip"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
 <?php endif ?>

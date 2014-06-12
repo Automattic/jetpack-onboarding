@@ -10,8 +10,8 @@
 	<% _.each( themes, function( theme ) { %>
 		<div class="theme" data-theme="<%= theme.stylesheet %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
 			<div class="theme-buttons">
-				<a href="<%= theme.demo_url %>" class="button button-large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview', 'jetpack-start' ) ?></a>
-				<a href="" class="button--primary button-large theme-select"><span class="small-icon fa fa-arrow-circle-o-right"></span><?php _e( 'Select Theme', 'jetpack-start' ) ?></a>
+				<a href="<%= theme.demo_url %>" class="button--secondary button--large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview', 'jetpack-start' ) ?></a>
+				<a href="" class="button--primary button--large theme-select"><span class="small-icon fa fa-arrow-circle-o-right"></span><?php _e( 'Select Theme', 'jetpack-start' ) ?></a>
 			</div>
 		</div>
 	<% }); %>

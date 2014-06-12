@@ -5,7 +5,6 @@
 // Buttons :)
 // ==========================================================================
 
-.button,
 .button--secondary,
 button,
 input[type="submit"] {
@@ -25,20 +24,20 @@ input[type="submit"] {
 }
 
 // Custom-sized buttons
-.button-large {
+.button--large {
 	height: 36px;
 	line-height: 36px;
 	padding: 0 16px 2px
 }
 
-.button-small {
-	height: 24px;
-	line-height: 22px;
-	padding: 0 8px 1px;
-	font-size: 11px
-}
+// .button--small {
+// 	height: 24px;
+// 	line-height: 22px;
+// 	padding: 0 8px 1px;
+// 	font-size: 11px
+// }
 
-.button-hero {
+.button--hero {
 	font-size: 15px;
 	font-weight: 600;
 	height: 46px;

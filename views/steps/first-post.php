@@ -61,7 +61,7 @@
 				<div id="titlediv">
 					<div id="titlewrap">
 						<label class="screen-reader-text" id="title-prompt-text" for="title"><?php echo apply_filters( 'enter_title_here', __( 'Enter title here' ), $post ); ?></label>
-						<input type="text" name="post_title" size="30" value="<?php echo esc_attr( htmlspecialchars( $post->post_title ) ); ?>" id="title" autocomplete="off" />
+						<input type="text" name="post_title" size="30" value="<?php echo esc_attr( htmlspecialchars( $post->post_title ) ); ?>" id="title" autocomplete="off" placeholder="Your first post's title" />
 					</div>
 				</div><!-- /titlediv -->
 				<div id="postdivrich" class="postarea edit-form-section">
@@ -82,7 +82,7 @@
 	</form>
 	</div>
 
-	<a href="<?php echo home_url(); ?>" class="button button-primary button-hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
+	<a href="<?php echo home_url(); ?>" class="button--primary button--hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
 	<div class="skip skip-post"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
 
 	<p>

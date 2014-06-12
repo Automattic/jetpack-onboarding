@@ -4,8 +4,8 @@
 	<div class="welcome-panel-column-container">
 		<div class="welcome-panel-column">
 			<h4><?php _e( 'Get Started' ); ?></h4>
-			<a class="button button-primary button-hero load-customize hide-if-no-customize" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'customize' ); ?>"><?php _e( 'Customize Your Site' ); ?></a>
-			<a class="button button-primary button-hero hide-if-customize" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'themes.php' ), 'themes' ); ?>"><?php _e( 'Customize Your Site' ); ?></a>
+			<a class="button--primary button--hero load-customize hide-if-no-customize" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'customize' ); ?>"><?php _e( 'Customize Your Site' ); ?></a>
+			<a class="button--primary button--hero hide-if-customize" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'themes.php' ), 'themes' ); ?>"><?php _e( 'Customize Your Site' ); ?></a>
 			<?php if ( current_user_can( 'install_themes' ) || ( current_user_can( 'switch_themes' ) && count( wp_get_themes( array( 'allowed' => true ) ) ) > 1 ) ) : ?>
 				<p class="hide-if-no-customize"><?php printf( __( 'or, <a href="%s">change your theme completely</a>' ), Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'themes.php' ), 'themes' ) ); ?></p>
 			<?php endif; ?>
