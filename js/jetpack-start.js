@@ -35,6 +35,9 @@ var jetpackStartWizard = new ( Backbone.View.extend({
 			return;
 		}
 		this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
+		if ( ! this._currentStep.validateDisplay() ) {
+			this.goToNextStep( event );
+		}
 		this.goToCurrentStep();
 		return this;
 	},
@@ -113,7 +116,17 @@ var JetpackStartStepView = Backbone.View.extend({
 var JetpackStartStep = Backbone.Model.extend({
 	defaults: {
 		slug: '',
-		sort: ''
+		sort: '',
+	},
+	validateDisplay: function() {
+		var display = this.get( 'conditional_display' );
+		if ( _.isFunction( display ) ) {
+			return display( this );
+		}
+		if ( _.isBoolean( display ) ) {
+			return display;
+		}
+		return true;
 	},
 	getView: function() {
 		if ( undefined === this.view ) {
