@@ -19,22 +19,26 @@ var jetpackStartWizard = new ( Backbone.View.extend({
 				jetpackStartWizard.render();
 			}
 		);
-		this.router.on( 'route:goToFirstStep', function() { jetpackStartWizard.goToCurrentStep( true ); } );
+		this.router.on( 'route:goToFirstStep', function() { jetpackStartWizard.goToNextStep(); } );
 	},
 
 	currentStep: function() {
-		if ( this._currentStep === false )
-			this._currentStep = this.steps.first();
 		return this._currentStep;
 	},
 
 	goToNextStep: function( event ) {
-		event.preventDefault();
+		if ( ! _.isUndefined( event ) ) {
+			event.preventDefault();
+		}
 		if ( this.currentStep() == this.steps.last() ) {
 			window.location = _JetpackStart['end_url'];
 			return;
 		}
-		this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
+		if ( this._currentStep === false ) {
+			this._currentStep = this.steps.first();
+		} else {
+			this._currentStep = this.steps.at( this.steps.indexOf( this._currentStep ) + 1 );
+		}
 		if ( ! this._currentStep.validateDisplay() ) {
 			this.goToNextStep( event );
 		}
