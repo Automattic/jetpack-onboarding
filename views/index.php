@@ -19,11 +19,7 @@
 	<span class="genericon genericon-wordpress"></span>
 	<div class="progress">
 		<span><?php _e( 'WordPress Setup Wizard', 'jetpack-start' ) ?></span>
-		<ul>
-		<?php foreach ( $steps as $step ) : ?>
-			<li data-step="<?php echo esc_attr( $step->slug ); ?>" title="<?php echo esc_attr( $step->label ); ?>"></li>
-		<?php endforeach; ?>
-		</ul>
+		<ul></ul>
 	</div>
 </header>
 

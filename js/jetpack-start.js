@@ -74,13 +74,20 @@ var jetpackStartWizard = new ( Backbone.View.extend({
 	},
 
 	renderProgress : function() {
-		var slug = this._currentStep.get( 'slug' );
-		jQuery( 'header .progress li' ).each( function () {
-			var li = jQuery( this ).addClass( 'done' );
-			if ( li.data( 'step' ) == slug ) {
-				return false;
+		var progressElement = jQuery( 'header .progress ul' ).html('');
+		var done = true;
+		this.steps.each( function( step ) {
+			if ( step.validateDisplay() ) {
+				var li = jQuery( '<li></li>' ).attr('title', step.get( 'slug' ) );
+				if ( done ) {
+					li.addClass( 'done' );
+				}
+				progressElement.append( li );
 			}
-		} )
+			if ( step == jetpackStartWizard.currentStep() ) {
+				done = false;
+			}
+		} );
 	},
 
 	addStep: function( step ) {
