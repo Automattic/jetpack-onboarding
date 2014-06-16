@@ -42,6 +42,18 @@
 			}
 		});
 
-		jetpackStartWizard.addStep( new JetpackStartStep( { view: StepView, slug: '<?php echo $step->slug; ?>', sort: '<?php echo $step->sort; ?>' } ) );
+		jetpackStartWizard.addStep(
+			new JetpackStartStep( {
+				view: StepView,
+				slug: '<?php echo $step->slug; ?>',
+				sort: '<?php echo $step->sort; ?>',
+				conditional_display: function() {
+					jetpackStep = jetpackStartWizard.getStep( 'connect-jetpack' );
+					if ( ! _.isUndefined( jetpackStep ) ) {
+						return jetpackStep.get( 'connected' );
+					}
+					return false;
+				}
+			} ) );
 	}) ( jQuery );
 </script>

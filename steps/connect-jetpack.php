@@ -15,7 +15,7 @@ class Jetpack_Start_Step_connect_jetpack extends Jetpack_Start_Step {
 	var $jetpack;
 
 	function __construct() {
-		if ( class_exists( 'Jetpack' ) && ! Jetpack::is_active() ) {
+		if ( class_exists( 'Jetpack' ) ) {
 			add_action( 'jetpack-start_step-connect-jetpack', array( $this, 'render' ) );
 		}
 	}

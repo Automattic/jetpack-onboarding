@@ -41,6 +41,16 @@
 
 		});
 
-		jetpackStartWizard.addStep( new JetpackStartStep( { view: StepView, slug: '<?php echo $step->slug; ?>', sort: '<?php echo $step->sort; ?>' } ) );
+		jetpackStartWizard.addStep(
+			new JetpackStartStep( {
+				view: StepView,
+				slug: '<?php echo $step->slug; ?>',
+				sort: '<?php echo $step->sort; ?>',
+				connected: <?php echo $step->get_jetpack()->is_active() ? 'true' : 'false'; ?>,
+				conditional_display: function( step ) {
+					return ! step.get( 'connected' );
+				}
+			} )
+		);
 	}) ( jQuery );
 </script>
