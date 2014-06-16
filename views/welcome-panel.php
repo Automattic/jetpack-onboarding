@@ -74,10 +74,6 @@
 	cursor: pointer;
 }
 
-.welcome__section:focus {
-	border: 1px solid #eee;
-}
-
 .welcome__section.active {
 	position: relative;
 	border-color: #eee;
@@ -177,7 +173,7 @@
 <script type="text/javascript">
 	(function( $ ) {
 		$(document).ready(function() {
-			$('.welcome__section').click(function() {
+			$('.welcome__section').focus(function() {
 				$('.welcome__section.active').removeClass('active');
 				$(this).toggleClass('active');
 				return false;
