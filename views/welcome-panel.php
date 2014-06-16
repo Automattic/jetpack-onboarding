@@ -74,6 +74,10 @@
 	cursor: pointer;
 }
 
+.welcome__section:focus {
+	border: 1px solid #eee;
+}
+
 .welcome__section.active {
 	position: relative;
 	border-color: #eee;
