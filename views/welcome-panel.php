@@ -8,6 +8,27 @@
 	display: block;
 }
 
+/* Styles! */
+.welcome-panel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: -20px;
+	z-index: 50;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: #f9f9f9;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.welcome-panel .welcome-panel-close {
+	top: 0;
+	right: 13px;
+}
+
 .getting-started * {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -15,22 +36,21 @@
 }
 
 .getting-started {
-	margin: 0 -10px;
 	font-size: 0;
 }
 
-.getting-started__intro {
-	padding: 0 30px;
-}
-
 .getting-started h3 {
-	margin: 9px 0 6px;
-	font-size: 30px;
+	margin:58px 0 17px;
+	font-size: 41px;
+	text-align: center;
 }
 
 .getting-started__subhead {
-	margin: 0 0 36px;
-	font-size: 20px;
+	margin: 0 0 66px;
+	color: #666;
+	font-size: 18px;
+	line-height: 1.6;
+	text-align: center;
 }
 
 .getting-started__sections {
@@ -54,15 +74,12 @@
 	cursor: pointer;
 }
 
-.welcome__section:hover,
-.welcome__section:focus {
-	/*background: #fafafa;*/
-}
-
 .welcome__section.active {
 	position: relative;
 	border-color: #eee;
-	background: #fafafa;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
 .welcome__section.active:before,
@@ -83,17 +100,18 @@
 	margin-left: -14px;
 	border-left: 14px solid transparent;
 	border-right: 14px solid transparent;
-	border-bottom: 14px solid #fafafa;
+	border-bottom: 14px solid #fff;
 }
 
 .welcome__details {
 	float: left;
-	margin-top: 15px;
-	width: 100%;
-	border-top: 1px solid #eee;
-	background: #fafafa;
+	margin: 15px 30px;
+	border: 1px solid #eee;
+	background: #fff;
 	color: #777;
 	text-align: left;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
 .welcome__details h5 {
@@ -104,7 +122,7 @@
 .welcome__details li {
 	float: left;
 	margin: 0;
-	padding: 19px 30px 25px;
+	padding: 30px 33px 35px;
 	width: 33.333%;
 	font-size: 13px;
 	line-height: 1.5;
@@ -121,22 +139,28 @@
 		min-height: 182px;
 	}
 }
+
+@media (max-width: 782px) {
+	.welcome-panel {
+		left: -10px;
+	}
+}
+
 @media (max-width: 767px) {
 	.welcome__section {
-		margin: 0;
-		width: 100%;
+		display: block;
+		margin: 0 30px;
+		width: auto;
 		max-width: none;
 		min-height: 0;
 	}
+
 	.welcome__details {
 		float: none;
 		overflow: hidden;
 		padding: 10px 0 12px;
-		border-bottom: 1px solid #eee;
 	}
-	.welcome__details:last-child {
-		border-bottom: 0;
-	}
+
 	.welcome__details li {
 		float: none;
 		padding: 7px 22px;
