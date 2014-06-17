@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'css/jetpack-start.css': 'css/scss/jetpack-start.scss',
+					'css/welcome-panel.css': 'css/scss/welcome-panel.scss',
 					'css/jetpack-start-menu.css': 'css/scss/jetpack-start-menu.scss'
 				}
 			}
