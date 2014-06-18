@@ -2,12 +2,19 @@
 // Select Theme
 // ==========================================================================
 
-// Nested a bit deep. Will refactor later
+.themes-box {
+	max-width: 960px;
+	margin: 0 auto;
+	border: 6px solid $light-gray;
+	overflow: hidden;
+}
+
 .theme {
 	float: left;
 	padding-top: 22%;
 	width: 50%;
 	background: #fff;
+	border: 6px solid $light-gray;
 	transition: box-shadow .2s ease-in-out;
 	cursor: pointer;
 
@@ -20,9 +27,11 @@
 	}
 	@include breakpoint(phablet) {
 		float: none;
+		padding-top: 46%;
 		width: 100%;
 	}
 }
+
 .theme-buttons {
 	margin: 0 13px 13px 0;
 	text-align: right;

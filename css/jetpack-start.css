@@ -1407,11 +1407,19 @@ input[type=submit]::-moz-focus-inner {
     transform: translate3d(570px, -570px, 0px);
   }
 }
+.themes-box {
+  max-width: 960px;
+  margin: 0 auto;
+  border: 6px solid #e8f0f5;
+  overflow: hidden;
+}
+
 .theme {
   float: left;
   padding-top: 22%;
   width: 50%;
   background: #fff;
+  border: 6px solid #e8f0f5;
   -webkit-transition: -webkit-box-shadow .2s ease-in-out;
   transition: box-shadow .2s ease-in-out;
   cursor: pointer;
@@ -1426,6 +1434,7 @@ input[type=submit]::-moz-focus-inner {
 @media (max-width: 500px) {
   .theme {
     float: none;
+    padding-top: 46%;
     width: 100%;
   }
 }
