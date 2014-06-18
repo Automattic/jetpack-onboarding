@@ -79,7 +79,7 @@
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.welcome__section.active:before, .welcome__section.active.after {
+.welcome__section.active:before, .welcome__section.active:after {
   content: '';
   position: absolute;
   top: 100%;
