@@ -11,11 +11,11 @@
 		</div>
 		<ul class="welcome__details tab__section">
 			<li>
-				<h5><?php printf( '<a href="%s">' . __( 'Adding some pages', 'jetpack-start' ) . '</a>', Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'add_page' ) ); ?></h5>
+				<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'add_page' ); ?>"><?php _e( 'Adding some pages', 'jetpack-start' ); ?></a></h5>
 				<?php _e( 'Before tweaking your design, we recommend creating a few simple pages first, e.g. "Home Page", "About" and "Products".', 'jetpack-start' ); ?>
 			</li>
 			<li>
-				<h5><a href="/"><?php _e( 'Creating a front page', 'jetpack-start' ); ?></a></h5>
+				<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-reading.php#front-static-pages' ), 'select_home_page' ); ?>"><?php _e( 'Creating a front page', 'jetpack-start' ); ?></a></h5>
 				<?php _e( 'If you want visitors to always see the same home page, choose one of the pages you created to be the front page.', 'jetpack-start' ); ?>
 			</li>
 
@@ -59,13 +59,22 @@
 		</div>
 		<ul class="welcome__details tab__section">
 			<li>
-				<h5><?php printf( '<a href="%s">' . __( 'Add blog posts', 'jetpack-start' ) . '</a>', Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php' ), 'add_post' ) ); ?></h5>
+				<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php' ), 'add_post' ); ?>"><?php _e( 'Add blog posts', 'jetpack-start' ); ?></a></h5>
 				<?php _e( 'Express yourself! Write something, share a video, post a link, or showcase your travel photos.', 'jetpack-start' ); ?>
 			</li>
 
 			<li>
-				<h5><?php printf( '<a href="%s">' . __( 'Publicize your work', 'jetpack-start' ) . '</a>', Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'add_page' ) ); ?></h5>
-				<?php _e( 'Effortlessly promote your content by connecting to Twitter, Facebook, Google+, LinkedIn, Tumblr or Path!', 'jetpack-start' ); ?>
+				<?php if ( class_exists( 'Jetpack' ) ) :  ?>
+					<?php if ( Jetpack::is_active() && Jetpack::is_module_active('publicize') ) : ?>
+					<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-general.php?page=sharing' ), 'use_publicize' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a></h5>
+					<?php else : ?>
+					<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'admin.php?page=jetpack' ), 'use_publicize_non_active' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a></h5>
+					<?php endif; ?>
+					<?php _e( 'Effortlessly promote your content by connecting to Twitter, Facebook, Google+, LinkedIn, Tumblr or Path!', 'jetpack-start' ); ?>
+				<?php else : ?>
+					<h5><a href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a></h5>
+					<?php _e( 'Connect Jetpack to publcise your posts, get free stats, and more.', 'jetpack-start' ); ?>
+				<?php endif; ?>
 			</li>
 
 			<li>
