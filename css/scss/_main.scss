@@ -61,7 +61,11 @@ header {
 	margin: 33px 0 0;
 
 	h1 {
-		font: 300 2.57143em/1.4 'Open Sans', Helvetica, sans-serif; // 36px
+		font: 300 2.5em/1.4 'Open Sans', Helvetica, sans-serif; // 40 / 16
+
+		@include breakpoint(phablet) {
+			font-size: em(30);
+		}
 	}
 }
 .container {
@@ -92,10 +96,14 @@ header {
 }
 .step-description {
 	color: #666;
-	margin: -13px 0 33px;
+	margin: -13px 0 em(33, 18);
 	padding: 0;
-	font-size: 18px;
+	font-size: em(18);
 	line-height: 1.6;
+
+	@include breakpoint(phablet) {
+		font-size: em(16);
+	}
 }
 
 .med-icon {

@@ -2,16 +2,9 @@
 // First Post
 // ==========================================================================
 
-.first-post,
-#title,
-#mce_41-body,
-#postdivrich {
-	max-width:700px;
-}
-
-
 .first-post {
-	margin: 0 auto;
+	margin: 0 15px;
+	max-width: 700px;
 }
 
 #title-prompt-text,
@@ -29,6 +22,10 @@
 	font-size: 28px;
 	font-weight: 700;
 	box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+
+	@include breakpoint(tablet) {
+		font-size: 18px;
+	}
 }
 
 #mce_41-body,
