@@ -47,12 +47,8 @@
 				view: StepView,
 				slug: '<?php echo $step->slug; ?>',
 				sort: '<?php echo $step->sort; ?>',
-				conditional_display: function() {
-					jetpackStep = jetpackStartWizard.getStep( 'connect-jetpack' );
-					if ( ! _.isUndefined( jetpackStep ) ) {
-						return jetpackStep.get( 'connected' );
-					}
-					return false;
+				conditional_display: function( step ) {
+					return <?php echo $step->is_active_publicize() ? 'true' : 'false'; ?>;
 				}
 			} ) );
 	}) ( jQuery );

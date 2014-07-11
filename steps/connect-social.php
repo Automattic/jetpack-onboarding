@@ -62,4 +62,9 @@ class Jetpack_Start_Step_connect_social extends Jetpack_Start_Step {
 		return ! empty( $connections );
 	}
 
+	static function is_active_publicize() {
+		global $publicize;
+		return is_object( $publicize );
+	}
+
 }
