@@ -6,10 +6,8 @@
 	position: relative;
 	overflow: hidden; // lazy clearfix
 	margin: 0 auto 80px;
-	// max-width: 650px;
 	background: $jetpack-green;
 	background-image: linear-gradient(top, rgb(129, 168, 68), rgb(142, 183, 78));
-	// box-shadow: 0 1px 3px rgba(0,0,0,.2);
 	text-align: center;
 
 	.button--primary {
@@ -26,8 +24,11 @@
 	margin-top: 60px;
 	color: #fff;
 	text-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 1px;
-	// text-align: center;
 	z-index: 2;
+
+	@media (max-width: 500px) {
+		font-size: 30px;
+	}
 }
 .jetpack-hero__info {
 	position: relative;
@@ -50,12 +51,9 @@
 		margin-bottom: -1px;
 		background: url(../img/the-cloud.svg) center bottom repeat-x;
 		z-index: 4;
-		// background-size: 50%;
 	}
 }
 .flyby {
-	// position: relative;
-	// z-index: 0;
 	@media (max-width: 768px) {
 		display: none;
 	}

@@ -1328,6 +1328,11 @@ input[type=submit]::-moz-focus-inner {
   text-shadow: rgba(0, 0, 0, 0.11765) 0px 1px 1px;
   z-index: 2;
 }
+@media (max-width: 500px) {
+  .jetpack-hero__title {
+    font-size: 30px;
+  }
+}
 
 .jetpack-hero__info {
   position: relative;
@@ -1456,15 +1461,9 @@ input[type=submit]::-moz-focus-inner {
   top: 1px;
 }
 
-.first-post,
-#title,
-#mce_41-body,
-#postdivrich {
-  max-width: 700px;
-}
-
 .first-post {
-  margin: 0 auto;
+  margin: 0 15px;
+  max-width: 700px;
 }
 
 #title-prompt-text,
@@ -1483,6 +1482,11 @@ input[type=submit]::-moz-focus-inner {
   font-weight: 700;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  #title {
+    font-size: 18px;
+  }
 }
 
 #mce_41-body,
@@ -1636,7 +1640,12 @@ header .progress ul {
   margin: 33px 0 0;
 }
 .step h1 {
-  font: 300 2.57143em/1.4 'Open Sans', Helvetica, sans-serif;
+  font: 300 2.5em/1.4 'Open Sans', Helvetica, sans-serif;
+}
+@media (max-width: 500px) {
+  .step h1 {
+    font-size: 1.875em;
+  }
 }
 
 .container {
@@ -1664,10 +1673,15 @@ header .progress ul {
 
 .step-description {
   color: #666;
-  margin: -13px 0 33px;
+  margin: -13px 0 1.83333em;
   padding: 0;
-  font-size: 18px;
+  font-size: 1.125em;
   line-height: 1.6;
+}
+@media (max-width: 500px) {
+  .step-description {
+    font-size: 1em;
+  }
 }
 
 .med-icon {
