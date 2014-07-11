@@ -1462,7 +1462,7 @@ input[type=submit]::-moz-focus-inner {
 }
 
 .first-post {
-  margin: 0 15px;
+  margin: 0 auto;
   max-width: 700px;
 }
 
