@@ -1,0 +1,154 @@
+/*THIS FILE IS COMPILED FROM AN .SCSS FILE - DO NOT EDIT DIRECTLY*/
+.tab__section {
+  display: none;
+}
+
+.welcome__section.active + .tab__section {
+  display: block;
+}
+
+.welcome-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: -20px;
+  z-index: 50;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #f9f9f9;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.welcome-panel .welcome-panel-close {
+  top: 0;
+  right: 13px;
+}
+@media (max-width: 782px) {
+  .welcome-panel {
+    left: -10px;
+  }
+}
+
+.getting-started * {
+  box-sizing: border-box;
+}
+
+.getting-started {
+  font-size: 0;
+}
+.getting-started h3 {
+  margin: 58px 0 17px;
+  font-size: 41px;
+  text-align: center;
+}
+.getting-started h4 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.getting-started__subhead {
+  margin: 0 0 66px;
+  color: #666;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.getting-started__sections {
+  text-align: center;
+}
+
+.welcome__section {
+  display: inline-block;
+  margin: 0 1%;
+  padding: 15px 20px;
+  border: 1px solid transparent;
+  width: 31.333%;
+  max-width: 310px;
+  text-align: left;
+  vertical-align: top;
+  cursor: pointer;
+}
+.welcome__section.active {
+  position: relative;
+  border-color: #eee;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.welcome__section.active:before, .welcome__section.active:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 3px;
+  margin-left: -13px;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 13px solid #eeeeee;
+}
+.welcome__section.active:after {
+  margin-top: 4px;
+  margin-left: -14px;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid white;
+}
+@media (max-width: 1080px) {
+  .welcome__section {
+    min-height: 162px;
+  }
+}
+@media (max-width: 925px) {
+  .welcome__section {
+    min-height: 182px;
+  }
+}
+@media (max-width: 767px) {
+  .welcome__section {
+    display: block;
+    margin: 0 30px;
+    width: auto;
+    max-width: none;
+    min-height: 0;
+  }
+}
+
+.welcome__details {
+  float: left;
+  margin: 15px 30px;
+  border: 1px solid #eeeeee;
+  background: #fff;
+  color: #777;
+  text-align: left;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.welcome__details h5 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+.welcome__details li {
+  float: left;
+  margin: 0;
+  padding: 30px 33px 35px;
+  width: 33.333%;
+  font-size: 13px;
+  line-height: 1.5;
+}
+@media (max-width: 767px) {
+  .welcome__details li {
+    float: none;
+    padding: 7px 22px;
+    width: 100%;
+    min-height: 0;
+  }
+}
+@media (max-width: 767px) {
+  .welcome__details {
+    float: none;
+    overflow: hidden;
+    padding: 10px 0 12px;
+  }
+}
