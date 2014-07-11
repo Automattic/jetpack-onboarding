@@ -23,8 +23,11 @@ class Jetpack_Start_Step_select_theme extends Jetpack_Start_Step {
 
 	static function prepare_themes( $themes ) {
 		$result = array();
-		foreach ( $themes as $theme ) {
-			$result[] = self::prepare_theme( wp_get_theme( $theme ) );
+		foreach ( $themes as $_theme ) {
+			$theme = wp_get_theme( $_theme );
+			if ( $theme->exists() ) {
+				$result[] = self::prepare_theme( $theme );
+			}
 		}
 		return $result;
 	}
@@ -51,7 +54,7 @@ class Jetpack_Start_Step_select_theme extends Jetpack_Start_Step {
 				$this->default_themes
 			);
 
-			$this->themes = Jetpack_Start_Step_Select_Theme::prepare_themes( $this->themes );
+			$this->themes = self::prepare_themes( $this->themes );
 		}
 		return $this->themes;
 	}
