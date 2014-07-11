@@ -12,8 +12,6 @@ if (  isset( $_GET['page'] ) && $_GET['page'] == 'jetpack' && isset( $_GET['acti
 
 class Jetpack_Start_Step_connect_jetpack extends Jetpack_Start_Step {
 
-	var $jetpack;
-
 	function __construct() {
 		if ( class_exists( 'Jetpack' ) ) {
 			add_action( 'jetpack-start_step-connect-jetpack', array( $this, 'render' ) );
@@ -21,9 +19,6 @@ class Jetpack_Start_Step_connect_jetpack extends Jetpack_Start_Step {
 	}
 
 	function get_jetpack() {
-		if ( ! isset( $this->jetpack ) ) {
-			$this->jetpack = Jetpack::init();
-		}
-		return $this->jetpack;
+		return Jetpack::init();
 	}
 }
