@@ -30,19 +30,17 @@ input[type="submit"] {
 	padding: 0 16px 2px
 }
 
-// .button--small {
-// 	height: 24px;
-// 	line-height: 22px;
-// 	padding: 0 8px 1px;
-// 	font-size: 11px
-// }
-
 .button--hero {
-	font-size: 15px;
+	padding: em(12,15) em(23,15);
+	font-size: em(15);
 	font-weight: 600;
-	height: 46px;
-	line-height: 44px;
-	padding: 0 23px
+
+	.fa {
+		float: left;
+		margin-right: em(5, 23);
+		font-size: em(23,15);
+		line-height: (30 / 23);
+	}
 }
 
 // Turn Reset 'buttons' into regular text links

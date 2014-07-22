@@ -1269,11 +1269,15 @@ input[type="submit"]:disabled {
 }
 
 .button--hero {
-  font-size: 15px;
+  padding: 0.8em 1.53333em;
+  font-size: 0.9375em;
   font-weight: 600;
-  height: 46px;
-  line-height: 44px;
-  padding: 0 23px;
+}
+.button--hero .fa {
+  float: left;
+  margin-right: 0.21739em;
+  font-size: 1.53333em;
+  line-height: 1.30435;
 }
 
 input[type=reset], input[type=reset]:hover, input[type=reset]:active, input[type=reset]:focus {
@@ -1352,6 +1356,11 @@ input[type=submit]::-moz-focus-inner {
   background: url(../img/the-cloud.svg) center bottom repeat-x;
   z-index: 4;
 }
+@media (max-width: 320px) {
+  .jetpack-hero__info {
+    padding: 60px 18px 30px;
+  }
+}
 
 @media (max-width: 768px) {
   .flyby {
@@ -1416,6 +1425,7 @@ input[type=submit]::-moz-focus-inner {
   max-width: 960px;
   margin: 0 auto;
   border: 6px solid #e8f0f5;
+  background: #e8f0f5;
   overflow: hidden;
 }
 
@@ -1485,18 +1495,71 @@ input[type=submit]::-moz-focus-inner {
 }
 @media (max-width: 768px) {
   #title {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+}
+@media (max-width: 500px) {
+  #title {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-radius: 0;
     font-size: 18px;
   }
 }
 
+@media (max-width: 768px) {
+  #post-body {
+    margin: 0 20px;
+  }
+}
+@media (max-width: 500px) {
+  #post-body {
+    margin: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  #mce_2,
+  #mce_6,
+  #mce_7,
+  #mce_8,
+  #mce_9,
+  #mce_12,
+  #mce_13,
+  #mce_14 {
+    display: none;
+  }
+
+  #mce_28.mce-toolbar-grp {
+    padding-right: 0;
+  }
+}
 #mce_41-body,
 #postdivrich {
   border: 1px solid #ddd;
   border-radius: 3px;
 }
+@media (max-width: 500px) {
+  #mce_41-body,
+  #postdivrich {
+    border-width: 1px 0;
+    border-radius: 0;
+  }
+}
 
 #mce_41 {
   background: #f9f9f9;
+}
+
+.submit-or-skip {
+  text-align: center;
+}
+@media (max-width: 500px) {
+  .submit-or-skip {
+    font-size: 14px;
+  }
 }
 
 .skip-post {
@@ -1509,12 +1572,25 @@ input[type=submit]::-moz-focus-inner {
   margin: 0 auto;
 }
 
+.confirmation-notice {
+  margin: 23px 0 60px;
+  padding: 30px;
+  background: #e8f0f5;
+  color: #666;
+}
+@media (max-width: 500px) {
+  .confirmation-notice {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+}
+
 .connect-social {
   position: relative;
   max-width: 700px;
   margin: 0 auto;
   padding: 30px;
-  background: #eee;
+  background: #e8f0f5;
 }
 .connect-social:before {
   position: absolute;
@@ -1524,7 +1600,7 @@ input[type=submit]::-moz-focus-inner {
   bottom: 100%;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-bottom: 20px solid #eeeeee;
+  border-bottom: 20px solid #e8f0f5;
   left: 50%;
   margin-left: -20px;
 }

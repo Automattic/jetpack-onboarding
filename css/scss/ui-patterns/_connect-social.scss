@@ -7,12 +7,12 @@
 	max-width: 700px;
 	margin: 0 auto;
 	padding: 30px;
-	background: #eee;
+	background: $light-gray;
 
 	&:before {
 		$arrow-width: 20px;
 
-		@include arrow--up($arrow-width, #eee);
+		@include arrow--up($arrow-width, $light-gray);
 		left: 50%;
 		margin-left: -1 * $arrow-width;
 	}

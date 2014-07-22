@@ -37,10 +37,6 @@
 	background: $jetpack-cloud;
 	z-index: 4;
 
-	// p {
-	// 	max-width: 400px;
-	// 	margin: 0 auto;
-	// }
 	&:before {
 		content: "";
 		position: absolute;
@@ -51,6 +47,9 @@
 		margin-bottom: -1px;
 		background: url(../img/the-cloud.svg) center bottom repeat-x;
 		z-index: 4;
+	}
+	@include breakpoint(phone) {
+		padding: 60px 18px 30px;
 	}
 }
 .flyby {

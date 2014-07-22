@@ -82,10 +82,12 @@
 	</form>
 	</div>
 
-	<a href="<?php echo home_url(); ?>" class="button--primary button--hero submit"><span class="med-icon fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
-	<div class="skip skip-post"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
+	<div class="submit-or-skip">
+		<a href="<?php echo home_url(); ?>" class="button--primary button--hero submit"><span class="fa fa-angle-double-right"></span><?php _e( 'Publish and visit your dashboard', 'jetpack-start' ) ?></a>
+		<div class="skip skip-post"><?php printf( __( 'or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?></div>
+	</div>
 
-	<p>
+	<p class="confirmation-notice">
 	<?php echo esc_html( sprintf( __( 'We sent a confirmation email to', 'jetpack-start' )) ); ?>
 	<strong>
 	<?php echo esc_html( sprintf( __( '%s', 'jetpack-start' ), $current_user->user_email ) ); ?>
