@@ -17,7 +17,7 @@ class Jetpack_Start_Welcome_Panel {
 			remove_action( 'welcome_panel', 'wp_welcome_panel' );
 			add_action( 'welcome_panel', array( __CLASS__, 'wp_welcome_panel' ) );
 			wp_enqueue_script( 'jetpack-start', plugins_url( 'js/welcome-panel.js', __FILE__ ), array( 'jquery' ) );
-			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ) );
+			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin' ) );
 		}
 	}
 
