@@ -15,27 +15,27 @@
 				<h5>1. Create Pages</h5>
 				<?php _e( 'You probably need pages such as Features, Products, Services, or Contact Us.', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'add_page' ); ?>"><?php _e( 'Create pages', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'business_add_page' ); ?>"><?php _e( 'Create pages', 'jetpack-start' ); ?></a>
 			</li>
 			<li>
 				<h5>2. Create a Front Page</h5>
 				<?php _e( 'Welcome your visitors with a great looking page that explains what your business is about.', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-reading.php#front-static-pages' ), 'front_page' ); ?>"><?php _e( 'Edit Settings', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-reading.php#front-static-pages' ), 'business_front_page' ); ?>"><?php _e( 'Edit Settings', 'jetpack-start' ); ?></a>
 			</li>
 
 			<li>
 				<h5>3. Turn off Comments</h5>
 				<?php _e( 'Turn commenting off by default so visitors can’t comment on your company&rsquo;s pages.', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-discussion.php' ), 'comments_off' ); ?>"><?php _e( 'Turn off Comments', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-discussion.php' ), 'business_comments_off' ); ?>"><?php _e( 'Turn off Comments', 'jetpack-start' ); ?></a>
 			</li>
 
 			<li>
 				<h5>4. Fine Tune It</h5>
 				<?php _e( 'Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'business_customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
 			</li>
 		</ul>
 
@@ -48,14 +48,14 @@
 				<h5>1. Add an About Page</h5>
 				<?php _e( 'Tell the world who your are: your profession, passions, skills and how to be contacted.', 'jetpack-start' ); ?>
 				<br /><br />
-				<?php printf( '<a class="button button-primary" href="%s">' . __( 'Create Page', 'jetpack-start' ) . '</a>', Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'add_page' ) ); ?>
+				<?php printf( '<a class="button button-primary" href="%s">' . __( 'Create Page', 'jetpack-start' ) . '</a>', Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php?post_type=page' ), 'personal_add_page' ) ); ?>
 			</li>
 
 			<li>
 				<h5>2. Create a Front Page</h5>
 				<?php _e( 'Welcome your visitors with a great looking page that explains what your site is about.', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-reading.php#front-static-pages' ), 'front_page' ); ?>"><?php _e( 'Edit Settings', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-reading.php#front-static-pages' ), 'personal_front_page' ); ?>"><?php _e( 'Edit Settings', 'jetpack-start' ); ?></a>
 			</li>
 
 			<li>
@@ -69,7 +69,7 @@
 				<h5>4. Fine Tune It</h5>
 				<?php _e( 'Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'personal_customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
 			</li>
 		</ul>
 
@@ -82,7 +82,7 @@
 				<h5>1. Add Blog Posts</h5>
 				<?php _e( 'Start building your blog archives – write an intro post, share a video clip or a link.', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php' ), 'add_post' ); ?>"><?php _e( 'Add blog posts', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'post-new.php' ), 'blog_add_post' ); ?>"><?php _e( 'Add blog posts', 'jetpack-start' ); ?></a>
 			</li>
 
 			<li>
@@ -91,15 +91,15 @@
 					<?php _e( 'Connect your social media accounts to “Publicize” to promote your posts effortlessly.', 'jetpack-start' ); ?>
 					<br /><br />
 					<?php if ( Jetpack::is_active() && Jetpack::is_module_active('publicize') ) : ?>
-					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-general.php?page=sharing' ), 'use_publicize' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
+					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-general.php?page=sharing' ), 'blog_use_publicize' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
 					<?php else : ?>
-					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'admin.php?page=jetpack' ), 'use_publicize_non_active' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
+					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'admin.php?page=jetpack' ), 'blog_use_publicize_non_active' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
 					<?php endif; ?>
 					
 				<?php else : ?>					
 					<?php _e( 'Connect Jetpack to publcise your posts, get free stats, and more.', 'jetpack-start' ); ?>
 					<br /><br />
-					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
+					<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
 				<?php endif; ?>
 			</li>
 
@@ -107,7 +107,7 @@
 				<h5>3. Add Widgets</h5>
 				<?php _e( 'Choose what you’d like visitors to see in your sidebar: Twitter feed, archives, and more...', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'widgets.php' ), 'use_publicize_non_active' ); ?>"><?php _e( 'Manage Widgets', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'widgets.php' ), 'blog_widgets' ); ?>"><?php _e( 'Manage Widgets', 'jetpack-start' ); ?></a>
 				
 			</li>
 
@@ -115,7 +115,7 @@
 				<h5>4. Fine Tune It</h5>
 				<?php _e( 'Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!', 'jetpack-start' ); ?>
 				<br /><br />
-				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
+				<a class="button button-primary" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'blog_customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
 			</li>
 
 		</ul>
