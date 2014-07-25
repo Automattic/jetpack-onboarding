@@ -71,8 +71,6 @@
   text-align: left;
   vertical-align: top;
   cursor: pointer;
-}
-.welcome__section.active {
   position: relative;
   border-color: #eee;
   background: #fff;
@@ -135,7 +133,7 @@
   float: left;
   margin: 0;
   padding: 30px 33px 35px;
-  width: 33.333%;
+  width: 25%;
   font-size: 13px;
   line-height: 1.5;
 }

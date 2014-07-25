@@ -71,14 +71,13 @@
 	text-align: left;
 	vertical-align: top;
 	cursor: pointer;
+	position: relative;
+	border-color: #eee;
+	background: #fff;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 
 	&.active {
-		position: relative;
-		border-color: #eee;
-		background: #fff;
-		-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
-		box-shadow: 0 1px 1px rgba(0,0,0,.04);
-
 		&:before,
 		&:after {
 			content: '';
@@ -131,7 +130,7 @@
 		float: left;
 		margin: 0;
 		padding: 30px 33px 35px;
-		width: 33.333%;
+		width: 25%;
 		font-size: 13px;
 		line-height: 1.5;
 
