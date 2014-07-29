@@ -116,6 +116,7 @@
 .welcome__details {
 	float: left;
 	margin: 15px 30px;
+	padding: 0 15px;
 	border: 1px solid #eee;
 	background: #fff;
 	color: #777;
@@ -129,7 +130,7 @@
 	li {
 		float: left;
 		margin: 0;
-		padding: 30px 33px 35px;
+		padding: 30px 15px 35px;
 		width: 25%;
 		font-size: 13px;
 		line-height: 1.5;
