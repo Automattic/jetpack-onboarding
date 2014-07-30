@@ -24,6 +24,11 @@
   top: 0;
   right: 13px;
 }
+@media (max-width: 600px) {
+  .welcome-panel .welcome-panel-close {
+    top: 58px;
+  }
+}
 @media (max-width: 782px) {
   .welcome-panel {
     left: -10px;
@@ -44,9 +49,25 @@
   font-size: 41px;
   text-align: center;
 }
+@media (max-width: 768px) {
+  .getting-started h3 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 320px) {
+  .getting-started h3 {
+    font-size: 24px;
+  }
+}
 .getting-started h4 {
   margin: 0;
   font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .getting-started__intro {
+    padding: 30px;
+  }
 }
 
 .getting-started__subhead {
@@ -55,6 +76,17 @@
   font-size: 18px;
   line-height: 1.6;
   text-align: center;
+}
+@media (max-width: 600px) {
+  .getting-started__subhead {
+    margin-bottom: 15px;
+    font-size: 15px;
+  }
+}
+@media (max-width: 320px) {
+  .getting-started__subhead {
+    font-size: 13px;
+  }
 }
 
 .getting-started__sections {
@@ -108,10 +140,15 @@
 @media (max-width: 767px) {
   .welcome__section {
     display: block;
-    margin: 0 30px;
+    margin: 0 30px 14px;
     width: auto;
     max-width: none;
     min-height: 0;
+  }
+}
+@media (max-width: 500px) {
+  .welcome__section {
+    margin: 0 10px 14px;
   }
 }
 
@@ -141,16 +178,25 @@
 @media (max-width: 767px) {
   .welcome__details li {
     float: none;
-    padding: 7px 22px;
+    padding: 18px 22px 22px;
+    border-bottom: 1px solid #eee;
     width: 100%;
     min-height: 0;
   }
+}
+.welcome__details li:last-child {
+  border: 0;
 }
 @media (max-width: 767px) {
   .welcome__details {
     float: none;
     overflow: hidden;
-    padding: 10px 0 12px;
+    padding: 0;
+  }
+}
+@media (max-width: 500px) {
+  .welcome__details {
+    margin: 15px 10px;
   }
 }
 

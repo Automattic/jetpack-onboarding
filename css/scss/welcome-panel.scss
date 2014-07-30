@@ -1,3 +1,5 @@
+@import 'mixins/mixins';
+
 // Tabs!
 .tab__section {
 	display: none;
@@ -25,6 +27,10 @@
 	.welcome-panel-close {
 		top: 0;
 		right: 13px;
+
+		@media (max-width: 600px) {
+			top: 58px;
+		}
 	}
 	@media (max-width: 782px) {
 		left: -10px;
@@ -42,10 +48,23 @@
 		margin: 58px 0 17px;
 		font-size: 41px;
 		text-align: center;
+
+		@include breakpoint(tablet) {
+			font-size: 30px;
+		}
+		@include breakpoint(phone) {
+			font-size: 24px;
+		}
 	}
 	h4 {
 		margin: 0;
 		font-size: 20px;
+	}
+}
+
+.getting-started__intro {
+	@include breakpoint(tablet) {
+		padding: 30px;
 	}
 }
 
@@ -55,6 +74,14 @@
 	font-size: 18px;
 	line-height: 1.6;
 	text-align: center;
+
+	@media (max-width: 600px) {
+		margin-bottom: 15px;
+		font-size: 15px;
+	}
+	@include breakpoint(phone) {
+		font-size: 13px;
+	}
 }
 
 .getting-started__sections {
@@ -106,10 +133,13 @@
 	}
 	@media (max-width: 767px) {
 		display: block;
-		margin: 0 30px;
+		margin: 0 30px 14px;
 		width: auto;
 		max-width: none;
 		min-height: 0;
+	}
+	@include breakpoint(phablet) {
+		margin: 0 10px 14px;
 	}
 }
 
@@ -137,14 +167,22 @@
 
 		@media (max-width: 767px) {
 			float: none;
-			padding: 7px 22px;
+			padding: 18px 22px 22px;
+			border-bottom: 1px solid #eee;
 			width: 100%;
 			min-height: 0;
+		}
+
+		&:last-child {
+			border: 0;
 		}
 	}
 	@media (max-width: 767px) {
 		float: none;
 		overflow: hidden;
-		padding: 10px 0 12px;
+		padding: 0;
+	}
+	@include breakpoint(phablet) {
+		margin: 15px 10px;
 	}
 }
