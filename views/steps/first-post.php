@@ -139,10 +139,7 @@
 		jetpackStartWizard.addStep( new JetpackStartStep( {
 			view: StepView,
 			slug: '<?php echo $step->slug; ?>',
-			sort: '<?php echo $step->sort; ?>',
-			conditional_display: function ( step ) {
-				return <?php echo ( function_exists( 'jetpack_is_mobile' ) && jetpack_is_mobile() ) ? 'false' : 'true'; ?>;
-			}
+			sort: '<?php echo $step->sort; ?>'
 		} ) );
 	}) ( jQuery );
 </script>
