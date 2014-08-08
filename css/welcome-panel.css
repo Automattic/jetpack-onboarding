@@ -3,7 +3,7 @@
 }
 
 .welcome__section.active + .tab__section {
-  display: block;
+  display: table;
 }
 
 .welcome-panel {
@@ -167,25 +167,39 @@
   margin: 0 0 6px;
   font-size: 16px;
 }
+.welcome__details ul {
+  display: table-row;
+}
 .welcome__details li {
-  float: left;
+  display: table-cell;
+  position: relative;
   margin: 0;
-  padding: 30px 15px 35px;
+  padding: 30px 15px 65px;
   width: 25%;
   font-size: 13px;
   line-height: 1.5;
 }
+.welcome__details li:last-child {
+  border: 0;
+}
 @media (max-width: 767px) {
   .welcome__details li {
-    float: none;
+    display: block;
     padding: 18px 22px 22px;
     border-bottom: 1px solid #eee;
     width: 100%;
     min-height: 0;
   }
 }
-.welcome__details li:last-child {
-  border: 0;
+.welcome__details .button-primary {
+  position: absolute;
+  bottom: 30px;
+  left: 15px;
+}
+@media (max-width: 767px) {
+  .welcome__details .button-primary {
+    position: static;
+  }
 }
 @media (max-width: 767px) {
   .welcome__details {

@@ -6,7 +6,7 @@
 }
 
 .welcome__section.active + .tab__section {
-	display: block;
+	display: table;
 }
 
 // Styles!
@@ -157,24 +157,36 @@
 		margin: 0 0 6px;
 		font-size: 16px;
 	}
+	ul {
+		display: table-row;
+	}
 	li {
-		float: left;
+		display: table-cell;
+		position: relative;
 		margin: 0;
-		padding: 30px 15px 35px;
+		padding: 30px 15px 65px;
 		width: 25%;
 		font-size: 13px;
 		line-height: 1.5;
 
+		&:last-child {
+			border: 0;
+		}
 		@media (max-width: 767px) {
-			float: none;
+			display: block;
 			padding: 18px 22px 22px;
 			border-bottom: 1px solid #eee;
 			width: 100%;
 			min-height: 0;
 		}
+	}
+	.button-primary {
+		position: absolute;
+		bottom: 30px;
+		left: 15px;
 
-		&:last-child {
-			border: 0;
+		@media (max-width: 767px) {
+			position: static;
 		}
 	}
 	@media (max-width: 767px) {
