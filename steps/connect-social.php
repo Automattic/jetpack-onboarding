@@ -1,6 +1,6 @@
 <?php
 /**
- * Label: Every site needs an audience!
+ * Label: Maximize your site traffic
  * Sort Order: 2
  */
 
