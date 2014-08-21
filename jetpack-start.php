@@ -8,6 +8,8 @@
 
 define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
+define( 'JETPACK_STEP_AUTO_REDIRECT', true );
+
 
 function jps_start() {
 	if (current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
