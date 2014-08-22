@@ -1,4 +1,5 @@
 <script type="text/template" id="connect_jetpack_template">
+<?php if ( ! defined( 'JETPACK_STEP_AUTO_REDIRECT' ) || get_transient( 'jetpack_tried_to_connect' ) ) : ?>
 <div class="jetpack-hero">
 	<?php if ( ! empty( $step->label ) ) : ?>
 	<h1 class="jetpack-hero__title"><?php echo esc_html( $step->label ); ?></h1>
@@ -20,14 +21,14 @@
 	<div class="jetpack-hero__info">
 		<p class="step-description"><?php _e( 'Jetpack supercharges your self‑hosted WordPress site with the awesome cloud power of WordPress.com at no additional cost.', 'jetpack-start' ) ?></p>
 		<div class="jetpack-box">
-			<?php $connected = false; ?>
-				<a class="button--primary" href="<?php echo $step->get_jetpack()->build_connect_url() ?>" class="jetpack-link" target="_top"><?php echo  __( 'Connect to WordPress.com', 'jetpack-start' );  ?></a>
-				<div class="skip">
-					<?php printf( __( ' or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
-				</div>
+			<a class="button--primary" href="<?php echo Jetpack::init()->build_connect_url() ?>" class="jetpack-link" target="_top"><?php echo  __( 'Connect to WordPress.com', 'jetpack-start' );  ?></a>
+			<div class="skip">
+				<?php printf( __( ' or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
+			</div>
 		</div>
 	</div>
 </div>
+<?php endif	?>
 </script>
 
 <script>
@@ -37,7 +38,14 @@
 
 			events: {
 				"click a.next": "goToNextStep"
+			},
+
+			<?php if ( defined( 'JETPACK_STEP_AUTO_REDIRECT' ) && false === get_transient( 'jetpack_tried_to_connect' ) ) : ?>
+			beforeRender: function() {
+				window.location = '<?php echo add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, Jetpack::init()->build_connect_url( true ) ); ?>';
+				StepView.template_id = '#waiting-redirect';
 			}
+			<?php endif	?>
 
 		});
 
@@ -46,9 +54,8 @@
 				view: StepView,
 				slug: '<?php echo $step->slug; ?>',
 				sort: '<?php echo $step->sort; ?>',
-				connected: <?php echo $step->get_jetpack()->is_active() ? 'true' : 'false'; ?>,
 				conditional_display: function( step ) {
-					return ! step.get( 'connected' );
+					return <?php echo ( ! Jetpack::init()->is_active() && false === get_transient( 'jetpack_tried_to_connect' ) ) ? 'true' : 'false'; ?>;
 				}
 			} )
 		);
