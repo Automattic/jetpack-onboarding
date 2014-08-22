@@ -21,11 +21,10 @@
 	<div class="jetpack-hero__info">
 		<p class="step-description"><?php _e( 'Jetpack supercharges your self‑hosted WordPress site with the awesome cloud power of WordPress.com at no additional cost.', 'jetpack-start' ) ?></p>
 		<div class="jetpack-box">
-			<?php $connected = false; ?>
-				<a class="button--primary" href="<?php echo Jetpack::init()->build_connect_url() ?>" class="jetpack-link" target="_top"><?php echo  __( 'Connect to WordPress.com', 'jetpack-start' );  ?></a>
-				<div class="skip">
-					<?php printf( __( ' or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
-				</div>
+			<a class="button--primary" href="<?php echo Jetpack::init()->build_connect_url() ?>" class="jetpack-link" target="_top"><?php echo  __( 'Connect to WordPress.com', 'jetpack-start' );  ?></a>
+			<div class="skip">
+				<?php printf( __( ' or, <a href="%s" class="next">skip this step</a>', 'jetpack-start' ), home_url() ); ?>
+			</div>
 		</div>
 	</div>
 </div>
