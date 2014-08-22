@@ -42,7 +42,7 @@
 
 			<?php if ( defined( 'JETPACK_STEP_AUTO_REDIRECT' ) && false === get_transient( 'jetpack_tried_to_connect' ) ) : ?>
 			beforeRender: function() {
-				window.location = '<?php echo Jetpack::init()->build_connect_url( true ); ?>';
+				window.location = '<?php echo add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, Jetpack::init()->build_connect_url( true ) ); ?>';
 				StepView.template_id = '#waiting-redirect';
 			}
 			<?php endif	?>

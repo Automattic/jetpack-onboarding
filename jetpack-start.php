@@ -9,6 +9,7 @@
 define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
 define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
 define( 'JETPACK_STEP_AUTO_REDIRECT', true );
+define( 'JETPACK_STEP_AUTO_REDIRECT_SRC', 'custom_src' );
 
 
 function jps_start() {
