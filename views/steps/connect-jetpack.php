@@ -54,9 +54,8 @@
 				view: StepView,
 				slug: '<?php echo $step->slug; ?>',
 				sort: '<?php echo $step->sort; ?>',
-				connected: <?php echo Jetpack::init()->is_active() ? 'true' : 'false'; ?>,
 				conditional_display: function( step ) {
-					return ! step.get( 'connected' );
+					return <?php echo ( ! Jetpack::init()->is_active() && false === get_transient( 'jetpack_tried_to_connect' ) ) ? 'true' : 'false'; ?>;
 				}
 			} )
 		);
