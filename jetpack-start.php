@@ -6,10 +6,10 @@
  * Version: 0.1
  */
 
-define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
-define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
-define( 'JETPACK_STEP_AUTO_REDIRECT', true );
-define( 'JETPACK_STEP_AUTO_REDIRECT_SRC', 'custom_src' );
+defined( 'JETPACK_START_BASE_DIR' )         or define( 'JETPACK_START_BASE_DIR', dirname( __FILE__ ) );
+defined( 'JETPACK_START_BASE_URL' )         or define( 'JETPACK_START_BASE_URL', plugins_url( 'jetpack-start', dirname( __FILE__ ) ) );
+defined( 'JETPACK_STEP_AUTO_REDIRECT' )     or define( 'JETPACK_STEP_AUTO_REDIRECT', true );
+defined( 'JETPACK_STEP_AUTO_REDIRECT_SRC' ) or define( 'JETPACK_STEP_AUTO_REDIRECT_SRC', 'custom_src' );
 
 
 function jps_start() {
