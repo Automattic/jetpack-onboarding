@@ -22,8 +22,9 @@ class Jetpack_Start_Menu {
 	}
 
 	static function render() {
-		wp_register_script( 'jquery-cookie', '/wp-content/mu-plugins/jetpack-start/js/jquery.cookie.js', array( 'jquery' ) );
-		wp_enqueue_script( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/js/jetpack-start-menu.js', array( 'jquery', 'jquery-cookie', ) );
+
+		wp_register_script( 'jquery-cookie', plugins_url( 'js/jquery.cookie.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( 'jetpack-start', plugins_url( 'js/jetpack-start-menu.js', __FILE__ ), array( 'jquery', 'jquery-cookie', ) );
 		ob_start();
 		?>
 		<div class="jps-admin-menu">
@@ -67,9 +68,9 @@ class Jetpack_Start_Menu {
 		$jetpackstart_menu['html'] = ob_get_contents();
 		$jetpackstart_menu['ajaxurl'] = admin_url( 'admin-ajax.php' );
 		ob_end_clean();
-		wp_localize_script( 'jetpack-start', '_JetpackStartMenu', $jetpackstart_menu );
-		wp_register_style( 'jetpack-start', '/wp-content/mu-plugins/jetpack-start/css/jetpack-start-menu.css' );
-		wp_register_style( 'jps-font-awesome', '/wp-content/mu-plugins/jetpack-start/css/font-awesome.css' );
+		wp_localize_script( 'jetpack-start', '_JetpackStartMenu', $jetpackstart_menu );		
+		wp_register_style( 'jetpack-start', plugins_url( 'css/jetpack-start-menu.css', __FILE__ ) );
+		wp_register_style( 'jps-font-awesome', plugins_url( 'css/font-awesome.css', __FILE__ ) );
 		wp_enqueue_style( 'jetpack-start' );
 		wp_enqueue_style( 'jps-font-awesome' );
 	}
