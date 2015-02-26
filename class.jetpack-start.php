@@ -124,15 +124,22 @@ class Jetpack_Start {
 		if ( ! file_exists( $file ) )
 			return false;
 
-		require_once( $file );
-
 		$headers = array(
 			'label' => 'Label',
 			'sort'  => 'Sort Order',
+			'show'  => 'Show',
 			'deps'  => 'Plugin Dependencies'
 		);
 
 		$step_headers = get_file_data( $file, $headers );
+
+		$step_headers['show']  = empty( $step_headers['show'] ) ? true : filter_var( $step_headers['show'], FILTER_VALIDATE_BOOLEAN );
+
+		if ( ! $step_headers['show'] ) {
+			return false;
+		}
+
+		require_once( $file );
 
 		$step_headers['slug']  = basename( $file, ".php");;
 		$step_headers['label'] = translate( $step_headers['label'], 'jetpack-start' );
