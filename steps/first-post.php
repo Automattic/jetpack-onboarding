@@ -2,6 +2,7 @@
 /**
  * Label: Finally, say Hello!
  * Sort Order: 4
+ * Show: false
  */
 
 global $pagenow;
