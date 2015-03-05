@@ -82,7 +82,7 @@
 				<?php if ( class_exists( 'Jetpack' ) ) :  ?>
 					<?php _e( 'You have successfully connected Jetpack for stats, monitoring, and more!', 'jetpack-start' ); ?>
 					<p class="submit">
-						<input type="submit" name="save" class="button button-primary button-large" value="Save">
+						<input type="submit" name="save" class="button button-primary button-large" value="Continue">
 					</p>
 				<?php else : ?>
 					<?php _e( 'Connect Jetpack to enable free stats, site monitoring, and more.', 'jetpack-start' ); ?>
@@ -123,8 +123,8 @@
 					<a class="download-jetpack" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
 
 				<?php endif; ?>
-				<p class="submit">
-					<input type="submit" name="save" class="button button-primary button-large" value="Continue">
+				<p>
+					<input type="submit" name="save" class="skip-step" value="Continue">
 				</p>
 			</div>
 		</div>
@@ -164,20 +164,20 @@
 			</ul>
 
 		</div>
+	</div>
 
-		<div class="getting-started__steps">
-			<h3><?php _e( 'Your Progress' ); ?></h3>
-			<ol>
-				<li class="completed"><?php _e( 'Sign up', 'jetpack-start' ); ?></li>
-				<li class="completed"><?php _e( 'Create admin account', 'jetpack-start' ); ?></li>
-				<li class="completed"><?php _e( 'Verify email address', 'jetpack-start' ); ?></li>
-				<li class="current"><?php _e( 'Set site title', 'jetpack-start' ); ?></li>
-				<li><?php _e( 'Pick a layout', 'jetpack-start' ); ?></li>
-				<li><?php _e( 'Enable stats &amp; monitoring', 'jetpack-start' ); ?></li>
-				<li><?php _e( 'Pick a design', 'jetpack-start' ); ?></li>
-				<li><?php _e( 'Get some traffic', 'jetpack-start' ); ?></li>
-				<li><?php _e( 'Advanced settings', 'jetpack-start' ); ?></li>
-			</ol>
-		</div>
+	<div class="getting-started__steps">
+		<h3><?php _e( 'Your Progress' ); ?></h3>
+		<ol>
+			<li class="completed"><?php _e( 'Sign up', 'jetpack-start' ); ?></li>
+			<li class="completed"><?php _e( 'Create admin account', 'jetpack-start' ); ?></li>
+			<li class="completed"><?php _e( 'Verify email address', 'jetpack-start' ); ?></li>
+			<li class="current"><?php _e( 'Set site title', 'jetpack-start' ); ?></li>
+			<li><?php _e( 'Pick a layout', 'jetpack-start' ); ?></li>
+			<li><?php _e( 'Enable stats &amp; monitoring', 'jetpack-start' ); ?></li>
+			<li><?php _e( 'Pick a design', 'jetpack-start' ); ?></li>
+			<li><?php _e( 'Get some traffic', 'jetpack-start' ); ?></li>
+			<li><?php _e( 'Advanced settings', 'jetpack-start' ); ?></li>
+		</ol>
 	</div>
 </div>
