@@ -235,4 +235,13 @@ ul.welcome__advanced .button {
   }
 }
 
+.skip-step {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 0.9em;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=welcome-panel.css.map */
