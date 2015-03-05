@@ -1,10 +1,3 @@
-<div class="getting-started__progress">
-	<div class="progress__bar">
-		<span></span>
-	</div>
-	<span class="progress__percent">30</span>% done
-</div>
-
 <div class="getting-started">
 	<div class="getting-started__intro">
 		<h3><?php _e( 'Welcome to your new WordPress site!', 'jetpack-start' ); ?></h3>
