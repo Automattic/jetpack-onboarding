@@ -15,8 +15,10 @@ if ( isset( $_GET['page'] ) && $_GET['page'] == 'sharing' ) {
 class Jetpack_Start_Step_connect_social extends Jetpack_Start_Step {
 
 	function __construct() {
-		add_action( 'jetpack-start_step-connect-social', array( $this, 'render' ) );
-		add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
+		if ( class_exists( 'Jetpack' ) && Jetpack::is_active() ) {
+			add_action( 'jetpack-start_step-connect-social', array( $this, 'render' ) );
+			add_filter( 'jetpack_start_js_globals', array( $this, 'jetpack_start_js_globals' ) );
+		}
 	}
 
 	static function jetpack_start_js_globals( $jetpack_start_global_variables ) {
