@@ -38,10 +38,10 @@ class Jetpack_Start_Welcome_Panel {
 				'themes' => self::get_themes()
 			);
 			wp_localize_script( 'jetpack-start', 'JPS', $jps_vars );
-			// wp_localize_script( 'jetpack-start', '_JetpackStart', $jetpack_start_global_variables );
-
+			wp_register_style( 'jps-font-awesome', plugins_url( 'css/font-awesome.css', __FILE__ ) );
 			wp_enqueue_script( 'jetpack-start' );
 			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin' ) );
+			wp_enqueue_style( 'jps-font-awesome' );
 		}
 	}
 
@@ -50,8 +50,7 @@ class Jetpack_Start_Welcome_Panel {
 	}
 
 	static function wp_welcome_panel() {
-		require_once ( JETPACK_START_BASE_DIR . '/class.jetpack-start.php' );
-		Jetpack_Start::get_view( 'welcome-panel.php' );
+		require_once ( JETPACK_START_BASE_DIR . '/views/welcome-panel.php' );
 	}
 
 	static function init_ajax() {

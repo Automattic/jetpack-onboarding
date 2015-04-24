@@ -206,6 +206,13 @@
 		</div>
 	</div>
 
+	<div class="getting-started__progress progress_10">
+		<div class="progress__bar">
+			<span></span>
+		</div>
+		10% complete
+	</div>
+
 	<div class="getting-started__steps">
 		<h3><?php _e( 'Your Progress' ); ?></h3>
 		<ol>

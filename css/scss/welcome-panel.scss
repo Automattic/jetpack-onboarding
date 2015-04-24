@@ -28,15 +28,74 @@ $light-gray: #ccc;
 	left: 10px;
 	font-weight: 400;
 	font-size: 80%;
-	// color: #4ab866; // green - 90-100% complete
-	// color: #f0b849; // yellow - 50-90% complete
-	color: #d94f4f; // red - 0-50% complete
+
+	&.progress_10, &.progress_20, &.progress_30, &.progress_40, &.progress_50 {
+		color: #d94f4f; // red - 0-50% complete
+	}
+
+	&.progress_60, &.progress_70, &.progress_80, &.progress_90 {
+		color: #f0b849; // yellow - 50-90% complete
+	}
+
+	&.progress_100 {
+		color: #4ab866; // green - 90-100% complete
+	}
+
+	&.progress_10 .progress__bar span {
+		background: #d94f4f; 
+		width: 10%;
+	}
+
+	&.progress_20 .progress__bar span {
+		background: #d94f4f; 
+		width: 20%;
+	}
+
+	&.progress_30 .progress__bar span {
+		background: #d94f4f; 
+		width: 30%;
+	}
+
+	&.progress_40 .progress__bar span {
+		background: #d94f4f; 
+		width: 40%;
+	}
+
+	&.progress_50 .progress__bar span {
+		background: #d94f4f; 
+		width: 50%;
+	}
+
+	&.progress_60 .progress__bar span {
+		background: #f0b849;
+		width: 60%;
+	}
+
+	&.progress_70 .progress__bar span {
+		background: #f0b849;
+		width: 70%;
+	}
+
+	&.progress_80 .progress__bar span {
+		background: #f0b849;
+		width: 80%;
+	}
+
+	&.progress_90 .progress__bar span {
+		background: #f0b849;
+		width: 90%;
+	}
+
+	&.progress_100 .progress__bar span {
+		background: #4ab866;
+		width: 100%;
+	}
 
 	.progress__bar {
 		display: inline-block;
 		width: 80px;
 		height: 10px;
-		margin: 0 5px -4px 0;
+		margin: 0 5px -1px 0;
 		padding: 2px;
 		border: 1px solid #ccc;
 		border-radius: 2px;
@@ -45,10 +104,6 @@ $light-gray: #ccc;
 		span {
 			display: block;
 			height: 100%;
-			width: 30%;
-			// background: #4ab866; // green - 90-100% complete
-			// background: #f0b849; // yellow - 50-90% complete
-			background: #d94f4f; // red - 0-50% complete
 		}
 	}
 }

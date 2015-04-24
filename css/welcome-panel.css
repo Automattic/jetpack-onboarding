@@ -847,13 +847,61 @@ big {
   left: 10px;
   font-weight: 400;
   font-size: 80%;
+}
+.getting-started__progress.progress_10, .getting-started__progress.progress_20, .getting-started__progress.progress_30, .getting-started__progress.progress_40, .getting-started__progress.progress_50 {
   color: #d94f4f;
+}
+.getting-started__progress.progress_60, .getting-started__progress.progress_70, .getting-started__progress.progress_80, .getting-started__progress.progress_90 {
+  color: #f0b849;
+}
+.getting-started__progress.progress_100 {
+  color: #4ab866;
+}
+.getting-started__progress.progress_10 .progress__bar span {
+  background: #d94f4f;
+  width: 10%;
+}
+.getting-started__progress.progress_20 .progress__bar span {
+  background: #d94f4f;
+  width: 20%;
+}
+.getting-started__progress.progress_30 .progress__bar span {
+  background: #d94f4f;
+  width: 30%;
+}
+.getting-started__progress.progress_40 .progress__bar span {
+  background: #d94f4f;
+  width: 40%;
+}
+.getting-started__progress.progress_50 .progress__bar span {
+  background: #d94f4f;
+  width: 50%;
+}
+.getting-started__progress.progress_60 .progress__bar span {
+  background: #f0b849;
+  width: 60%;
+}
+.getting-started__progress.progress_70 .progress__bar span {
+  background: #f0b849;
+  width: 70%;
+}
+.getting-started__progress.progress_80 .progress__bar span {
+  background: #f0b849;
+  width: 80%;
+}
+.getting-started__progress.progress_90 .progress__bar span {
+  background: #f0b849;
+  width: 90%;
+}
+.getting-started__progress.progress_100 .progress__bar span {
+  background: #4ab866;
+  width: 100%;
 }
 .getting-started__progress .progress__bar {
   display: inline-block;
   width: 80px;
   height: 10px;
-  margin: 0 5px -4px 0;
+  margin: 0 5px -1px 0;
   padding: 2px;
   border: 1px solid #ccc;
   border-radius: 2px;
@@ -862,8 +910,6 @@ big {
 .getting-started__progress .progress__bar span {
   display: block;
   height: 100%;
-  width: 30%;
-  background: #d94f4f;
 }
 
 .getting-started {
