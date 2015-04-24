@@ -75,10 +75,21 @@
 
 			
 			<?php if ( class_exists( 'Jetpack' ) ) :  ?>
-				<?php _e( 'You have successfully connected Jetpack for stats, monitoring, and more!', 'jetpack-start' ); ?>
-				<p class="submit">
-					<input type="submit" name="save" class="button button-primary button-large" value="Continue">
-				</p>
+				<?php if ( Jetpack::is_active() ) : ?>
+					<?php _e( 'You have successfully connected Jetpack for stats, monitoring, and more!', 'jetpack-start' ); ?>
+					<p class="submit">
+						<input type="submit" name="save" class="button button-primary button-large" value="Continue">
+					</p>
+				<?php else : ?>
+					<div class="welcome__connect">
+						<?php _e( 'You have downloaded JetPack but not yet enabled it', 'jetpack-start' ); ?>
+						<br /><br />
+						<a href="<?php echo Jetpack::init()->build_connect_url() ?>" class="download-jetpack"><?php _e( 'Connect to WordPress.com', 'jetpack' ); ?></a>
+						<p class="submit">
+							<a class="skip" href="#">Skip this step</a>
+						</p>
+					</div>
+				<?php endif; ?>
 			<?php else : ?>
 				<div class="welcome__connect">
 					<?php _e( 'Connect Jetpack to enable free stats, site monitoring, and more.', 'jetpack-start' ); ?>

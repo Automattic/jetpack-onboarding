@@ -136,6 +136,9 @@
   text-align: center;
   background: #f5f5f5;
 }
+.welcome__connect p {
+  text-align: center;
+}
 
 #poststuff {
   min-width: 0;
