@@ -105,7 +105,38 @@
 		<!-- Pick a design -->
 		<div class="welcome__section hidden" id="welcome__design">
 			<h4><?php _e( 'Pick a design', 'jetpack-start' ); ?></h4>
+			<script type="text/template" id="select_themes_template" >
+			<div class="select-theme step-content">
+				<div class="section-header">
+					<?php if ( ! empty( $step->label ) ) : ?>
+						<h1><?php echo esc_html( $step->label ); ?></h1>
+					<?php endif; ?>
+					<p class="step-description"><?php _e( 'To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)', 'jetpack-start' ) ?></p>
+				</div>
+				<div class="themes-box">
+				<% _.each( themes, function( theme ) { %>
+					<div class="theme" data-theme="<%= theme.stylesheet %>" style="background-image:url('<%= theme.img_preview %>');background-size: 100%;">
+						<div class="theme-buttons">
+							<a href="<%= theme.demo_url %>" class="button--secondary button--large theme-preview" target="_blank"><span class="small-icon fa fa-external-link"></span><?php _e( 'Preview', 'jetpack-start' ) ?></a>
+							<a href="" class="button--primary button--large theme-select"><span class="small-icon fa fa-arrow-circle-o-right"></span><?php _e( 'Select Theme', 'jetpack-start' ) ?></a>
+						</div>
+					</div>
+				<% }); %>
+				</div>
+			</div>
+			</script>
+			<script>
+				console.log(JPS.themes);
+				jQuery(document).ready(function() {
+					var theme_template = _.template( jQuery( '#select_themes_template' ).html() );
+					var $container = jQuery('#welcome__design').find('.themes_container');
+					$container.append( theme_template({themes: JPS.themes}) );
+					
+				});
+			</script>
 			<h5><?php _e( 'Select from one of the themes below. You can always change it later to one of the over 250 themes.', 'jetpack-start' ); ?></h5>
+			<div class="themes_container">
+			</div>
 			<p class="submit">
 				<input type="submit" name="save" class="button button-primary button-large" value="Save">
 				<a class="skip" href="#">Skip this step</a>

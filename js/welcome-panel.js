@@ -26,7 +26,7 @@
             }
             data = {
                 action: 'jps_change_title',
-                nonce: JPS.jps_change_title,
+                nonce: JPS.nonce.jps_change_title,
                 title: title
             };
             $('#wp-admin-bar-site-name a').html(title);
