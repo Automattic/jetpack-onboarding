@@ -238,7 +238,7 @@ button,
 input,
 select,
 textarea {
-  color: #222222;
+  color: #222;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -283,7 +283,7 @@ address {
 }
 
 pre {
-  background: #eeeeee;
+  background: #eee;
   font-family: "Courier 10 Pitch", Courier, monospace;
   font-size: 15px;
   font-size: 1.5rem;
@@ -910,7 +910,7 @@ a:focus {
 3.2 - Horizontal Rules
 --------------------------------------------------------------*/
 hr {
-  background-color: #eeeeee;
+  background-color: #eee;
   border: 0;
   height: 1px;
   margin-bottom: 1.5em;
@@ -963,12 +963,10 @@ th {
     -webkit-transform: scale(0.3);
     transform: scale(0.3);
   }
-
   60% {
     -webkit-transform: scale(1.15);
     transform: scale(1.15);
   }
-
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -981,13 +979,11 @@ th {
     -ms-transform: scale(0.3);
     transform: scale(0.3);
   }
-
   60% {
     -webkit-transform: scale(1.15);
     -ms-transform: scale(1.15);
     transform: scale(1.15);
   }
-
   100% {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
@@ -1003,11 +999,11 @@ textarea {
   margin: 0;
   padding: 10px 12px;
   width: 100%;
-  color: #555555;
+  color: #555;
   font-size: 15px;
   line-height: 1.4;
   border: 1px solid #d2dee6;
-  background: #f4f8fa;
+  background: #f4f8fA;
   -webkit-transition: all .15s ease-in-out;
   transition: all .15s ease-in-out;
   -webkit-box-sizing: border-box;
@@ -1020,7 +1016,7 @@ input[type="url"]::-webkit-input-placeholder,
 input[type="password"]::-webkit-input-placeholder,
 input[type="search"]::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: #aaaaaa;
+  color: #aaa;
 }
 input[type="text"]:-moz-placeholder,
 input[type="email"]:-moz-placeholder,
@@ -1028,7 +1024,7 @@ input[type="url"]:-moz-placeholder,
 input[type="password"]:-moz-placeholder,
 input[type="search"]:-moz-placeholder,
 textarea:-moz-placeholder {
-  color: #aaaaaa;
+  color: #aaa;
 }
 input[type="text"]::-moz-placeholder,
 input[type="email"]::-moz-placeholder,
@@ -1036,7 +1032,7 @@ input[type="url"]::-moz-placeholder,
 input[type="password"]::-moz-placeholder,
 input[type="search"]::-moz-placeholder,
 textarea::-moz-placeholder {
-  color: #aaaaaa;
+  color: #aaa;
 }
 input[type="text"]:-ms-input-placeholder,
 input[type="email"]:-ms-input-placeholder,
@@ -1044,7 +1040,7 @@ input[type="url"]:-ms-input-placeholder,
 input[type="password"]:-ms-input-placeholder,
 input[type="search"]:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: #aaaaaa;
+  color: #aaa;
 }
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
@@ -1052,7 +1048,7 @@ input[type="url"]::placeholder,
 input[type="password"]::placeholder,
 input[type="search"]::placeholder,
 textarea::placeholder {
-  color: #aaaaaa;
+  color: #aaa;
 }
 input[type="text"]:hover,
 input[type="email"]:hover,
@@ -1060,8 +1056,8 @@ input[type="url"]:hover,
 input[type="password"]:hover,
 input[type="search"]:hover,
 textarea:hover {
-  border-color: #aaaaaa;
-  background: white;
+  border-color: #aaa;
+  background: #fff;
 }
 input[type="text"]:focus,
 input[type="email"]:focus,
@@ -1071,7 +1067,7 @@ input[type="search"]:focus,
 textarea:focus {
   color: #5c6671;
   border-color: #0085be;
-  background: white;
+  background: #fff;
   outline: none;
   -webkit-box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
@@ -1209,14 +1205,14 @@ input[type="submit"]:disabled, .button--jetpack:disabled {
 
 .button--primary {
   background: #00aadc;
-  color: white;
+  color: #fff;
 }
 .button--primary:active, .button--primary:hover, .button--primary:focus {
-  color: white;
+  color: #fff;
   background: #33bbe3;
 }
 .button--primary:visited {
-  color: white;
+  color: #fff;
 }
 [disabled].button--primary, .button--primary:disabled {
   background: #298cba;
@@ -1401,7 +1397,6 @@ input[type=submit]::-moz-focus-inner {
     -webkit-transform: translate3d(0px, 0px, 0px);
     transform: translate3d(0px, 0px, 0px);
   }
-
   100% {
     -webkit-transform: translate3d(570px, -570px, 0px);
     transform: translate3d(570px, -570px, 0px);
@@ -1414,7 +1409,6 @@ input[type=submit]::-moz-focus-inner {
     -ms-transform: translate3d(0px, 0px, 0px);
     transform: translate3d(0px, 0px, 0px);
   }
-
   100% {
     -webkit-transform: translate3d(570px, -570px, 0px);
     -ms-transform: translate3d(570px, -570px, 0px);

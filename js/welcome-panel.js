@@ -9,6 +9,13 @@
                 .next().addClass('current');
         };
 
+        // Skip buttons
+        $('.welcome__section a.skip').click(function (event) {
+            event.preventDefault();
+            var currentSection = $(this).closest('.welcome__section');
+            moveToNextSection(currentSection);
+        });
+
         // Title step
         $('#welcome__site-title .submit input').click(function (event) {
             var data, title = $('#site-title').val();

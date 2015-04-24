@@ -114,6 +114,16 @@
 .welcome__section input[type="text"] {
   width: 100%;
 }
+.welcome__section a.skip {
+  color: #bbb;
+  font-size: 90%;
+  margin-left: 20px;
+  border-bottom: 1px dotted #bbb;
+}
+
+#welcome__stats a.skip, #welcome__traffic a.skip {
+  margin-left: 0;
+}
 
 .welcome__helper {
   padding-top: 15px;

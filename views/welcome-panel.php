@@ -17,6 +17,7 @@
 
 				<p class="submit">
 					<input type="submit" name="save" class="button button-primary button-large" value="Save"/>
+					<a class="skip" href="#">Skip this step</a>
 				</p>
 			</form>
 			<div class="welcome__helper">
@@ -63,6 +64,7 @@
 
 				<p class="submit">
 					<input type="submit" name="save" class="button button-primary button-large" value="Save">
+					<a class="skip" href="#">Skip this step</a>
 				</p>
 			</form>
 		</div>
@@ -71,18 +73,22 @@
 		<div class="welcome__section hidden" id="welcome__stats">
 			<h4><?php _e( 'Enable stats and monitoring', 'jetpack-start' ); ?></h4>
 
-			<div class="welcome__connect">
-				<?php if ( class_exists( 'Jetpack' ) ) :  ?>
-					<?php _e( 'You have successfully connected Jetpack for stats, monitoring, and more!', 'jetpack-start' ); ?>
-					<p class="submit">
-						<input type="submit" name="save" class="button button-primary button-large" value="Continue">
-					</p>
-				<?php else : ?>
+			
+			<?php if ( class_exists( 'Jetpack' ) ) :  ?>
+				<?php _e( 'You have successfully connected Jetpack for stats, monitoring, and more!', 'jetpack-start' ); ?>
+				<p class="submit">
+					<input type="submit" name="save" class="button button-primary button-large" value="Continue">
+				</p>
+			<?php else : ?>
+				<div class="welcome__connect">
 					<?php _e( 'Connect Jetpack to enable free stats, site monitoring, and more.', 'jetpack-start' ); ?>
 					<br /><br />
 					<a class="download-jetpack" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
-				<?php endif; ?>
-			</div>
+					<p>
+						<a class="skip" href="#">Skip this step</a>
+					</p>
+				</div>
+			<?php endif; ?>	
 		</div>
 
 		<!-- Pick a design -->
@@ -91,6 +97,7 @@
 			<h5><?php _e( 'Select from one of the themes below. You can always change it later to one of the over 250 themes.', 'jetpack-start' ); ?></h5>
 			<p class="submit">
 				<input type="submit" name="save" class="button button-primary button-large" value="Save">
+				<a class="skip" href="#">Skip this step</a>
 			</p>
 		</div>
 
@@ -111,13 +118,12 @@
 
 				<?php else : ?>
 
-					<?php _e( 'Connect Jetpack to publcise your posts, get free stats, and more.', 'jetpack-start' ); ?>
+					<?php _e( 'Connect Jetpack to publicise your posts, get free stats, and more.', 'jetpack-start' ); ?>
 					<br /><br />
 					<a class="download-jetpack" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
-
 				<?php endif; ?>
 				<p>
-					<input type="submit" name="save" class="skip-step" value="Continue">
+					<a class="skip" href="#">Skip this step</a>
 				</p>
 			</div>
 		</div>
