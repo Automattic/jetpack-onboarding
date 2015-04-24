@@ -28,6 +28,7 @@ function jps_start() {
 			require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start.php' );
 			if ( isset( $_GET['jps_wizard_start'] ) ) {
 				delete_option( 'jpstart_wizard_has_run' );
+				delete_transient( 'jetpack_tried_to_connect' );
 				wp_safe_redirect( admin_url() );
 			}
 			Jetpack_Start::init();
