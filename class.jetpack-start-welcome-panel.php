@@ -29,7 +29,8 @@ class Jetpack_Start_Welcome_Panel {
 			remove_action( 'welcome_panel', 'wp_welcome_panel' );
 			add_action( 'welcome_panel', array( __CLASS__, 'wp_welcome_panel' ) );
 			wp_register_script( 'react', plugins_url( 'js/react-0.13.2.min.js', __FILE__ ), array( 'jquery' ) );
-			wp_register_script( 'jetpack-start', plugins_url( 'js/welcome-panel.js', __FILE__ ), array( 'jquery', 'react' ) );
+			wp_register_script( 'jetpack-start-components', plugins_url( 'js/welcome.js', __FILE__ ), array( 'react' ) );
+			wp_register_script( 'jetpack-start', plugins_url( 'js/welcome-panel.js', __FILE__ ), array( 'jetpack-start-components' ) );
 
 			$jps_vars = array(
 				'nonce' => array(
