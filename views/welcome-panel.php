@@ -126,7 +126,6 @@
 			</div>
 			</script>
 			<script>
-				console.log(JPS.themes);
 				jQuery(document).ready(function() {
 					var theme_template = _.template( jQuery( '#select_themes_template' ).html() );
 					var $container = jQuery('#welcome__design').find('.themes_container');
