@@ -13,7 +13,7 @@ defined( 'JETPACK_STEP_AUTO_REDIRECT_SRC' ) or define( 'JETPACK_STEP_AUTO_REDIRE
 
 
 function jps_start() {
-	if (current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+	if (current_user_can( 'switch_themes' ) ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-welcome-panel.php' );
 		Jetpack_Start_Welcome_Panel::init();
 	}

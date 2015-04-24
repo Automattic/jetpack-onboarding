@@ -9,7 +9,7 @@ class Jetpack_Start_Welcome_Panel {
 	static $themes;
 
 	static function init() {
-		if ( current_user_can_for_blog( get_current_blog_id(), 'manage_options' ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 				self::init_ajax();
@@ -54,7 +54,7 @@ class Jetpack_Start_Welcome_Panel {
 	}
 
 	static function init_ajax() {
-		if ( current_user_can_for_blog( get_current_blog_id(), 'switch_themes' ) ) {
+		if ( current_user_can( 'switch_themes' ) ) {
 			add_action( 'wp_ajax_jps_change_title', array( __CLASS__, 'change_title' ) );
 		}
 	}
