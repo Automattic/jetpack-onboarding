@@ -12,7 +12,7 @@
 			<h4><?php _e( 'Set your site title', 'jetpack-start' ); ?></h4>
 
 			<form>
-				<input type="text" name="site_title" id="site-title" autocomplete="off"
+				<input type="text" name="site_title" id="site-title" autocomplete="off" value="<?php esc_attr(bloginfo('name')); ?>"
 				       placeholder="<?php _e( 'Site Title (this can be changed later)', 'jetpack-start' ); ?>"/>
 
 				<p class="submit">
