@@ -41,10 +41,42 @@ module.exports = function(grunt) {
 					livereload: true,
 					spawn: false,
 				}
+			},
+			react: {
+				files: ['jsx/*.jsx'],
+				tasks: ['react']
 			}
-		}
+		},
+
+		react: {
+			single_file_output: {
+				files: {
+					'js/welcome.js': 'jsx/welcome.jsx'
+				}
+			},
+			// combined_file_output: {
+			// 	files: {
+			// 		'path/to/output/dir/combined.js': [
+			// 		  'path/to/jsx/templates/dir/input1.jsx',
+			// 		  'path/to/jsx/templates/dir/input2.jsx'
+			// 		]
+			//   	}
+			// },
+			// dynamic_mappings: {
+			// 	files: [
+			// 		{
+			// 			expand: true,
+			// 			cwd: 'path/to/jsx/templates/dir',
+			// 			src: ['**/*.jsx'],
+			// 			dest: 'path/to/output/dir',
+			// 			ext: '.js'
+			// 		}
+			// 	]
+			// }
+		  },
 	});
 
+	grunt.loadNpmTasks('grunt-react');
 	grunt.loadNpmTasks('grunt-contrib-concat');     // concatenate
 	grunt.loadNpmTasks('grunt-contrib-uglify');     // minify
 	grunt.loadNpmTasks('grunt-contrib-watch');      // watch files for changes

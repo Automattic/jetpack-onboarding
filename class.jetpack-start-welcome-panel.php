@@ -9,27 +9,27 @@ class Jetpack_Start_Welcome_Panel {
 	static $themes;
 
 	static function init() {
-		if ( current_user_can( 'manage_options' ) ) {
-
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				self::init_ajax();
-			}
-
-			if ( isset( $_GET['jps_wp_action'] ) ) {
-				do_action( 'jetpack_start_welcome_panel_action', sanitize_text_field( $_GET['jps_wp_action'] ) );
-				wp_safe_redirect( remove_query_arg( 'jps_wp_action' ) );
-			}
-
-			add_action( 'load-index.php', array( __CLASS__, 'init_welcome_panel' ) );
+		
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			self::init_ajax();
 		}
+
+		if ( isset( $_GET['jps_wp_action'] ) ) {
+			do_action( 'jetpack_start_welcome_panel_action', sanitize_text_field( $_GET['jps_wp_action'] ) );
+			wp_safe_redirect( remove_query_arg( 'jps_wp_action' ) );
+		}
+
+		add_action( 'load-index.php', array( __CLASS__, 'init_welcome_panel' ) );
 	}
 
 	static function init_welcome_panel() {
 		$screen = get_current_screen();
 		if( $screen->base == 'dashboard' ) {
+			//replace the usual welcome panel with our own
 			remove_action( 'welcome_panel', 'wp_welcome_panel' );
 			add_action( 'welcome_panel', array( __CLASS__, 'wp_welcome_panel' ) );
-			wp_register_script( 'jetpack-start', plugins_url( 'js/welcome-panel.js', __FILE__ ), array( 'jquery' ) );
+			wp_register_script( 'react', plugins_url( 'js/react-0.13.2.min.js', __FILE__ ), array( 'jquery' ) );
+			wp_register_script( 'jetpack-start', plugins_url( 'js/welcome-panel.js', __FILE__ ), array( 'jquery', 'react' ) );
 
 			$jps_vars = array(
 				'nonce' => array(
@@ -54,8 +54,9 @@ class Jetpack_Start_Welcome_Panel {
 	}
 
 	static function init_ajax() {
-		if ( current_user_can( 'switch_themes' ) ) {
+		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_change_title', array( __CLASS__, 'change_title' ) );
+			add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
 

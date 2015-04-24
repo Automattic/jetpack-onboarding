@@ -1,5 +1,10 @@
 (function ($) {
     $(document).ready(function () {
+
+        React.render(
+          React.createElement(WelcomeBox, null), document.getElementById('react-test')
+        );
+
         var moveToNextSection = function (currentSection) {
             currentSection.hide();
             currentSection.next().show();
