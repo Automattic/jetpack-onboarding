@@ -10,8 +10,8 @@ module.exports = React.createClass({displayName: "exports",
 				React.createElement("h4", null, "Set your site title"), 
 
 				React.createElement("form", null, 
-					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autocomplete: "off", value: "BLOG NAME", 
-					       placeholder: "Site Title (this can be changed later)"}), 
+					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autocomplete: "off", value: this.props.model.get('title'), 
+					       placeholder: "Site Title (this can be changed later)"}), 					       
 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 

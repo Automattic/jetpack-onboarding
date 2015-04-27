@@ -14,8 +14,10 @@ defined( 'JETPACK_STEP_AUTO_REDIRECT_SRC' ) or define( 'JETPACK_STEP_AUTO_REDIRE
 
 function jps_start() {
 	if ( is_admin() ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-end-points.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-welcome-panel.php' );
-		Jetpack_Start_Welcome_Panel::init();
+		\JetpackStart\EndPoints::init();
+		\JetpackStart\WelcomePanel::init();
 	}
 }
 

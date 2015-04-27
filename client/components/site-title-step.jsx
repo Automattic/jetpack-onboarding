@@ -10,8 +10,8 @@ module.exports = React.createClass({
 				<h4>Set your site title</h4>
 
 				<form>
-					<input type="text" name="site_title" id="site-title" autocomplete="off" value="BLOG NAME"
-					       placeholder="Site Title (this can be changed later)"/>
+					<input type="text" name="site_title" id="site-title" autocomplete="off" value={this.props.model.get('title')}
+					       placeholder="Site Title (this can be changed later)"/>					       
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>

@@ -1,7 +1,7 @@
 var React = require('react'),
 	BackboneReact = require('backbone-react'),
-	WelcomeSection = require('./welcome-section'),
-	WelcomeMenu = require('./welcome-menu');
+	WelcomeSection = require('./welcome-section.jsx'),
+	WelcomeMenu = require('./welcome-menu.jsx');
 
 module.exports = React.createClass({
 	// see: http://magalhas.github.io/backbone-react-component/

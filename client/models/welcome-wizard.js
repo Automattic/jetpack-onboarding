@@ -59,5 +59,9 @@ module.exports = Backbone.Model.extend({
 			//or perhaps it should render an "All Done!" view?
 			return "<h4>Nothing to see here</h4>";
 		}
-	}
+	},
+
+	// nextStep: function() {
+		
+	// }
 });

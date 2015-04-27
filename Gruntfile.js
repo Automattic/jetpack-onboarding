@@ -42,19 +42,28 @@ module.exports = function(grunt) {
 					spawn: false,
 				}
 			},
-			react: {
-				files: ['jsx/*.jsx'],
-				tasks: ['react']
-			},
+			// react: {
+			// 	files: ['jsx/*.jsx'],
+			// 	tasks: ['react']
+			// },
 			browserify: {
-				files: ['client/*.js', 'client/**/*.js'],
+				files: ['client/*.js', 'client/**/*.js', 'client/components/*.jsx'],
 				tasks: ['browserify']	
+			}
+		},
+
+		minifyify: {
+			options: {
+				'inputFolder' : 'js',
+				'outputFolder' : 'js'
 			}
 		},
 
 		browserify: {
 			options: {
-				transform:  [ require('grunt-react').browserify ]
+				debug: true,
+				transform: ['reactify'],
+				extension: ['.jsx'],
 			},
 			app: {
 				src:        'client/jetpack-start.js',
@@ -62,15 +71,15 @@ module.exports = function(grunt) {
 			}
 		},
 
-		react: {
-			files: {
-				expand: true,
-				cwd: 'jsx',
-				src: ['**/*.jsx'],
-				dest: 'client/components',
-				ext: '.js'
-			}
-		},
+		// react: {
+		// 	files: {
+		// 		expand: true,
+		// 		cwd: 'jsx',
+		// 		src: ['**/*.jsx'],
+		// 		dest: 'client/components',
+		// 		ext: '.js'
+		// 	}
+		// },
 
 		// react: {
 		// 	single_file_output: {
@@ -100,6 +109,7 @@ module.exports = function(grunt) {
 		//   },
 	});
 
+	grunt.loadNpmTasks('grunt-minifyify');
 	grunt.loadNpmTasks('grunt-browserify');
 	// grunt.initConfig({
 	  

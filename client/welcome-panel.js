@@ -1,5 +1,5 @@
 var React = require('react'),
-    WelcomeWidget = require('./components/welcome-widget'),
+    WelcomeWidget = require('./components/welcome-widget.jsx'),
     WelcomeWizardModel = require('./models/welcome-wizard');
 
 module.exports = function() {
