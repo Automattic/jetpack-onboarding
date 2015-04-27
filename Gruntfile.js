@@ -45,37 +45,65 @@ module.exports = function(grunt) {
 			react: {
 				files: ['jsx/*.jsx'],
 				tasks: ['react']
+			},
+			browserify: {
+				files: ['client/*.js', 'client/**/*.js'],
+				tasks: ['browserify']	
+			}
+		},
+
+		browserify: {
+			options: {
+				transform:  [ require('grunt-react').browserify ]
+			},
+			app: {
+				src:        'client/jetpack-start.js',
+				dest:       'js/jetpack-start.js'
 			}
 		},
 
 		react: {
-			single_file_output: {
-				files: {
-					'js/welcome.js': 'jsx/welcome.jsx'
-				}
-			},
-			// combined_file_output: {
-			// 	files: {
-			// 		'path/to/output/dir/combined.js': [
-			// 		  'path/to/jsx/templates/dir/input1.jsx',
-			// 		  'path/to/jsx/templates/dir/input2.jsx'
-			// 		]
-			//   	}
-			// },
-			// dynamic_mappings: {
-			// 	files: [
-			// 		{
-			// 			expand: true,
-			// 			cwd: 'path/to/jsx/templates/dir',
-			// 			src: ['**/*.jsx'],
-			// 			dest: 'path/to/output/dir',
-			// 			ext: '.js'
-			// 		}
-			// 	]
-			// }
-		  },
+			files: {
+				expand: true,
+				cwd: 'jsx',
+				src: ['**/*.jsx'],
+				dest: 'client/components',
+				ext: '.js'
+			}
+		},
+
+		// react: {
+		// 	single_file_output: {
+		// 		files: {
+		// 			'js/welcome.js': 'jsx/welcome.jsx'
+		// 		}
+		// 	},
+		// 	// combined_file_output: {
+		// 	// 	files: {
+		// 	// 		'path/to/output/dir/combined.js': [
+		// 	// 		  'path/to/jsx/templates/dir/input1.jsx',
+		// 	// 		  'path/to/jsx/templates/dir/input2.jsx'
+		// 	// 		]
+		// 	//   	}
+		// 	// },
+		// 	// dynamic_mappings: {
+		// 	// 	files: [
+		// 	// 		{
+		// 	// 			expand: true,
+		// 	// 			cwd: 'path/to/jsx/templates/dir',
+		// 	// 			src: ['**/*.jsx'],
+		// 	// 			dest: 'path/to/output/dir',
+		// 	// 			ext: '.js'
+		// 	// 		}
+		// 	// 	]
+		// 	// }
+		//   },
 	});
 
+	grunt.loadNpmTasks('grunt-browserify');
+	// grunt.initConfig({
+	  
+	// })
 	grunt.loadNpmTasks('grunt-react');
 	grunt.loadNpmTasks('grunt-contrib-concat');     // concatenate
 	grunt.loadNpmTasks('grunt-contrib-uglify');     // minify
