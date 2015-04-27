@@ -1,5 +1,7 @@
+<div id="react-test">React goes here</div>
+
 <div class="getting-started">
-	<div id="react-test">React goes here</div>
+	
 
 	<div class="getting-started__intro">
 		<h3><?php _e( 'Welcome to your new WordPress site!', 'jetpack-start' ); ?></h3>

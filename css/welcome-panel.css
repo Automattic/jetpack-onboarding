@@ -1057,6 +1057,10 @@ big {
 .getting-started__steps li.current {
   color: #0074A2;
 }
+.getting-started__steps li a {
+  color: inherit;
+  border-bottom: 1px dashed;
+}
 
 ul.welcome__advanced {
   margin-left: 0;

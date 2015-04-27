@@ -2,7 +2,7 @@
     $(document).ready(function () {
 
         React.render(
-          React.createElement(WelcomeBox, null), document.getElementById('react-test')
+          React.createElement(WelcomeWidget, {model: new WelcomeWizardModel()}), document.getElementById('react-test')
         );
 
         var moveToNextSection = function (currentSection) {

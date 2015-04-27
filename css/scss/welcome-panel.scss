@@ -260,6 +260,11 @@ $light-gray: #ccc;
 		&.current {
 			color: #0074A2;
 		}
+
+		a {
+			color: inherit;
+			border-bottom: 1px dashed;
+		}
 	}
 }
 
