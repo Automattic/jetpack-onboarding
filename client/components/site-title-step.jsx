@@ -4,13 +4,49 @@ var React = require('react'),
 module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
+	updatedTitle: function(e) {
+		console.log("updated title");
+		this.props.model.set('title', e.currentTarget.value);
+	},
+
+	saveTitle: function(e) {
+		e.preventDefault();
+		console.log('saving');
+		// this.props.model.save();
+		data = {
+			action: 'jps_set_title',
+			nonce: JPS.nonce,
+			title: this.props.model.get('title')
+		};
+		// $('#wp-admin-bar-site-name a').html(title);
+		jQuery.post(ajaxurl, data)
+			.success( function() { 
+				this.setState({message: "Saved"});
+				// jQuery('#welcome__site-title notice').html("Saved").fadeOut(2000);
+			}.bind(this) )
+			.fail( function() {
+				this.setState({message: "Failed"});
+				// jQuery('#welcome__site-title notice').html("Fail").fadeOut(2000);
+			}.bind(this) );
+
+		//skip to next section unless this section has been completed before?
+	},
+
 	render: function() {
+		if ( this.state.message != null ) {
+			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
+		} else {
+			feedbackMessage = null;
+		}
+
+
 		return (
 			<div className="welcome__section" id="welcome__site-title">
+				{feedbackMessage}
 				<h4>Set your site title</h4>
 
-				<form>
-					<input type="text" name="site_title" id="site-title" autocomplete="off" value={this.props.model.get('title')}
+				<form onSubmit={this.saveTitle}>
+					<input type="text" name="site_title" id="site-title" autocomplete="off" onChange={this.updatedTitle} value={this.props.model.get('title')}
 					       placeholder="Site Title (this can be changed later)"/>					       
 
 					<p className="submit">

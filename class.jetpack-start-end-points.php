@@ -14,7 +14,7 @@ class EndPoints {
 
 	static function init_ajax() {
 		if ( is_admin() ) {
-			add_action( 'wp_ajax_jps_change_title', array( __CLASS__, 'change_title' ) );
+			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
@@ -26,7 +26,10 @@ class EndPoints {
 		return array(
 			'nonce' => wp_create_nonce( \JetpackStart\EndPoints::AJAX_NONCE ),
 			'bloginfo' => array('name' => get_bloginfo('name')),
-			'themes' => \JetpackStart\EndPoints::get_themes()
+			'themes' => \JetpackStart\EndPoints::get_themes(),
+			'steps' => array(
+				'set_title' => array('url' => 'set_title')
+			)
 		);
 	}
 
@@ -61,8 +64,8 @@ class EndPoints {
 		);
 	}
 
-	static function change_title() {
-		check_ajax_referer( self::CHANGE_TITLE_KEY, 'nonce' );
+	static function set_title() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		$title = esc_html( $_REQUEST['title'] );
 		if ( update_option( 'blogname', $title ) ) {
 			wp_send_json_success( $title );

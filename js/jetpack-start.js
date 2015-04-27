@@ -28,13 +28,49 @@ var React = require('react'),
 module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
+	updatedTitle: function(e) {
+		console.log("updated title");
+		this.props.model.set('title', e.currentTarget.value);
+	},
+
+	saveTitle: function(e) {
+		e.preventDefault();
+		console.log('saving');
+		// this.props.model.save();
+		data = {
+			action: 'jps_set_title',
+			nonce: JPS.nonce,
+			title: this.props.model.get('title')
+		};
+		// $('#wp-admin-bar-site-name a').html(title);
+		jQuery.post(ajaxurl, data)
+			.success( function() { 
+				this.setState({message: "Saved"});
+				// jQuery('#welcome__site-title notice').html("Saved").fadeOut(2000);
+			}.bind(this) )
+			.fail( function() {
+				this.setState({message: "Failed"});
+				// jQuery('#welcome__site-title notice').html("Fail").fadeOut(2000);
+			}.bind(this) );
+
+		//skip to next section unless this section has been completed before?
+	},
+
 	render: function() {
+		if ( this.state.message != null ) {
+			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
+		} else {
+			feedbackMessage = null;
+		}
+
+
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
+				feedbackMessage, 
 				React.createElement("h4", null, "Set your site title"), 
 
-				React.createElement("form", null, 
-					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autocomplete: "off", value: this.props.model.get('title'), 
+				React.createElement("form", {onSubmit: this.saveTitle}, 
+					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autocomplete: "off", onChange: this.updatedTitle, value: this.props.model.get('title'), 
 					       placeholder: "Site Title (this can be changed later)"}), 					       
 
 					React.createElement("p", {className: "submit"}, 
@@ -191,6 +227,12 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Site Title", welcomeView: SiteTitleStepView, title: JPS.bloginfo.name }),
 	initialize: function() {
 		this.attributes.completed = (JPS.bloginfo.name != null);
+	},
+
+	validate: function(attrs, options) {
+		if (attrs.title == null || attrs.title == '') {
+			return "Title can't be empty";
+		}
 	}
 });
 
