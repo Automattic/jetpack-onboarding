@@ -1,24 +1,21 @@
-var React = require('react'),
-	BackboneReact = require('backbone-react');
+var React = require('react');
 
 module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
 	updatedTitle: function(e) {
-		console.log("updated title");
 		this.props.model.set('title', e.currentTarget.value);
 	},
 
 	saveTitle: function(e) {
 		e.preventDefault();
-		console.log('saving');
-		// this.props.model.save();
+
 		data = {
 			action: 'jps_set_title',
 			nonce: JPS.nonce,
 			title: this.props.model.get('title')
 		};
-		// $('#wp-admin-bar-site-name a').html(title);
+		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
 				this.setState({message: "Saved"});
@@ -33,6 +30,8 @@ module.exports = React.createClass({
 	},
 
 	render: function() {
+		var feedbackMessage;
+		
 		if ( this.state.message != null ) {
 			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
 		} else {

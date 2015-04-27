@@ -1,5 +1,4 @@
-var React = require('react'),
-	BackboneReact = require('backbone-react');
+var React = require('react');
 	
 /**
  * The view for the current welcome step

@@ -1,4 +1,5 @@
 var React = require('react'),
+    BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
     WelcomeWizardModel = require('./models/welcome-wizard');
 

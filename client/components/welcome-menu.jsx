@@ -1,5 +1,4 @@
-var React = require('react'),
-	BackboneReact = require('backbone-react');
+var React = require('react');
 
 /**
  * The menu which allows the user to switch steps
@@ -9,16 +8,16 @@ module.exports = React.createClass({
 
 	selectStep: function(e) {
 		e.preventDefault();
-		slug = jQuery(e.currentTarget).data('step-slug');
+		var slug = jQuery(e.currentTarget).data('step-slug');
 		this.props.model.setStep(slug);
 	},
 
 	render: function() {
 		// var $this = this;
-		currentStep = this.props.model.currentStep();
+		var currentStep = this.props.model.currentStep();
 
 		var menuItems = this.props.model.steps().map(function ( step ) {
-			current = ( currentStep.slug() == step.slug() );
+			var title, current = ( currentStep.slug() == step.slug() );
 
 			if ( step.repeatable() ) {
 				title = <a href="#" data-step-slug={step.slug()} onClick={this.selectStep}>{step.name()}</a>

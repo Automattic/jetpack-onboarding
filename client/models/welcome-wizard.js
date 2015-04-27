@@ -1,7 +1,8 @@
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
-	LayoutStepModel = require('./layout-step');
+	LayoutStepModel = require('./layout-step'),
+	StatsMonitoringStepModel = require('./stats-monitoring-step');
 
 /**
  * WelcomeWizard has a current step and an array of steps to be completed
@@ -13,7 +14,8 @@ module.exports = Backbone.Model.extend({
 				new DummyWelcomeStepModel({ name: "Create admin account" }),
 				new DummyWelcomeStepModel({ name: "Verify email address" }),
 				new SiteTitleStepModel(),
-				new LayoutStepModel()
+				new LayoutStepModel(),
+				new StatsMonitoringStepModel()
 			],{
 				model: WelcomeStepModel
 			})
@@ -22,7 +24,7 @@ module.exports = Backbone.Model.extend({
 	initialize: function() {
 		// try to ensure there's always a current step
 		if ( this.get('currentStep') == null ) {
-			pendingStep = this.get('steps').findWhere( { completed: false } );
+			var pendingStep = this.get('steps').findWhere( { completed: false } );
 			if ( pendingStep != null ) {
 				this.setStep(pendingStep.slug()); // also sets the window location hash
 			}
@@ -51,7 +53,7 @@ module.exports = Backbone.Model.extend({
 	},
 
 	currentStepView: function() {
-		currentStep = this.currentStep();
+		var currentStep = this.currentStep();
 		if ( currentStep != null ) {
 			return currentStep.welcomeView();
 		} else {

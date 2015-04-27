@@ -1,5 +1,4 @@
 var React = require('react'),
-	BackboneReact = require('backbone-react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx');
 
