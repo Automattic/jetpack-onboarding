@@ -128,7 +128,7 @@ module.exports = React.createClass({
 			}
 
 			return (
-				<div className={wrapperClass} tabIndex="0" data-theme-id={theme.id} onClick={this.handleShowOverlay} aria-describedby={ariaDescribedBy}>
+				<div key={theme.id} className={wrapperClass} tabIndex="0" data-theme-id={theme.id} onClick={this.handleShowOverlay} aria-describedby={ariaDescribedBy}>
 					{screenshot}
 					{toolbar}
 					<span className="more-details" id={theme.id + '-action'}>Theme Details</span>

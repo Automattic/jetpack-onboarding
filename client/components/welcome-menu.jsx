@@ -26,7 +26,7 @@ module.exports = React.createClass({
 			}
 			
 			return (
-				<li className={step.status() + ' ' + (current ? 'current' : null)}>{title}</li>
+				<li key={step.slug()} className={step.status() + ' ' + (current ? 'current' : null)}>{title}</li>
 			);
 		}.bind(this) );
 
