@@ -3,11 +3,11 @@ var React = require('react');
 module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
-	updatedTitle: function(e) {
+	handleChangeTitle: function(e) {
 		this.props.model.set('title', e.currentTarget.value);
 	},
 
-	saveTitle: function(e) {
+	handleSubmit: function(e) {
 		e.preventDefault();
 
 		data = {
@@ -44,8 +44,8 @@ module.exports = React.createClass({
 				{feedbackMessage}
 				<h4>Set your site title</h4>
 
-				<form onSubmit={this.saveTitle}>
-					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.updatedTitle} value={this.props.model.get('title')}
+				<form onSubmit={this.handleSubmit}>
+					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.props.model.get('title')}
 					       placeholder="Site Title (this can be changed later)"/>					       
 
 					<p className="submit">
