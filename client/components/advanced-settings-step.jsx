@@ -13,21 +13,21 @@ module.exports = React.createClass({
 						<h5>Configure Jetpack Settings</h5>
 						View all Jetpack features like customization tools, enhanced security, speed boosts, and more.
 						<br />
-						<a className="button button-primary button-large" href="#">View Jetpack features</a>
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.jetpack_modules_url}>View Jetpack features</a>
 					</li>
 
 					<li>
 						<h5>Add Widgets</h5>
 						Choose what you’d like visitors to see in your sidebar: Twitter feed, archives, and more...
 						<br />
-						<a className="button button-primary button-large" href="#">Manage Widgets</a>
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.widgets_url}>Manage Widgets</a>
 					</li>
 
 					<li>
 						<h5>Fine Tune Your Site</h5>
 						Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!
 						<br />
-						<a className="button button-primary button-large" href="#">Customize</a>
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.customize_url}>Customize</a>
 					</li>
 				</ul>
 			</div>

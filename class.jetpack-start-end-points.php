@@ -28,7 +28,12 @@ class EndPoints {
 			'bloginfo' => array('name' => get_bloginfo('name')),
 			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
 			'steps' => array(
-				'set_title' => array('url' => 'set_title')
+				'set_title' => array('url_action' => 'jps_set_title'),
+				'advanced_settings' => array(
+					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
+					'widgets_url' => admin_url( 'widgets.php' ),
+					'customize_url' => wp_customize_url()
+				)
 			)
 		);
 	}

@@ -14,21 +14,21 @@ module.exports = React.createClass({displayName: "exports",
 						React.createElement("h5", null, "Configure Jetpack Settings"), 
 						"View all Jetpack features like customization tools, enhanced security, speed boosts, and more.", 
 						React.createElement("br", null), 
-						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "View Jetpack features")
+						React.createElement("a", {className: "button button-primary button-large", href: JPS.steps.advanced_settings.jetpack_modules_url}, "View Jetpack features")
 					), 
 
 					React.createElement("li", null, 
 						React.createElement("h5", null, "Add Widgets"), 
 						"Choose what you’d like visitors to see in your sidebar: Twitter feed, archives, and more...", 
 						React.createElement("br", null), 
-						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "Manage Widgets")
+						React.createElement("a", {className: "button button-primary button-large", href: JPS.steps.advanced_settings.widgets_url}, "Manage Widgets")
 					), 
 
 					React.createElement("li", null, 
 						React.createElement("h5", null, "Fine Tune Your Site"), 
 						"Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!", 
 						React.createElement("br", null), 
-						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "Customize")
+						React.createElement("a", {className: "button button-primary button-large", href: JPS.steps.advanced_settings.customize_url}, "Customize")
 					)
 				)
 			)
@@ -383,7 +383,7 @@ module.exports = React.createClass({displayName: "exports",
 		e.preventDefault();
 
 		data = {
-			action: 'jps_set_title',
+			action: JPS.steps.site_title.url_action,
 			nonce: JPS.nonce,
 			title: this.props.model.get('title')
 		};
@@ -603,8 +603,7 @@ var WelcomeStepModel = require('./welcome-step'),
 	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
 
 module.exports = WelcomeStepModel.extend({
-	//TODO - check current site title, etc.
-	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
+	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
 });
 
 },{"../components/advanced-settings-step.jsx":1,"./welcome-step":19}],13:[function(require,module,exports){
@@ -653,6 +652,7 @@ var WelcomeStepModel = require('./welcome-step'),
 module.exports = WelcomeStepModel.extend({
 	//TODO - check current site title, etc.
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Site Title", welcomeView: SiteTitleStepView, title: JPS.bloginfo.name }),
+	
 	initialize: function() {
 		this.attributes.completed = (JPS.bloginfo.name != null);
 	},
@@ -802,79 +802,11 @@ var React = require('react'),
     WelcomeWizardModel = require('./models/welcome-wizard');
 
 module.exports = function() {
-    (function ($) {
-        $(document).ready(function () {
-
-            React.render(
-              React.createElement(WelcomeWidget, {model: new WelcomeWizardModel()}), document.getElementById('react-test')
-            );
-
-            var moveToNextSection = function (currentSection) {
-                currentSection.hide();
-                currentSection.next().show();
-                $('.getting-started__steps ol li.current')
-                    .removeClass('current')
-                    .addClass('completed')
-                    .next().addClass('current');
-            };
-
-            // Skip buttons
-            $('.welcome__section a.skip').click(function (event) {
-                event.preventDefault();
-                var currentSection = $(this).closest('.welcome__section');
-                moveToNextSection(currentSection);
-            });
-
-            // Title step
-            $('#welcome__site-title .submit input').click(function (event) {
-                var data, title = $('#site-title').val();
-                event.preventDefault();
-
-                if (!title || title.trim() === '') {
-                    return;
-                }
-                data = {
-                    action: 'jps_change_title',
-                    nonce: JPS.nonce.jps_change_title,
-                    title: title
-                };
-                $('#wp-admin-bar-site-name a').html(title);
-                $.post(ajaxurl, data);
-                moveToNextSection($('#welcome__site-title'));
-            });
-
-            // Layout step
-            $('#welcome__layout .submit input').click(function (event) {
-                event.preventDefault();
-                moveToNextSection($('#welcome__layout'));
-            });
-
-            // Stats step
-            $('#welcome__stats .submit input').click(function (event) {
-                event.preventDefault();
-                moveToNextSection($('#welcome__stats'));
-            });
-
-            // Design step
-            $('#welcome__design .submit input').click(function (event) {
-                event.preventDefault();
-                moveToNextSection($('#welcome__design'));
-            });
-
-            // Traffic step
-            $('#welcome__traffic .submit input').click(function (event) {
-                event.preventDefault();
-                moveToNextSection($('#welcome__traffic'));
-            });
-
-            // Advanced step
-            $('#welcome__advanced .submit input').click(function (event) {
-                event.preventDefault();
-                moveToNextSection($('#welcome__advanced'));
-            });
-
-        });
-    })(jQuery);
+    jQuery(document).ready(function () {
+        React.render(
+          React.createElement(WelcomeWidget, {model: new WelcomeWizardModel()}), document.getElementById('jps-welcome-panel')
+        );
+    });
 }
 
 },{"./components/welcome-widget.jsx":10,"./models/welcome-wizard":20,"backbone-react":22,"react":23}],22:[function(require,module,exports){

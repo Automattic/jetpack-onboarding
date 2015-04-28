@@ -11,7 +11,7 @@ module.exports = React.createClass({
 		e.preventDefault();
 
 		data = {
-			action: 'jps_set_title',
+			action: JPS.steps.site_title.url_action,
 			nonce: JPS.nonce,
 			title: this.props.model.get('title')
 		};
