@@ -98,7 +98,7 @@
 				<div class="welcome__connect">
 					<?php _e( 'Connect Jetpack to enable free stats, site monitoring, and more.', 'jetpack-start' ); ?>
 					<br /><br />
-					<a class="download-jetpack" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
+					<a class="download-jetpack" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
 					<p>
 						<a class="skip" href="#">Skip this step</a>
 					</p>
@@ -156,16 +156,16 @@
 					<?php _e( 'Connect your social media accounts to "Publicize" to promote your posts effortlessly.', 'jetpack-start' ); ?>
 					<br />
 					<?php if ( Jetpack::is_active() && Jetpack::is_module_active('publicize') ) : ?>
-						<a class="button button-primary button-large" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'options-general.php?page=sharing' ), 'blog_use_publicize' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
+						<a class="button button-primary button-large" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( admin_url( 'options-general.php?page=sharing' ), 'blog_use_publicize' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
 					<?php else : ?>
-						<a class="button button-primary button-large" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'admin.php?page=jetpack' ), 'blog_use_publicize_non_active' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
+						<a class="button button-primary button-large" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( admin_url( 'admin.php?page=jetpack' ), 'blog_use_publicize_non_active' ); ?>"><?php _e( 'Publicize your work', 'jetpack-start' ); ?></a>
 					<?php endif; ?>
 
 				<?php else : ?>
 
 					<?php _e( 'Connect Jetpack to publicise your posts, get free stats, and more.', 'jetpack-start' ); ?>
 					<br /><br />
-					<a class="download-jetpack" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
+					<a class="download-jetpack" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=jetpack%2Fjetpack.php' ), 'activate-plugin_jetpack/jetpack.php' ) , 'blog_activate_jetpack' ); ?>"><?php _e( 'Connect Jetpack', 'jetpack-start' ); ?></a>
 				<?php endif; ?>
 				<p>
 					<a class="skip" href="#">Skip this step</a>
@@ -182,21 +182,21 @@
 					<h5><?php _e( 'Configure Jetpack Settings', 'jetpack-start' ); ?></h5>
 					<?php _e( 'View all Jetpack features like customization tools, enhanced security, speed boosts, and more.', 'jetpack-start' ); ?>
 					<br>
-					<a class="button button-primary button-large" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'admin.php?page=jetpack_modules' ), 'jetpack_modules' ); ?>"><?php _e( 'View Jetpack features', 'jetpack-start' ); ?></a>
+					<a class="button button-primary button-large" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( admin_url( 'admin.php?page=jetpack_modules' ), 'jetpack_modules' ); ?>"><?php _e( 'View Jetpack features', 'jetpack-start' ); ?></a>
 				</li>
 
 				<li>
 					<h5><?php _e( 'Add Widgets', 'jetpack-start' ); ?></h5>
 					<?php _e( 'Choose what you’d like visitors to see in your sidebar: Twitter feed, archives, and more...', 'jetpack-start' ); ?>
 					<br>
-					<a class="button button-primary button-large" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( admin_url( 'widgets.php' ), 'blog_widgets' ); ?>"><?php _e( 'Manage Widgets', 'jetpack-start' ); ?></a>
+					<a class="button button-primary button-large" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( admin_url( 'widgets.php' ), 'blog_widgets' ); ?>"><?php _e( 'Manage Widgets', 'jetpack-start' ); ?></a>
 				</li>
 
 				<li>
 					<h5><?php _e( 'Fine Tune Your Site', 'jetpack-start' ); ?></h5>
 					<?php _e( 'Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!', 'jetpack-start' ); ?>
 					<br>
-					<a class="button button-primary button-large" href="<?php echo Jetpack_Start_Welcome_Panel::add_action_arg( wp_customize_url(), 'blog_customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
+					<a class="button button-primary button-large" href="<?php echo \JetpackStart\WelcomePanel::add_action_arg( wp_customize_url(), 'blog_customize' ); ?>"><?php _e( 'Customize', 'jetpack-start' ); ?></a>
 				</li>
 
 				<li>
