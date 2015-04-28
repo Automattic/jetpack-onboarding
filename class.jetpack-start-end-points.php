@@ -58,6 +58,7 @@ class EndPoints {
 
 	static function prepare_theme( $theme ) {
 		return array(
+			'name' => $theme->Name,
 			'stylesheet'  => $theme->get_stylesheet(),
 			'img_preview' => $theme->get_screenshot(),
 			'demo_url' => 'http://' .  str_replace( '-', '', $theme->get_stylesheet() ) . 'demo.wordpress.com?demo',

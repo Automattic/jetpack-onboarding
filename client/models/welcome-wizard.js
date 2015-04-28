@@ -2,7 +2,8 @@ var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
 	LayoutStepModel = require('./layout-step'),
-	StatsMonitoringStepModel = require('./stats-monitoring-step');
+	StatsMonitoringStepModel = require('./stats-monitoring-step'),
+	DesignStepModel = require('./design-step');
 
 /**
  * WelcomeWizard has a current step and an array of steps to be completed
@@ -15,7 +16,8 @@ module.exports = Backbone.Model.extend({
 				new DummyWelcomeStepModel({ name: "Verify email address" }),
 				new SiteTitleStepModel(),
 				new LayoutStepModel(),
-				new StatsMonitoringStepModel()
+				new StatsMonitoringStepModel(),
+				new DesignStepModel()
 			],{
 				model: WelcomeStepModel
 			})

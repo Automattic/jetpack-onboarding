@@ -34,4 +34,9 @@ class WelcomePanel {
 	static function wp_welcome_panel() {
 		require_once ( JETPACK_START_BASE_DIR . '/views/welcome-panel.php' );
 	}
+
+	static function add_action_arg($arg) {
+		//noop
+	}
 }
+
