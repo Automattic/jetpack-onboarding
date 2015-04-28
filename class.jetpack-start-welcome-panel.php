@@ -26,8 +26,6 @@ class WelcomePanel {
 
 			// CSS
 			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin' ) );
-			wp_register_style( 'jps-font-awesome', plugins_url( 'css/font-awesome.css', __FILE__ ) );
-			wp_enqueue_style( 'jps-font-awesome' );
 		}
 	}
 
