@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
 
 /**
  * The menu which allows the user to switch steps
@@ -32,7 +33,8 @@ module.exports = React.createClass({
 
 		return (
 			<div className="getting-started__steps">
-				<h3>Your Progress</h3>
+				<h3>Your Progress <div style={{marginTop: '7px'}}><WelcomeProgressBar model={this.props.model}/></div></h3>
+				
 				<ol>
 					{menuItems}
 				</ol>

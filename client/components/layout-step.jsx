@@ -3,12 +3,19 @@ var React = require('react');
 module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
+	handleSubmit: function( e ) {
+		e.preventDefault();
+		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
+		console.log('value is '+value);
+		//save value
+	},
+
 	render: function() {
 		return (
 			<div className="welcome__section" id="welcome__layout">
 				<h4>Pick a layout</h4>
 
-				<form method="post">
+				<form onSubmit={this.handleSubmit}>
 					<label>
 						<input type="radio" name="site_layout" value="website" defaultChecked/> Website
 						<p className="description">Choose this one if you're creating a site for your company that will rarely change</p>

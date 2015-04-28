@@ -15,8 +15,7 @@ module.exports = React.createClass({
 
 					<p className="getting-started__subhead">Let's get your new site set up as quickly as possible.</p>
 				</div>
-
-				<WelcomeProgressBar model={this.props.model}/>
+				
 				<WelcomeSection model={this.props.model}/>
 				<WelcomeMenu model={this.props.model}/>
 			</div>

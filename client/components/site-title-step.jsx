@@ -3,21 +3,30 @@ var React = require('react');
 module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
+	getInitialState: function() {
+		// yeah yeah, I know that setting state from props is an antipattern, but I didn't
+		// want it persisted to the backbone model until the user hits "Done"
+		return {
+			title: this.props.model.get('title')
+		};
+	},
+
 	handleChangeTitle: function(e) {
-		this.props.model.set('title', e.currentTarget.value);
+		this.setState({title: e.currentTarget.value});
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
 
 		data = {
-			action: JPS.steps.site_title.url_action,
+			action: JPS.steps.set_title.url_action,
 			nonce: JPS.nonce,
-			title: this.props.model.get('title')
+			title: this.state.title
 		};
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
+				this.props.model.set('title', this.state.title);
 				this.setState({message: "Saved"});
 				// jQuery('#welcome__site-title notice').html("Saved").fadeOut(2000);
 			}.bind(this) )
@@ -45,7 +54,7 @@ module.exports = React.createClass({
 				<h4>Set your site title</h4>
 
 				<form onSubmit={this.handleSubmit}>
-					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.props.model.get('title')}
+					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
 					       placeholder="Site Title (this can be changed later)"/>					       
 
 					<p className="submit">
