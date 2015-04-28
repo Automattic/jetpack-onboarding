@@ -50,23 +50,174 @@ var React = require('react');
 module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
+	//necessary because wp_prepare_themes_for_js escapes URLs by default
+	htmlDecode: function ( input ) {
+		var e = document.createElement('div');
+		e.innerHTML = input;
+		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+	},
+
+	getInitialState: function() {
+		return {
+			overlayTheme: this.props.model.get('themes')[0]
+		};
+	},
+
+	makeActive: function( activeThemeId ) {
+		var themes = this.props.model.get('themes');
+
+		themes.forEach( function( theme ) {
+			if ( theme.id == activeThemeId ) {
+				theme.active = true;
+			} else {
+				theme.active = false;
+			}
+		} );
+
+		// silly, naive way to trigger a re-render
+		this.props.model.trigger('change');
+	},
+
+	handleActivateTheme: function( e ) {
+		e.preventDefault();
+		var $el = jQuery(e.currentTarget);
+		var activateUrl = $el.attr('href');
+		var themeId = $el.data('theme-id');
+
+		jQuery.get(activateUrl)
+			.success( function () {
+				console.log("activated");
+				this.makeActive(themeId);
+			}.bind(this) )
+			.fail( function () {
+				console.log("failed");
+			} ); 
+	},
+
 	render: function() {
+
 		var themes = this.props.model.get('themes').map( function(theme) {
-			var style = { 'backgroundImage' : 'url('+theme.img_preview+')', 'backgroundSize' : '100%' };
+
+			var screenshot, toolbar, actions;
+
+			var wrapperClass = 'theme';
+			if ( theme.active ) { wrapperClass += ' active'; }
+
+			var ariaDescribedBy = theme.id+'-action '+theme.id+'-name';
+
+			if ( theme.screenshot[0] ) {
+				screenshot = (
+					React.createElement("div", {className: "theme-screenshot"}, 
+						React.createElement("img", {src: theme.screenshot[0], alt: ""})
+					)
+				);
+			} else {
+				screenshot = (React.createElement("div", {className: "theme-screenshot blank"}));
+			}
+
+			if ( theme.active ) {
+				toolbar = (React.createElement("h3", {className: "theme-name", id: theme.id+'-name'}, React.createElement("span", null, "Active:"), " ", theme.name));
+			} else {
+				toolbar = (React.createElement("h3", {className: "theme-name", id: theme.id+'-name'}, theme.name));
+			}
+
+			if ( theme.active ) {
+				if ( theme.actions.customize ) {
+					actions = (React.createElement("a", {className: "button button-primary customize load-customize hide-if-no-customize", href: this.htmlDecode(theme.actions.customize)}, "Customize"));
+				}
+			} else {
+				actions = (
+					React.createElement("div", null, 
+						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: this.htmlDecode(theme.actions.activate)}, "Activate"), 
+						React.createElement("a", {className: "button button-primary load-customize hide-if-no-customize", href: this.htmlDecode(theme.actions.customize)}, "Live Preview"), 
+						React.createElement("a", {className: "button button-secondary hide-if-customize", href: this.htmlDecode(theme.actions.preview)}, "Preview")
+					)
+				);
+			}
+
 			return (
-				React.createElement("div", {className: "theme", "data-theme": "{theme.stylesheet}", style: style}, 
-					React.createElement("div", {className: "theme-buttons"}, 
-						React.createElement("a", {href: "{theme.demo_url}", className: "button--secondary button--large theme-preview", target: "_blank"}, React.createElement("span", {className: "small-icon fa fa-external-link"}), "Preview"), 
-						React.createElement("a", {href: "", className: "button--primary button--large theme-select"}, React.createElement("span", {className: "small-icon fa fa-arrow-circle-o-right"}), "Select Theme")
+				React.createElement("div", {className: wrapperClass, tabIndex: "0", "aria-describedby": ariaDescribedBy}, 
+					screenshot, 
+					toolbar, 
+					React.createElement("span", {className: "more-details", id: theme.id + '-action'}, "Theme Details"), 
+					React.createElement("div", {className: "theme-author"}, "By ", theme.author), 
+
+					React.createElement("div", {className: "theme-actions"}, 
+						actions
 					)
 				)
 			);
-		} );
+		}.bind(this) );
+
+		var overlay;
+
+		if ( this.state.overlayTheme ) {
+			var screenshot, currentThemeLabel, parentLabel, tagsLabel, previewAction, theme = this.state.overlayTheme; 
+
+			if ( theme.screenshot[0] ) {
+				screenshot = (React.createElement("div", {className: "screenshot"}, React.createElement("img", {src: theme.screenshot[0], alt: ""})));
+			} else {
+				screenshot = (React.createElement("div", {className: "screenshot blank"}));
+			}
+
+			if ( theme.active ) {
+				currentThemeLabel = (React.createElement("span", {className: "current-label"}, "Current Theme"));
+			}
+
+			if ( theme.parent ) {
+				parentLabel = (React.createElement("p", {className: "parent-theme"}, "This is a child theme of ", React.createElement("strong", null, theme.parent)));
+			}
+
+			if ( theme.tags ) {
+				tagsLabel = (React.createElement("p", {className: "theme-tags"}, React.createElement("span", null, "Tags:"), " ", theme.tags));
+			}
+
+			if ( ! theme.active ) {
+				previewAction = (
+					React.createElement("div", {className: "theme-actions"}, 
+						React.createElement("div", {className: "inactive-theme"}, 
+							React.createElement("a", {href: this.htmlDecode(theme.actions.preview), target: "_top", className: "button button-primary"}, "Live Preview")
+						)
+					)
+				);
+			}
+
+			overlay = (
+				React.createElement("div", {className: "theme-overlay"}, 
+					React.createElement("div", {className: "theme-backdrop"}), 
+					React.createElement("div", {className: "theme-wrap"}, 
+						React.createElement("div", {className: "theme-header"}, 
+							React.createElement("button", {type: "button", className: "left dashicons dashicons-no"}, React.createElement("span", {className: "screen-reader-text"}, "Show previous theme")), 
+							React.createElement("button", {type: "button", className: "right dashicons dashicons-no"}, React.createElement("span", {className: "screen-reader-text"}, "Show next theme")), 
+							React.createElement("button", {type: "button", className: "close dashicons dashicons-no"}, React.createElement("span", {className: "screen-reader-text"}, "Close details dialog"))
+						), 
+						React.createElement("div", {className: "theme-about"}, 
+							React.createElement("div", {className: "theme-screenshots"}, 
+								screenshot
+							), 
+
+							React.createElement("div", {className: "theme-info"}, 
+								currentThemeLabel, 
+								React.createElement("h3", {className: "theme-name"}, theme.name, React.createElement("span", {className: "theme-version"}, "Version: ", theme.version)), 
+								React.createElement("h4", {className: "theme-author"}, "By ", this.htmlDecode(theme.authorAndUri)), 
+								React.createElement("p", {className: "theme-description"}, this.htmlDecode(theme.description)), 
+
+								parentLabel, 
+								tagsLabel
+							)
+						), 
+
+						previewAction
+					)
+				)
+			);
+		}
+		
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__design"}, 
 				React.createElement("h4", null, "Pick a design"), 
 				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
-				React.createElement("div", {className: "themes-box"}, 
+				React.createElement("div", {className: "theme-browser"}, 
 					themes
 				), 
 					
@@ -74,7 +225,8 @@ module.exports = React.createClass({displayName: "exports",
 				React.createElement("p", {className: "submit"}, 
 					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
 					React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
-				)
+				), 
+				overlay
 			)
 		);
 	}
@@ -162,7 +314,7 @@ module.exports = React.createClass({displayName: "exports",
 
 				React.createElement("form", {method: "post"}, 
 					React.createElement("label", null, 
-						React.createElement("input", {type: "radio", name: "site_layout", value: "website", checked: true}), " Website", 
+						React.createElement("input", {type: "radio", name: "site_layout", value: "website", defaultChecked: true}), " Website", 
 						React.createElement("p", {className: "description"}, "Choose this one if you're creating a site for your company that will rarely change")
 					), 
 					React.createElement("br", null), 

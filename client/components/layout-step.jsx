@@ -10,7 +10,7 @@ module.exports = React.createClass({
 
 				<form method="post">
 					<label>
-						<input type="radio" name="site_layout" value="website" checked/> Website
+						<input type="radio" name="site_layout" value="website" defaultChecked/> Website
 						<p className="description">Choose this one if you're creating a site for your company that will rarely change</p>
 					</label>
 					<br/>

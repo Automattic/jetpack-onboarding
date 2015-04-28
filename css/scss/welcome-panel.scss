@@ -5,7 +5,6 @@ $light-gray: #ccc;
 @import "buttons/buttons";
 @import "icons/icons";
 @import "typography/typography";
-@import "ui-patterns/select-theme";
 
 // Styles!
 .welcome-panel-close {
@@ -213,6 +212,15 @@ $light-gray: #ccc;
 #poststuff {
 	min-width: 0;
 }
+
+#welcome__design .theme-browser {
+	* { box-sizing: initial; }
+	h3 {
+		line-height: 1.4em; 
+		text-align: left !important; 
+	}
+}
+
 
 // Progress list of steps
 .getting-started__steps {

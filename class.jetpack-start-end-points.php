@@ -26,44 +26,44 @@ class EndPoints {
 		return array(
 			'nonce' => wp_create_nonce( \JetpackStart\EndPoints::AJAX_NONCE ),
 			'bloginfo' => array('name' => get_bloginfo('name')),
-			'themes' => \JetpackStart\EndPoints::get_themes(),
+			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
 			'steps' => array(
 				'set_title' => array('url' => 'set_title')
 			)
 		);
 	}
 
-	static function get_themes() {
-		if ( is_null( self::$themes ) ) {
-			self::$themes = apply_filters(
-				'jetpack_start_themes',
-				self::$default_themes
-			);
+	// static function get_themes() {
+	// 	if ( is_null( self::$themes ) ) {
+	// 		self::$themes = apply_filters(
+	// 			'jetpack_start_themes',
+	// 			self::$default_themes
+	// 		);
 
-			self::$themes = self::prepare_themes( self::$themes );
-		}
-		return self::$themes;
-	}
+	// 		self::$themes = self::prepare_themes( self::$themes );
+	// 	}
+	// 	return self::$themes;
+	// }
 
-	static function prepare_themes( $themes ) {
-		$result = array();
-		foreach ( $themes as $_theme ) {
-			$theme = wp_get_theme( $_theme );
-			if ( $theme->exists() ) {
-				$result[] = self::prepare_theme( $theme );
-			}
-		}
-		return $result;
-	}
+	// static function prepare_themes( $themes ) {
+	// 	$result = array();
+	// 	foreach ( $themes as $_theme ) {
+	// 		$theme = wp_get_theme( $_theme );
+	// 		if ( $theme->exists() ) {
+	// 			$result[] = self::prepare_theme( $theme );
+	// 		}
+	// 	}
+	// 	return $result;
+	// }
 
-	static function prepare_theme( $theme ) {
-		return array(
-			'name' => $theme->Name,
-			'stylesheet'  => $theme->get_stylesheet(),
-			'img_preview' => $theme->get_screenshot(),
-			'demo_url' => 'http://' .  str_replace( '-', '', $theme->get_stylesheet() ) . 'demo.wordpress.com?demo',
-		);
-	}
+	// static function prepare_theme( $theme ) {
+	// 	return array(
+	// 		'name' => $theme->Name,
+	// 		'stylesheet'  => $theme->get_stylesheet(),
+	// 		'screenshot' => $theme->get_screenshot(),
+	// 		'demo_url' => 'http://' .  str_replace( '-', '', $theme->get_stylesheet() ) . 'demo.wordpress.com?demo',
+	// 	);
+	// }
 
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
