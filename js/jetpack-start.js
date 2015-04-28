@@ -167,7 +167,7 @@ module.exports = React.createClass({displayName: "exports",
 			}
 
 			return (
-				React.createElement("div", {className: wrapperClass, tabIndex: "0", "data-theme-id": theme.id, onClick: this.handleShowOverlay, "aria-describedby": ariaDescribedBy}, 
+				React.createElement("div", {key: theme.id, className: wrapperClass, tabIndex: "0", "data-theme-id": theme.id, onClick: this.handleShowOverlay, "aria-describedby": ariaDescribedBy}, 
 					screenshot, 
 					toolbar, 
 					React.createElement("span", {className: "more-details", id: theme.id + '-action'}, "Theme Details"), 
@@ -343,7 +343,7 @@ module.exports = React.createClass({displayName: "exports",
 			React.createElement("div", {className: "welcome__section", id: "welcome__layout"}, 
 				React.createElement("h4", null, "Pick a layout"), 
 
-				React.createElement("form", {method: "post"}, 
+				React.createElement("form", {onSubmit: this.handleSubmit}, 
 					React.createElement("label", null, 
 						React.createElement("input", {type: "radio", name: "site_layout", value: "website", defaultChecked: true}), " Website", 
 						React.createElement("p", {className: "description"}, "Choose this one if you're creating a site for your company that will rarely change")
@@ -375,11 +375,11 @@ var React = require('react');
 module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
-	updatedTitle: function(e) {
+	handleChangeTitle: function(e) {
 		this.props.model.set('title', e.currentTarget.value);
 	},
 
-	saveTitle: function(e) {
+	handleSubmit: function(e) {
 		e.preventDefault();
 
 		data = {
@@ -416,8 +416,8 @@ module.exports = React.createClass({displayName: "exports",
 				feedbackMessage, 
 				React.createElement("h4", null, "Set your site title"), 
 
-				React.createElement("form", {onSubmit: this.saveTitle}, 
-					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autoComplete: "off", onChange: this.updatedTitle, value: this.props.model.get('title'), 
+				React.createElement("form", {onSubmit: this.handleSubmit}, 
+					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autoComplete: "off", onChange: this.handleChangeTitle, value: this.props.model.get('title'), 
 					       placeholder: "Site Title (this can be changed later)"}), 					       
 
 					React.createElement("p", {className: "submit"}, 
@@ -535,7 +535,7 @@ module.exports = React.createClass({displayName: "exports",
 			}
 			
 			return (
-				React.createElement("li", {className: step.status() + ' ' + (current ? 'current' : null)}, title)
+				React.createElement("li", {key: step.slug(), className: step.status() + ' ' + (current ? 'current' : null)}, title)
 			);
 		}.bind(this) );
 
@@ -559,13 +559,22 @@ var React = require('react');
 module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
+	percentComplete: function() {
+		var numSteps = this.props.model.get('steps').length;
+		var completedSteps = this.props.model.get('steps').where({completed: true}).length;
+		var percentComplete = (completedSteps / numSteps) * 100;
+
+		return Math.round(percentComplete / 10) * 10;;
+	},
+
 	render: function() {
+		var classes = 'getting-started__progress progress_'+this.percentComplete();
 		return (
-			React.createElement("div", {className: "getting-started__progress progress_10"}, 
+			React.createElement("div", {className: classes}, 
 				React.createElement("div", {className: "progress__bar"}, 
 					React.createElement("span", null)
 				), 
-				"10% complete"
+				this.percentComplete(), "% complete"
 			)
 		);
 	}
