@@ -5,6 +5,52 @@ module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
+		return (
+			React.createElement("div", {className: "welcome__section", id: "welcome__advanced"}, 
+				React.createElement("h4", null, "Advanced settings"), 
+
+				React.createElement("ul", {className: "welcome__advanced"}, 
+					React.createElement("li", null, 
+						React.createElement("h5", null, "Configure Jetpack Settings"), 
+						"View all Jetpack features like customization tools, enhanced security, speed boosts, and more.", 
+						React.createElement("br", null), 
+						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "View Jetpack features")
+					), 
+
+					React.createElement("li", null, 
+						React.createElement("h5", null, "Add Widgets"), 
+						"Choose what you’d like visitors to see in your sidebar: Twitter feed, archives, and more...", 
+						React.createElement("br", null), 
+						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "Manage Widgets")
+					), 
+
+					React.createElement("li", null, 
+						React.createElement("h5", null, "Fine Tune Your Site"), 
+						"Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!", 
+						React.createElement("br", null), 
+						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "Customize")
+					), 
+
+					React.createElement("li", null, 
+						React.createElement("h5", null, "Create a Portfolio"), 
+						"Starting an online portfolio is as straightforward as checking an option in your dashboard.",  
+						React.createElement("br", null), 
+						React.createElement("a", {className: "button button-primary button-large", href: "http://en.blog.wordpress.com/2014/04/11/portfolios-on-wordpress-com/", target: "_blank"}, "Learn how")
+					)
+				)
+
+			)
+		);
+	}
+});
+
+},{"react":23}],2:[function(require,module,exports){
+var React = require('react');
+
+module.exports = React.createClass({displayName: "exports",
+	mixins: [Backbone.React.Component.mixin],
+
+	render: function() {
 		var themes = this.props.model.get('themes').map( function(theme) {
 			var style = { 'backgroundImage' : 'url('+theme.img_preview+')', 'backgroundSize' : '100%' };
 			return (
@@ -17,7 +63,7 @@ module.exports = React.createClass({displayName: "exports",
 			);
 		} );
 		return (
-			React.createElement("div", {className: "welcome__section hidden", id: "welcome__design"}, 
+			React.createElement("div", {className: "welcome__section", id: "welcome__design"}, 
 				React.createElement("h4", null, "Pick a design"), 
 				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
 				React.createElement("div", {className: "themes-box"}, 
@@ -34,7 +80,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],2:[function(require,module,exports){
+},{"react":23}],3:[function(require,module,exports){
 module.exports = require('react').createClass({
 	render: function() {
 		return (
@@ -43,7 +89,67 @@ module.exports = require('react').createClass({
 	}
 });
 
-},{"react":19}],3:[function(require,module,exports){
+},{"react":23}],4:[function(require,module,exports){
+var React = require('react');
+
+module.exports = React.createClass({displayName: "exports",
+	mixins: [Backbone.React.Component.mixin],
+
+	render: function() {
+
+		var component, feedbackMessage;
+
+		if ( this.state.message != null ) {
+			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
+		} else {
+			feedbackMessage = null;
+		}
+
+		if ( ! this.props.model.get('jetpack_enabled') ) {
+			component = (
+				React.createElement("div", {className: "welcome__connect"}, 
+					"Connect Jetpack to enable free stats, site monitoring, and more.", 
+					React.createElement("br", null), React.createElement("br", null), 
+					React.createElement("a", {className: "download-jetpack", href: "#"}, "Connect Jetpack"), 
+					React.createElement("p", null, 
+						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+					)
+				)
+			);
+		} else if ( ! this.props.model.get('jetpack_active') ) {
+			component = (
+				React.createElement("div", {className: "welcome__connect"}, 
+					"You have downloaded JetPack but not yet enabled it", 
+					React.createElement("br", null), React.createElement("br", null), 
+					React.createElement("a", {href: "#", className: "download-jetpack"}, "Connect to WordPress.com"), 
+					React.createElement("p", {className: "submit"}, 
+						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+					)
+				)
+			);
+		} else {
+			component = (
+				React.createElement("div", null, 
+					"You have successfully connected Jetpack for stats, monitoring, and more!", 
+					React.createElement("p", {className: "submit"}, 
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Continue"})
+					)
+				)
+			);
+		}
+
+		// FIXME - show GUI to configure sharing
+		return (
+			React.createElement("div", {className: "welcome__section", id: "welcome__traffic"}, 
+				feedbackMessage, 
+				React.createElement("h4", null, "Get web traffic"), 
+				component
+			)
+		);
+	}
+});
+
+},{"react":23}],5:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -80,7 +186,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],4:[function(require,module,exports){
+},{"react":23}],6:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -114,7 +220,7 @@ module.exports = React.createClass({displayName: "exports",
 
 	render: function() {
 		var feedbackMessage;
-		
+
 		if ( this.state.message != null ) {
 			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
 		} else {
@@ -128,7 +234,7 @@ module.exports = React.createClass({displayName: "exports",
 				React.createElement("h4", null, "Set your site title"), 
 
 				React.createElement("form", {onSubmit: this.saveTitle}, 
-					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autocomplete: "off", onChange: this.updatedTitle, value: this.props.model.get('title'), 
+					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autoComplete: "off", onChange: this.updatedTitle, value: this.props.model.get('title'), 
 					       placeholder: "Site Title (this can be changed later)"}), 					       
 
 					React.createElement("p", {className: "submit"}, 
@@ -159,7 +265,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],5:[function(require,module,exports){
+},{"react":23}],7:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -217,7 +323,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],6:[function(require,module,exports){
+},{"react":23}],8:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -261,7 +367,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],7:[function(require,module,exports){
+},{"react":23}],9:[function(require,module,exports){
 var React = require('react');
 	
 /**
@@ -279,7 +385,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":19}],8:[function(require,module,exports){
+},{"react":23}],10:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx');
@@ -304,12 +410,21 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-menu.jsx":6,"./welcome-section.jsx":7,"react":19}],9:[function(require,module,exports){
+},{"./welcome-menu.jsx":8,"./welcome-section.jsx":9,"react":23}],11:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":17}],10:[function(require,module,exports){
+},{"./welcome-panel":21}],12:[function(require,module,exports){
+var WelcomeStepModel = require('./welcome-step'),
+	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
+
+module.exports = WelcomeStepModel.extend({
+	//TODO - check current site title, etc.
+	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
+});
+
+},{"../components/advanced-settings-step.jsx":1,"./welcome-step":19}],13:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DesignStepView = require('../components/design-step.jsx');
 
@@ -317,7 +432,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Pick a design", welcomeView: DesignStepView, themes: JPS.themes })
 });
 
-},{"../components/design-step.jsx":1,"./welcome-step":15}],11:[function(require,module,exports){
+},{"../components/design-step.jsx":2,"./welcome-step":19}],14:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepView = require('../components/dummy-welcome-step.jsx');
 
@@ -330,7 +445,16 @@ module.exports = WelcomeStepModel.extend({
 	repeatable: function() { return false; },
 });
 
-},{"../components/dummy-welcome-step.jsx":2,"./welcome-step":15}],12:[function(require,module,exports){
+},{"../components/dummy-welcome-step.jsx":3,"./welcome-step":19}],15:[function(require,module,exports){
+var WelcomeStepModel = require('./welcome-step'),
+	GetTrafficStepView = require('../components/get-traffic-step.jsx');
+
+module.exports = WelcomeStepModel.extend({
+	//TODO - check current site title, etc.
+	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Get some traffic", welcomeView: GetTrafficStepView })
+});
+
+},{"../components/get-traffic-step.jsx":4,"./welcome-step":19}],16:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	LayoutStepView = require('../components/layout-step.jsx');
 
@@ -339,7 +463,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Pick a layout", welcomeView: LayoutStepView })
 });
 
-},{"../components/layout-step.jsx":3,"./welcome-step":15}],13:[function(require,module,exports){
+},{"../components/layout-step.jsx":5,"./welcome-step":19}],17:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	SiteTitleStepView = require('../components/site-title-step.jsx');
 
@@ -357,7 +481,7 @@ module.exports = WelcomeStepModel.extend({
 	}
 });
 
-},{"../components/site-title-step.jsx":4,"./welcome-step":15}],14:[function(require,module,exports){
+},{"../components/site-title-step.jsx":6,"./welcome-step":19}],18:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
   StatsMonitoringStepView = require('../components/stats-monitoring-step.jsx');
 
@@ -365,7 +489,7 @@ module.exports = WelcomeStepModel.extend({
   defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Stats & Monitoring", welcomeView: StatsMonitoringStepView })
 });
 
-},{"../components/stats-monitoring-step.jsx":5,"./welcome-step":15}],15:[function(require,module,exports){
+},{"../components/stats-monitoring-step.jsx":7,"./welcome-step":19}],19:[function(require,module,exports){
 var React = require('react');
 
 // base class for welcome steps
@@ -411,13 +535,15 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"react":19}],16:[function(require,module,exports){
+},{"react":23}],20:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
 	LayoutStepModel = require('./layout-step'),
 	StatsMonitoringStepModel = require('./stats-monitoring-step'),
-	DesignStepModel = require('./design-step');
+	DesignStepModel = require('./design-step'),
+	GetTrafficStepModel = require('./get-traffic-step'),
+	AdvancedSettingsStepModel = require('./advanced-settings-step');
 
 /**
  * WelcomeWizard has a current step and an array of steps to be completed
@@ -431,7 +557,9 @@ module.exports = Backbone.Model.extend({
 				new SiteTitleStepModel(),
 				new LayoutStepModel(),
 				new StatsMonitoringStepModel(),
-				new DesignStepModel()
+				new DesignStepModel(),
+				new GetTrafficStepModel(),
+				new AdvancedSettingsStepModel()
 			],{
 				model: WelcomeStepModel
 			})
@@ -484,7 +612,7 @@ module.exports = Backbone.Model.extend({
 	// }
 });
 
-},{"./design-step":10,"./dummy-welcome-step":11,"./layout-step":12,"./site-title-step":13,"./stats-monitoring-step":14,"./welcome-step":15}],17:[function(require,module,exports){
+},{"./advanced-settings-step":12,"./design-step":13,"./dummy-welcome-step":14,"./get-traffic-step":15,"./layout-step":16,"./site-title-step":17,"./stats-monitoring-step":18,"./welcome-step":19}],21:[function(require,module,exports){
 var React = require('react'),
     BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
@@ -566,12 +694,12 @@ module.exports = function() {
     })(jQuery);
 }
 
-},{"./components/welcome-widget.jsx":8,"./models/welcome-wizard":16,"backbone-react":18,"react":19}],18:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":10,"./models/welcome-wizard":20,"backbone-react":22,"react":23}],22:[function(require,module,exports){
 (function (global){
 !function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":19}],19:[function(require,module,exports){
+},{"react":23}],23:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -20137,4 +20265,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[9]);
+},{}]},{},[11]);

@@ -3,7 +3,9 @@ var WelcomeStepModel = require('./welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
 	LayoutStepModel = require('./layout-step'),
 	StatsMonitoringStepModel = require('./stats-monitoring-step'),
-	DesignStepModel = require('./design-step');
+	DesignStepModel = require('./design-step'),
+	GetTrafficStepModel = require('./get-traffic-step'),
+	AdvancedSettingsStepModel = require('./advanced-settings-step');
 
 /**
  * WelcomeWizard has a current step and an array of steps to be completed
@@ -17,7 +19,9 @@ module.exports = Backbone.Model.extend({
 				new SiteTitleStepModel(),
 				new LayoutStepModel(),
 				new StatsMonitoringStepModel(),
-				new DesignStepModel()
+				new DesignStepModel(),
+				new GetTrafficStepModel(),
+				new AdvancedSettingsStepModel()
 			],{
 				model: WelcomeStepModel
 			})

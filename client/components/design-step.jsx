@@ -16,7 +16,7 @@ module.exports = React.createClass({
 			);
 		} );
 		return (
-			<div className="welcome__section hidden" id="welcome__design">
+			<div className="welcome__section" id="welcome__design">
 				<h4>Pick a design</h4>
 				<p className="step-description">To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)</p>
 				<div className="themes-box">

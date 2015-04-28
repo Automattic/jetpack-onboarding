@@ -31,7 +31,7 @@ module.exports = React.createClass({
 
 	render: function() {
 		var feedbackMessage;
-		
+
 		if ( this.state.message != null ) {
 			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
 		} else {
@@ -45,7 +45,7 @@ module.exports = React.createClass({
 				<h4>Set your site title</h4>
 
 				<form onSubmit={this.saveTitle}>
-					<input type="text" name="site_title" id="site-title" autocomplete="off" onChange={this.updatedTitle} value={this.props.model.get('title')}
+					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.updatedTitle} value={this.props.model.get('title')}
 					       placeholder="Site Title (this can be changed later)"/>					       
 
 					<p className="submit">
