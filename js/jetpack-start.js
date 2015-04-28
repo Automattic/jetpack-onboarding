@@ -29,16 +29,8 @@ module.exports = React.createClass({displayName: "exports",
 						"Customize your site’s colors, fonts, frontpage and other settings. Or completely change your theme!", 
 						React.createElement("br", null), 
 						React.createElement("a", {className: "button button-primary button-large", href: "#"}, "Customize")
-					), 
-
-					React.createElement("li", null, 
-						React.createElement("h5", null, "Create a Portfolio"), 
-						"Starting an online portfolio is as straightforward as checking an option in your dashboard.",  
-						React.createElement("br", null), 
-						React.createElement("a", {className: "button button-primary button-large", href: "http://en.blog.wordpress.com/2014/04/11/portfolios-on-wordpress-com/", target: "_blank"}, "Learn how")
 					)
 				)
-
 			)
 		);
 	}
@@ -107,6 +99,30 @@ module.exports = React.createClass({displayName: "exports",
 
 	handleCloseOverlay: function( e ) {
 		this.setState({overlayTheme: null});
+	},
+
+	handlePreviousThemeOverlay: function ( e ) {
+		var prevTheme = null;
+
+		this.props.model.get('themes').forEach( function ( theme ) {
+			if ( theme == this.state.overlayTheme ) {
+				this.setState({overlayTheme: prevTheme});
+				return;
+			}
+			prevTheme = theme;
+		}.bind(this) );
+	},
+
+	handleNextThemeOverlay: function ( e ) {
+		var prevTheme = null;
+
+		this.props.model.get('themes').forEach( function ( theme ) {
+			if ( prevTheme == this.state.overlayTheme ) {
+				this.setState({overlayTheme: theme});
+				return;
+			}
+			prevTheme = theme;
+		}.bind(this) );
 	},
 
 	render: function() {
@@ -202,8 +218,8 @@ module.exports = React.createClass({displayName: "exports",
 					React.createElement("div", {className: "theme-backdrop"}), 
 					React.createElement("div", {className: "theme-wrap"}, 
 						React.createElement("div", {className: "theme-header"}, 
-							React.createElement("button", {type: "button", className: "left dashicons dashicons-no"}, React.createElement("span", {className: "screen-reader-text"}, "Show previous theme")), 
-							React.createElement("button", {type: "button", className: "right dashicons dashicons-no"}, React.createElement("span", {className: "screen-reader-text"}, "Show next theme")), 
+							React.createElement("button", {type: "button", className: "left dashicons dashicons-no", onClick: this.handlePreviousThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show previous theme")), 
+							React.createElement("button", {type: "button", className: "right dashicons dashicons-no", onClick: this.handleNextThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show next theme")), 
 							React.createElement("button", {type: "button", className: "close dashicons dashicons-no", onClick: this.handleCloseOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Close details dialog"))
 						), 
 						React.createElement("div", {className: "theme-about"}, 
@@ -235,8 +251,8 @@ module.exports = React.createClass({displayName: "exports",
 				React.createElement("div", {className: "theme-browser"}, 
 					themes
 				), 
-					
 				
+				React.createElement("div", {style: {clear: 'both'}}), 
 				React.createElement("p", {className: "submit"}, 
 					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
 					React.createElement("a", {className: "skip", href: "#"}, "Skip this step")

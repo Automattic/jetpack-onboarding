@@ -62,6 +62,30 @@ module.exports = React.createClass({
 		this.setState({overlayTheme: null});
 	},
 
+	handlePreviousThemeOverlay: function ( e ) {
+		var prevTheme = null;
+
+		this.props.model.get('themes').forEach( function ( theme ) {
+			if ( theme == this.state.overlayTheme ) {
+				this.setState({overlayTheme: prevTheme});
+				return;
+			}
+			prevTheme = theme;
+		}.bind(this) );
+	},
+
+	handleNextThemeOverlay: function ( e ) {
+		var prevTheme = null;
+
+		this.props.model.get('themes').forEach( function ( theme ) {
+			if ( prevTheme == this.state.overlayTheme ) {
+				this.setState({overlayTheme: theme});
+				return;
+			}
+			prevTheme = theme;
+		}.bind(this) );
+	},
+
 	render: function() {
 
 		var themes = this.props.model.get('themes').map( function(theme) {
@@ -155,8 +179,8 @@ module.exports = React.createClass({
 					<div className="theme-backdrop"></div>
 					<div className="theme-wrap">
 						<div className="theme-header">
-							<button type="button" className="left dashicons dashicons-no"><span className="screen-reader-text">Show previous theme</span></button>
-							<button type="button" className="right dashicons dashicons-no"><span className="screen-reader-text">Show next theme</span></button>
+							<button type="button" className="left dashicons dashicons-no" onClick={this.handlePreviousThemeOverlay}><span className="screen-reader-text">Show previous theme</span></button>
+							<button type="button" className="right dashicons dashicons-no" onClick={this.handleNextThemeOverlay}><span className="screen-reader-text">Show next theme</span></button>
 							<button type="button" className="close dashicons dashicons-no" onClick={this.handleCloseOverlay}><span className="screen-reader-text">Close details dialog</span></button>
 						</div>
 						<div className="theme-about">
@@ -188,8 +212,8 @@ module.exports = React.createClass({
 				<div className="theme-browser">
 					{themes}
 				</div>
-					
 				
+				<div style={{clear: 'both'}}></div>
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
 					<a className="skip" href="#">Skip this step</a>
