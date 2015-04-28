@@ -29,15 +29,7 @@ module.exports = React.createClass({
 						<br />
 						<a className="button button-primary button-large" href="#">Customize</a>
 					</li>
-
-					<li>
-						<h5>Create a Portfolio</h5>
-						Starting an online portfolio is as straightforward as checking an option in your dashboard. 
-						<br />
-						<a className="button button-primary button-large" href="http://en.blog.wordpress.com/2014/04/11/portfolios-on-wordpress-com/" target="_blank">Learn how</a>
-					</li>
 				</ul>
-
 			</div>
 		);
 	}
