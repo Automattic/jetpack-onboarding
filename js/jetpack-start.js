@@ -36,7 +36,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],2:[function(require,module,exports){
+},{"react":24}],2:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -263,7 +263,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],3:[function(require,module,exports){
+},{"react":24}],3:[function(require,module,exports){
 module.exports = require('react').createClass({
 	render: function() {
 		return (
@@ -272,7 +272,7 @@ module.exports = require('react').createClass({
 	}
 });
 
-},{"react":23}],4:[function(require,module,exports){
+},{"react":24}],4:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -332,7 +332,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],5:[function(require,module,exports){
+},{"react":24}],5:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -369,7 +369,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],6:[function(require,module,exports){
+},{"react":24}],6:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -448,7 +448,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],7:[function(require,module,exports){
+},{"react":24}],7:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -506,7 +506,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],8:[function(require,module,exports){
+},{"react":24}],8:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -550,7 +550,30 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],9:[function(require,module,exports){
+},{"react":24}],9:[function(require,module,exports){
+var React = require('react');
+
+/**
+ * Show progress through the steps
+ **/
+module.exports = React.createClass({displayName: "exports",
+	mixins: [Backbone.React.Component.mixin],
+
+	render: function() {
+		return (
+			React.createElement("div", {className: "getting-started__progress progress_10"}, 
+				React.createElement("div", {className: "progress__bar"}, 
+					React.createElement("span", null)
+				), 
+				"10% complete"
+			)
+		);
+	}
+});
+
+
+
+},{"react":24}],10:[function(require,module,exports){
 var React = require('react');
 	
 /**
@@ -568,10 +591,11 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":23}],10:[function(require,module,exports){
+},{"react":24}],11:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
-	WelcomeMenu = require('./welcome-menu.jsx');
+	WelcomeMenu = require('./welcome-menu.jsx'),
+	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
 
 module.exports = React.createClass({displayName: "exports",
 	// see: http://magalhas.github.io/backbone-react-component/
@@ -586,6 +610,7 @@ module.exports = React.createClass({displayName: "exports",
 					React.createElement("p", {className: "getting-started__subhead"}, "Let's get your new site set up as quickly as possible.")
 				), 
 
+				React.createElement(WelcomeProgressBar, {model: this.props.model}), 
 				React.createElement(WelcomeSection, {model: this.props.model}), 
 				React.createElement(WelcomeMenu, {model: this.props.model})
 			)
@@ -593,12 +618,12 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-menu.jsx":8,"./welcome-section.jsx":9,"react":23}],11:[function(require,module,exports){
+},{"./welcome-menu.jsx":8,"./welcome-progress-bar.jsx":9,"./welcome-section.jsx":10,"react":24}],12:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":21}],12:[function(require,module,exports){
+},{"./welcome-panel":22}],13:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
 
@@ -606,7 +631,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
 });
 
-},{"../components/advanced-settings-step.jsx":1,"./welcome-step":19}],13:[function(require,module,exports){
+},{"../components/advanced-settings-step.jsx":1,"./welcome-step":20}],14:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DesignStepView = require('../components/design-step.jsx');
 
@@ -614,7 +639,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Pick a design", welcomeView: DesignStepView, themes: JPS.themes })
 });
 
-},{"../components/design-step.jsx":2,"./welcome-step":19}],14:[function(require,module,exports){
+},{"../components/design-step.jsx":2,"./welcome-step":20}],15:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepView = require('../components/dummy-welcome-step.jsx');
 
@@ -627,7 +652,7 @@ module.exports = WelcomeStepModel.extend({
 	repeatable: function() { return false; },
 });
 
-},{"../components/dummy-welcome-step.jsx":3,"./welcome-step":19}],15:[function(require,module,exports){
+},{"../components/dummy-welcome-step.jsx":3,"./welcome-step":20}],16:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	GetTrafficStepView = require('../components/get-traffic-step.jsx');
 
@@ -636,7 +661,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Get some traffic", welcomeView: GetTrafficStepView })
 });
 
-},{"../components/get-traffic-step.jsx":4,"./welcome-step":19}],16:[function(require,module,exports){
+},{"../components/get-traffic-step.jsx":4,"./welcome-step":20}],17:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	LayoutStepView = require('../components/layout-step.jsx');
 
@@ -645,7 +670,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Pick a layout", welcomeView: LayoutStepView })
 });
 
-},{"../components/layout-step.jsx":5,"./welcome-step":19}],17:[function(require,module,exports){
+},{"../components/layout-step.jsx":5,"./welcome-step":20}],18:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	SiteTitleStepView = require('../components/site-title-step.jsx');
 
@@ -664,7 +689,7 @@ module.exports = WelcomeStepModel.extend({
 	}
 });
 
-},{"../components/site-title-step.jsx":6,"./welcome-step":19}],18:[function(require,module,exports){
+},{"../components/site-title-step.jsx":6,"./welcome-step":20}],19:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
   StatsMonitoringStepView = require('../components/stats-monitoring-step.jsx');
 
@@ -672,7 +697,7 @@ module.exports = WelcomeStepModel.extend({
   defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Stats & Monitoring", welcomeView: StatsMonitoringStepView })
 });
 
-},{"../components/stats-monitoring-step.jsx":7,"./welcome-step":19}],19:[function(require,module,exports){
+},{"../components/stats-monitoring-step.jsx":7,"./welcome-step":20}],20:[function(require,module,exports){
 var React = require('react');
 
 // base class for welcome steps
@@ -718,7 +743,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"react":23}],20:[function(require,module,exports){
+},{"react":24}],21:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
@@ -795,7 +820,7 @@ module.exports = Backbone.Model.extend({
 	// }
 });
 
-},{"./advanced-settings-step":12,"./design-step":13,"./dummy-welcome-step":14,"./get-traffic-step":15,"./layout-step":16,"./site-title-step":17,"./stats-monitoring-step":18,"./welcome-step":19}],21:[function(require,module,exports){
+},{"./advanced-settings-step":13,"./design-step":14,"./dummy-welcome-step":15,"./get-traffic-step":16,"./layout-step":17,"./site-title-step":18,"./stats-monitoring-step":19,"./welcome-step":20}],22:[function(require,module,exports){
 var React = require('react'),
     BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
@@ -809,12 +834,12 @@ module.exports = function() {
     });
 }
 
-},{"./components/welcome-widget.jsx":10,"./models/welcome-wizard":20,"backbone-react":22,"react":23}],22:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":11,"./models/welcome-wizard":21,"backbone-react":23,"react":24}],23:[function(require,module,exports){
 (function (global){
 !function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":23}],23:[function(require,module,exports){
+},{"react":24}],24:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -20380,4 +20405,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[11]);
+},{}]},{},[12]);
