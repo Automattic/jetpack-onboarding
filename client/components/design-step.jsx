@@ -10,11 +10,11 @@ module.exports = React.createClass({
 		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 	},
 
-	getInitialState: function() {
-		return {
-			overlayTheme: this.props.model.get('themes')[0]
-		};
-	},
+	// getInitialState: function() {
+	// 	return {
+	// 		overlayTheme: this.props.model.get('themes')[0]
+	// 	};
+	// },
 
 	makeActive: function( activeThemeId ) {
 		var themes = this.props.model.get('themes');
@@ -45,6 +45,21 @@ module.exports = React.createClass({
 			.fail( function () {
 				console.log("failed");
 			} ); 
+	},
+
+	findTheme: function ( themeId )	{
+		return _.findWhere(this.props.model.get('themes'), {id: themeId});
+	},
+
+	handleShowOverlay: function ( e ) {
+		var $el   = jQuery(e.currentTarget),
+			theme = this.findTheme($el.data('theme-id'));
+		
+		this.setState({overlayTheme: theme});
+	},
+
+	handleCloseOverlay: function( e ) {
+		this.setState({overlayTheme: null});
 	},
 
 	render: function() {
@@ -89,7 +104,7 @@ module.exports = React.createClass({
 			}
 
 			return (
-				<div className={wrapperClass} tabIndex="0" aria-describedby={ariaDescribedBy}>
+				<div className={wrapperClass} tabIndex="0" data-theme-id={theme.id} onClick={this.handleShowOverlay} aria-describedby={ariaDescribedBy}>
 					{screenshot}
 					{toolbar}
 					<span className="more-details" id={theme.id + '-action'}>Theme Details</span>
@@ -142,7 +157,7 @@ module.exports = React.createClass({
 						<div className="theme-header">
 							<button type="button" className="left dashicons dashicons-no"><span className="screen-reader-text">Show previous theme</span></button>
 							<button type="button" className="right dashicons dashicons-no"><span className="screen-reader-text">Show next theme</span></button>
-							<button type="button" className="close dashicons dashicons-no"><span className="screen-reader-text">Close details dialog</span></button>
+							<button type="button" className="close dashicons dashicons-no" onClick={this.handleCloseOverlay}><span className="screen-reader-text">Close details dialog</span></button>
 						</div>
 						<div className="theme-about">
 							<div className="theme-screenshots">
