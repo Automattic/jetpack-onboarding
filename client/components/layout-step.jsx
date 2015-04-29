@@ -10,12 +10,13 @@ module.exports = React.createClass({
 		data = {
 			action: JPS.steps.set_layout.url_action,
 			nonce: JPS.nonce,
-			layout: value
+			layout: value,
+			completed: true
 		};
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
-				this.props.model.set('title', this.state.title);
+				this.props.model.set({layout: value, completed: true});
 				this.setState({message: "Saved"});
 			}.bind(this) )
 			.fail( function() {

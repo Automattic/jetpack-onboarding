@@ -26,13 +26,11 @@ module.exports = React.createClass({
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
-				this.props.model.set('title', this.state.title);
+				this.props.model.set({title: this.state.title, completed: true});
 				this.setState({message: "Saved"});
-				// jQuery('#welcome__site-title notice').html("Saved").fadeOut(2000);
 			}.bind(this) )
 			.fail( function() {
 				this.setState({message: "Failed"});
-				// jQuery('#welcome__site-title notice').html("Fail").fadeOut(2000);
 			}.bind(this) );
 
 		//skip to next section unless this section has been completed before?
@@ -46,7 +44,6 @@ module.exports = React.createClass({
 		} else {
 			feedbackMessage = null;
 		}
-
 
 		return (
 			<div className="welcome__section" id="welcome__site-title">

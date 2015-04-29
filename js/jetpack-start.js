@@ -345,12 +345,13 @@ module.exports = React.createClass({displayName: "exports",
 		data = {
 			action: JPS.steps.set_layout.url_action,
 			nonce: JPS.nonce,
-			layout: value
+			layout: value,
+			completed: true
 		};
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
-				this.props.model.set('title', this.state.title);
+				this.props.model.set({layout: value, completed: true});
 				this.setState({message: "Saved"});
 			}.bind(this) )
 			.fail( function() {
@@ -427,13 +428,11 @@ module.exports = React.createClass({displayName: "exports",
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() { 
-				this.props.model.set('title', this.state.title);
+				this.props.model.set({title: this.state.title, completed: true});
 				this.setState({message: "Saved"});
-				// jQuery('#welcome__site-title notice').html("Saved").fadeOut(2000);
 			}.bind(this) )
 			.fail( function() {
 				this.setState({message: "Failed"});
-				// jQuery('#welcome__site-title notice').html("Fail").fadeOut(2000);
 			}.bind(this) );
 
 		//skip to next section unless this section has been completed before?
@@ -447,7 +446,6 @@ module.exports = React.createClass({displayName: "exports",
 		} else {
 			feedbackMessage = null;
 		}
-
 
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
