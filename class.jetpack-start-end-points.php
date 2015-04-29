@@ -81,6 +81,11 @@ class EndPoints {
 		}
 
 		if ( ! \Jetpack::is_active() ) {
+
+			if ( ! \Jetpack_Options::get_option( 'blog_token' ) ) {
+				\Jetpack::init()->register();
+			}
+
 			// \Jetpack_Admin::init(); // needed so that menu hooks are installed for constructing the connect URL below
 			(new \Jetpack_Landing_Page())->add_actions();
 
