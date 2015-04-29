@@ -16,7 +16,8 @@ class EndPoints {
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
-			add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
+			add_action( 'wp_ajax_jps_activate_jetpack', array( __CLASS__, 'activate_jetpack' ) );
+			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
 
@@ -31,6 +32,10 @@ class EndPoints {
 			'steps' => array(
 				'set_title' => array('url_action' => 'jps_set_title'),
 				'set_layout' => array('url_action' => 'jps_set_layout'),
+				'stats_and_monitoring' => array(
+					'jetpack_configured' => (is_plugin_active('jetpack') && Jetpack::is_active()),
+					'activate_url_action' => 'jps_activate_jetpack'
+				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -61,6 +66,34 @@ class EndPoints {
 		} elseif ( $layout == 'blog') {
 			self::set_layout_to_blog();
 		}
+	}
+
+	// try to activate the plugin if necessary and kick off the jetpack connection flow
+	// in a single action (possibly in a dialog / iframe / something?)
+	static function activate_jetpack() {
+		if ( ! is_plugin_active('jetpack') ) {
+			activate_plugin('jetpack');
+		}
+
+		if ( ! class_exists('\\Jetpack') ) {
+			wp_send_json_error('There was a problem activating Jetpack');
+			die();
+		}
+
+		if ( ! \Jetpack::is_active() ) {
+			// \Jetpack_Admin::init(); // needed so that menu hooks are installed for constructing the connect URL below
+			(new \Jetpack_Landing_Page())->add_actions();
+
+			// redirect to activate link
+			$connect_url = \Jetpack::init()->build_connect_url( true, admin_url('index.php') ); //hopefully welcome widget won't need the #hash part eventually
+
+			wp_send_json_success( array('next' => $connect_url) );
+			// die();
+		} else {
+			wp_send_json_success( 'already_active' );
+		}
+
+		
 	}
 
 	static function set_layout_to_website() {

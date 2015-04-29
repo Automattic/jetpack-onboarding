@@ -479,32 +479,53 @@ var React = require('react');
 module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
+	handleJetpackErrorResponse: function(message) {
+		this.setState({message: 'Failed: '+message, messageType: 'error'});
+	},
+
+	handleJetpackConnect: function (e) {
+		e.preventDefault();
+
+		data = {
+			action: JPS.steps.stats_and_monitoring.activate_url_action,
+			nonce: JPS.nonce
+		};
+		
+		jQuery.post(ajaxurl, data)
+			.success( function(response) { 
+				if ( ! response.success ) {
+					this.handleJetpackErrorResponse(response.data);
+					return;
+				}
+
+				if ( response.data.next ) {
+					alert('redirecting to '+response.data.next);
+					window.location.replace(response.data.next);
+				} else {
+					this.setState({message: 'Connected', messageType: 'notice'});
+				}
+				
+			}.bind(this) )
+			.fail( function() {
+				this.handleJetpackErrorResponse("Unknown error");
+			}.bind(this) );
+	},
+
 	render: function() {
 		var component, feedbackMessage;
 
 		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
+			feedbackMessage = (React.createElement("div", {className: this.state.messageType + ' updated'}, this.state.message));
 		} else {
 			feedbackMessage = null;
 		}
 
-		if ( ! this.props.model.get('jetpack_enabled') ) {
+		if ( ! JPS.steps.stats_and_monitoring.jetpack_configured ) {
 			component = (
 				React.createElement("div", {className: "welcome__connect"}, 
-					"Connect Jetpack to enable free stats, site monitoring, and more.", 
+					"Enable Jetpack and connect to WordPress.com for powerful analytics and site monitoring.", 
 					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {className: "download-jetpack", href: "#"}, "Connect Jetpack"), 
-					React.createElement("p", null, 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
-					)
-				)
-			);
-		} else if ( ! this.props.model.get('jetpack_active') ) {
-			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
-					"You have downloaded JetPack but not yet enabled it", 
-					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {href: "#", className: "download-jetpack"}, "Connect to WordPress.com"), 
+					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
 					)
