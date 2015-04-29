@@ -49,12 +49,6 @@ module.exports = React.createClass({displayName: "exports",
 		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 	},
 
-	// getInitialState: function() {
-	// 	return {
-	// 		overlayTheme: this.props.model.get('themes')[0]
-	// 	};
-	// },
-
 	makeActive: function( activeThemeId ) {
 		var themes = this.props.model.get('themes');
 
@@ -130,7 +124,7 @@ module.exports = React.createClass({displayName: "exports",
 
 		var themes = this.props.model.get('themes').map( function(theme) {
 
-			var screenshot, toolbar, actions;
+			var screenshot, actions;
 
 			var wrapperClass = 'theme';
 			if ( theme.active ) { wrapperClass += ' active'; }
@@ -145,12 +139,6 @@ module.exports = React.createClass({displayName: "exports",
 				);
 			} else {
 				screenshot = (React.createElement("div", {className: "theme-screenshot blank"}));
-			}
-
-			if ( theme.active ) {
-				toolbar = (React.createElement("h3", {className: "theme-name", id: theme.id+'-name'}, React.createElement("span", null, "Active:"), " ", theme.name));
-			} else {
-				toolbar = (React.createElement("h3", {className: "theme-name", id: theme.id+'-name'}, theme.name));
 			}
 
 			if ( theme.active ) {
@@ -170,7 +158,7 @@ module.exports = React.createClass({displayName: "exports",
 			return (
 				React.createElement("div", {key: theme.id, className: wrapperClass, tabIndex: "0", "data-theme-id": theme.id, onClick: this.handleShowOverlay, "aria-describedby": ariaDescribedBy}, 
 					screenshot, 
-					toolbar, 
+					React.createElement("h3", {className: "theme-name", id: theme.id+'-name'}, React.createElement("span", null, theme.active ? 'Active:' : ''), " ", theme.name), 
 					React.createElement("span", {className: "more-details", id: theme.id + '-action'}, "Theme Details"), 
 					React.createElement("div", {className: "theme-author"}, "By ", theme.author), 
 

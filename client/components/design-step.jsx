@@ -10,12 +10,6 @@ module.exports = React.createClass({
 		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
 	},
 
-	// getInitialState: function() {
-	// 	return {
-	// 		overlayTheme: this.props.model.get('themes')[0]
-	// 	};
-	// },
-
 	makeActive: function( activeThemeId ) {
 		var themes = this.props.model.get('themes');
 
@@ -91,7 +85,7 @@ module.exports = React.createClass({
 
 		var themes = this.props.model.get('themes').map( function(theme) {
 
-			var screenshot, toolbar, actions;
+			var screenshot, actions;
 
 			var wrapperClass = 'theme';
 			if ( theme.active ) { wrapperClass += ' active'; }
@@ -106,12 +100,6 @@ module.exports = React.createClass({
 				);
 			} else {
 				screenshot = (<div className="theme-screenshot blank"></div>);
-			}
-
-			if ( theme.active ) {
-				toolbar = (<h3 className="theme-name" id={theme.id+'-name'}><span>Active:</span> {theme.name}</h3>);
-			} else {
-				toolbar = (<h3 className="theme-name" id={theme.id+'-name'}>{theme.name}</h3>);
 			}
 
 			if ( theme.active ) {
@@ -131,7 +119,7 @@ module.exports = React.createClass({
 			return (
 				<div key={theme.id} className={wrapperClass} tabIndex="0" data-theme-id={theme.id} onClick={this.handleShowOverlay} aria-describedby={ariaDescribedBy}>
 					{screenshot}
-					{toolbar}
+					<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Active:' : ''}</span> {theme.name}</h3>
 					<span className="more-details" id={theme.id + '-action'}>Theme Details</span>
 					<div className="theme-author">By {theme.author}</div>
 
