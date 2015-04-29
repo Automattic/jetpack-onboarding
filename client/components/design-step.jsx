@@ -33,6 +33,7 @@ module.exports = React.createClass({
 
 	handleActivateTheme: function( e ) {
 		e.preventDefault();
+		e.stopPropagation();
 		var $el = jQuery(e.currentTarget);
 		var activateUrl = $el.attr('href');
 		var themeId = $el.data('theme-id');
