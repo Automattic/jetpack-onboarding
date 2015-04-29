@@ -341,7 +341,6 @@ module.exports = React.createClass({displayName: "exports",
 	handleSubmit: function( e ) {
 		e.preventDefault();
 		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
-		console.log('value is '+value);
 		
 		data = {
 			action: JPS.steps.set_layout.url_action,
@@ -361,8 +360,16 @@ module.exports = React.createClass({displayName: "exports",
 	},
 
 	render: function() {
+		var feedbackMessage;
+
+		if ( this.state.message != null ) {
+			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
+		} else {
+			feedbackMessage = null;
+		}
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__layout"}, 
+				feedbackMessage, 
 				React.createElement("h4", null, "Pick a layout"), 
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 

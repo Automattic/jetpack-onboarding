@@ -6,7 +6,6 @@ module.exports = React.createClass({
 	handleSubmit: function( e ) {
 		e.preventDefault();
 		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
-		console.log('value is '+value);
 		
 		data = {
 			action: JPS.steps.set_layout.url_action,
@@ -26,8 +25,16 @@ module.exports = React.createClass({
 	},
 
 	render: function() {
+		var feedbackMessage;
+
+		if ( this.state.message != null ) {
+			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
+		} else {
+			feedbackMessage = null;
+		}
 		return (
 			<div className="welcome__section" id="welcome__layout">
+				{feedbackMessage}
 				<h4>Pick a layout</h4>
 
 				<form onSubmit={this.handleSubmit}>
