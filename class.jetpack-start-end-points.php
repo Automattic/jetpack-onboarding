@@ -15,6 +15,7 @@ class EndPoints {
 	static function init_ajax() {
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
+			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
 			add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
@@ -29,6 +30,7 @@ class EndPoints {
 			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
 			'steps' => array(
 				'set_title' => array('url_action' => 'jps_set_title'),
+				'set_layout' => array('url_action' => 'jps_set_layout'),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -38,38 +40,6 @@ class EndPoints {
 		);
 	}
 
-	// static function get_themes() {
-	// 	if ( is_null( self::$themes ) ) {
-	// 		self::$themes = apply_filters(
-	// 			'jetpack_start_themes',
-	// 			self::$default_themes
-	// 		);
-
-	// 		self::$themes = self::prepare_themes( self::$themes );
-	// 	}
-	// 	return self::$themes;
-	// }
-
-	// static function prepare_themes( $themes ) {
-	// 	$result = array();
-	// 	foreach ( $themes as $_theme ) {
-	// 		$theme = wp_get_theme( $_theme );
-	// 		if ( $theme->exists() ) {
-	// 			$result[] = self::prepare_theme( $theme );
-	// 		}
-	// 	}
-	// 	return $result;
-	// }
-
-	// static function prepare_theme( $theme ) {
-	// 	return array(
-	// 		'name' => $theme->Name,
-	// 		'stylesheet'  => $theme->get_stylesheet(),
-	// 		'screenshot' => $theme->get_screenshot(),
-	// 		'demo_url' => 'http://' .  str_replace( '-', '', $theme->get_stylesheet() ) . 'demo.wordpress.com?demo',
-	// 	);
-	// }
-
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		$title = esc_html( $_REQUEST['title'] );
@@ -77,6 +47,105 @@ class EndPoints {
 			wp_send_json_success( $title );
 		} else {
 			wp_send_json_error();
+		}
+	}
+
+	static function set_layout() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$layout = esc_html( $_REQUEST['layout'] );
+
+		if ( $layout == 'website' ) {
+			self::set_layout_to_website();
+		} elseif ( $layout == 'site-blog' ) {
+			self::set_layout_to_site_with_blog();
+		} elseif ( $layout == 'blog') {
+			self::set_layout_to_blog();
+		}
+	}
+
+	static function set_layout_to_website() {
+		// no posts page for this layout
+		update_option( 'page_for_posts', null );
+
+		self::set_front_page_to_page();
+
+		wp_send_json_success( 'website' );
+		die();
+	}
+
+	static function set_layout_to_site_with_blog() {
+		self::set_front_page_to_page();
+
+		$blog_page = get_page_by_path('blog');
+
+		if ( $blog_page != null ) {
+			$page_id = $blog_page->ID;
+		} else {
+			// create page
+			$page = array(
+				'post_type' => 'page',
+				'post_title' => 'Blog',
+				'post_name' => 'blog',
+				'post_content' => '', 
+				'post_status' => 'publish',
+				'comment_status' => 'open'
+			);
+
+			$page_id = wp_insert_post( $page );
+		}
+
+		if ( $page_id == 0 ) {
+			wp_send_json_error();
+			die();
+		}
+
+		update_option( 'page_for_posts', $page_id );
+		wp_send_json_success( 'site-blog' );	
+	}
+
+	static function set_layout_to_blog() {
+		if ( get_option( 'show_on_front' ) == 'page' ) {
+			update_option( 'show_on_front', 'posts' );
+		}
+	}
+
+	static function set_front_page_to_page()
+	{
+		error_log(get_option( 'show_on_front' ));
+		// ensure that front page is a static page
+		if ( get_option( 'show_on_front' ) == 'posts' ) {
+			update_option( 'show_on_front', 'page' );
+		}
+
+		// if no specific front page already set, find first or create
+		if ( get_option( 'page_on_front' ) == null ) {
+
+			// set to earliest published page if possible
+			$first_page_created = get_pages( array('sort_column' => 'post_date', 'number' => 1, 'post_status' => 'publish'))[0];
+
+			if ( $first_page_created != null ) {
+				$page_id = $first_page_created->ID;
+			} else {
+
+				// create page
+				$page = array(
+					'post_type' => 'page',
+					'post_title' => 'Home page',
+					'post_name' => 'home',
+					'post_content' => "This is your front page. Click the 'edit' link to change the contents", 
+					'post_status' => 'publish',
+					'comment_status' => 'closed'
+				);
+
+				$page_id = wp_insert_post( $page );
+			} 
+
+			if ( $page_id != 0 ) {
+				update_option( 'page_on_front', $page_id );
+			} else {
+				wp_send_json_error();
+				die();
+			}
 		}
 	}
 }

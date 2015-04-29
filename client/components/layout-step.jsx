@@ -7,7 +7,22 @@ module.exports = React.createClass({
 		e.preventDefault();
 		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
 		console.log('value is '+value);
-		//save value
+		
+		data = {
+			action: JPS.steps.set_layout.url_action,
+			nonce: JPS.nonce,
+			layout: value
+		};
+		
+		jQuery.post(ajaxurl, data)
+			.success( function() { 
+				this.props.model.set('title', this.state.title);
+				this.setState({message: "Saved"});
+			}.bind(this) )
+			.fail( function() {
+				this.setState({message: "Failed"});
+			}.bind(this) );
+
 	},
 
 	render: function() {
