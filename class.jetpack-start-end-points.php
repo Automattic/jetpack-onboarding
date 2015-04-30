@@ -76,6 +76,8 @@ class EndPoints {
 			self::set_layout_to_site_with_blog();
 		} elseif ( $layout == 'blog') {
 			self::set_layout_to_blog();
+		} else {
+			wp_send_json_error('Unknown layout type: '.$layout);
 		}
 	}
 
@@ -97,14 +99,12 @@ class EndPoints {
 				\Jetpack::init()->register();
 			}
 
-			// \Jetpack_Admin::init(); // needed so that menu hooks are installed for constructing the connect URL below
 			(new \Jetpack_Landing_Page())->add_actions();
 
 			// redirect to activate link
-			$connect_url = \Jetpack::init()->build_connect_url( true, admin_url('index.php') ); //hopefully welcome widget won't need the #hash part eventually
+			$connect_url = \Jetpack::init()->build_connect_url( true, admin_url('index.php') );
 
 			wp_send_json_success( array('next' => $connect_url) );
-			// die();
 		} else {
 			wp_send_json_success( 'already_active' );
 		}

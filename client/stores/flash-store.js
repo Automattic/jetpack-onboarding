@@ -33,9 +33,14 @@ AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case JPSConstants.SET_FLASH:
-      setFlash(action.message, action.severity);
-      FlashStore.emitChange();
-      break;
+		setFlash(action.message, action.severity);
+		FlashStore.emitChange();
+		break;
+
+    case JPSConstants.UNSET_FLASH:
+     	setFlash(null, null);
+     	FlashStore.emitChange();
+     	break;
 
     default:
       // no op

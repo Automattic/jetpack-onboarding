@@ -10,6 +10,7 @@ module.exports = keyMirror({
 	SITE_SET_LAYOUT: null,
 
 	SET_FLASH: null,
+	UNSET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
 	FLASH_SEVERITY_ERROR: null
 });

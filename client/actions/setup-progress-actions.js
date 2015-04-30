@@ -1,18 +1,20 @@
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var JPSConstants = require('../constants/jetpack-start-constants');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+	JPSConstants = require('../constants/jetpack-start-constants'),
+	FlashActions = require('./flash-actions');
 
 module.exports = {
 	setCurrentStep: function(slug) {
+		FlashActions.unset();
 		AppDispatcher.dispatch({
 	      actionType: JPSConstants.STEP_SELECT,
 	      slug: slug
 	    });
 	},
 	
-	complete: function(slug) {
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE,
-	      slug: slug
-	    });
-	}
+	// complete: function(slug) {
+	// 	AppDispatcher.dispatch({
+	//       actionType: JPSConstants.STEP_COMPLETE,
+	//       slug: slug
+	//     });
+	// }
 };

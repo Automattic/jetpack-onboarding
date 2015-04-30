@@ -16,5 +16,11 @@ module.exports = {
 			message: msg,
 			severity: JPSConstants.FLASH_SEVERITY_ERROR
 		});
+	},
+
+	unset: function() {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.UNSET_FLASH
+		});
 	}
 }

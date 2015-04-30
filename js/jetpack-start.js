@@ -17,30 +17,38 @@ module.exports = {
 			message: msg,
 			severity: JPSConstants.FLASH_SEVERITY_ERROR
 		});
+	},
+
+	unset: function() {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.UNSET_FLASH
+		});
 	}
 }
 
 },{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17}],2:[function(require,module,exports){
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var JPSConstants = require('../constants/jetpack-start-constants');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+	JPSConstants = require('../constants/jetpack-start-constants'),
+	FlashActions = require('./flash-actions');
 
 module.exports = {
 	setCurrentStep: function(slug) {
+		FlashActions.unset();
 		AppDispatcher.dispatch({
 	      actionType: JPSConstants.STEP_SELECT,
 	      slug: slug
 	    });
 	},
 	
-	complete: function(slug) {
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE,
-	      slug: slug
-	    });
-	}
+	// complete: function(slug) {
+	// 	AppDispatcher.dispatch({
+	//       actionType: JPSConstants.STEP_COMPLETE,
+	//       slug: slug
+	//     });
+	// }
 };
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"./flash-actions":1}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
@@ -894,6 +902,7 @@ module.exports = keyMirror({
 	SITE_SET_LAYOUT: null,
 
 	SET_FLASH: null,
+	UNSET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
 	FLASH_SEVERITY_ERROR: null
 });
@@ -1154,9 +1163,14 @@ AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case JPSConstants.SET_FLASH:
-      setFlash(action.message, action.severity);
-      FlashStore.emitChange();
-      break;
+		setFlash(action.message, action.severity);
+		FlashStore.emitChange();
+		break;
+
+    case JPSConstants.UNSET_FLASH:
+     	setFlash(null, null);
+     	FlashStore.emitChange();
+     	break;
 
     default:
       // no op
