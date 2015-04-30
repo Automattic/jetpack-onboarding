@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 		watch: {
 			css: {
 				files: ['css/scss/*.scss', 'css/scss/**/*.scss'],
-				tasks: ['sass', 'autoprefixer'],
+				tasks: ['sass', 'autoprefixer', 'notify:css'],
 				options: {
 					livereload: true,
 					spawn: false,
@@ -42,13 +42,22 @@ module.exports = function(grunt) {
 					spawn: false,
 				}
 			},
-			// react: {
-			// 	files: ['jsx/*.jsx'],
-			// 	tasks: ['react']
-			// },
 			browserify: {
 				files: ['client/*.js', 'client/**/*.js', 'client/components/*.jsx'],
-				tasks: ['browserify']	
+				tasks: ['browserify', 'notify:js']	
+			}
+		},
+
+		notify: {
+			js: {
+				options: {
+					message: 'JS rebuilt' 
+				}
+			},
+			css: {
+				options: {
+					message: 'CSS rebuilt'
+				}
 			}
 		},
 
@@ -69,51 +78,12 @@ module.exports = function(grunt) {
 				src:        'client/jetpack-start.js',
 				dest:       'js/jetpack-start.js'
 			}
-		},
-
-		// react: {
-		// 	files: {
-		// 		expand: true,
-		// 		cwd: 'jsx',
-		// 		src: ['**/*.jsx'],
-		// 		dest: 'client/components',
-		// 		ext: '.js'
-		// 	}
-		// },
-
-		// react: {
-		// 	single_file_output: {
-		// 		files: {
-		// 			'js/welcome.js': 'jsx/welcome.jsx'
-		// 		}
-		// 	},
-		// 	// combined_file_output: {
-		// 	// 	files: {
-		// 	// 		'path/to/output/dir/combined.js': [
-		// 	// 		  'path/to/jsx/templates/dir/input1.jsx',
-		// 	// 		  'path/to/jsx/templates/dir/input2.jsx'
-		// 	// 		]
-		// 	//   	}
-		// 	// },
-		// 	// dynamic_mappings: {
-		// 	// 	files: [
-		// 	// 		{
-		// 	// 			expand: true,
-		// 	// 			cwd: 'path/to/jsx/templates/dir',
-		// 	// 			src: ['**/*.jsx'],
-		// 	// 			dest: 'path/to/output/dir',
-		// 	// 			ext: '.js'
-		// 	// 		}
-		// 	// 	]
-		// 	// }
-		//   },
+		}
 	});
 
+	grunt.loadNpmTasks('grunt-notify');
 	grunt.loadNpmTasks('grunt-minifyify');
 	grunt.loadNpmTasks('grunt-browserify');
-	// grunt.initConfig({
-	  
-	// })
 	grunt.loadNpmTasks('grunt-react');
 	grunt.loadNpmTasks('grunt-contrib-concat');     // concatenate
 	grunt.loadNpmTasks('grunt-contrib-uglify');     // minify

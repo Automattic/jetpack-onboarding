@@ -13,6 +13,7 @@
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-minifyify": "^3.2.1",
+    "grunt-notify": "^0.4.1",
     "grunt-react": "^0.12.2",
     "minifyify": "^6.4.0",
     "reactify": "^1.1.0"
