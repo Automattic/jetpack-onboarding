@@ -1,12 +1,29 @@
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
+	SetupProgressStore = require('../stores/setup-progress-store');
+
+function getSetupProgress() {
+	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
+}
 
 module.exports = React.createClass({
-	// see: http://magalhas.github.io/backbone-react-component/
+	componentDidMount: function() {
+		SetupProgressStore.addChangeListener(this._onChange);
+	},
 
- 	mixins: [Backbone.React.Component.mixin],
+	componentWillUnmount: function() {
+		SetupProgressStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSetupProgress());
+  	},
+
+	getInitialState: function() {
+		return getSetupProgress();
+	},
+
   	render: function() {
 	    return (
 			<div className="getting-started">
@@ -16,8 +33,8 @@ module.exports = React.createClass({
 					<p className="getting-started__subhead">Take these steps to supercharge your WordPress site.</p>
 				</div>
 
-				<WelcomeSection model={this.props.model}/>
-				<WelcomeMenu model={this.props.model}/>
+				<WelcomeSection currentStep={this.state.currentStep}/>
+				<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progress}/>
 			</div>
     	);
 	}

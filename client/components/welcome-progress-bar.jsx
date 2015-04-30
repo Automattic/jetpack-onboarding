@@ -1,25 +1,27 @@
-var React = require('react'),
-	SetupProgressStore = require('../stores/setup-progress-store');
+var React = require('react');
 
 /**
  * Show progress through the steps
+ * NOTE: progressPercent MUST be rounded to the nearest 10, i.e. 10, 20, 30, 40...100
+ * This is required for the CSS to work (will fix later...)
  **/
-module.exports = React.createClass({
+var ProgressBar = React.createClass({
 
-	percentComplete: function() {
-		return SetupProgressStore.getProgressPercent();
+	propTypes: {
+		progressPercent: React.PropTypes.number.isRequired
 	},
 
 	render: function() {
-		var classes = 'getting-started__progress progress_'+this.percentComplete();
+		var classes = 'getting-started__progress progress_'+this.props.progressPercent;
 		return (
 			<div className={classes}>
 				<div className="progress__bar">
 					<span></span>
 				</div>
-				{this.percentComplete()}% complete
+				{this.props.progressPercent}% complete
 			</div>
 		);
 	}
 });
 
+module.exports = ProgressBar;

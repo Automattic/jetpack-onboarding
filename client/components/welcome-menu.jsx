@@ -1,28 +1,19 @@
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressActions = require('../actions/setup-progress-actions'),
+	WelcomeStep = require('../models/welcome-step');
 
 /**
  * The menu which allows the user to switch steps
  **/
 var WelcomeMenu = React.createClass({
 	
-	componentDidMount: function() {
-		SetupProgressStore.addChangeListener(this._onChange);
+	propTypes: {
+		currentStep: React.PropTypes.instanceOf(WelcomeStep).isRequired,
+		allSteps: React.PropTypes.arrayOf(React.PropTypes.instanceOf(WelcomeStep)).isRequired,
+		progressPercent: React.PropTypes.number.isRequired
 	},
 
-	componentWillUnmount: function() {
-		SetupProgressStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState({ currentStep: SetupProgressStore.getCurrentStep() });
-  	},
-
-	getInitialState: function() {
-		return { currentStep: SetupProgressStore.getCurrentStep() };
-	},
 
 	selectStep: function(e) {
 		e.preventDefault();
@@ -34,10 +25,10 @@ var WelcomeMenu = React.createClass({
 
 	render: function() {
 
-		var menuItems = SetupProgressStore.allSteps().map(function ( step ) {
+		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current;
-			if ( this.state.currentStep ) {
-				current = ( this.state.currentStep.slug() == step.slug() );
+			if ( this.props.currentStep ) {
+				current = ( this.props.currentStep.slug() == step.slug() );
 			}
 
 			if ( step.repeatable() ) {
@@ -53,7 +44,7 @@ var WelcomeMenu = React.createClass({
 
 		return (
 			<div className="getting-started__steps">
-				<h3>Your Progress <div style={{marginTop: '7px'}}><WelcomeProgressBar /></div></h3>
+				<h3>Your Progress <div style={{marginTop: '7px'}}><WelcomeProgressBar progressPercent={this.props.progressPercent}/></div></h3>
 				
 				<ol>
 					{menuItems}

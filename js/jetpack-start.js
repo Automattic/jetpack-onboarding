@@ -656,29 +656,20 @@ module.exports = React.createClass({displayName: "exports",
 },{"react":39}],12:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressActions = require('../actions/setup-progress-actions'),
+	WelcomeStep = require('../models/welcome-step');
 
 /**
  * The menu which allows the user to switch steps
  **/
 var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 	
-	componentDidMount: function() {
-		SetupProgressStore.addChangeListener(this._onChange);
+	propTypes: {
+		currentStep: React.PropTypes.instanceOf(WelcomeStep).isRequired,
+		allSteps: React.PropTypes.arrayOf(React.PropTypes.instanceOf(WelcomeStep)).isRequired,
+		progressPercent: React.PropTypes.number.isRequired
 	},
 
-	componentWillUnmount: function() {
-		SetupProgressStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState({ currentStep: SetupProgressStore.getCurrentStep() });
-  	},
-
-	getInitialState: function() {
-		return { currentStep: SetupProgressStore.getCurrentStep() };
-	},
 
 	selectStep: function(e) {
 		e.preventDefault();
@@ -690,10 +681,10 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 	render: function() {
 
-		var menuItems = SetupProgressStore.allSteps().map(function ( step ) {
+		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current;
-			if ( this.state.currentStep ) {
-				current = ( this.state.currentStep.slug() == step.slug() );
+			if ( this.props.currentStep ) {
+				current = ( this.props.currentStep.slug() == step.slug() );
 			}
 
 			if ( step.repeatable() ) {
@@ -709,7 +700,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 		return (
 			React.createElement("div", {className: "getting-started__steps"}, 
-				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, null))), 
+				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, {progressPercent: this.props.progressPercent}))), 
 				
 				React.createElement("ol", null, 
 					menuItems
@@ -721,64 +712,85 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 module.exports = WelcomeMenu;
 
-},{"../actions/setup-progress-actions":2,"../stores/setup-progress-store":29,"./welcome-progress-bar.jsx":13,"react":39}],13:[function(require,module,exports){
-var React = require('react'),
-	SetupProgressStore = require('../stores/setup-progress-store');
+},{"../actions/setup-progress-actions":2,"../models/welcome-step":26,"./welcome-progress-bar.jsx":13,"react":39}],13:[function(require,module,exports){
+var React = require('react');
 
 /**
  * Show progress through the steps
+ * NOTE: progressPercent MUST be rounded to the nearest 10, i.e. 10, 20, 30, 40...100
+ * This is required for the CSS to work (will fix later...)
  **/
-module.exports = React.createClass({displayName: "exports",
+var ProgressBar = React.createClass({displayName: "ProgressBar",
 
-	percentComplete: function() {
-		return SetupProgressStore.getProgressPercent();
+	propTypes: {
+		progressPercent: React.PropTypes.number.isRequired
 	},
 
 	render: function() {
-		var classes = 'getting-started__progress progress_'+this.percentComplete();
+		var classes = 'getting-started__progress progress_'+this.props.progressPercent;
 		return (
 			React.createElement("div", {className: classes}, 
 				React.createElement("div", {className: "progress__bar"}, 
 					React.createElement("span", null)
 				), 
-				this.percentComplete(), "% complete"
+				this.props.progressPercent, "% complete"
 			)
 		);
 	}
 });
 
+module.exports = ProgressBar;
 
-
-},{"../stores/setup-progress-store":29,"react":39}],14:[function(require,module,exports){
+},{"react":39}],14:[function(require,module,exports){
 var React = require('react'),
-	Flash = require('./flash.jsx');
+	WelcomeStep = require('../models/welcome-step');
 	
 /**
  * The view for the current welcome step
  **/
-module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
+var WelcomeSection = React.createClass({displayName: "WelcomeSection",
+	propTypes: {
+		currentStep: React.PropTypes.instanceOf(WelcomeStep)
+	},
 
 	render: function() {
 		return (
 			React.createElement("div", {className: "getting-started__sections"}, 
-				React.createElement(Flash, null), 
-				this.props.model.currentStepView()
+				this.props.currentStep.welcomeView()
 			)
 		);
 	}
 });
 
-},{"./flash.jsx":7,"react":39}],15:[function(require,module,exports){
+module.exports = WelcomeSection;
+
+},{"../models/welcome-step":26,"react":39}],15:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
+	SetupProgressStore = require('../stores/setup-progress-store');
+
+function getSetupProgress() {
+	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
+}
 
 module.exports = React.createClass({displayName: "exports",
-	// see: http://magalhas.github.io/backbone-react-component/
+	componentDidMount: function() {
+		SetupProgressStore.addChangeListener(this._onChange);
+	},
 
- 	mixins: [Backbone.React.Component.mixin],
+	componentWillUnmount: function() {
+		SetupProgressStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSetupProgress());
+  	},
+
+	getInitialState: function() {
+		return getSetupProgress();
+	},
+
   	render: function() {
 	    return (
 			React.createElement("div", {className: "getting-started"}, 
@@ -788,14 +800,14 @@ module.exports = React.createClass({displayName: "exports",
 					React.createElement("p", {className: "getting-started__subhead"}, "Take these steps to supercharge your WordPress site.")
 				), 
 
-				React.createElement(WelcomeSection, {model: this.props.model}), 
-				React.createElement(WelcomeMenu, {model: this.props.model})
+				React.createElement(WelcomeSection, {currentStep: this.state.currentStep}), 
+				React.createElement(WelcomeMenu, {currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progress})
 			)
     	);
 	}
 });
 
-},{"./welcome-menu.jsx":12,"./welcome-progress-bar.jsx":13,"./welcome-section.jsx":14,"react":39}],16:[function(require,module,exports){
+},{"../stores/setup-progress-store":29,"./welcome-menu.jsx":12,"./welcome-section.jsx":14,"react":39}],16:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -1147,7 +1159,7 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * Get the entire collection of TODOs.
    * @return {object}
    */
-  allSteps: function() {
+  getAllSteps: function() {
     return _steps;
   },
 

@@ -68,7 +68,7 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * Get the entire collection of TODOs.
    * @return {object}
    */
-  allSteps: function() {
+  getAllSteps: function() {
     return _steps;
   },
 
