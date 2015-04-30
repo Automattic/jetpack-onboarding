@@ -1134,12 +1134,13 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * @return {boolean}
    */
   areAllComplete: function() {
+    var complete = true;
     _.each( _steps ), function( step ) {
-      if ( ! step.complete()) {
-        return false;
+      if ( ! step.complete() ) {
+        complete = false;
       }
     }
-    return true;
+    return complete;
   },
 
   /**
@@ -1166,10 +1167,10 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
 
   getProgressPercent: function() {
   	var numSteps = _steps.length;
-	var completedSteps = _.where(_steps, {completed: true}).length;
-	var percentComplete = (completedSteps / numSteps) * 100;
+    var completedSteps = _.where(_steps, {completed: true}).length;
+    var percentComplete = (completedSteps / numSteps) * 100;
 
-	return Math.round(percentComplete / 10) * 10;
+    return Math.round(percentComplete / 10) * 10;
   },
 
   /**
