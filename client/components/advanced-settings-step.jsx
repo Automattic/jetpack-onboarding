@@ -1,7 +1,6 @@
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
 		return (

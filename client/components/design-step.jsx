@@ -1,28 +1,31 @@
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
 
-module.exports = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
+function getThemeState() {
+	return { themes: SiteStore.getThemes() };
+}
 
-	//necessary because wp_prepare_themes_for_js escapes URLs by default
-	htmlDecode: function ( input ) {
-		var e = document.createElement('div');
-		e.innerHTML = input;
-		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+var DesignStep = React.createClass({
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getThemeState());
+  	},
+
+	getInitialState: function() {
+		return getThemeState();
 	},
 
 	makeActive: function( activeThemeId ) {
-		var themes = this.props.model.get('themes');
-
-		themes.forEach( function( theme ) {
-			if ( theme.id == activeThemeId ) {
-				theme.active = true;
-			} else {
-				theme.active = false;
-			}
-		} );
-
-		// silly, naive way to trigger a re-render
-		this.props.model.trigger('change');
+		SiteActions.setActiveTheme( activeThemeId );
 	},
 
 	handleActivateTheme: function( e ) {
@@ -43,7 +46,7 @@ module.exports = React.createClass({
 	},
 
 	findTheme: function ( themeId )	{
-		return _.findWhere(this.props.model.get('themes'), {id: themeId});
+		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
 	handleShowOverlay: function ( e ) {
@@ -60,7 +63,7 @@ module.exports = React.createClass({
 	handlePreviousThemeOverlay: function ( e ) {
 		var prevTheme = null;
 
-		this.props.model.get('themes').forEach( function ( theme ) {
+		this.state.themes.forEach( function ( theme ) {
 			if ( theme == this.state.overlayTheme ) {
 				this.setState({overlayTheme: prevTheme});
 				return;
@@ -72,7 +75,7 @@ module.exports = React.createClass({
 	handleNextThemeOverlay: function ( e ) {
 		var prevTheme = null;
 
-		this.props.model.get('themes').forEach( function ( theme ) {
+		this.state.themes.forEach( function ( theme ) {
 			if ( prevTheme == this.state.overlayTheme ) {
 				this.setState({overlayTheme: theme});
 				return;
@@ -83,7 +86,7 @@ module.exports = React.createClass({
 
 	render: function() {
 
-		var themes = this.props.model.get('themes').map( function(theme) {
+		var themes = this.state.themes.map( function(theme) {
 
 			var screenshot, actions;
 
@@ -104,14 +107,14 @@ module.exports = React.createClass({
 
 			if ( theme.active ) {
 				if ( theme.actions.customize ) {
-					actions = (<a className="button button-primary customize load-customize hide-if-no-customize" href={this.htmlDecode(theme.actions.customize)}>Customize</a>);
+					actions = (<a className="button button-primary customize load-customize hide-if-no-customize" href={_.unescape(theme.actions.customize)}>Customize</a>);
 				}
 			} else {
 				actions = (
 					<div>
-						<a className="button button-secondary activate" data-theme-id={theme.id} onClick={this.handleActivateTheme} href={this.htmlDecode(theme.actions.activate)}>Activate</a>
-						<a className="button button-primary load-customize hide-if-no-customize" href={this.htmlDecode(theme.actions.customize)}>Live Preview</a>
-						<a className="button button-secondary hide-if-customize" href={this.htmlDecode(theme.actions.preview)}>Preview</a>
+						<a className="button button-secondary activate" data-theme-id={theme.id} onClick={this.handleActivateTheme} href={_.unescape(theme.actions.activate)}>Activate</a>
+						<a className="button button-primary load-customize hide-if-no-customize" href={_.unescape(theme.actions.customize)}>Live Preview</a>
+						<a className="button button-secondary hide-if-customize" href={_.unescape(theme.actions.preview)}>Preview</a>
 					</div>
 				);
 			}
@@ -157,7 +160,7 @@ module.exports = React.createClass({
 				previewAction = (
 					<div className="theme-actions">
 						<div className="inactive-theme">
-							<a href={this.htmlDecode(theme.actions.preview)} target="_top" className="button button-primary">Live Preview</a>
+							<a href={_.unescape(theme.actions.preview)} target="_top" className="button button-primary">Live Preview</a>
 						</div>
 					</div>
 				);
@@ -180,8 +183,8 @@ module.exports = React.createClass({
 							<div className="theme-info">
 								{currentThemeLabel}
 								<h3 className="theme-name">{theme.name}<span className="theme-version">Version: {theme.version}</span></h3>
-								<h4 className="theme-author">By {this.htmlDecode(theme.authorAndUri)}</h4>
-								<p className="theme-description">{this.htmlDecode(theme.description)}</p>
+								<h4 className="theme-author">By {_.unescape(theme.authorAndUri)}</h4>
+								<p className="theme-description">{_.unescape(theme.description)}</p>
 
 								{parentLabel}
 								{tagsLabel}
@@ -212,3 +215,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+module.exports = DesignStep;

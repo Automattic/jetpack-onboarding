@@ -9,10 +9,18 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var title = JPS.bloginfo.name;
-
 function setTitle(newTitle) {
-	title = newTitle;
+	JPS.bloginfo.name = newTitle;
+}
+
+function setActiveTheme(activeThemeId) {
+  JPS.themes.forEach( function( theme ) {
+    if ( theme.id == activeThemeId ) {
+      theme.active = true;
+    } else {
+      theme.active = false;
+    }
+  } );
 }
 
 var SiteStore = assign({}, EventEmitter.prototype, {
@@ -22,7 +30,11 @@ var SiteStore = assign({}, EventEmitter.prototype, {
   },
 
   getTitle: function() {
-  	return title;
+  	return JPS.bloginfo.name;
+  },
+
+  getThemes: function() {
+    return JPS.themes;
   },
 
   /**
@@ -46,6 +58,11 @@ AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case JPSConstants.SITE_SET_TITLE:
       setTitle(action.title);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_SET_THEME:
+      setActiveTheme(action.themeId);
       SiteStore.emitChange();
       break;
 

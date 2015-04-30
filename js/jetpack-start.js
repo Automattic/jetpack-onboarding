@@ -48,9 +48,10 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 module.exports = {
 	setTitle: function(title) {
+		//XXX TODO: save title here??
 		AppDispatcher.dispatch({
-	      actionType: JPSConstants.SITE_SET_TITLE,
-	      title: title
+			actionType: JPSConstants.SITE_SET_TITLE,
+			title: title
 	    });
 	},
 
@@ -69,6 +70,16 @@ module.exports = {
 			.fail( function() {
 				FlashActions.error("Failed");
 			});	
+	},
+
+	setActiveTheme: function(themeId) {
+
+		//XXX TODO: persistence
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_THEME,
+			themeId: themeId
+	    });
 	}
 };
 
@@ -76,7 +87,6 @@ module.exports = {
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
-	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
 		return (
@@ -113,31 +123,34 @@ var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep
 module.exports = AdvancedSettingsStep;
 
 },{"react":39}],5:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
 
-module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
+function getThemeState() {
+	return { themes: SiteStore.getThemes() };
+}
 
-	//necessary because wp_prepare_themes_for_js escapes URLs by default
-	htmlDecode: function ( input ) {
-		var e = document.createElement('div');
-		e.innerHTML = input;
-		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+var DesignStep = React.createClass({displayName: "DesignStep",
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getThemeState());
+  	},
+
+	getInitialState: function() {
+		return getThemeState();
 	},
 
 	makeActive: function( activeThemeId ) {
-		var themes = this.props.model.get('themes');
-
-		themes.forEach( function( theme ) {
-			if ( theme.id == activeThemeId ) {
-				theme.active = true;
-			} else {
-				theme.active = false;
-			}
-		} );
-
-		// silly, naive way to trigger a re-render
-		this.props.model.trigger('change');
+		SiteActions.setActiveTheme( activeThemeId );
 	},
 
 	handleActivateTheme: function( e ) {
@@ -158,7 +171,7 @@ module.exports = React.createClass({displayName: "exports",
 	},
 
 	findTheme: function ( themeId )	{
-		return _.findWhere(this.props.model.get('themes'), {id: themeId});
+		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
 	handleShowOverlay: function ( e ) {
@@ -175,7 +188,7 @@ module.exports = React.createClass({displayName: "exports",
 	handlePreviousThemeOverlay: function ( e ) {
 		var prevTheme = null;
 
-		this.props.model.get('themes').forEach( function ( theme ) {
+		this.state.themes.forEach( function ( theme ) {
 			if ( theme == this.state.overlayTheme ) {
 				this.setState({overlayTheme: prevTheme});
 				return;
@@ -187,7 +200,7 @@ module.exports = React.createClass({displayName: "exports",
 	handleNextThemeOverlay: function ( e ) {
 		var prevTheme = null;
 
-		this.props.model.get('themes').forEach( function ( theme ) {
+		this.state.themes.forEach( function ( theme ) {
 			if ( prevTheme == this.state.overlayTheme ) {
 				this.setState({overlayTheme: theme});
 				return;
@@ -198,7 +211,7 @@ module.exports = React.createClass({displayName: "exports",
 
 	render: function() {
 
-		var themes = this.props.model.get('themes').map( function(theme) {
+		var themes = this.state.themes.map( function(theme) {
 
 			var screenshot, actions;
 
@@ -219,14 +232,14 @@ module.exports = React.createClass({displayName: "exports",
 
 			if ( theme.active ) {
 				if ( theme.actions.customize ) {
-					actions = (React.createElement("a", {className: "button button-primary customize load-customize hide-if-no-customize", href: this.htmlDecode(theme.actions.customize)}, "Customize"));
+					actions = (React.createElement("a", {className: "button button-primary customize load-customize hide-if-no-customize", href: _.unescape(theme.actions.customize)}, "Customize"));
 				}
 			} else {
 				actions = (
 					React.createElement("div", null, 
-						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: this.htmlDecode(theme.actions.activate)}, "Activate"), 
-						React.createElement("a", {className: "button button-primary load-customize hide-if-no-customize", href: this.htmlDecode(theme.actions.customize)}, "Live Preview"), 
-						React.createElement("a", {className: "button button-secondary hide-if-customize", href: this.htmlDecode(theme.actions.preview)}, "Preview")
+						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: _.unescape(theme.actions.activate)}, "Activate"), 
+						React.createElement("a", {className: "button button-primary load-customize hide-if-no-customize", href: _.unescape(theme.actions.customize)}, "Live Preview"), 
+						React.createElement("a", {className: "button button-secondary hide-if-customize", href: _.unescape(theme.actions.preview)}, "Preview")
 					)
 				);
 			}
@@ -272,7 +285,7 @@ module.exports = React.createClass({displayName: "exports",
 				previewAction = (
 					React.createElement("div", {className: "theme-actions"}, 
 						React.createElement("div", {className: "inactive-theme"}, 
-							React.createElement("a", {href: this.htmlDecode(theme.actions.preview), target: "_top", className: "button button-primary"}, "Live Preview")
+							React.createElement("a", {href: _.unescape(theme.actions.preview), target: "_top", className: "button button-primary"}, "Live Preview")
 						)
 					)
 				);
@@ -295,8 +308,8 @@ module.exports = React.createClass({displayName: "exports",
 							React.createElement("div", {className: "theme-info"}, 
 								currentThemeLabel, 
 								React.createElement("h3", {className: "theme-name"}, theme.name, React.createElement("span", {className: "theme-version"}, "Version: ", theme.version)), 
-								React.createElement("h4", {className: "theme-author"}, "By ", this.htmlDecode(theme.authorAndUri)), 
-								React.createElement("p", {className: "theme-description"}, this.htmlDecode(theme.description)), 
+								React.createElement("h4", {className: "theme-author"}, "By ", _.unescape(theme.authorAndUri)), 
+								React.createElement("p", {className: "theme-description"}, _.unescape(theme.description)), 
 
 								parentLabel, 
 								tagsLabel
@@ -328,7 +341,9 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":39}],6:[function(require,module,exports){
+module.exports = DesignStep;
+
+},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],6:[function(require,module,exports){
 module.exports = require('react').createClass({
 	render: function() {
 		return (
@@ -743,6 +758,7 @@ module.exports = ProgressBar;
 
 },{"react":39}],14:[function(require,module,exports){
 var React = require('react'),
+	Flash = require('./flash.jsx'),
 	WelcomeStep = require('../models/welcome-step');
 	
 /**
@@ -756,6 +772,7 @@ var WelcomeSection = React.createClass({displayName: "WelcomeSection",
 	render: function() {
 		return (
 			React.createElement("div", {className: "getting-started__sections"}, 
+				React.createElement(Flash, null), 
 				this.props.currentStep.welcomeView()
 			)
 		);
@@ -764,7 +781,7 @@ var WelcomeSection = React.createClass({displayName: "WelcomeSection",
 
 module.exports = WelcomeSection;
 
-},{"../models/welcome-step":26,"react":39}],15:[function(require,module,exports){
+},{"../models/welcome-step":26,"./flash.jsx":7,"react":39}],15:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
@@ -815,6 +832,7 @@ module.exports = keyMirror({
 	STEP_SELECT: null,
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
+	SITE_SET_THEME: null,
 
 	SET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
@@ -1239,10 +1257,18 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var title = JPS.bloginfo.name;
-
 function setTitle(newTitle) {
-	title = newTitle;
+	JPS.bloginfo.name = newTitle;
+}
+
+function setActiveTheme(activeThemeId) {
+  JPS.themes.forEach( function( theme ) {
+    if ( theme.id == activeThemeId ) {
+      theme.active = true;
+    } else {
+      theme.active = false;
+    }
+  } );
 }
 
 var SiteStore = assign({}, EventEmitter.prototype, {
@@ -1252,7 +1278,11 @@ var SiteStore = assign({}, EventEmitter.prototype, {
   },
 
   getTitle: function() {
-  	return title;
+  	return JPS.bloginfo.name;
+  },
+
+  getThemes: function() {
+    return JPS.themes;
   },
 
   /**
@@ -1276,6 +1306,11 @@ AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case JPSConstants.SITE_SET_TITLE:
       setTitle(action.title);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_SET_THEME:
+      setActiveTheme(action.themeId);
       SiteStore.emitChange();
       break;
 

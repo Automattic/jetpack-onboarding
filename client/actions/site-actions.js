@@ -5,9 +5,10 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 module.exports = {
 	setTitle: function(title) {
+		//XXX TODO: save title here??
 		AppDispatcher.dispatch({
-	      actionType: JPSConstants.SITE_SET_TITLE,
-	      title: title
+			actionType: JPSConstants.SITE_SET_TITLE,
+			title: title
 	    });
 	},
 
@@ -26,5 +27,15 @@ module.exports = {
 			.fail( function() {
 				FlashActions.error("Failed");
 			});	
+	},
+
+	setActiveTheme: function(themeId) {
+
+		//XXX TODO: persistence
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_THEME,
+			themeId: themeId
+	    });
 	}
 };
