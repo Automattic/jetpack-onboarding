@@ -20,7 +20,6 @@ var Flash = React.createClass({
 
 	getInitialState: function() {
 		var flashState = getFlashState();
-		console.log(flashState);
 		return flashState;
 	},
 

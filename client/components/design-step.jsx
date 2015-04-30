@@ -160,7 +160,7 @@ var DesignStep = React.createClass({
 				previewAction = (
 					<div className="theme-actions">
 						<div className="inactive-theme">
-							<a href={_.unescape(theme.actions.preview)} target="_top" className="button button-primary">Live Preview</a>
+							<a href={_.unescape(theme.actions.customize)} target="_top" className="button button-primary">Live Preview</a>
 						</div>
 					</div>
 				);

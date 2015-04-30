@@ -46,7 +46,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	SiteStore = require('../stores/site-store'),
 	FlashActions = require('./flash-actions.js');
 
-module.exports = {
+var SiteActions = {
 	setTitle: function(title) {
 		//XXX TODO: save title here??
 		AppDispatcher.dispatch({
@@ -58,17 +58,17 @@ module.exports = {
 	saveTitle: function() {
 
 		data = {
-			action: JPS.steps.set_title.url_action,
+			action: JPS.site_actions.set_title,
 			nonce: JPS.nonce,
 			title: SiteStore.getTitle()
 		};
 		
 		jQuery.post(ajaxurl, data)
 			.success( function() {
-				FlashActions.notice("Saved");
+				FlashActions.notice("Saved title");
 			})
 			.fail( function() {
-				FlashActions.error("Failed");
+				FlashActions.error("Failed to set title");
 			});	
 	},
 
@@ -80,8 +80,67 @@ module.exports = {
 			actionType: JPSConstants.SITE_SET_THEME,
 			themeId: themeId
 	    });
+	},
+
+	setLayout: function(layoutName) {
+		data = {
+			action: JPS.site_actions.set_layout,
+			nonce: JPS.nonce,
+			layout: layoutName,
+			completed: true
+		};
+		
+		jQuery.post(ajaxurl, data)
+			.success( function( response ) { 
+
+				if ( ! response.success ) {
+					FlashActions.error("Error setting layout: "+response.data);
+				} else {
+					FlashActions.notice("Set layout to "+layoutName);
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_SET_LAYOUT,
+						layout: layoutName
+				    });
+				}
+
+			} )
+			.fail( function() {
+				FlashActions.error("Server error");
+			} );
+	},
+
+	configureJetpack: function() {
+		data = {
+			action: JPS.site_actions.configure_jetpack,
+			nonce: JPS.nonce
+		};
+		
+		jQuery.post(ajaxurl, data)
+			.success( function(response) { 
+
+				if ( ! response.success ) {
+					FlashActions.error("Error enabling Jetpack: "+response.data);
+					return;
+				}
+
+				if ( response.data.next ) {
+					window.location.replace(response.data.next); // no need to propagate response, this should redirect off the page...
+				} else {
+					FlashActions.notice("Jetpack Enabled");
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_JETPACK_CONFIGURED,
+						themeId: themeId
+				    });
+				}
+				
+			} )
+			.fail( function() {
+				FlashActions.error("Server error");
+			} );
 	}
 };
+
+module.exports = SiteActions;
 
 },{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"../stores/site-store":30,"./flash-actions.js":1}],4:[function(require,module,exports){
 var React = require('react');
@@ -285,7 +344,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				previewAction = (
 					React.createElement("div", {className: "theme-actions"}, 
 						React.createElement("div", {className: "inactive-theme"}, 
-							React.createElement("a", {href: _.unescape(theme.actions.preview), target: "_top", className: "button button-primary"}, "Live Preview")
+							React.createElement("a", {href: _.unescape(theme.actions.customize), target: "_top", className: "button button-primary"}, "Live Preview")
 						)
 					)
 				);
@@ -375,7 +434,6 @@ var Flash = React.createClass({displayName: "Flash",
 
 	getInitialState: function() {
 		var flashState = getFlashState();
-		console.log(flashState);
 		return flashState;
 	},
 
@@ -452,31 +510,40 @@ module.exports = React.createClass({displayName: "exports",
 
 },{"react":39}],9:[function(require,module,exports){
 var React = require('react'),
-	Flash = require('./flash.jsx');
+	SiteActions = require('../actions/site-actions'),
+	SiteStore = require('../stores/site-store');
+
+function getSiteLayoutState() {
+	return {
+		layout: SiteStore.getLayout()
+	}
+}
 
 var LayoutStep = React.createClass({displayName: "LayoutStep",
-	mixins: [Backbone.React.Component.mixin],
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteLayoutState());
+  	},
+
+	getInitialState: function() {
+		return getSiteLayoutState();
+	},
+
+	handleSetLayout: function( e ) {
+		this.setState({ layout: jQuery(e.currentTarget).val() });
+	},
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
-		
-		data = {
-			action: JPS.steps.set_layout.url_action,
-			nonce: JPS.nonce,
-			layout: value,
-			completed: true
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function() { 
-				this.props.model.set({layout: value, completed: true});
-				this.setState({message: "Saved"});
-			}.bind(this) )
-			.fail( function() {
-				this.setState({message: "Failed"});
-			}.bind(this) );
-
+		SiteActions.setLayout(this.state.layout);
 	},
 
 	render: function() {
@@ -486,17 +553,17 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
 					React.createElement("label", null, 
-						React.createElement("input", {type: "radio", name: "site_layout", value: "website", defaultChecked: true}), " Website", 
+						React.createElement("input", {type: "radio", name: "site_layout", value: "website", checked: this.state.layout === 'website', onChange: this.handleSetLayout}), " Website", 
 						React.createElement("p", {className: "description"}, "Choose this one if you're creating a site for your company that will rarely change")
 					), 
 					React.createElement("br", null), 
 					React.createElement("label", null, 
-						React.createElement("input", {type: "radio", name: "site_layout", value: "site-blog"}), " Website with a blog", 
+						React.createElement("input", {type: "radio", name: "site_layout", value: "site-blog", checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout}), " Website with a blog", 
 						React.createElement("p", {className: "description"}, "Choose this one if you're creating a company or personal site that will also have a blog or news section")
 					), 
 					React.createElement("br", null), 
 					React.createElement("label", null, 
-						React.createElement("input", {type: "radio", name: "site_layout", value: "blog"}), " Just a blog", 
+						React.createElement("input", {type: "radio", name: "site_layout", value: "blog", checked: this.state.layout === 'blog', onChange: this.handleSetLayout}), " Just a blog", 
 						React.createElement("p", {className: "description"}, "Choose this one if you want a site that will constantly show new content (articles, photos, videos, etc.)")
 					), 
 
@@ -512,7 +579,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"./flash.jsx":7,"react":39}],10:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],10:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -590,53 +657,44 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 module.exports = SiteTitleStep;
 
 },{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],11:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
+
+function getJetpackState() {
+	return {
+		jetpackConfigured: SiteStore.getJetpackConfigured()
+	};
+}
 
 module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
 
-	handleJetpackErrorResponse: function(message) {
-		this.setState({message: 'Failed: '+message, messageType: 'error'});
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getJetpackState());
+  	},
+
+	getInitialState: function() {
+		return getJetpackState();
 	},
 
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		data = {
-			action: JPS.steps.stats_and_monitoring.activate_url_action,
-			nonce: JPS.nonce
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function(response) { 
-				if ( ! response.success ) {
-					this.handleJetpackErrorResponse(response.data);
-					return;
-				}
-
-				if ( response.data.next ) {
-					alert('redirecting to '+response.data.next);
-					window.location.replace(response.data.next);
-				} else {
-					this.setState({message: 'Connected', messageType: 'notice'});
-				}
-				
-			}.bind(this) )
-			.fail( function() {
-				this.handleJetpackErrorResponse("Unknown error");
-			}.bind(this) );
+		SiteActions.configureJetpack();
 	},
 
 	render: function() {
-		var component, feedbackMessage;
+		var component;
 
-		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: this.state.messageType + ' updated'}, this.state.message));
-		} else {
-			feedbackMessage = null;
-		}
-
-		if ( ! JPS.steps.stats_and_monitoring.jetpack_configured ) {
+		if ( ! this.state.jetpackConfigured ) {
 			component = (
 				React.createElement("div", {className: "welcome__connect"}, 
 					"Enable Jetpack and connect to WordPress.com for powerful analytics and site monitoring.", 
@@ -660,7 +718,6 @@ module.exports = React.createClass({displayName: "exports",
 
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__stats"}, 
-				feedbackMessage, 
 				React.createElement("h4", null, "Enable stats and monitoring"), 
 				component
 			)
@@ -668,7 +725,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":39}],12:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],12:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
@@ -833,6 +890,8 @@ module.exports = keyMirror({
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
 	SITE_SET_THEME: null,
+	SITE_JETPACK_CONFIGURED: null,
+	SITE_SET_LAYOUT: null,
 
 	SET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
@@ -1257,6 +1316,8 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
+var layout = 'website'; //XXX DEBUG temporary
+
 function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;
 }
@@ -1271,6 +1332,14 @@ function setActiveTheme(activeThemeId) {
   } );
 }
 
+function setLayout(layoutName) {
+  layout = layoutName; // XXX TODO: get this value dynamically from the server!
+}
+
+function setJetpackConfigured() {
+  JPS.jetpack.configured = true
+}
+
 var SiteStore = assign({}, EventEmitter.prototype, {
 
   emitChange: function() {
@@ -1283,6 +1352,14 @@ var SiteStore = assign({}, EventEmitter.prototype, {
 
   getThemes: function() {
     return JPS.themes;
+  },
+
+  getJetpackConfigured: function() {
+    return JPS.jetpack.configured;
+  },
+
+  getLayout: function() {
+    return layout;
   },
 
   /**
@@ -1311,6 +1388,16 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_JETPACK_CONFIGURED:
+      setJetpackConfigured();
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_SET_LAYOUT:
+      setLayout(action.layout);
       SiteStore.emitChange();
       break;
 

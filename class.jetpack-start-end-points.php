@@ -16,7 +16,7 @@ class EndPoints {
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
-			add_action( 'wp_ajax_jps_activate_jetpack', array( __CLASS__, 'activate_jetpack' ) );
+			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
 			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
@@ -27,15 +27,26 @@ class EndPoints {
 	static function js_vars() {
 		return array(
 			'nonce' => wp_create_nonce( \JetpackStart\EndPoints::AJAX_NONCE ),
-			'bloginfo' => array('name' => get_bloginfo('name')),
+			'bloginfo' => array(
+				'name' => get_bloginfo('name'),
+			),
+
+			'site_actions' => array(
+				'set_title' => 'jps_set_title',
+				'set_layout' => 'jps_set_layout',
+				'configure_jetpack' => 'jps_configure_jetpack'
+			),
+
 			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
+
+			'jetpack' => array(
+				'plugin_active' => is_plugin_active('jetpack'),
+				'configured' => (is_plugin_active('jetpack') && Jetpack::is_active())
+			),
+
 			'steps' => array(
 				'set_title' => array('url_action' => 'jps_set_title'),
 				'set_layout' => array('url_action' => 'jps_set_layout'),
-				'stats_and_monitoring' => array(
-					'jetpack_configured' => (is_plugin_active('jetpack') && Jetpack::is_active()),
-					'activate_url_action' => 'jps_activate_jetpack'
-				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -70,7 +81,7 @@ class EndPoints {
 
 	// try to activate the plugin if necessary and kick off the jetpack connection flow
 	// in a single action (possibly in a dialog / iframe / something?)
-	static function activate_jetpack() {
+	static function configure_jetpack() {
 		if ( ! is_plugin_active('jetpack') ) {
 			activate_plugin('jetpack');
 		}
@@ -138,13 +149,14 @@ class EndPoints {
 		}
 
 		update_option( 'page_for_posts', $page_id );
-		wp_send_json_success( 'site-blog' );	
+		wp_send_json_success( 'site-blog' );
 	}
 
 	static function set_layout_to_blog() {
 		if ( get_option( 'show_on_front' ) == 'page' ) {
 			update_option( 'show_on_front', 'posts' );
 		}
+		wp_send_json_success( 'blog' );
 	}
 
 	static function set_front_page_to_page()

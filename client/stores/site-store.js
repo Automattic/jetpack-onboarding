@@ -9,6 +9,8 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
+var layout = 'website'; //XXX DEBUG temporary
+
 function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;
 }
@@ -23,6 +25,14 @@ function setActiveTheme(activeThemeId) {
   } );
 }
 
+function setLayout(layoutName) {
+  layout = layoutName; // XXX TODO: get this value dynamically from the server!
+}
+
+function setJetpackConfigured() {
+  JPS.jetpack.configured = true
+}
+
 var SiteStore = assign({}, EventEmitter.prototype, {
 
   emitChange: function() {
@@ -35,6 +45,14 @@ var SiteStore = assign({}, EventEmitter.prototype, {
 
   getThemes: function() {
     return JPS.themes;
+  },
+
+  getJetpackConfigured: function() {
+    return JPS.jetpack.configured;
+  },
+
+  getLayout: function() {
+    return layout;
   },
 
   /**
@@ -63,6 +81,16 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_JETPACK_CONFIGURED:
+      setJetpackConfigured();
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_SET_LAYOUT:
+      setLayout(action.layout);
       SiteStore.emitChange();
       break;
 

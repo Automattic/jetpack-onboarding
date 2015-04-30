@@ -1,29 +1,38 @@
 var React = require('react'),
-	Flash = require('./flash.jsx');
+	SiteActions = require('../actions/site-actions'),
+	SiteStore = require('../stores/site-store');
+
+function getSiteLayoutState() {
+	return {
+		layout: SiteStore.getLayout()
+	}
+}
 
 var LayoutStep = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteLayoutState());
+  	},
+
+	getInitialState: function() {
+		return getSiteLayoutState();
+	},
+
+	handleSetLayout: function( e ) {
+		this.setState({ layout: jQuery(e.currentTarget).val() });
+	},
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		var value = jQuery(e.currentTarget).find('input[name=site_layout]:checked').val();
-		
-		data = {
-			action: JPS.steps.set_layout.url_action,
-			nonce: JPS.nonce,
-			layout: value,
-			completed: true
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function() { 
-				this.props.model.set({layout: value, completed: true});
-				this.setState({message: "Saved"});
-			}.bind(this) )
-			.fail( function() {
-				this.setState({message: "Failed"});
-			}.bind(this) );
-
+		SiteActions.setLayout(this.state.layout);
 	},
 
 	render: function() {
@@ -33,17 +42,17 @@ var LayoutStep = React.createClass({
 
 				<form onSubmit={this.handleSubmit}>
 					<label>
-						<input type="radio" name="site_layout" value="website" defaultChecked/> Website
+						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Website
 						<p className="description">Choose this one if you're creating a site for your company that will rarely change</p>
 					</label>
 					<br/>
 					<label>
-						<input type="radio" name="site_layout" value="site-blog"/> Website with a blog
+						<input type="radio" name="site_layout" value="site-blog" checked={this.state.layout === 'site-blog'} onChange={this.handleSetLayout}/> Website with a blog
 						<p className="description">Choose this one if you're creating a company or personal site that will also have a blog or news section</p>
 					</label>
 					<br/>
 					<label>
-						<input type="radio" name="site_layout" value="blog"/> Just a blog
+						<input type="radio" name="site_layout" value="blog" checked={this.state.layout === 'blog'} onChange={this.handleSetLayout}/> Just a blog
 						<p className="description">Choose this one if you want a site that will constantly show new content (articles, photos, videos, etc.)</p>
 					</label>
 
