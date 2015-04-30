@@ -80,14 +80,20 @@ var SiteActions = {
 			});	
 	},
 
-	setActiveTheme: function(themeId) {
+	setActiveTheme: function(themeId, activateUrl) {
 
-		//XXX TODO: persistence
+		jQuery.get( activateUrl )
+			.success( function () {
+				FlashActions.notice("Set theme to "+themeId);
 
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.SITE_SET_THEME,
-			themeId: themeId
-	    });
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SET_THEME,
+					themeId: themeId
+			    });
+			}.bind(this) )
+			.fail( function () {
+				FlashActions.error("Server error setting theme");
+			} ); 
 	},
 
 	setLayout: function(layoutName) {
@@ -216,25 +222,15 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		return getThemeState();
 	},
 
-	makeActive: function( activeThemeId ) {
-		SiteActions.setActiveTheme( activeThemeId );
-	},
-
 	handleActivateTheme: function( e ) {
 		e.preventDefault();
 		e.stopPropagation();
+		
 		var $el = jQuery(e.currentTarget);
 		var activateUrl = $el.attr('href');
 		var themeId = $el.data('theme-id');
 
-		jQuery.get(activateUrl)
-			.success( function () {
-				console.log("activated");
-				this.makeActive(themeId);
-			}.bind(this) )
-			.fail( function () {
-				console.log("failed");
-			} ); 
+		SiteActions.setActiveTheme( themeId, activateUrl );
 	},
 
 	findTheme: function ( themeId )	{
@@ -277,7 +273,95 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 	},
 
 	render: function() {
+		var themes, overlay;
 
+		themes = this._renderThemeList();
+		
+		if ( this.state.overlayTheme ) {
+			overlay = this._renderOverlay();
+		}
+
+		return (
+			React.createElement("div", {className: "welcome__section", id: "welcome__design"}, 
+				React.createElement("h4", null, "Pick a design"), 
+				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
+				React.createElement("div", {className: "theme-browser"}, 
+					themes
+				), 
+				
+				React.createElement("div", {style: {clear: 'both'}}), 
+				React.createElement("p", {className: "submit"}, 
+					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
+					React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+				), 
+				overlay
+			)
+		);
+	},
+
+	_renderOverlay: function() {
+		var screenshot, currentThemeLabel, parentLabel, tagsLabel, previewAction, theme = this.state.overlayTheme; 
+
+		if ( theme.screenshot[0] ) {
+			screenshot = (React.createElement("div", {className: "screenshot"}, React.createElement("img", {src: theme.screenshot[0], alt: ""})));
+		} else {
+			screenshot = (React.createElement("div", {className: "screenshot blank"}));
+		}
+
+		if ( theme.active ) {
+			currentThemeLabel = (React.createElement("span", {className: "current-label"}, "Current Theme"));
+		}
+
+		if ( theme.parent ) {
+			parentLabel = (React.createElement("p", {className: "parent-theme"}, "This is a child theme of ", React.createElement("strong", null, theme.parent)));
+		}
+
+		if ( theme.tags ) {
+			tagsLabel = (React.createElement("p", {className: "theme-tags"}, React.createElement("span", null, "Tags:"), " ", theme.tags));
+		}
+
+		if ( ! theme.active ) {
+			previewAction = (
+				React.createElement("div", {className: "theme-actions"}, 
+					React.createElement("div", {className: "inactive-theme"}, 
+						React.createElement("a", {href: _.unescape(theme.actions.customize), target: "_top", className: "button button-primary"}, "Live Preview")
+					)
+				)
+			);
+		}
+
+		return (
+			React.createElement("div", {className: "theme-overlay"}, 
+				React.createElement("div", {className: "theme-backdrop"}), 
+				React.createElement("div", {className: "theme-wrap"}, 
+					React.createElement("div", {className: "theme-header"}, 
+						React.createElement("button", {type: "button", className: "left dashicons dashicons-no", onClick: this.handlePreviousThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show previous theme")), 
+						React.createElement("button", {type: "button", className: "right dashicons dashicons-no", onClick: this.handleNextThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show next theme")), 
+						React.createElement("button", {type: "button", className: "close dashicons dashicons-no", onClick: this.handleCloseOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Close details dialog"))
+					), 
+					React.createElement("div", {className: "theme-about"}, 
+						React.createElement("div", {className: "theme-screenshots"}, 
+							screenshot
+						), 
+
+						React.createElement("div", {className: "theme-info"}, 
+							currentThemeLabel, 
+							React.createElement("h3", {className: "theme-name"}, theme.name, React.createElement("span", {className: "theme-version"}, "Version: ", theme.version)), 
+							React.createElement("h4", {className: "theme-author"}, "By ", _.unescape(theme.authorAndUri)), 
+							React.createElement("p", {className: "theme-description"}, _.unescape(theme.description)), 
+
+							parentLabel, 
+							tagsLabel
+						)
+					), 
+
+					previewAction
+				)
+			)
+		);
+	},
+
+	_renderThemeList: function() {
 		var themes = this.state.themes.map( function(theme) {
 
 			var screenshot, actions;
@@ -325,86 +409,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 			);
 		}.bind(this) );
 
-		var overlay;
-
-		if ( this.state.overlayTheme ) {
-			var screenshot, currentThemeLabel, parentLabel, tagsLabel, previewAction, theme = this.state.overlayTheme; 
-
-			if ( theme.screenshot[0] ) {
-				screenshot = (React.createElement("div", {className: "screenshot"}, React.createElement("img", {src: theme.screenshot[0], alt: ""})));
-			} else {
-				screenshot = (React.createElement("div", {className: "screenshot blank"}));
-			}
-
-			if ( theme.active ) {
-				currentThemeLabel = (React.createElement("span", {className: "current-label"}, "Current Theme"));
-			}
-
-			if ( theme.parent ) {
-				parentLabel = (React.createElement("p", {className: "parent-theme"}, "This is a child theme of ", React.createElement("strong", null, theme.parent)));
-			}
-
-			if ( theme.tags ) {
-				tagsLabel = (React.createElement("p", {className: "theme-tags"}, React.createElement("span", null, "Tags:"), " ", theme.tags));
-			}
-
-			if ( ! theme.active ) {
-				previewAction = (
-					React.createElement("div", {className: "theme-actions"}, 
-						React.createElement("div", {className: "inactive-theme"}, 
-							React.createElement("a", {href: _.unescape(theme.actions.customize), target: "_top", className: "button button-primary"}, "Live Preview")
-						)
-					)
-				);
-			}
-
-			overlay = (
-				React.createElement("div", {className: "theme-overlay"}, 
-					React.createElement("div", {className: "theme-backdrop"}), 
-					React.createElement("div", {className: "theme-wrap"}, 
-						React.createElement("div", {className: "theme-header"}, 
-							React.createElement("button", {type: "button", className: "left dashicons dashicons-no", onClick: this.handlePreviousThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show previous theme")), 
-							React.createElement("button", {type: "button", className: "right dashicons dashicons-no", onClick: this.handleNextThemeOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Show next theme")), 
-							React.createElement("button", {type: "button", className: "close dashicons dashicons-no", onClick: this.handleCloseOverlay}, React.createElement("span", {className: "screen-reader-text"}, "Close details dialog"))
-						), 
-						React.createElement("div", {className: "theme-about"}, 
-							React.createElement("div", {className: "theme-screenshots"}, 
-								screenshot
-							), 
-
-							React.createElement("div", {className: "theme-info"}, 
-								currentThemeLabel, 
-								React.createElement("h3", {className: "theme-name"}, theme.name, React.createElement("span", {className: "theme-version"}, "Version: ", theme.version)), 
-								React.createElement("h4", {className: "theme-author"}, "By ", _.unescape(theme.authorAndUri)), 
-								React.createElement("p", {className: "theme-description"}, _.unescape(theme.description)), 
-
-								parentLabel, 
-								tagsLabel
-							)
-						), 
-
-						previewAction
-					)
-				)
-			);
-		}
-		
-		return (
-			React.createElement("div", {className: "welcome__section", id: "welcome__design"}, 
-				React.createElement("h4", null, "Pick a design"), 
-				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
-				React.createElement("div", {className: "theme-browser"}, 
-					themes
-				), 
-				
-				React.createElement("div", {style: {clear: 'both'}}), 
-				React.createElement("p", {className: "submit"}, 
-					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-					React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
-				), 
-				overlay
-			)
-		);
+		return themes;
 	}
 });
 

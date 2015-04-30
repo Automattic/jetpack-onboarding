@@ -29,14 +29,20 @@ var SiteActions = {
 			});	
 	},
 
-	setActiveTheme: function(themeId) {
+	setActiveTheme: function(themeId, activateUrl) {
 
-		//XXX TODO: persistence
+		jQuery.get( activateUrl )
+			.success( function () {
+				FlashActions.notice("Set theme to "+themeId);
 
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.SITE_SET_THEME,
-			themeId: themeId
-	    });
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SET_THEME,
+					themeId: themeId
+			    });
+			}.bind(this) )
+			.fail( function () {
+				FlashActions.error("Server error setting theme");
+			} ); 
 	},
 
 	setLayout: function(layoutName) {
