@@ -29,6 +29,13 @@ var _steps = [
 	new AdvancedSettingsStepModel()
 ];
 
+var currentStepSlug;
+
+var pendingStep = _.findWhere( _steps, { completed: false } );
+if ( pendingStep != null ) {
+  currentStepSlug = pendingStep.slug(); // also sets the window location hash
+}
+
 function complete(step) {
 
 }
@@ -37,8 +44,8 @@ function skip(step) {
 
 }
 
-function select(step) {
-
+function select(stepSlug) {
+  currentStepSlug = stepSlug;
 }
 
 var SetupProgressStore = assign({}, EventEmitter.prototype, {
@@ -48,8 +55,8 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * @return {boolean}
    */
   areAllComplete: function() {
-    _.each(_steps), function(step) {
-      if (!step.complete()) {
+    _.each( _steps ), function( step ) {
+      if ( ! step.complete()) {
         return false;
       }
     }
@@ -60,12 +67,22 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * Get the entire collection of TODOs.
    * @return {object}
    */
-  getAll: function() {
+  allSteps: function() {
     return _steps;
   },
 
   emitChange: function() {
     this.emit(CHANGE_EVENT);
+  },
+
+  getCurrentStep: function() {
+    var currentStep;
+    _.each( _steps, function( step ) {
+      if( step.slug() == currentStepSlug ) {
+        currentStep = step;
+      }
+    });
+    return currentStep;
   },
 
   getProgressPercent: function() {
@@ -96,6 +113,11 @@ AppDispatcher.register(function(action) {
   var text;
 
   switch(action.actionType) {
+    case JPSConstants.STEP_SELECT:
+      select(action.slug);
+      SetupProgressStore.emitChange();
+      break;
+
     case JPSConstants.STEP_COMPLETE:
       complete(action.text);
       SetupProgressStore.emitChange();

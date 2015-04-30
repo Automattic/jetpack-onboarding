@@ -20,7 +20,27 @@ module.exports = {
 	}
 }
 
-},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16}],2:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17}],2:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/app-dispatcher');
+var JPSConstants = require('../constants/jetpack-start-constants');
+
+module.exports = {
+	setCurrentStep: function(slug) {
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_SELECT,
+	      slug: slug
+	    });
+	},
+	
+	complete: function(slug) {
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE,
+	      slug: slug
+	    });
+	}
+};
+
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
@@ -52,7 +72,7 @@ module.exports = {
 	}
 };
 
-},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"../stores/site-store":29,"./flash-actions.js":1}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"../stores/site-store":30,"./flash-actions.js":1}],4:[function(require,module,exports){
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
@@ -92,7 +112,7 @@ var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep
 
 module.exports = AdvancedSettingsStep;
 
-},{"react":38}],4:[function(require,module,exports){
+},{"react":39}],5:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -308,7 +328,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":38}],5:[function(require,module,exports){
+},{"react":39}],6:[function(require,module,exports){
 module.exports = require('react').createClass({
 	render: function() {
 		return (
@@ -317,7 +337,7 @@ module.exports = require('react').createClass({
 	}
 });
 
-},{"react":38}],6:[function(require,module,exports){
+},{"react":39}],7:[function(require,module,exports){
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -355,7 +375,7 @@ var Flash = React.createClass({displayName: "Flash",
 
 module.exports = Flash;
 
-},{"../stores/flash-store":27,"react":38}],7:[function(require,module,exports){
+},{"../stores/flash-store":28,"react":39}],8:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -415,7 +435,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":38}],8:[function(require,module,exports){
+},{"react":39}],9:[function(require,module,exports){
 var React = require('react'),
 	Flash = require('./flash.jsx');
 
@@ -477,7 +497,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"./flash.jsx":6,"react":38}],9:[function(require,module,exports){
+},{"./flash.jsx":7,"react":39}],10:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -554,7 +574,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 module.exports = SiteTitleStep;
 
-},{"../actions/site-actions":2,"../stores/site-store":29,"react":38}],10:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],11:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -633,28 +653,48 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":38}],11:[function(require,module,exports){
+},{"react":39}],12:[function(require,module,exports){
 var React = require('react'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
+	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 /**
  * The menu which allows the user to switch steps
  **/
-module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
+var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
+	
+	componentDidMount: function() {
+		SetupProgressStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SetupProgressStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState({ currentStep: SetupProgressStore.getCurrentStep() });
+  	},
+
+	getInitialState: function() {
+		return { currentStep: SetupProgressStore.getCurrentStep() };
+	},
 
 	selectStep: function(e) {
 		e.preventDefault();
+		
 		var slug = jQuery(e.currentTarget).data('step-slug');
-		this.props.model.setStep(slug);
+
+		SetupProgressActions.setCurrentStep(slug);
 	},
 
 	render: function() {
-		// var $this = this;
-		var currentStep = this.props.model.currentStep();
 
-		var menuItems = this.props.model.steps().map(function ( step ) {
-			var title, current = ( currentStep.slug() == step.slug() );
+		var menuItems = SetupProgressStore.allSteps().map(function ( step ) {
+			var title, current;
+			if ( this.state.currentStep ) {
+				current = ( this.state.currentStep.slug() == step.slug() );
+			}
 
 			if ( step.repeatable() ) {
 				title = React.createElement("a", {href: "#", "data-step-slug": step.slug(), onClick: this.selectStep}, step.name())
@@ -669,7 +709,7 @@ module.exports = React.createClass({displayName: "exports",
 
 		return (
 			React.createElement("div", {className: "getting-started__steps"}, 
-				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, {model: this.props.model}))), 
+				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, null))), 
 				
 				React.createElement("ol", null, 
 					menuItems
@@ -679,7 +719,9 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-progress-bar.jsx":12,"react":38}],12:[function(require,module,exports){
+module.exports = WelcomeMenu;
+
+},{"../actions/setup-progress-actions":2,"../stores/setup-progress-store":29,"./welcome-progress-bar.jsx":13,"react":39}],13:[function(require,module,exports){
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store');
 
@@ -687,7 +729,6 @@ var React = require('react'),
  * Show progress through the steps
  **/
 module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
 
 	percentComplete: function() {
 		return SetupProgressStore.getProgressPercent();
@@ -708,7 +749,7 @@ module.exports = React.createClass({displayName: "exports",
 
 
 
-},{"../stores/setup-progress-store":28,"react":38}],13:[function(require,module,exports){
+},{"../stores/setup-progress-store":29,"react":39}],14:[function(require,module,exports){
 var React = require('react'),
 	Flash = require('./flash.jsx');
 	
@@ -728,7 +769,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./flash.jsx":6,"react":38}],14:[function(require,module,exports){
+},{"./flash.jsx":7,"react":39}],15:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
@@ -754,20 +795,21 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-menu.jsx":11,"./welcome-progress-bar.jsx":12,"./welcome-section.jsx":13,"react":38}],15:[function(require,module,exports){
+},{"./welcome-menu.jsx":12,"./welcome-progress-bar.jsx":13,"./welcome-section.jsx":14,"react":39}],16:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
 	STEP_COMPLETE: null,
+	STEP_SELECT: null,
 	STEP_SKIPPED: null,
-	SET_SITE_TITLE: null,
+	SITE_SET_TITLE: null,
 
 	SET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
 	FLASH_SEVERITY_ERROR: null
 });
 
-},{"keymirror":35}],16:[function(require,module,exports){
+},{"keymirror":36}],17:[function(require,module,exports){
 /*
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -785,12 +827,12 @@ var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
-},{"flux":31}],17:[function(require,module,exports){
+},{"flux":32}],18:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":30}],18:[function(require,module,exports){
+},{"./welcome-panel":31}],19:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
 
@@ -798,7 +840,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
 });
 
-},{"../components/advanced-settings-step.jsx":3,"./welcome-step":25}],19:[function(require,module,exports){
+},{"../components/advanced-settings-step.jsx":4,"./welcome-step":26}],20:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DesignStepView = require('../components/design-step.jsx');
 
@@ -806,7 +848,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Pick a design", welcomeView: DesignStepView, themes: JPS.themes })
 });
 
-},{"../components/design-step.jsx":4,"./welcome-step":25}],20:[function(require,module,exports){
+},{"../components/design-step.jsx":5,"./welcome-step":26}],21:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepView = require('../components/dummy-welcome-step.jsx');
 
@@ -819,7 +861,7 @@ module.exports = WelcomeStepModel.extend({
 	repeatable: function() { return false; },
 });
 
-},{"../components/dummy-welcome-step.jsx":5,"./welcome-step":25}],21:[function(require,module,exports){
+},{"../components/dummy-welcome-step.jsx":6,"./welcome-step":26}],22:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	GetTrafficStepView = require('../components/get-traffic-step.jsx');
 
@@ -828,7 +870,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Get some traffic", welcomeView: GetTrafficStepView })
 });
 
-},{"../components/get-traffic-step.jsx":7,"./welcome-step":25}],22:[function(require,module,exports){
+},{"../components/get-traffic-step.jsx":8,"./welcome-step":26}],23:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	LayoutStepView = require('../components/layout-step.jsx');
 
@@ -837,7 +879,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Pick a layout", welcomeView: LayoutStepView })
 });
 
-},{"../components/layout-step.jsx":8,"./welcome-step":25}],23:[function(require,module,exports){
+},{"../components/layout-step.jsx":9,"./welcome-step":26}],24:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	SiteTitleStepView = require('../components/site-title-step.jsx');
 
@@ -856,7 +898,7 @@ module.exports = WelcomeStepModel.extend({
 	}
 });
 
-},{"../components/site-title-step.jsx":9,"./welcome-step":25}],24:[function(require,module,exports){
+},{"../components/site-title-step.jsx":10,"./welcome-step":26}],25:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
   StatsMonitoringStepView = require('../components/stats-monitoring-step.jsx');
 
@@ -864,7 +906,7 @@ module.exports = WelcomeStepModel.extend({
   defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Stats & Monitoring", welcomeView: StatsMonitoringStepView })
 });
 
-},{"../components/stats-monitoring-step.jsx":10,"./welcome-step":25}],25:[function(require,module,exports){
+},{"../components/stats-monitoring-step.jsx":11,"./welcome-step":26}],26:[function(require,module,exports){
 var React = require('react');
 
 // base class for welcome steps
@@ -910,7 +952,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"react":38}],26:[function(require,module,exports){
+},{"react":39}],27:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
@@ -987,7 +1029,7 @@ module.exports = Backbone.Model.extend({
 	// }
 });
 
-},{"./advanced-settings-step":18,"./design-step":19,"./dummy-welcome-step":20,"./get-traffic-step":21,"./layout-step":22,"./site-title-step":23,"./stats-monitoring-step":24,"./welcome-step":25}],27:[function(require,module,exports){
+},{"./advanced-settings-step":19,"./design-step":20,"./dummy-welcome-step":21,"./get-traffic-step":22,"./layout-step":23,"./site-title-step":24,"./stats-monitoring-step":25,"./welcome-step":26}],28:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter;
 	JPSConstants = require('../constants/jetpack-start-constants'),
@@ -1034,7 +1076,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = FlashStore;
 
-},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"events":34,"object-assign":36}],28:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"events":35,"object-assign":37}],29:[function(require,module,exports){
 /*
  * Store which manages and persists setup wizard progress
  */
@@ -1066,6 +1108,13 @@ var _steps = [
 	new AdvancedSettingsStepModel()
 ];
 
+var currentStepSlug;
+
+var pendingStep = _.findWhere( _steps, { completed: false } );
+if ( pendingStep != null ) {
+  currentStepSlug = pendingStep.slug(); // also sets the window location hash
+}
+
 function complete(step) {
 
 }
@@ -1074,8 +1123,8 @@ function skip(step) {
 
 }
 
-function select(step) {
-
+function select(stepSlug) {
+  currentStepSlug = stepSlug;
 }
 
 var SetupProgressStore = assign({}, EventEmitter.prototype, {
@@ -1085,8 +1134,8 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * @return {boolean}
    */
   areAllComplete: function() {
-    _.each(_steps), function(step) {
-      if (!step.complete()) {
+    _.each( _steps ), function( step ) {
+      if ( ! step.complete()) {
         return false;
       }
     }
@@ -1097,12 +1146,22 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
    * Get the entire collection of TODOs.
    * @return {object}
    */
-  getAll: function() {
+  allSteps: function() {
     return _steps;
   },
 
   emitChange: function() {
     this.emit(CHANGE_EVENT);
+  },
+
+  getCurrentStep: function() {
+    var currentStep;
+    _.each( _steps, function( step ) {
+      if( step.slug() == currentStepSlug ) {
+        currentStep = step;
+      }
+    });
+    return currentStep;
   },
 
   getProgressPercent: function() {
@@ -1133,6 +1192,11 @@ AppDispatcher.register(function(action) {
   var text;
 
   switch(action.actionType) {
+    case JPSConstants.STEP_SELECT:
+      select(action.slug);
+      SetupProgressStore.emitChange();
+      break;
+
     case JPSConstants.STEP_COMPLETE:
       complete(action.text);
       SetupProgressStore.emitChange();
@@ -1150,7 +1214,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = SetupProgressStore;
 
-},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"../models/advanced-settings-step":18,"../models/design-step":19,"../models/dummy-welcome-step":20,"../models/get-traffic-step":21,"../models/layout-step":22,"../models/site-title-step":23,"../models/stats-monitoring-step":24,"events":34,"object-assign":36}],29:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"../models/advanced-settings-step":19,"../models/design-step":20,"../models/dummy-welcome-step":21,"../models/get-traffic-step":22,"../models/layout-step":23,"../models/site-title-step":24,"../models/stats-monitoring-step":25,"events":35,"object-assign":37}],30:[function(require,module,exports){
 /*
  * Store which manages and persists site information
  */
@@ -1209,7 +1273,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = SiteStore;
 
-},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"events":34,"object-assign":36}],30:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"events":35,"object-assign":37}],31:[function(require,module,exports){
 var React = require('react'),
     BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
@@ -1223,7 +1287,7 @@ module.exports = function() {
     });
 }
 
-},{"./components/welcome-widget.jsx":14,"./models/welcome-wizard":26,"backbone-react":37,"react":38}],31:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":15,"./models/welcome-wizard":27,"backbone-react":38,"react":39}],32:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -1235,7 +1299,7 @@ module.exports = function() {
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":32}],32:[function(require,module,exports){
+},{"./lib/Dispatcher":33}],33:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1487,7 +1551,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":33}],33:[function(require,module,exports){
+},{"./invariant":34}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1542,7 +1606,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1845,7 +1909,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -1900,7 +1964,7 @@ var keyMirror = function(obj) {
 
 module.exports = keyMirror;
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -1928,12 +1992,12 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (global){
 !function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":38}],38:[function(require,module,exports){
+},{"react":39}],39:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -21499,4 +21563,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[17]);
+},{}]},{},[18]);

@@ -5,7 +5,6 @@ var React = require('react'),
  * Show progress through the steps
  **/
 module.exports = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
 
 	percentComplete: function() {
 		return SetupProgressStore.getProgressPercent();

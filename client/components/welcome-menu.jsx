@@ -1,24 +1,44 @@
 var React = require('react'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
+	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 /**
  * The menu which allows the user to switch steps
  **/
-module.exports = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
+var WelcomeMenu = React.createClass({
+	
+	componentDidMount: function() {
+		SetupProgressStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SetupProgressStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState({ currentStep: SetupProgressStore.getCurrentStep() });
+  	},
+
+	getInitialState: function() {
+		return { currentStep: SetupProgressStore.getCurrentStep() };
+	},
 
 	selectStep: function(e) {
 		e.preventDefault();
+		
 		var slug = jQuery(e.currentTarget).data('step-slug');
-		this.props.model.setStep(slug);
+
+		SetupProgressActions.setCurrentStep(slug);
 	},
 
 	render: function() {
-		// var $this = this;
-		var currentStep = this.props.model.currentStep();
 
-		var menuItems = this.props.model.steps().map(function ( step ) {
-			var title, current = ( currentStep.slug() == step.slug() );
+		var menuItems = SetupProgressStore.allSteps().map(function ( step ) {
+			var title, current;
+			if ( this.state.currentStep ) {
+				current = ( this.state.currentStep.slug() == step.slug() );
+			}
 
 			if ( step.repeatable() ) {
 				title = <a href="#" data-step-slug={step.slug()} onClick={this.selectStep}>{step.name()}</a>
@@ -33,7 +53,7 @@ module.exports = React.createClass({
 
 		return (
 			<div className="getting-started__steps">
-				<h3>Your Progress <div style={{marginTop: '7px'}}><WelcomeProgressBar model={this.props.model}/></div></h3>
+				<h3>Your Progress <div style={{marginTop: '7px'}}><WelcomeProgressBar /></div></h3>
 				
 				<ol>
 					{menuItems}
@@ -42,3 +62,5 @@ module.exports = React.createClass({
 		)
 	}
 });
+
+module.exports = WelcomeMenu;
