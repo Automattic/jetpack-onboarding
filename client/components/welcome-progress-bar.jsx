@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+	SetupProgressStore = require('../stores/setup-progress-store');
 
 /**
  * Show progress through the steps
@@ -7,11 +8,7 @@ module.exports = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
 	percentComplete: function() {
-		var numSteps = this.props.model.get('steps').length;
-		var completedSteps = this.props.model.get('steps').where({completed: true}).length;
-		var percentComplete = (completedSteps / numSteps) * 100;
-
-		return Math.round(percentComplete / 10) * 10;;
+		return SetupProgressStore.getProgressPercent();
 	},
 
 	render: function() {

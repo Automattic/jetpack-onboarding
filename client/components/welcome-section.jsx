@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react'),
+	Flash = require('./flash.jsx');
 	
 /**
  * The view for the current welcome step
@@ -9,6 +10,7 @@ module.exports = React.createClass({
 	render: function() {
 		return (
 			<div className="getting-started__sections">
+				<Flash />
 				{this.props.model.currentStepView()}
 			</div>
 		);

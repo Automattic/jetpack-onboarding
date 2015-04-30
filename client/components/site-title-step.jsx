@@ -1,53 +1,43 @@
-var React = require('react');
+var React = require('react'),
+	SiteActions = require('../actions/site-actions'),
+	SiteStore = require('../stores/site-store');
 
-module.exports = React.createClass({
-	mixins: [Backbone.React.Component.mixin],
+function getSiteTitleState() {
+	return {
+		title: SiteStore.getTitle()
+	};
+}
+
+var SiteTitleStep = React.createClass({
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteTitleState());
+  	},
 
 	getInitialState: function() {
-		// yeah yeah, I know that setting state from props is an antipattern, but I didn't
-		// want it persisted to the backbone model until the user hits "Done"
-		return {
-			title: this.props.model.get('title')
-		};
+		return getSiteTitleState();
 	},
 
 	handleChangeTitle: function(e) {
-		this.setState({title: e.currentTarget.value});
+		SiteActions.setTitle(e.currentTarget.value);
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-
-		data = {
-			action: JPS.steps.set_title.url_action,
-			nonce: JPS.nonce,
-			title: this.state.title
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function() { 
-				this.props.model.set({title: this.state.title, completed: true});
-				this.setState({message: "Saved"});
-			}.bind(this) )
-			.fail( function() {
-				this.setState({message: "Failed"});
-			}.bind(this) );
-
-		//skip to next section unless this section has been completed before?
+		SiteActions.saveTitle();
 	},
 
 	render: function() {
-		var feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
-		} else {
-			feedbackMessage = null;
-		}
-
 		return (
 			<div className="welcome__section" id="welcome__site-title">
-				{feedbackMessage}
 				<h4>Set your site title</h4>
 
 				<form onSubmit={this.handleSubmit}>
@@ -81,3 +71,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+module.exports = SiteTitleStep;

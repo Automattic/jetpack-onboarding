@@ -11,11 +11,11 @@ module.exports = React.createClass({
 	    return (
 			<div className="getting-started">
 				<div className="getting-started__intro">
-					<h3>Welcome to your new WordPress site!</h3>
+					<h3>You're almost done!</h3>
 
-					<p className="getting-started__subhead">Let's get your new site set up as quickly as possible.</p>
+					<p className="getting-started__subhead">Take these steps to supercharge your WordPress site.</p>
 				</div>
-				
+
 				<WelcomeSection model={this.props.model}/>
 				<WelcomeMenu model={this.props.model}/>
 			</div>

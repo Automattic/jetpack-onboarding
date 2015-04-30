@@ -1,6 +1,7 @@
-var React = require('react');
+var React = require('react'),
+	Flash = require('./flash.jsx');
 
-module.exports = React.createClass({
+var LayoutStep = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
 	handleSubmit: function( e ) {
@@ -26,16 +27,8 @@ module.exports = React.createClass({
 	},
 
 	render: function() {
-		var feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
-		} else {
-			feedbackMessage = null;
-		}
 		return (
 			<div className="welcome__section" id="welcome__layout">
-				{feedbackMessage}
 				<h4>Pick a layout</h4>
 
 				<form onSubmit={this.handleSubmit}>
@@ -63,3 +56,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+module.exports = LayoutStep;

@@ -1,7 +1,61 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+	JPSConstants = require('../constants/jetpack-start-constants');
+
+module.exports = {
+	notice: function(msg) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SET_FLASH,
+			message: msg,
+			severity: JPSConstants.FLASH_SEVERITY_NOTICE
+		});
+	},
+
+	error: function(msg) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SET_FLASH,
+			message: msg,
+			severity: JPSConstants.FLASH_SEVERITY_ERROR
+		});
+	}
+}
+
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16}],2:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+	JPSConstants = require('../constants/jetpack-start-constants'),
+	SiteStore = require('../stores/site-store'),
+	FlashActions = require('./flash-actions.js');
+
+module.exports = {
+	setTitle: function(title) {
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.SITE_SET_TITLE,
+	      title: title
+	    });
+	},
+
+	saveTitle: function() {
+
+		data = {
+			action: JPS.steps.set_title.url_action,
+			nonce: JPS.nonce,
+			title: SiteStore.getTitle()
+		};
+		
+		jQuery.post(ajaxurl, data)
+			.success( function() {
+				FlashActions.notice("Saved");
+			})
+			.fail( function() {
+				FlashActions.error("Failed");
+			});	
+	}
+};
+
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"../stores/site-store":29,"./flash-actions.js":1}],3:[function(require,module,exports){
 var React = require('react');
 
-module.exports = React.createClass({displayName: "exports",
+var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
 	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
@@ -36,7 +90,9 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],2:[function(require,module,exports){
+module.exports = AdvancedSettingsStep;
+
+},{"react":38}],4:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -252,7 +308,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],3:[function(require,module,exports){
+},{"react":38}],5:[function(require,module,exports){
 module.exports = require('react').createClass({
 	render: function() {
 		return (
@@ -261,7 +317,45 @@ module.exports = require('react').createClass({
 	}
 });
 
-},{"react":24}],4:[function(require,module,exports){
+},{"react":38}],6:[function(require,module,exports){
+var React = require('react'),
+	FlashStore = require('../stores/flash-store');
+
+function getFlashState() {
+	return FlashStore.getFlash();
+}
+
+var Flash = React.createClass({displayName: "Flash",
+	componentDidMount: function() {
+		FlashStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		FlashStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getFlashState());
+  	},
+
+	getInitialState: function() {
+		var flashState = getFlashState();
+		console.log(flashState);
+		return flashState;
+	},
+
+	render: function() {
+		if ( this.state.message ) {
+			return (React.createElement("div", {className: this.state.severity + ' updated'}, this.state.message));
+		} else {
+			return null;
+		}
+	}
+});
+
+module.exports = Flash;
+
+},{"../stores/flash-store":27,"react":38}],7:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -321,10 +415,11 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],5:[function(require,module,exports){
-var React = require('react');
+},{"react":38}],8:[function(require,module,exports){
+var React = require('react'),
+	Flash = require('./flash.jsx');
 
-module.exports = React.createClass({displayName: "exports",
+var LayoutStep = React.createClass({displayName: "LayoutStep",
 	mixins: [Backbone.React.Component.mixin],
 
 	handleSubmit: function( e ) {
@@ -350,16 +445,8 @@ module.exports = React.createClass({displayName: "exports",
 	},
 
 	render: function() {
-		var feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
-		} else {
-			feedbackMessage = null;
-		}
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__layout"}, 
-				feedbackMessage, 
 				React.createElement("h4", null, "Pick a layout"), 
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
@@ -388,57 +475,49 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],6:[function(require,module,exports){
-var React = require('react');
+module.exports = LayoutStep;
 
-module.exports = React.createClass({displayName: "exports",
-	mixins: [Backbone.React.Component.mixin],
+},{"./flash.jsx":6,"react":38}],9:[function(require,module,exports){
+var React = require('react'),
+	SiteActions = require('../actions/site-actions'),
+	SiteStore = require('../stores/site-store');
+
+function getSiteTitleState() {
+	return {
+		title: SiteStore.getTitle()
+	};
+}
+
+var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteTitleState());
+  	},
 
 	getInitialState: function() {
-		// yeah yeah, I know that setting state from props is an antipattern, but I didn't
-		// want it persisted to the backbone model until the user hits "Done"
-		return {
-			title: this.props.model.get('title')
-		};
+		return getSiteTitleState();
 	},
 
 	handleChangeTitle: function(e) {
-		this.setState({title: e.currentTarget.value});
+		SiteActions.setTitle(e.currentTarget.value);
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-
-		data = {
-			action: JPS.steps.set_title.url_action,
-			nonce: JPS.nonce,
-			title: this.state.title
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function() { 
-				this.props.model.set({title: this.state.title, completed: true});
-				this.setState({message: "Saved"});
-			}.bind(this) )
-			.fail( function() {
-				this.setState({message: "Failed"});
-			}.bind(this) );
-
-		//skip to next section unless this section has been completed before?
+		SiteActions.saveTitle();
 	},
 
 	render: function() {
-		var feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
-		} else {
-			feedbackMessage = null;
-		}
-
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
-				feedbackMessage, 
 				React.createElement("h4", null, "Set your site title"), 
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
@@ -473,7 +552,9 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],7:[function(require,module,exports){
+module.exports = SiteTitleStep;
+
+},{"../actions/site-actions":2,"../stores/site-store":29,"react":38}],10:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -552,7 +633,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":24}],8:[function(require,module,exports){
+},{"react":38}],11:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx');
 
@@ -598,8 +679,9 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-progress-bar.jsx":9,"react":24}],9:[function(require,module,exports){
-var React = require('react');
+},{"./welcome-progress-bar.jsx":12,"react":38}],12:[function(require,module,exports){
+var React = require('react'),
+	SetupProgressStore = require('../stores/setup-progress-store');
 
 /**
  * Show progress through the steps
@@ -608,11 +690,7 @@ module.exports = React.createClass({displayName: "exports",
 	mixins: [Backbone.React.Component.mixin],
 
 	percentComplete: function() {
-		var numSteps = this.props.model.get('steps').length;
-		var completedSteps = this.props.model.get('steps').where({completed: true}).length;
-		var percentComplete = (completedSteps / numSteps) * 100;
-
-		return Math.round(percentComplete / 10) * 10;;
+		return SetupProgressStore.getProgressPercent();
 	},
 
 	render: function() {
@@ -630,8 +708,9 @@ module.exports = React.createClass({displayName: "exports",
 
 
 
-},{"react":24}],10:[function(require,module,exports){
-var React = require('react');
+},{"../stores/setup-progress-store":28,"react":38}],13:[function(require,module,exports){
+var React = require('react'),
+	Flash = require('./flash.jsx');
 	
 /**
  * The view for the current welcome step
@@ -642,13 +721,14 @@ module.exports = React.createClass({displayName: "exports",
 	render: function() {
 		return (
 			React.createElement("div", {className: "getting-started__sections"}, 
+				React.createElement(Flash, null), 
 				this.props.model.currentStepView()
 			)
 		);
 	}
 });
 
-},{"react":24}],11:[function(require,module,exports){
+},{"./flash.jsx":6,"react":38}],14:[function(require,module,exports){
 var React = require('react'),
 	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
@@ -662,11 +742,11 @@ module.exports = React.createClass({displayName: "exports",
 	    return (
 			React.createElement("div", {className: "getting-started"}, 
 				React.createElement("div", {className: "getting-started__intro"}, 
-					React.createElement("h3", null, "Welcome to your new WordPress site!"), 
+					React.createElement("h3", null, "You're almost done!"), 
 
-					React.createElement("p", {className: "getting-started__subhead"}, "Let's get your new site set up as quickly as possible.")
+					React.createElement("p", {className: "getting-started__subhead"}, "Take these steps to supercharge your WordPress site.")
 				), 
-				
+
 				React.createElement(WelcomeSection, {model: this.props.model}), 
 				React.createElement(WelcomeMenu, {model: this.props.model})
 			)
@@ -674,12 +754,43 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./welcome-menu.jsx":8,"./welcome-progress-bar.jsx":9,"./welcome-section.jsx":10,"react":24}],12:[function(require,module,exports){
+},{"./welcome-menu.jsx":11,"./welcome-progress-bar.jsx":12,"./welcome-section.jsx":13,"react":38}],15:[function(require,module,exports){
+var keyMirror = require('keymirror');
+
+module.exports = keyMirror({
+	STEP_COMPLETE: null,
+	STEP_SKIPPED: null,
+	SET_SITE_TITLE: null,
+
+	SET_FLASH: null,
+	FLASH_SEVERITY_NOTICE: null,
+	FLASH_SEVERITY_ERROR: null
+});
+
+},{"keymirror":35}],16:[function(require,module,exports){
+/*
+ * Copyright (c) 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * AppDispatcher
+ *
+ * A singleton that operates as the central hub for application updates.
+ */
+
+var Dispatcher = require('flux').Dispatcher;
+
+module.exports = new Dispatcher();
+
+},{"flux":31}],17:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":22}],13:[function(require,module,exports){
+},{"./welcome-panel":30}],18:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
 
@@ -687,7 +798,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
 });
 
-},{"../components/advanced-settings-step.jsx":1,"./welcome-step":20}],14:[function(require,module,exports){
+},{"../components/advanced-settings-step.jsx":3,"./welcome-step":25}],19:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DesignStepView = require('../components/design-step.jsx');
 
@@ -695,7 +806,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Pick a design", welcomeView: DesignStepView, themes: JPS.themes })
 });
 
-},{"../components/design-step.jsx":2,"./welcome-step":20}],15:[function(require,module,exports){
+},{"../components/design-step.jsx":4,"./welcome-step":25}],20:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepView = require('../components/dummy-welcome-step.jsx');
 
@@ -708,7 +819,7 @@ module.exports = WelcomeStepModel.extend({
 	repeatable: function() { return false; },
 });
 
-},{"../components/dummy-welcome-step.jsx":3,"./welcome-step":20}],16:[function(require,module,exports){
+},{"../components/dummy-welcome-step.jsx":5,"./welcome-step":25}],21:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	GetTrafficStepView = require('../components/get-traffic-step.jsx');
 
@@ -717,7 +828,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Get some traffic", welcomeView: GetTrafficStepView })
 });
 
-},{"../components/get-traffic-step.jsx":4,"./welcome-step":20}],17:[function(require,module,exports){
+},{"../components/get-traffic-step.jsx":7,"./welcome-step":25}],22:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	LayoutStepView = require('../components/layout-step.jsx');
 
@@ -726,7 +837,7 @@ module.exports = WelcomeStepModel.extend({
 	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Pick a layout", welcomeView: LayoutStepView })
 });
 
-},{"../components/layout-step.jsx":5,"./welcome-step":20}],18:[function(require,module,exports){
+},{"../components/layout-step.jsx":8,"./welcome-step":25}],23:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	SiteTitleStepView = require('../components/site-title-step.jsx');
 
@@ -745,7 +856,7 @@ module.exports = WelcomeStepModel.extend({
 	}
 });
 
-},{"../components/site-title-step.jsx":6,"./welcome-step":20}],19:[function(require,module,exports){
+},{"../components/site-title-step.jsx":9,"./welcome-step":25}],24:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
   StatsMonitoringStepView = require('../components/stats-monitoring-step.jsx');
 
@@ -753,7 +864,7 @@ module.exports = WelcomeStepModel.extend({
   defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Stats & Monitoring", welcomeView: StatsMonitoringStepView })
 });
 
-},{"../components/stats-monitoring-step.jsx":7,"./welcome-step":20}],20:[function(require,module,exports){
+},{"../components/stats-monitoring-step.jsx":10,"./welcome-step":25}],25:[function(require,module,exports){
 var React = require('react');
 
 // base class for welcome steps
@@ -799,7 +910,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"react":24}],21:[function(require,module,exports){
+},{"react":38}],26:[function(require,module,exports){
 var WelcomeStepModel = require('./welcome-step'),
 	DummyWelcomeStepModel = require('./dummy-welcome-step'),
 	SiteTitleStepModel = require('./site-title-step'),
@@ -876,7 +987,229 @@ module.exports = Backbone.Model.extend({
 	// }
 });
 
-},{"./advanced-settings-step":13,"./design-step":14,"./dummy-welcome-step":15,"./get-traffic-step":16,"./layout-step":17,"./site-title-step":18,"./stats-monitoring-step":19,"./welcome-step":20}],22:[function(require,module,exports){
+},{"./advanced-settings-step":18,"./design-step":19,"./dummy-welcome-step":20,"./get-traffic-step":21,"./layout-step":22,"./site-title-step":23,"./stats-monitoring-step":24,"./welcome-step":25}],27:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+	EventEmitter = require('events').EventEmitter;
+	JPSConstants = require('../constants/jetpack-start-constants'),
+	assign = require('object-assign');
+
+var CHANGE_EVENT = 'change';
+var message, severity;
+
+function setFlash(newMessage, newSeverity) {
+	message = newMessage;
+	severity = newSeverity;
+}
+
+FlashStore = assign({}, EventEmitter.prototype, {
+	getFlash: function() {
+		return {message: message, severity: severity};
+	},
+
+	addChangeListener: function(callback) {
+		this.on(CHANGE_EVENT, callback);
+	},
+
+	removeChangeListener: function(callback) {
+		this.removeListener(CHANGE_EVENT, callback);
+	},
+
+	emitChange: function() {
+	    this.emit(CHANGE_EVENT);
+	},
+});
+
+AppDispatcher.register(function(action) {
+
+  switch(action.actionType) {
+    case JPSConstants.SET_FLASH:
+      setFlash(action.message, action.severity);
+      FlashStore.emitChange();
+      break;
+
+    default:
+      // no op
+  }
+});
+
+module.exports = FlashStore;
+
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"events":34,"object-assign":36}],28:[function(require,module,exports){
+/*
+ * Store which manages and persists setup wizard progress
+ */
+
+var AppDispatcher = require('../dispatcher/app-dispatcher');
+var EventEmitter = require('events').EventEmitter;
+var JPSConstants = require('../constants/jetpack-start-constants');
+var DummyWelcomeStepModel = require('../models/dummy-welcome-step'),
+	SiteTitleStepModel = require('../models/site-title-step'),
+	LayoutStepModel = require('../models/layout-step'),
+	StatsMonitoringStepModel = require('../models/stats-monitoring-step'),
+	DesignStepModel = require('../models/design-step'),
+	GetTrafficStepModel = require('../models/get-traffic-step'),
+	AdvancedSettingsStepModel = require('../models/advanced-settings-step');
+var assign = require('object-assign');
+
+
+var CHANGE_EVENT = 'change';
+
+var _steps = [
+	new DummyWelcomeStepModel({ name: "Sign up" }),
+	new DummyWelcomeStepModel({ name: "Create admin account" }),
+	new DummyWelcomeStepModel({ name: "Verify email address" }),
+	new SiteTitleStepModel(),
+	new LayoutStepModel(),
+	new StatsMonitoringStepModel(),
+	new DesignStepModel(),
+	new GetTrafficStepModel(),
+	new AdvancedSettingsStepModel()
+];
+
+function complete(step) {
+
+}
+
+function skip(step) {
+
+}
+
+function select(step) {
+
+}
+
+var SetupProgressStore = assign({}, EventEmitter.prototype, {
+
+  /**
+   * Tests whether all the remaining TODO items are marked as completed.
+   * @return {boolean}
+   */
+  areAllComplete: function() {
+    _.each(_steps), function(step) {
+      if (!step.complete()) {
+        return false;
+      }
+    }
+    return true;
+  },
+
+  /**
+   * Get the entire collection of TODOs.
+   * @return {object}
+   */
+  getAll: function() {
+    return _steps;
+  },
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  getProgressPercent: function() {
+  	var numSteps = _steps.length;
+	var completedSteps = _.where(_steps, {completed: true}).length;
+	var percentComplete = (completedSteps / numSteps) * 100;
+
+	return Math.round(percentComplete / 10) * 10;
+  },
+
+  /**
+   * @param {function} callback
+   */
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+});
+
+// Register callback to handle all updates
+AppDispatcher.register(function(action) {
+  var text;
+
+  switch(action.actionType) {
+    case JPSConstants.STEP_COMPLETE:
+      complete(action.text);
+      SetupProgressStore.emitChange();
+      break;
+
+    case JPSConstants.STEP_SKIPPED:
+      skip(action.text);
+      SetupProgressStore.emitChange();
+      break;
+
+    default:
+      // no op
+  }
+});
+
+module.exports = SetupProgressStore;
+
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"../models/advanced-settings-step":18,"../models/design-step":19,"../models/dummy-welcome-step":20,"../models/get-traffic-step":21,"../models/layout-step":22,"../models/site-title-step":23,"../models/stats-monitoring-step":24,"events":34,"object-assign":36}],29:[function(require,module,exports){
+/*
+ * Store which manages and persists site information
+ */
+
+var AppDispatcher = require('../dispatcher/app-dispatcher');
+var EventEmitter = require('events').EventEmitter;
+var JPSConstants = require('../constants/jetpack-start-constants');
+var assign = require('object-assign');
+
+var CHANGE_EVENT = 'change';
+
+var title = JPS.bloginfo.name;
+
+function setTitle(newTitle) {
+	title = newTitle;
+}
+
+var SiteStore = assign({}, EventEmitter.prototype, {
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  getTitle: function() {
+  	return title;
+  },
+
+  /**
+   * @param {function} callback
+   */
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+});
+
+// Register callback to handle all updates
+AppDispatcher.register(function(action) {
+
+  switch(action.actionType) {
+    case JPSConstants.SITE_SET_TITLE:
+      setTitle(action.title);
+      SiteStore.emitChange();
+      break;
+
+    default:
+      // no op
+  }
+});
+
+module.exports = SiteStore;
+
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":16,"events":34,"object-assign":36}],30:[function(require,module,exports){
 var React = require('react'),
     BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
@@ -890,12 +1223,717 @@ module.exports = function() {
     });
 }
 
-},{"./components/welcome-widget.jsx":11,"./models/welcome-wizard":21,"backbone-react":23,"react":24}],23:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":14,"./models/welcome-wizard":26,"backbone-react":37,"react":38}],31:[function(require,module,exports){
+/**
+ * Copyright (c) 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+module.exports.Dispatcher = require('./lib/Dispatcher')
+
+},{"./lib/Dispatcher":32}],32:[function(require,module,exports){
+/*
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule Dispatcher
+ * @typechecks
+ */
+
+"use strict";
+
+var invariant = require('./invariant');
+
+var _lastID = 1;
+var _prefix = 'ID_';
+
+/**
+ * Dispatcher is used to broadcast payloads to registered callbacks. This is
+ * different from generic pub-sub systems in two ways:
+ *
+ *   1) Callbacks are not subscribed to particular events. Every payload is
+ *      dispatched to every registered callback.
+ *   2) Callbacks can be deferred in whole or part until other callbacks have
+ *      been executed.
+ *
+ * For example, consider this hypothetical flight destination form, which
+ * selects a default city when a country is selected:
+ *
+ *   var flightDispatcher = new Dispatcher();
+ *
+ *   // Keeps track of which country is selected
+ *   var CountryStore = {country: null};
+ *
+ *   // Keeps track of which city is selected
+ *   var CityStore = {city: null};
+ *
+ *   // Keeps track of the base flight price of the selected city
+ *   var FlightPriceStore = {price: null}
+ *
+ * When a user changes the selected city, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'city-update',
+ *     selectedCity: 'paris'
+ *   });
+ *
+ * This payload is digested by `CityStore`:
+ *
+ *   flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'city-update') {
+ *       CityStore.city = payload.selectedCity;
+ *     }
+ *   });
+ *
+ * When the user selects a country, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'country-update',
+ *     selectedCountry: 'australia'
+ *   });
+ *
+ * This payload is digested by both stores:
+ *
+ *    CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       CountryStore.country = payload.selectedCountry;
+ *     }
+ *   });
+ *
+ * When the callback to update `CountryStore` is registered, we save a reference
+ * to the returned token. Using this token with `waitFor()`, we can guarantee
+ * that `CountryStore` is updated before the callback that updates `CityStore`
+ * needs to query its data.
+ *
+ *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       // `CountryStore.country` may not be updated.
+ *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+ *       // `CountryStore.country` is now guaranteed to be updated.
+ *
+ *       // Select the default city for the new country
+ *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+ *     }
+ *   });
+ *
+ * The usage of `waitFor()` can be chained, for example:
+ *
+ *   FlightPriceStore.dispatchToken =
+ *     flightDispatcher.register(function(payload) {
+ *       switch (payload.actionType) {
+ *         case 'country-update':
+ *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+ *           FlightPriceStore.price =
+ *             getFlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *
+ *         case 'city-update':
+ *           FlightPriceStore.price =
+ *             FlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *     }
+ *   });
+ *
+ * The `country-update` payload will be guaranteed to invoke the stores'
+ * registered callbacks in order: `CountryStore`, `CityStore`, then
+ * `FlightPriceStore`.
+ */
+
+  function Dispatcher() {
+    this.$Dispatcher_callbacks = {};
+    this.$Dispatcher_isPending = {};
+    this.$Dispatcher_isHandled = {};
+    this.$Dispatcher_isDispatching = false;
+    this.$Dispatcher_pendingPayload = null;
+  }
+
+  /**
+   * Registers a callback to be invoked with every dispatched payload. Returns
+   * a token that can be used with `waitFor()`.
+   *
+   * @param {function} callback
+   * @return {string}
+   */
+  Dispatcher.prototype.register=function(callback) {
+    var id = _prefix + _lastID++;
+    this.$Dispatcher_callbacks[id] = callback;
+    return id;
+  };
+
+  /**
+   * Removes a callback based on its token.
+   *
+   * @param {string} id
+   */
+  Dispatcher.prototype.unregister=function(id) {
+    invariant(
+      this.$Dispatcher_callbacks[id],
+      'Dispatcher.unregister(...): `%s` does not map to a registered callback.',
+      id
+    );
+    delete this.$Dispatcher_callbacks[id];
+  };
+
+  /**
+   * Waits for the callbacks specified to be invoked before continuing execution
+   * of the current callback. This method should only be used by a callback in
+   * response to a dispatched payload.
+   *
+   * @param {array<string>} ids
+   */
+  Dispatcher.prototype.waitFor=function(ids) {
+    invariant(
+      this.$Dispatcher_isDispatching,
+      'Dispatcher.waitFor(...): Must be invoked while dispatching.'
+    );
+    for (var ii = 0; ii < ids.length; ii++) {
+      var id = ids[ii];
+      if (this.$Dispatcher_isPending[id]) {
+        invariant(
+          this.$Dispatcher_isHandled[id],
+          'Dispatcher.waitFor(...): Circular dependency detected while ' +
+          'waiting for `%s`.',
+          id
+        );
+        continue;
+      }
+      invariant(
+        this.$Dispatcher_callbacks[id],
+        'Dispatcher.waitFor(...): `%s` does not map to a registered callback.',
+        id
+      );
+      this.$Dispatcher_invokeCallback(id);
+    }
+  };
+
+  /**
+   * Dispatches a payload to all registered callbacks.
+   *
+   * @param {object} payload
+   */
+  Dispatcher.prototype.dispatch=function(payload) {
+    invariant(
+      !this.$Dispatcher_isDispatching,
+      'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.'
+    );
+    this.$Dispatcher_startDispatching(payload);
+    try {
+      for (var id in this.$Dispatcher_callbacks) {
+        if (this.$Dispatcher_isPending[id]) {
+          continue;
+        }
+        this.$Dispatcher_invokeCallback(id);
+      }
+    } finally {
+      this.$Dispatcher_stopDispatching();
+    }
+  };
+
+  /**
+   * Is this Dispatcher currently dispatching.
+   *
+   * @return {boolean}
+   */
+  Dispatcher.prototype.isDispatching=function() {
+    return this.$Dispatcher_isDispatching;
+  };
+
+  /**
+   * Call the callback stored with the given id. Also do some internal
+   * bookkeeping.
+   *
+   * @param {string} id
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_invokeCallback=function(id) {
+    this.$Dispatcher_isPending[id] = true;
+    this.$Dispatcher_callbacks[id](this.$Dispatcher_pendingPayload);
+    this.$Dispatcher_isHandled[id] = true;
+  };
+
+  /**
+   * Set up bookkeeping needed when dispatching.
+   *
+   * @param {object} payload
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_startDispatching=function(payload) {
+    for (var id in this.$Dispatcher_callbacks) {
+      this.$Dispatcher_isPending[id] = false;
+      this.$Dispatcher_isHandled[id] = false;
+    }
+    this.$Dispatcher_pendingPayload = payload;
+    this.$Dispatcher_isDispatching = true;
+  };
+
+  /**
+   * Clear bookkeeping used for dispatching.
+   *
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_stopDispatching=function() {
+    this.$Dispatcher_pendingPayload = null;
+    this.$Dispatcher_isDispatching = false;
+  };
+
+
+module.exports = Dispatcher;
+
+},{"./invariant":33}],33:[function(require,module,exports){
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule invariant
+ */
+
+"use strict";
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var invariant = function(condition, format, a, b, c, d, e, f) {
+  if (false) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
+        'for the full error message and additional helpful warnings.'
+      );
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(
+        'Invariant Violation: ' +
+        format.replace(/%s/g, function() { return args[argIndex++]; })
+      );
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+};
+
+module.exports = invariant;
+
+},{}],34:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      }
+      throw TypeError('Uncaught, unspecified "error" event.');
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        len = arguments.length;
+        args = new Array(len - 1);
+        for (i = 1; i < len; i++)
+          args[i - 1] = arguments[i];
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    len = arguments.length;
+    args = new Array(len - 1);
+    for (i = 1; i < len; i++)
+      args[i - 1] = arguments[i];
+
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    var m;
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  var ret;
+  if (!emitter._events || !emitter._events[type])
+    ret = 0;
+  else if (isFunction(emitter._events[type]))
+    ret = 1;
+  else
+    ret = emitter._events[type].length;
+  return ret;
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+},{}],35:[function(require,module,exports){
+/**
+ * Copyright 2013-2014 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+"use strict";
+
+/**
+ * Constructs an enumeration with keys equal to their value.
+ *
+ * For example:
+ *
+ *   var COLORS = keyMirror({blue: null, red: null});
+ *   var myColor = COLORS.blue;
+ *   var isColorValid = !!COLORS[myColor];
+ *
+ * The last line could not be performed if the values of the generated enum were
+ * not equal to their keys.
+ *
+ *   Input:  {key1: val1, key2: val2}
+ *   Output: {key1: key1, key2: key2}
+ *
+ * @param {object} obj
+ * @return {object}
+ */
+var keyMirror = function(obj) {
+  var ret = {};
+  var key;
+  if (!(obj instanceof Object && !Array.isArray(obj))) {
+    throw new Error('keyMirror(...): Argument must be an object.');
+  }
+  for (key in obj) {
+    if (!obj.hasOwnProperty(key)) {
+      continue;
+    }
+    ret[key] = key;
+  }
+  return ret;
+};
+
+module.exports = keyMirror;
+
+},{}],36:[function(require,module,exports){
+'use strict';
+
+function ToObject(val) {
+	if (val == null) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+module.exports = Object.assign || function (target, source) {
+	var from;
+	var keys;
+	var to = ToObject(target);
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = arguments[s];
+		keys = Object.keys(Object(from));
+
+		for (var i = 0; i < keys.length; i++) {
+			to[keys[i]] = from[keys[i]];
+		}
+	}
+
+	return to;
+};
+
+},{}],37:[function(require,module,exports){
 (function (global){
 !function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":24}],24:[function(require,module,exports){
+},{"react":38}],38:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -20461,4 +21499,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[12]);
+},{}]},{},[17]);
