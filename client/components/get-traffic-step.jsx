@@ -1,6 +1,6 @@
 var React = require('react');
 
-module.exports = React.createClass({
+var GetTrafficStep = React.createClass({
 	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
@@ -56,3 +56,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+module.exports = GetTrafficStep;

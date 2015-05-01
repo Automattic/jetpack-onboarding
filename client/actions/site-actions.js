@@ -5,7 +5,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var SiteActions = {
 	setTitle: function(title) {
-		//XXX TODO: save title here??
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_TITLE,
 			title: title
@@ -13,23 +12,27 @@ var SiteActions = {
 	},
 
 	saveTitle: function() {
-
-		data = {
+		var data = {
 			action: JPS.site_actions.set_title,
 			nonce: JPS.nonce,
 			title: SiteStore.getTitle()
 		};
 		
-		jQuery.post(ajaxurl, data)
-			.success( function() {
-				FlashActions.notice("Saved title");
+		jQuery.post( ajaxurl, data )
+			.success( function( response ) {
+				if ( ! response.success ) {
+					FlashActions.error("Error setting title: "+response.data);
+				} else {
+					FlashActions.notice("Saved title");
+				}
+				
 			})
 			.fail( function() {
 				FlashActions.error("Failed to set title");
 			});	
 	},
 
-	setActiveTheme: function(themeId, activateUrl) {
+	setActiveTheme: function( themeId, activateUrl ) {
 
 		jQuery.get( activateUrl )
 			.success( function () {
@@ -39,14 +42,14 @@ var SiteActions = {
 					actionType: JPSConstants.SITE_SET_THEME,
 					themeId: themeId
 			    });
-			}.bind(this) )
+			} )
 			.fail( function () {
 				FlashActions.error("Server error setting theme");
 			} ); 
 	},
 
-	setLayout: function(layoutName) {
-		data = {
+	setLayout: function( layoutName ) {
+		var data = {
 			action: JPS.site_actions.set_layout,
 			nonce: JPS.nonce,
 			layout: layoutName,
@@ -73,13 +76,13 @@ var SiteActions = {
 	},
 
 	configureJetpack: function() {
-		data = {
+		var data = {
 			action: JPS.site_actions.configure_jetpack,
 			nonce: JPS.nonce
 		};
 		
 		jQuery.post(ajaxurl, data)
-			.success( function(response) { 
+			.success( function( response ) { 
 
 				if ( ! response.success ) {
 					FlashActions.error("Error enabling Jetpack: "+response.data);

@@ -8,7 +8,7 @@ function getJetpackState() {
 	};
 }
 
-module.exports = React.createClass({
+var StatsMonitoringStep = React.createClass({
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener(this._onChange);
@@ -65,3 +65,5 @@ module.exports = React.createClass({
 		);
 	}
 });
+
+module.exports = StatsMonitoringStep;

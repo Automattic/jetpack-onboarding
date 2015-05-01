@@ -30,45 +30,45 @@ var _steps = [
     name: 'Site title',
     slug: 'title',
     completed: true,
+    repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
   {
     name: 'Pick a layout',
     slug: 'layout',
     completed: false,
+    repeatable: true,
     welcomeView: require('../components/layout-step.jsx')
   },
   {
     name: 'Stats & Monitoring',
     slug: 'stats-monitoring',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/stats-monitoring-step.jsx'),
   },
   { 
     name: "Pick a design", 
     slug: 'design',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/design-step.jsx'), 
     themes: JPS.themes
   },
   { 
     name: "Get some traffic", 
     slug: 'traffic',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/get-traffic-step.jsx') 
   },
   { 
     name: "Advanced settings", 
     slug: 'advanced',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/advanced-settings-step.jsx')
   }
-
-	// new DummyWelcomeStepModel({ name: "Sign up" }),
-	// new DummyWelcomeStepModel({ name: "Create admin account" }),
-	// new DummyWelcomeStepModel({ name: "Verify email address" }),
-	// new SiteTitleStepModel(),
-	// new LayoutStepModel(),
-	// new StatsMonitoringStepModel(),
-	// new DesignStepModel(),
-	// new GetTrafficStepModel(),
-	// new AdvancedSettingsStepModel()
 ];
 
 // set location to first pending step, if not set
@@ -105,8 +105,11 @@ function ensureValidStepSlug() {
 }
 
 function currentStepSlug() {
-  if ( window.location.hash.startsWith('welcome/steps')) {
-    return window.location.hash.split('/').last;
+  if ( window.location.hash.startsWith('#welcome/steps')) {
+    var parts = window.location.hash.split('/');
+    var stepSlug = parts[parts.length-1];
+    console.log(stepSlug);
+    return stepSlug;
   } else {
     return null;
   }

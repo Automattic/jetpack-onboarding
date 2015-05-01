@@ -9,12 +9,5 @@ module.exports = {
 	      actionType: JPSConstants.STEP_SELECT,
 	      slug: slug
 	    });
-	},
-	
-	// complete: function(slug) {
-	// 	AppDispatcher.dispatch({
-	//       actionType: JPSConstants.STEP_COMPLETE,
-	//       slug: slug
-	//     });
-	// }
+	}
 };

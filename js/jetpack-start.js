@@ -38,14 +38,7 @@ module.exports = {
 	      actionType: JPSConstants.STEP_SELECT,
 	      slug: slug
 	    });
-	},
-	
-	// complete: function(slug) {
-	// 	AppDispatcher.dispatch({
-	//       actionType: JPSConstants.STEP_COMPLETE,
-	//       slug: slug
-	//     });
-	// }
+	}
 };
 
 },{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"./flash-actions":1}],3:[function(require,module,exports){
@@ -56,7 +49,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var SiteActions = {
 	setTitle: function(title) {
-		//XXX TODO: save title here??
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_TITLE,
 			title: title
@@ -64,23 +56,27 @@ var SiteActions = {
 	},
 
 	saveTitle: function() {
-
-		data = {
+		var data = {
 			action: JPS.site_actions.set_title,
 			nonce: JPS.nonce,
 			title: SiteStore.getTitle()
 		};
 		
-		jQuery.post(ajaxurl, data)
-			.success( function() {
-				FlashActions.notice("Saved title");
+		jQuery.post( ajaxurl, data )
+			.success( function( response ) {
+				if ( ! response.success ) {
+					FlashActions.error("Error setting title: "+response.data);
+				} else {
+					FlashActions.notice("Saved title");
+				}
+				
 			})
 			.fail( function() {
 				FlashActions.error("Failed to set title");
 			});	
 	},
 
-	setActiveTheme: function(themeId, activateUrl) {
+	setActiveTheme: function( themeId, activateUrl ) {
 
 		jQuery.get( activateUrl )
 			.success( function () {
@@ -90,14 +86,14 @@ var SiteActions = {
 					actionType: JPSConstants.SITE_SET_THEME,
 					themeId: themeId
 			    });
-			}.bind(this) )
+			} )
 			.fail( function () {
 				FlashActions.error("Server error setting theme");
 			} ); 
 	},
 
-	setLayout: function(layoutName) {
-		data = {
+	setLayout: function( layoutName ) {
+		var data = {
 			action: JPS.site_actions.set_layout,
 			nonce: JPS.nonce,
 			layout: layoutName,
@@ -124,13 +120,13 @@ var SiteActions = {
 	},
 
 	configureJetpack: function() {
-		data = {
+		var data = {
 			action: JPS.site_actions.configure_jetpack,
 			nonce: JPS.nonce
 		};
 		
 		jQuery.post(ajaxurl, data)
-			.success( function(response) { 
+			.success( function( response ) { 
 
 				if ( ! response.success ) {
 					FlashActions.error("Error enabling Jetpack: "+response.data);
@@ -455,7 +451,7 @@ module.exports = Flash;
 },{"../stores/flash-store":17,"react":28}],7:[function(require,module,exports){
 var React = require('react');
 
-module.exports = React.createClass({displayName: "exports",
+var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
@@ -511,6 +507,8 @@ module.exports = React.createClass({displayName: "exports",
 		);
 	}
 });
+
+module.exports = GetTrafficStep;
 
 },{"react":28}],8:[function(require,module,exports){
 var React = require('react'),
@@ -671,7 +669,7 @@ function getJetpackState() {
 	};
 }
 
-module.exports = React.createClass({displayName: "exports",
+var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener(this._onChange);
@@ -728,6 +726,8 @@ module.exports = React.createClass({displayName: "exports",
 		);
 	}
 });
+
+module.exports = StatsMonitoringStep;
 
 },{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],11:[function(require,module,exports){
 var React = require('react'),
@@ -830,7 +830,7 @@ function getSetupProgress() {
 	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
 }
 
-module.exports = React.createClass({displayName: "exports",
+var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
 	},
@@ -873,6 +873,8 @@ module.exports = React.createClass({displayName: "exports",
     	);
 	}
 });
+
+module.exports = WelcomeWidget;
 
 },{"../stores/setup-progress-store":18,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":28}],14:[function(require,module,exports){
 var keyMirror = require('keymirror');
@@ -1000,45 +1002,45 @@ var _steps = [
     name: 'Site title',
     slug: 'title',
     completed: true,
+    repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
   {
     name: 'Pick a layout',
     slug: 'layout',
     completed: false,
+    repeatable: true,
     welcomeView: require('../components/layout-step.jsx')
   },
   {
     name: 'Stats & Monitoring',
     slug: 'stats-monitoring',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/stats-monitoring-step.jsx'),
   },
   { 
     name: "Pick a design", 
     slug: 'design',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/design-step.jsx'), 
     themes: JPS.themes
   },
   { 
     name: "Get some traffic", 
     slug: 'traffic',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/get-traffic-step.jsx') 
   },
   { 
     name: "Advanced settings", 
     slug: 'advanced',
+    completed: false,
+    repeatable: true,
     welcomeView: require('../components/advanced-settings-step.jsx')
   }
-
-	// new DummyWelcomeStepModel({ name: "Sign up" }),
-	// new DummyWelcomeStepModel({ name: "Create admin account" }),
-	// new DummyWelcomeStepModel({ name: "Verify email address" }),
-	// new SiteTitleStepModel(),
-	// new LayoutStepModel(),
-	// new StatsMonitoringStepModel(),
-	// new DesignStepModel(),
-	// new GetTrafficStepModel(),
-	// new AdvancedSettingsStepModel()
 ];
 
 // set location to first pending step, if not set
@@ -1075,8 +1077,11 @@ function ensureValidStepSlug() {
 }
 
 function currentStepSlug() {
-  if ( window.location.hash.startsWith('welcome/steps')) {
-    return window.location.hash.split('/').last;
+  if ( window.location.hash.startsWith('#welcome/steps')) {
+    var parts = window.location.hash.split('/');
+    var stepSlug = parts[parts.length-1];
+    console.log(stepSlug);
+    return stepSlug;
   } else {
     return null;
   }

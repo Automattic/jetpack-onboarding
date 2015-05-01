@@ -7,7 +7,7 @@ function getSetupProgress() {
 	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
 }
 
-module.exports = React.createClass({
+var WelcomeWidget = React.createClass({
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
 	},
@@ -50,3 +50,5 @@ module.exports = React.createClass({
     	);
 	}
 });
+
+module.exports = WelcomeWidget;
