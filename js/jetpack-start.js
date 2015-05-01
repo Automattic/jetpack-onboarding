@@ -760,7 +760,8 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 	render: function() {
 
 		var menuItems = this.props.allSteps.map(function ( step ) {
-			var title, current;
+			var title, current, status;
+
 			if ( this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
 			}
@@ -770,9 +771,11 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 			} else {
 				title = step.name;
 			}
+
+			status = step.completed ? 'completed' : '';
 			
 			return (
-				React.createElement("li", {key: step.slug, className: step.status + ' ' + (current ? 'current' : null)}, title)
+				React.createElement("li", {key: step.slug, className: status + (current ? ' current' : '')}, title)
 			);
 		}.bind(this) );
 

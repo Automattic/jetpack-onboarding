@@ -29,7 +29,8 @@ var WelcomeMenu = React.createClass({
 	render: function() {
 
 		var menuItems = this.props.allSteps.map(function ( step ) {
-			var title, current;
+			var title, current, status;
+
 			if ( this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
 			}
@@ -39,9 +40,11 @@ var WelcomeMenu = React.createClass({
 			} else {
 				title = step.name;
 			}
+
+			status = step.completed ? 'completed' : '';
 			
 			return (
-				<li key={step.slug} className={step.status + ' ' + (current ? 'current' : null)}>{title}</li>
+				<li key={step.slug} className={status + (current ? ' current' : '')}>{title}</li>
 			);
 		}.bind(this) );
 
