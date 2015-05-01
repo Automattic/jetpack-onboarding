@@ -24,8 +24,11 @@ var SiteActions = {
 					FlashActions.error("Error setting title: "+response.data);
 				} else {
 					FlashActions.notice("Saved title");
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_SAVE_TITLE,
+						title: title
+				    });
 				}
-				
 			})
 			.fail( function() {
 				FlashActions.error("Failed to set title");

@@ -17,6 +17,7 @@ var WelcomeWidget = React.createClass({
 	},
 
 	_onChange: function() {
+		console.log('wizard change');
     	this.setState(getSetupProgress());
   	},
 

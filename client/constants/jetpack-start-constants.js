@@ -5,6 +5,7 @@ module.exports = keyMirror({
 	STEP_SELECT: null,
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
+	SITE_SAVE_TITLE: null,
 	SITE_SET_THEME: null,
 	SITE_JETPACK_CONFIGURED: null,
 	SITE_SET_LAYOUT: null,

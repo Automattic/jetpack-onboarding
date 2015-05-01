@@ -35,10 +35,6 @@ function setJetpackConfigured() {
 
 var SiteStore = assign({}, EventEmitter.prototype, {
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
   getTitle: function() {
   	return JPS.bloginfo.name;
   },
@@ -55,16 +51,14 @@ var SiteStore = assign({}, EventEmitter.prototype, {
     return layout;
   },
 
-  /**
-   * @param {function} callback
-   */
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }

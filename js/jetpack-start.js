@@ -68,8 +68,11 @@ var SiteActions = {
 					FlashActions.error("Error setting title: "+response.data);
 				} else {
 					FlashActions.notice("Saved title");
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_SAVE_TITLE,
+						title: title
+				    });
 				}
-				
 			})
 			.fail( function() {
 				FlashActions.error("Failed to set title");
@@ -847,6 +850,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 	},
 
 	_onChange: function() {
+		console.log('wizard change');
     	this.setState(getSetupProgress());
   	},
 
@@ -891,6 +895,7 @@ module.exports = keyMirror({
 	STEP_SELECT: null,
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
+	SITE_SAVE_TITLE: null,
 	SITE_SET_THEME: null,
 	SITE_JETPACK_CONFIGURED: null,
 	SITE_SET_LAYOUT: null,
@@ -986,7 +991,8 @@ var EventEmitter = require('events').EventEmitter;
 var JPSConstants = require('../constants/jetpack-start-constants');
 var assign = require('object-assign');
 
-var CHANGE_EVENT = 'change';
+var CHANGE_EVENT = 'change',
+  TITLE_STEP_SLUG = 'title';
 
 //XXX TODO: maybe this should just be plain JSON
 var _steps = [
@@ -1007,8 +1013,8 @@ var _steps = [
   },
   {
     name: 'Site title',
-    slug: 'title',
-    completed: true,
+    slug: TITLE_STEP_SLUG,
+    completed: false,
     repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
@@ -1055,7 +1061,7 @@ ensureValidStepSlug();
 
 
 function complete(step) {
-
+  getStepFromSlug(step).complete = true;
 }
 
 function skip(step) {
@@ -1075,11 +1081,14 @@ function getStepFromSlug( stepSlug ) {
 function ensureValidStepSlug() {
   var stepSlug = currentStepSlug();
   if ( ! ( stepSlug && getStepFromSlug( stepSlug ) ) ) {
-    // XXX TODO: default to Advanced step if all done?
-    var pendingStep = _.findWhere( _steps, { completed: false } );
-    if ( pendingStep != null ) {
-      select(pendingStep.slug); // also sets the window location hash
-    }
+    selectNextPendingStep();
+  }
+}
+
+function selectNextPendingStep() {
+  var pendingStep = _.findWhere( _steps, { completed: false } );
+  if ( pendingStep != null ) {
+    select(pendingStep.slug); // also sets the window location hash
   }
 }
 
@@ -1087,7 +1096,6 @@ function currentStepSlug() {
   if ( window.location.hash.startsWith('#welcome/steps')) {
     var parts = window.location.hash.split('/');
     var stepSlug = parts[parts.length-1];
-    console.log(stepSlug);
     return stepSlug;
   } else {
     return null;
@@ -1178,6 +1186,12 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
+    // actions triggered by step completion
+    case JPSConstants.SITE_SAVE_TITLE:
+      complete(TITLE_STEP_SLUG);
+      SetupProgressStore.emitChange();
+      break;
+
     default:
       // no op
   }
@@ -1223,10 +1237,6 @@ function setJetpackConfigured() {
 
 var SiteStore = assign({}, EventEmitter.prototype, {
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
-
   getTitle: function() {
   	return JPS.bloginfo.name;
   },
@@ -1243,16 +1253,14 @@ var SiteStore = assign({}, EventEmitter.prototype, {
     return layout;
   },
 
-  /**
-   * @param {function} callback
-   */
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }

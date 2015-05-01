@@ -7,7 +7,8 @@ var EventEmitter = require('events').EventEmitter;
 var JPSConstants = require('../constants/jetpack-start-constants');
 var assign = require('object-assign');
 
-var CHANGE_EVENT = 'change';
+var CHANGE_EVENT = 'change',
+  TITLE_STEP_SLUG = 'title';
 
 //XXX TODO: maybe this should just be plain JSON
 var _steps = [
@@ -28,8 +29,8 @@ var _steps = [
   },
   {
     name: 'Site title',
-    slug: 'title',
-    completed: true,
+    slug: TITLE_STEP_SLUG,
+    completed: false,
     repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
@@ -76,7 +77,7 @@ ensureValidStepSlug();
 
 
 function complete(step) {
-
+  getStepFromSlug(step).complete = true;
 }
 
 function skip(step) {
@@ -96,11 +97,14 @@ function getStepFromSlug( stepSlug ) {
 function ensureValidStepSlug() {
   var stepSlug = currentStepSlug();
   if ( ! ( stepSlug && getStepFromSlug( stepSlug ) ) ) {
-    // XXX TODO: default to Advanced step if all done?
-    var pendingStep = _.findWhere( _steps, { completed: false } );
-    if ( pendingStep != null ) {
-      select(pendingStep.slug); // also sets the window location hash
-    }
+    selectNextPendingStep();
+  }
+}
+
+function selectNextPendingStep() {
+  var pendingStep = _.findWhere( _steps, { completed: false } );
+  if ( pendingStep != null ) {
+    select(pendingStep.slug); // also sets the window location hash
   }
 }
 
@@ -108,7 +112,6 @@ function currentStepSlug() {
   if ( window.location.hash.startsWith('#welcome/steps')) {
     var parts = window.location.hash.split('/');
     var stepSlug = parts[parts.length-1];
-    console.log(stepSlug);
     return stepSlug;
   } else {
     return null;
@@ -196,6 +199,12 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.STEP_SKIPPED:
       skip(action.text);
+      SetupProgressStore.emitChange();
+      break;
+
+    // actions triggered by step completion
+    case JPSConstants.SITE_SAVE_TITLE:
+      complete(TITLE_STEP_SLUG);
       SetupProgressStore.emitChange();
       break;
 
