@@ -781,7 +781,12 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 		return (
 			React.createElement("div", {className: "getting-started__steps"}, 
-				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, {progressPercent: this.props.progressPercent}))), 
+				React.createElement("h3", null, 
+					"Your Progress",  
+					React.createElement("div", {style: {marginTop: '7px'}}, 
+						React.createElement(WelcomeProgressBar, {progressPercent: this.props.progressPercent})
+					)
+				), 
 				
 				React.createElement("ol", null, 
 					menuItems
