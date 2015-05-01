@@ -1,30 +1,34 @@
-var React = require('react'),
-	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+var React = require('react');
 
 var GetTrafficStep = React.createClass({
 
-	getInitialState: function() {
-		return {
-			jetpackConfigured: SiteStore.getJetpackConfigured()
-		};
-	},
-
-	handleJetpackConnect: function (e) {
-		e.preventDefault();
-
-		SiteActions.configureJetpack();
-	},
-
 	render: function() {
-		var component;
 
-		if ( ! this.state.jetpackConfigured ) {
+		var component, feedbackMessage;
+
+		if ( this.state.message != null ) {
+			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
+		} else {
+			feedbackMessage = null;
+		}
+
+		if ( ! this.props.model.get('jetpack_enabled') ) {
 			component = (
 				<div className="welcome__connect">
-					Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!
+					Connect Jetpack to enable free stats, site monitoring, and more.
 					<br /><br />
-					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
+					<a className="download-jetpack" href="#">Connect Jetpack</a>
+					<p>
+						<a className="skip" href="#">Skip this step</a>
+					</p>
+				</div>
+			);
+		} else if ( ! this.props.model.get('jetpack_active') ) {
+			component = (
+				<div className="welcome__connect">
+					You have downloaded JetPack but not yet enabled it
+					<br /><br />
+					<a href="#" className="download-jetpack">Connect to WordPress.com</a>
 					<p className="submit">
 						<a className="skip" href="#">Skip this step</a>
 					</p>
@@ -33,7 +37,6 @@ var GetTrafficStep = React.createClass({
 		} else {
 			component = (
 				<div>
-					//XXX TODO: enable publicize
 					You have successfully connected Jetpack for stats, monitoring, and more!
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Continue" />
@@ -42,8 +45,10 @@ var GetTrafficStep = React.createClass({
 			);
 		}
 
+		// FIXME - show GUI to configure sharing
 		return (
-			<div className="welcome__section" id="welcome__stats">
+			<div className="welcome__section" id="welcome__traffic">
+				{feedbackMessage}
 				<h4>Get web traffic</h4>
 				{component}
 			</div>

@@ -2,12 +2,28 @@ var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
 
+function getSiteLayoutState() {
+	return {
+		layout: SiteStore.getLayout()
+	}
+}
+
 var LayoutStep = React.createClass({
 
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteLayoutState());
+  	},
+
 	getInitialState: function() {
-		return {
-			layout: SiteStore.getLayout()
-		};
+		return getSiteLayoutState();
 	},
 
 	handleSetLayout: function( e ) {

@@ -6,6 +6,17 @@ function getFlashState() {
 }
 
 var Flash = React.createClass({
+	componentDidMount: function() {
+		FlashStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		FlashStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getFlashState());
+  	},
 
 	getInitialState: function() {
 		var flashState = getFlashState();

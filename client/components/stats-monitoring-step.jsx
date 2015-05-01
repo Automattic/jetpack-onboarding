@@ -2,12 +2,28 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
 
+function getJetpackState() {
+	return {
+		jetpackConfigured: SiteStore.getJetpackConfigured()
+	};
+}
+
 var StatsMonitoringStep = React.createClass({
 
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getJetpackState());
+  	},
+
 	getInitialState: function() {
-		return {
-			jetpackConfigured: SiteStore.getJetpackConfigured()
-		};
+		return getJetpackState();
 	},
 
 	handleJetpackConnect: function (e) {
