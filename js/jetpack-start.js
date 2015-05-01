@@ -191,7 +191,7 @@ var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep
 
 module.exports = AdvancedSettingsStep;
 
-},{"react":28}],5:[function(require,module,exports){
+},{"react":27}],5:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
@@ -411,7 +411,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 module.exports = DesignStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],6:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],6:[function(require,module,exports){
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -448,11 +448,10 @@ var Flash = React.createClass({displayName: "Flash",
 
 module.exports = Flash;
 
-},{"../stores/flash-store":17,"react":28}],7:[function(require,module,exports){
+},{"../stores/flash-store":17,"react":27}],7:[function(require,module,exports){
 var React = require('react');
 
 var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
-	mixins: [Backbone.React.Component.mixin],
 
 	render: function() {
 
@@ -510,7 +509,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"react":28}],8:[function(require,module,exports){
+},{"react":27}],8:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -581,7 +580,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],9:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],9:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -658,7 +657,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 module.exports = SiteTitleStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],10:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],10:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
@@ -729,7 +728,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 module.exports = StatsMonitoringStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],11:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],11:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions')
@@ -791,7 +790,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 module.exports = WelcomeMenu;
 
-},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":28}],12:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":27}],12:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -820,7 +819,7 @@ var ProgressBar = React.createClass({displayName: "ProgressBar",
 
 module.exports = ProgressBar;
 
-},{"react":28}],13:[function(require,module,exports){
+},{"react":27}],13:[function(require,module,exports){
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
@@ -876,7 +875,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 
 module.exports = WelcomeWidget;
 
-},{"../stores/setup-progress-store":18,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":28}],14:[function(require,module,exports){
+},{"../stores/setup-progress-store":18,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":27}],14:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -1284,7 +1283,6 @@ module.exports = SiteStore;
 
 },{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],20:[function(require,module,exports){
 var React = require('react'),
-    BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx');
 
 module.exports = function() {
@@ -1295,7 +1293,7 @@ module.exports = function() {
     });
 }
 
-},{"./components/welcome-widget.jsx":13,"backbone-react":27,"react":28}],21:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":13,"react":27}],21:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -2001,11 +1999,6 @@ module.exports = Object.assign || function (target, source) {
 };
 
 },{}],27:[function(require,module,exports){
-(function (global){
-!function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":28}],28:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2

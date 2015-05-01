@@ -20,7 +20,7 @@ class WelcomePanel {
 			$jps_vars = \JetpackStart\EndPoints::js_vars();
 
 			// JS
-			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'backbone', 'jquery' ) );
+			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'underscore' ) );
 			wp_localize_script( 'jetpack-start', 'JPS', $jps_vars );
 			wp_enqueue_script( 'jetpack-start' );
 

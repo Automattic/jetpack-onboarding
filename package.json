@@ -31,7 +31,6 @@
     "react": "./vendor/react-0.13.2.js"
   },
   "browserify-shim": {
-    "backbone": "global:Backbone",
     "underscore": "global:_"
   },
   "dependencies": {

@@ -1,5 +1,4 @@
 var React = require('react'),
-    BackboneReact = require('backbone-react'),
     WelcomeWidget = require('./components/welcome-widget.jsx');
 
 module.exports = function() {
