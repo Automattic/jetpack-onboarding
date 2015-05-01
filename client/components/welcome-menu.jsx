@@ -1,7 +1,11 @@
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressActions = require('../actions/setup-progress-actions'),
-	WelcomeStep = require('../models/welcome-step');
+	SetupProgressActions = require('../actions/setup-progress-actions')
+
+var stepShape = React.PropTypes.shape({
+	name: React.PropTypes.string.isRequired,
+	slug: React.PropTypes.string.isRequired
+});
 
 /**
  * The menu which allows the user to switch steps
@@ -9,11 +13,10 @@ var React = require('react'),
 var WelcomeMenu = React.createClass({
 	
 	propTypes: {
-		currentStep: React.PropTypes.instanceOf(WelcomeStep).isRequired,
-		allSteps: React.PropTypes.arrayOf(React.PropTypes.instanceOf(WelcomeStep)).isRequired,
+		currentStep: stepShape.isRequired,
+		allSteps: React.PropTypes.arrayOf(stepShape).isRequired,
 		progressPercent: React.PropTypes.number.isRequired
 	},
-
 
 	selectStep: function(e) {
 		e.preventDefault();
@@ -28,17 +31,17 @@ var WelcomeMenu = React.createClass({
 		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current;
 			if ( this.props.currentStep ) {
-				current = ( this.props.currentStep.slug() == step.slug() );
+				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( step.repeatable() ) {
-				title = <a href="#" data-step-slug={step.slug()} onClick={this.selectStep}>{step.name()}</a>
+			if ( step.repeatable ) {
+				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>
 			} else {
-				title = step.name();
+				title = step.name;
 			}
 			
 			return (
-				<li key={step.slug()} className={step.status() + ' ' + (current ? 'current' : null)}>{title}</li>
+				<li key={step.slug} className={step.status + ' ' + (current ? 'current' : null)}>{title}</li>
 			);
 		}.bind(this) );
 

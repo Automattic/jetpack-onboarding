@@ -5,36 +5,75 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var JPSConstants = require('../constants/jetpack-start-constants');
-var DummyWelcomeStepModel = require('../models/dummy-welcome-step'),
-	SiteTitleStepModel = require('../models/site-title-step'),
-	LayoutStepModel = require('../models/layout-step'),
-	StatsMonitoringStepModel = require('../models/stats-monitoring-step'),
-	DesignStepModel = require('../models/design-step'),
-	GetTrafficStepModel = require('../models/get-traffic-step'),
-	AdvancedSettingsStepModel = require('../models/advanced-settings-step');
 var assign = require('object-assign');
-
 
 var CHANGE_EVENT = 'change';
 
+//XXX TODO: maybe this should just be plain JSON
 var _steps = [
-	new DummyWelcomeStepModel({ name: "Sign up" }),
-	new DummyWelcomeStepModel({ name: "Create admin account" }),
-	new DummyWelcomeStepModel({ name: "Verify email address" }),
-	new SiteTitleStepModel(),
-	new LayoutStepModel(),
-	new StatsMonitoringStepModel(),
-	new DesignStepModel(),
-	new GetTrafficStepModel(),
-	new AdvancedSettingsStepModel()
+  {
+    name: "Sign up",
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Create admin account',
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Verify email address',
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Site title',
+    slug: 'title',
+    completed: true,
+    welcomeView: require('../components/site-title-step.jsx')
+  },
+  {
+    name: 'Pick a layout',
+    slug: 'layout',
+    completed: false,
+    welcomeView: require('../components/layout-step.jsx')
+  },
+  {
+    name: 'Stats & Monitoring',
+    slug: 'stats-monitoring',
+    welcomeView: require('../components/stats-monitoring-step.jsx'),
+  },
+  { 
+    name: "Pick a design", 
+    slug: 'design',
+    welcomeView: require('../components/design-step.jsx'), 
+    themes: JPS.themes
+  },
+  { 
+    name: "Get some traffic", 
+    slug: 'traffic',
+    welcomeView: require('../components/get-traffic-step.jsx') 
+  },
+  { 
+    name: "Advanced settings", 
+    slug: 'advanced',
+    welcomeView: require('../components/advanced-settings-step.jsx')
+  }
+
+	// new DummyWelcomeStepModel({ name: "Sign up" }),
+	// new DummyWelcomeStepModel({ name: "Create admin account" }),
+	// new DummyWelcomeStepModel({ name: "Verify email address" }),
+	// new SiteTitleStepModel(),
+	// new LayoutStepModel(),
+	// new StatsMonitoringStepModel(),
+	// new DesignStepModel(),
+	// new GetTrafficStepModel(),
+	// new AdvancedSettingsStepModel()
 ];
 
-var currentStepSlug;
+// set location to first pending step, if not set
+ensureValidStepSlug();  
 
-var pendingStep = _.findWhere( _steps, { completed: false } );
-if ( pendingStep != null ) {
-  currentStepSlug = pendingStep.slug(); // also sets the window location hash
-}
 
 function complete(step) {
 
@@ -44,8 +83,37 @@ function skip(step) {
 
 }
 
+function getStepFromSlug( stepSlug ) {
+  var currentStep = null;
+  _.each( _steps, function( step ) {
+    if( step.slug === stepSlug ) {
+      currentStep = step;
+    }
+  });
+  return currentStep;
+}
+
+function ensureValidStepSlug() {
+  var stepSlug = currentStepSlug();
+  if ( ! ( stepSlug && getStepFromSlug( stepSlug ) ) ) {
+    // XXX TODO: default to Advanced step if all done?
+    var pendingStep = _.findWhere( _steps, { completed: false } );
+    if ( pendingStep != null ) {
+      select(pendingStep.slug); // also sets the window location hash
+    }
+  }
+}
+
+function currentStepSlug() {
+  if ( window.location.hash.startsWith('welcome/steps')) {
+    return window.location.hash.split('/').last;
+  } else {
+    return null;
+  }
+}
+
 function select(stepSlug) {
-  currentStepSlug = stepSlug;
+  window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
 var SetupProgressStore = assign({}, EventEmitter.prototype, {
@@ -77,13 +145,7 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
   },
 
   getCurrentStep: function() {
-    var currentStep;
-    _.each( _steps, function( step ) {
-      if( step.slug() == currentStepSlug ) {
-        currentStep = step;
-      }
-    });
-    return currentStep;
+    return getStepFromSlug( currentStepSlug() );
   },
 
   getProgressPercent: function() {
@@ -108,6 +170,11 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   }
 });
+
+// Update the UI when the window hash changes
+// jQuery(window).on('hashchange', function() {
+//   SetupProgressStore.emitChange();
+// });
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {

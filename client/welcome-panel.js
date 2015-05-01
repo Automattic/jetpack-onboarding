@@ -1,12 +1,11 @@
 var React = require('react'),
     BackboneReact = require('backbone-react'),
-    WelcomeWidget = require('./components/welcome-widget.jsx'),
-    WelcomeWizardModel = require('./models/welcome-wizard');
+    WelcomeWidget = require('./components/welcome-widget.jsx');
 
 module.exports = function() {
     jQuery(document).ready(function () {
         React.render(
-          React.createElement(WelcomeWidget, {model: new WelcomeWizardModel()}), document.getElementById('jps-welcome-panel')
+          React.createElement(WelcomeWidget, {}), document.getElementById('jps-welcome-panel')
         );
     });
 }

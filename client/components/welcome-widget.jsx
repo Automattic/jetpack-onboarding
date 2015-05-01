@@ -1,7 +1,7 @@
 var React = require('react'),
-	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
-	SetupProgressStore = require('../stores/setup-progress-store');
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
 	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
@@ -25,6 +25,13 @@ module.exports = React.createClass({
 	},
 
   	render: function() {
+  		var currentView;
+  		if ( this.state.currentStep ) {
+  			currentView = (<this.state.currentStep.welcomeView />);
+  		} else {
+  			currentView = (<h3>Nothing</h3>);
+  		}
+
 	    return (
 			<div className="getting-started">
 				<div className="getting-started__intro">
@@ -33,7 +40,11 @@ module.exports = React.createClass({
 					<p className="getting-started__subhead">Take these steps to supercharge your WordPress site.</p>
 				</div>
 
-				<WelcomeSection currentStep={this.state.currentStep}/>
+				<div className="getting-started__sections">
+					<Flash />
+					{currentView}
+				</div>
+
 				<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progress}/>
 			</div>
     	);

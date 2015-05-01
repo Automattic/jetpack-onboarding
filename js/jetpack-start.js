@@ -26,7 +26,7 @@ module.exports = {
 	}
 }
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17}],2:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15}],2:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	FlashActions = require('./flash-actions');
@@ -48,7 +48,7 @@ module.exports = {
 	// }
 };
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"./flash-actions":1}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"./flash-actions":1}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
@@ -156,7 +156,7 @@ var SiteActions = {
 
 module.exports = SiteActions;
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"../stores/site-store":30,"./flash-actions.js":1}],4:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"../stores/site-store":19,"./flash-actions.js":1}],4:[function(require,module,exports){
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
@@ -195,7 +195,7 @@ var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep
 
 module.exports = AdvancedSettingsStep;
 
-},{"react":39}],5:[function(require,module,exports){
+},{"react":28}],5:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
@@ -415,16 +415,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 module.exports = DesignStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],6:[function(require,module,exports){
-module.exports = require('react').createClass({
-	render: function() {
-		return (
-			React.createElement("h3", null, "You should never see this.")
-		);
-	}
-});
-
-},{"react":39}],7:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],6:[function(require,module,exports){
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -461,7 +452,7 @@ var Flash = React.createClass({displayName: "Flash",
 
 module.exports = Flash;
 
-},{"../stores/flash-store":28,"react":39}],8:[function(require,module,exports){
+},{"../stores/flash-store":17,"react":28}],7:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({displayName: "exports",
@@ -521,7 +512,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"react":39}],9:[function(require,module,exports){
+},{"react":28}],8:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -592,7 +583,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],10:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],9:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
@@ -669,7 +660,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 module.exports = SiteTitleStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],11:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],10:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
@@ -738,11 +729,15 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"../actions/site-actions":3,"../stores/site-store":30,"react":39}],12:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":28}],11:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressActions = require('../actions/setup-progress-actions'),
-	WelcomeStep = require('../models/welcome-step');
+	SetupProgressActions = require('../actions/setup-progress-actions')
+
+var stepShape = React.PropTypes.shape({
+	name: React.PropTypes.string.isRequired,
+	slug: React.PropTypes.string.isRequired
+});
 
 /**
  * The menu which allows the user to switch steps
@@ -750,11 +745,10 @@ var React = require('react'),
 var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 	
 	propTypes: {
-		currentStep: React.PropTypes.instanceOf(WelcomeStep).isRequired,
-		allSteps: React.PropTypes.arrayOf(React.PropTypes.instanceOf(WelcomeStep)).isRequired,
+		currentStep: stepShape.isRequired,
+		allSteps: React.PropTypes.arrayOf(stepShape).isRequired,
 		progressPercent: React.PropTypes.number.isRequired
 	},
-
 
 	selectStep: function(e) {
 		e.preventDefault();
@@ -769,17 +763,17 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current;
 			if ( this.props.currentStep ) {
-				current = ( this.props.currentStep.slug() == step.slug() );
+				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( step.repeatable() ) {
-				title = React.createElement("a", {href: "#", "data-step-slug": step.slug(), onClick: this.selectStep}, step.name())
+			if ( step.repeatable ) {
+				title = React.createElement("a", {href: "#", "data-step-slug": step.slug, onClick: this.selectStep}, step.name)
 			} else {
-				title = step.name();
+				title = step.name;
 			}
 			
 			return (
-				React.createElement("li", {key: step.slug(), className: step.status() + ' ' + (current ? 'current' : null)}, title)
+				React.createElement("li", {key: step.slug, className: step.status + ' ' + (current ? 'current' : null)}, title)
 			);
 		}.bind(this) );
 
@@ -797,7 +791,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 module.exports = WelcomeMenu;
 
-},{"../actions/setup-progress-actions":2,"../models/welcome-step":26,"./welcome-progress-bar.jsx":13,"react":39}],13:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":28}],12:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -826,36 +820,11 @@ var ProgressBar = React.createClass({displayName: "ProgressBar",
 
 module.exports = ProgressBar;
 
-},{"react":39}],14:[function(require,module,exports){
+},{"react":28}],13:[function(require,module,exports){
 var React = require('react'),
-	Flash = require('./flash.jsx'),
-	WelcomeStep = require('../models/welcome-step');
-	
-/**
- * The view for the current welcome step
- **/
-var WelcomeSection = React.createClass({displayName: "WelcomeSection",
-	propTypes: {
-		currentStep: React.PropTypes.instanceOf(WelcomeStep)
-	},
-
-	render: function() {
-		return (
-			React.createElement("div", {className: "getting-started__sections"}, 
-				React.createElement(Flash, null), 
-				this.props.currentStep.welcomeView()
-			)
-		);
-	}
-});
-
-module.exports = WelcomeSection;
-
-},{"../models/welcome-step":26,"./flash.jsx":7,"react":39}],15:[function(require,module,exports){
-var React = require('react'),
-	WelcomeSection = require('./welcome-section.jsx'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
-	SetupProgressStore = require('../stores/setup-progress-store');
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
 	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
@@ -879,6 +848,13 @@ module.exports = React.createClass({displayName: "exports",
 	},
 
   	render: function() {
+  		var currentView;
+  		if ( this.state.currentStep ) {
+  			currentView = (React.createElement(this.state.currentStep.welcomeView, null));
+  		} else {
+  			currentView = (React.createElement("h3", null, "Nothing"));
+  		}
+
 	    return (
 			React.createElement("div", {className: "getting-started"}, 
 				React.createElement("div", {className: "getting-started__intro"}, 
@@ -887,14 +863,18 @@ module.exports = React.createClass({displayName: "exports",
 					React.createElement("p", {className: "getting-started__subhead"}, "Take these steps to supercharge your WordPress site.")
 				), 
 
-				React.createElement(WelcomeSection, {currentStep: this.state.currentStep}), 
+				React.createElement("div", {className: "getting-started__sections"}, 
+					React.createElement(Flash, null), 
+					currentView
+				), 
+
 				React.createElement(WelcomeMenu, {currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progress})
 			)
     	);
 	}
 });
 
-},{"../stores/setup-progress-store":29,"./welcome-menu.jsx":12,"./welcome-section.jsx":14,"react":39}],16:[function(require,module,exports){
+},{"../stores/setup-progress-store":18,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":28}],14:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -912,7 +892,7 @@ module.exports = keyMirror({
 	FLASH_SEVERITY_ERROR: null
 });
 
-},{"keymirror":36}],17:[function(require,module,exports){
+},{"keymirror":25}],15:[function(require,module,exports){
 /*
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -930,209 +910,12 @@ var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
-},{"flux":32}],18:[function(require,module,exports){
+},{"flux":21}],16:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":31}],19:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	AdvancedSettingsStepView = require('../components/advanced-settings-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Advanced settings", welcomeView: AdvancedSettingsStepView })
-});
-
-},{"../components/advanced-settings-step.jsx":4,"./welcome-step":26}],20:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	DesignStepView = require('../components/design-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-	defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Pick a design", welcomeView: DesignStepView, themes: JPS.themes })
-});
-
-},{"../components/design-step.jsx":5,"./welcome-step":26}],21:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	DummyWelcomeStepView = require('../components/dummy-welcome-step.jsx');
-
-// placeholder for welcome steps that are always completed by the time we view them
-module.exports = WelcomeStepModel.extend({
-	defaults: {
-		completed: true, viewed: true, skipped: false, configured: true, welcomeView: DummyWelcomeStepView
-	},
-
-	repeatable: function() { return false; },
-});
-
-},{"../components/dummy-welcome-step.jsx":6,"./welcome-step":26}],22:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	GetTrafficStepView = require('../components/get-traffic-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-	//TODO - check current site title, etc.
-	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Get some traffic", welcomeView: GetTrafficStepView })
-});
-
-},{"../components/get-traffic-step.jsx":8,"./welcome-step":26}],23:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	LayoutStepView = require('../components/layout-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-	//TODO - check current site title, etc.
-	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Pick a layout", welcomeView: LayoutStepView })
-});
-
-},{"../components/layout-step.jsx":9,"./welcome-step":26}],24:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	SiteTitleStepView = require('../components/site-title-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-	//TODO - check current site title, etc.
-	defaults: _.extend({},WelcomeStepModel.prototype.defaults, { name: "Site Title", welcomeView: SiteTitleStepView, title: JPS.bloginfo.name }),
-	
-	initialize: function() {
-		this.attributes.completed = (JPS.bloginfo.name != null);
-	},
-
-	validate: function(attrs, options) {
-		if (attrs.title == null || attrs.title == '') {
-			return "Title can't be empty";
-		}
-	}
-});
-
-},{"../components/site-title-step.jsx":10,"./welcome-step":26}],25:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-  StatsMonitoringStepView = require('../components/stats-monitoring-step.jsx');
-
-module.exports = WelcomeStepModel.extend({
-  defaults: _.extend({}, WelcomeStepModel.prototype.defaults, { name: "Stats & Monitoring", welcomeView: StatsMonitoringStepView })
-});
-
-},{"../components/stats-monitoring-step.jsx":11,"./welcome-step":26}],26:[function(require,module,exports){
-var React = require('react');
-
-// base class for welcome steps
-module.exports = Backbone.Model.extend({
-  defaults: {
-    // has a value been selected / action been taken from within JPS?
-    completed: false,
-    // has it been viewed?
-    viewed: false,
-    // has it been skipped?
-    skipped: false,
-    // is the feature actually configured? (sometimes this is true even if they haven't done the step, e.g. theme)
-    configured: false
-  },
-
-  initialize: function() {
-    if ( this.attributes.slug == null ) {
-      this.attributes.slug = this.attributes.name.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-    }
-  },
-  
-  // is this step repeatable? For example, "create admin account" perhaps _should_ only be done once, but "Site Title" can be repeated
-  // this is something you'd typically set in a superclass
-  repeatable: function() { return true; },
-
-  name: function() { return this.get('name'); },
-
-  slug: function() { return this.get('slug'); },
-
-  status: function() {
-    if ( this.get('completed') ) {
-      return "completed";
-    } else if ( this.get('skipped') ) {
-      return "skipped";
-    } else { 
-      return ""; 
-    }
-  },
-
-  //this feels weirdly coupled. FIXME
-  welcomeView: function() {
-    return React.createElement(this.attributes.welcomeView, {model: this});
-  }
-});
-
-},{"react":39}],27:[function(require,module,exports){
-var WelcomeStepModel = require('./welcome-step'),
-	DummyWelcomeStepModel = require('./dummy-welcome-step'),
-	SiteTitleStepModel = require('./site-title-step'),
-	LayoutStepModel = require('./layout-step'),
-	StatsMonitoringStepModel = require('./stats-monitoring-step'),
-	DesignStepModel = require('./design-step'),
-	GetTrafficStepModel = require('./get-traffic-step'),
-	AdvancedSettingsStepModel = require('./advanced-settings-step');
-
-/**
- * WelcomeWizard has a current step and an array of steps to be completed
- */
-module.exports = Backbone.Model.extend({
-	defaults: {
-		steps: new Backbone.Collection([
-				new DummyWelcomeStepModel({ name: "Sign up" }),
-				new DummyWelcomeStepModel({ name: "Create admin account" }),
-				new DummyWelcomeStepModel({ name: "Verify email address" }),
-				new SiteTitleStepModel(),
-				new LayoutStepModel(),
-				new StatsMonitoringStepModel(),
-				new DesignStepModel(),
-				new GetTrafficStepModel(),
-				new AdvancedSettingsStepModel()
-			],{
-				model: WelcomeStepModel
-			})
-	},
-
-	initialize: function() {
-		// try to ensure there's always a current step
-		if ( this.get('currentStep') == null ) {
-			var pendingStep = this.get('steps').findWhere( { completed: false } );
-			if ( pendingStep != null ) {
-				this.setStep(pendingStep.slug()); // also sets the window location hash
-			}
-		}
-	},
-
-	steps: function() { return this.get('steps'); },
-	
-	setStep: function(stepSlug) {
-		this.findStep( stepSlug, function(step) {
-			window.location.hash = 'welcome/steps/'+stepSlug;
-			this.set('currentStep', step);
-		}.bind(this) );
-	},
-
-	findStep: function(stepSlug, callback) {
-		this.get('steps').each(function(step) {
-			if( step.slug() == stepSlug ) {
-				callback(step);
-			}
-		}.bind(this) );
-	},
-
-	currentStep: function() {
-		return this.get('currentStep');
-	},
-
-	currentStepView: function() {
-		var currentStep = this.currentStep();
-		if ( currentStep != null ) {
-			return currentStep.welcomeView();
-		} else {
-			//FIXME - this should never be invoked if we design things right...
-			//or perhaps it should render an "All Done!" view?
-			return "<h4>Nothing to see here</h4>";
-		}
-	},
-
-	// nextStep: function() {
-		
-	// }
-});
-
-},{"./advanced-settings-step":19,"./design-step":20,"./dummy-welcome-step":21,"./get-traffic-step":22,"./layout-step":23,"./site-title-step":24,"./stats-monitoring-step":25,"./welcome-step":26}],28:[function(require,module,exports){
+},{"./welcome-panel":20}],17:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter;
 	JPSConstants = require('../constants/jetpack-start-constants'),
@@ -1184,7 +967,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = FlashStore;
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"events":35,"object-assign":37}],29:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],18:[function(require,module,exports){
 /*
  * Store which manages and persists setup wizard progress
  */
@@ -1192,36 +975,75 @@ module.exports = FlashStore;
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var JPSConstants = require('../constants/jetpack-start-constants');
-var DummyWelcomeStepModel = require('../models/dummy-welcome-step'),
-	SiteTitleStepModel = require('../models/site-title-step'),
-	LayoutStepModel = require('../models/layout-step'),
-	StatsMonitoringStepModel = require('../models/stats-monitoring-step'),
-	DesignStepModel = require('../models/design-step'),
-	GetTrafficStepModel = require('../models/get-traffic-step'),
-	AdvancedSettingsStepModel = require('../models/advanced-settings-step');
 var assign = require('object-assign');
-
 
 var CHANGE_EVENT = 'change';
 
+//XXX TODO: maybe this should just be plain JSON
 var _steps = [
-	new DummyWelcomeStepModel({ name: "Sign up" }),
-	new DummyWelcomeStepModel({ name: "Create admin account" }),
-	new DummyWelcomeStepModel({ name: "Verify email address" }),
-	new SiteTitleStepModel(),
-	new LayoutStepModel(),
-	new StatsMonitoringStepModel(),
-	new DesignStepModel(),
-	new GetTrafficStepModel(),
-	new AdvancedSettingsStepModel()
+  {
+    name: "Sign up",
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Create admin account',
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Verify email address',
+    completed: true,
+    repeatable: false
+  },
+  {
+    name: 'Site title',
+    slug: 'title',
+    completed: true,
+    welcomeView: require('../components/site-title-step.jsx')
+  },
+  {
+    name: 'Pick a layout',
+    slug: 'layout',
+    completed: false,
+    welcomeView: require('../components/layout-step.jsx')
+  },
+  {
+    name: 'Stats & Monitoring',
+    slug: 'stats-monitoring',
+    welcomeView: require('../components/stats-monitoring-step.jsx'),
+  },
+  { 
+    name: "Pick a design", 
+    slug: 'design',
+    welcomeView: require('../components/design-step.jsx'), 
+    themes: JPS.themes
+  },
+  { 
+    name: "Get some traffic", 
+    slug: 'traffic',
+    welcomeView: require('../components/get-traffic-step.jsx') 
+  },
+  { 
+    name: "Advanced settings", 
+    slug: 'advanced',
+    welcomeView: require('../components/advanced-settings-step.jsx')
+  }
+
+	// new DummyWelcomeStepModel({ name: "Sign up" }),
+	// new DummyWelcomeStepModel({ name: "Create admin account" }),
+	// new DummyWelcomeStepModel({ name: "Verify email address" }),
+	// new SiteTitleStepModel(),
+	// new LayoutStepModel(),
+	// new StatsMonitoringStepModel(),
+	// new DesignStepModel(),
+	// new GetTrafficStepModel(),
+	// new AdvancedSettingsStepModel()
 ];
 
-var currentStepSlug;
+// set location to first pending step, if not set
+ensureValidStepSlug();  
 
-var pendingStep = _.findWhere( _steps, { completed: false } );
-if ( pendingStep != null ) {
-  currentStepSlug = pendingStep.slug(); // also sets the window location hash
-}
 
 function complete(step) {
 
@@ -1231,8 +1053,37 @@ function skip(step) {
 
 }
 
+function getStepFromSlug( stepSlug ) {
+  var currentStep = null;
+  _.each( _steps, function( step ) {
+    if( step.slug === stepSlug ) {
+      currentStep = step;
+    }
+  });
+  return currentStep;
+}
+
+function ensureValidStepSlug() {
+  var stepSlug = currentStepSlug();
+  if ( ! ( stepSlug && getStepFromSlug( stepSlug ) ) ) {
+    // XXX TODO: default to Advanced step if all done?
+    var pendingStep = _.findWhere( _steps, { completed: false } );
+    if ( pendingStep != null ) {
+      select(pendingStep.slug); // also sets the window location hash
+    }
+  }
+}
+
+function currentStepSlug() {
+  if ( window.location.hash.startsWith('welcome/steps')) {
+    return window.location.hash.split('/').last;
+  } else {
+    return null;
+  }
+}
+
 function select(stepSlug) {
-  currentStepSlug = stepSlug;
+  window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
 var SetupProgressStore = assign({}, EventEmitter.prototype, {
@@ -1264,13 +1115,7 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
   },
 
   getCurrentStep: function() {
-    var currentStep;
-    _.each( _steps, function( step ) {
-      if( step.slug() == currentStepSlug ) {
-        currentStep = step;
-      }
-    });
-    return currentStep;
+    return getStepFromSlug( currentStepSlug() );
   },
 
   getProgressPercent: function() {
@@ -1295,6 +1140,11 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   }
 });
+
+// Update the UI when the window hash changes
+// jQuery(window).on('hashchange', function() {
+//   SetupProgressStore.emitChange();
+// });
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
@@ -1323,7 +1173,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = SetupProgressStore;
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"../models/advanced-settings-step":19,"../models/design-step":20,"../models/dummy-welcome-step":21,"../models/get-traffic-step":22,"../models/layout-step":23,"../models/site-title-step":24,"../models/stats-monitoring-step":25,"events":35,"object-assign":37}],30:[function(require,module,exports){
+},{"../components/advanced-settings-step.jsx":4,"../components/design-step.jsx":5,"../components/get-traffic-step.jsx":7,"../components/layout-step.jsx":8,"../components/site-title-step.jsx":9,"../components/stats-monitoring-step.jsx":10,"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],19:[function(require,module,exports){
 /*
  * Store which manages and persists site information
  */
@@ -1427,21 +1277,20 @@ AppDispatcher.register(function(action) {
 
 module.exports = SiteStore;
 
-},{"../constants/jetpack-start-constants":16,"../dispatcher/app-dispatcher":17,"events":35,"object-assign":37}],31:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],20:[function(require,module,exports){
 var React = require('react'),
     BackboneReact = require('backbone-react'),
-    WelcomeWidget = require('./components/welcome-widget.jsx'),
-    WelcomeWizardModel = require('./models/welcome-wizard');
+    WelcomeWidget = require('./components/welcome-widget.jsx');
 
 module.exports = function() {
     jQuery(document).ready(function () {
         React.render(
-          React.createElement(WelcomeWidget, {model: new WelcomeWizardModel()}), document.getElementById('jps-welcome-panel')
+          React.createElement(WelcomeWidget, {}), document.getElementById('jps-welcome-panel')
         );
     });
 }
 
-},{"./components/welcome-widget.jsx":15,"./models/welcome-wizard":27,"backbone-react":38,"react":39}],32:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":13,"backbone-react":27,"react":28}],21:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -1453,7 +1302,7 @@ module.exports = function() {
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":33}],33:[function(require,module,exports){
+},{"./lib/Dispatcher":22}],22:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1705,7 +1554,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":34}],34:[function(require,module,exports){
+},{"./invariant":23}],23:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1760,7 +1609,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],35:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2063,7 +1912,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],36:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -2118,7 +1967,7 @@ var keyMirror = function(obj) {
 
 module.exports = keyMirror;
 
-},{}],37:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -2146,12 +1995,12 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],38:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (global){
 !function(a,b){"function"==typeof define&&define.amd?define(["react","backbone","underscore"],b):"undefined"!=typeof module&&module.exports?module.exports=b(require("react"),(typeof window !== "undefined" ? window.Backbone : typeof global !== "undefined" ? global.Backbone : null),(typeof window !== "undefined" ? window._ : typeof global !== "undefined" ? global._ : null)):b(a.React,a.Backbone,a._)}(this,function(a,b,c){"use strict";function d(a,b,d){this.component=a;var e,f,g=d||a.props||{};e=a.overrideModel&&"function"==typeof a.overrideModel?a.overrideModel():g.model,f=a.overrideCollection&&"function"==typeof a.overrideCollection?a.overrideCollection():g.collection,"undefined"!=typeof e&&(e.attributes||"object"==typeof e&&c.values(e)[0].attributes)&&(this.model=e,this.setStateBackbone(e,void 0,b)),"undefined"!=typeof f&&(f.models||"object"==typeof f&&c.values(f)[0].models)&&(this.collection=f,this.setStateBackbone(f,void 0,b)),this.startModelListeners(),this.startCollectionListeners()}return b.React||(b.React={}),b.React.Component||(b.React.Component={}),b.React.Component.mixin={childContextTypes:{hasParentBackboneMixin:a.PropTypes.bool.isRequired,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},contextTypes:{hasParentBackboneMixin:a.PropTypes.bool,parentModel:a.PropTypes.any,parentCollection:a.PropTypes.any},getChildContext:function(){return{hasParentBackboneMixin:!0,parentModel:this.getModel(),parentCollection:this.getCollection()}},componentDidMount:function(){this.setElement(this.getDOMNode())},componentDidUpdate:function(){this.setElement(this.getDOMNode())},getInitialState:function(){var a={};return this.wrapper||(this.wrapper=new d(this,a)),a},componentWillMount:function(){this.wrapper||(this.wrapper=new d(this))},componentWillUnmount:function(){this.wrapper&&(this.wrapper.stopListening(),delete this.wrapper)},componentWillReceiveProps:function(a){var b=a.model,c=a.collection;this.wrapper.model&&b?this.wrapper.model!==b&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):b&&(this.wrapper=new d(this,void 0,a)),this.wrapper.collection&&c?this.wrapper.collection!==c&&(this.wrapper.stopListening(),this.wrapper=new d(this,void 0,a)):c&&(this.wrapper=new d(this,void 0,a))},$:function(){var a;if(this.$el)a=this.$el.find.apply(this.$el,arguments);else{var b=this.getDOMNode();a=b.querySelector.apply(b,arguments)}return a},getCollection:function(){return this.wrapper.collection||this.context.parentCollection},getModel:function(){return this.wrapper.model||this.context.parentModel},setElement:function(a){if(a&&b.$&&a instanceof b.$){if(a.length>1)throw new Error("You can only assign one element to a component");this.el=a[0],this.$el=a}else a&&(this.el=a,b.$&&(this.$el=b.$(a)));return this}},c.extend(d.prototype,b.Events,{onError:function(a,b,c){c.silent||this.component.setState({isRequesting:!1,hasError:!0,error:b})},onInvalid:function(a,b,c){c.silent||this.component.setState({isInvalid:!0})},onRequest:function(a,b,c){c.silent||this.component.setState({isRequesting:!0,hasError:!1,isInvalid:!1})},onSync:function(a,b,c){c.silent||this.component.setState({isRequesting:!1})},setStateBackbone:function(a,b,c){if(a.models||a.attributes)this.setState.apply(this,arguments);else for(b in a)this.setStateBackbone(a[b],b,c)},setState:function(a,d,e){var f={},g=a.toJSON?a.toJSON():a;d?f[d]=g:a instanceof b.Collection?f.collection=g:f.model=g,e?c.extend(e,f):this.component.setState(f)},startCollectionListeners:function(a,b){if(a||(a=this.collection),a)if(a.models)this.listenTo(a,"add remove change sort reset",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync);else if("object"==typeof a)for(b in a)a.hasOwnProperty(b)&&this.startCollectionListeners(a[b],b)},startModelListeners:function(a,b){if(a||(a=this.model),a)if(a.attributes)this.listenTo(a,"change",c.partial(this.setStateBackbone,a,b,void 0)).listenTo(a,"error",this.onError).listenTo(a,"request",this.onRequest).listenTo(a,"sync",this.onSync).listenTo(a,"invalid",this.onInvalid);else if("object"==typeof a)for(b in a)this.startModelListeners(a[b],b)}}),b.React.Component.mixin});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react":39}],39:[function(require,module,exports){
+},{"react":28}],28:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -21717,4 +21566,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[18]);
+},{}]},{},[16]);
