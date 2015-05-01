@@ -1,6 +1,5 @@
 <?php
-namespace JetpackStart;
-class EndPoints { 
+class Jetpack_Start_EndPoints { 
 	const AJAX_NONCE = 'jps-ajax';
 
 	static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
@@ -26,7 +25,7 @@ class EndPoints {
 	// currently-implemented React components
 	static function js_vars() {
 		return array(
-			'nonce' => wp_create_nonce( \JetpackStart\EndPoints::AJAX_NONCE ),
+			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 			'bloginfo' => array(
 				'name' => get_bloginfo('name'),
 			),
@@ -88,21 +87,21 @@ class EndPoints {
 			activate_plugin('jetpack');
 		}
 
-		if ( ! class_exists('\\Jetpack') ) {
+		if ( ! class_exists('Jetpack') ) {
 			wp_send_json_error('There was a problem activating Jetpack');
 			die();
 		}
 
-		if ( ! \Jetpack::is_active() ) {
+		if ( ! Jetpack::is_active() ) {
 
-			if ( ! \Jetpack_Options::get_option( 'blog_token' ) ) {
-				\Jetpack::init()->register();
+			if ( ! Jetpack_Options::get_option( 'blog_token' ) ) {
+				Jetpack::init()->register();
 			}
 
-			(new \Jetpack_Landing_Page())->add_actions();
+			(new Jetpack_Landing_Page())->add_actions();
 
 			// redirect to activate link
-			$connect_url = \Jetpack::init()->build_connect_url( true, admin_url('index.php') );
+			$connect_url = Jetpack::init()->build_connect_url( true, admin_url('index.php') );
 
 			wp_send_json_success( array('next' => $connect_url) );
 		} else {

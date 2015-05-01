@@ -16,8 +16,8 @@ function jps_start() {
 	if ( is_admin() ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-end-points.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-start-welcome-panel.php' );
-		\JetpackStart\EndPoints::init();
-		\JetpackStart\WelcomePanel::init();
+		Jetpack_Start_EndPoints::init();
+		Jetpack_Start_WelcomePanel::init();
 	}
 }
 

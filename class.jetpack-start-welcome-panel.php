@@ -1,7 +1,6 @@
 <?php
 
-namespace JetpackStart;
-class WelcomePanel {
+class Jetpack_Start_WelcomePanel {
 
 	const CHANGE_TITLE_KEY = 'change-title';
 
@@ -17,7 +16,7 @@ class WelcomePanel {
 			add_action( 'welcome_panel', array( __CLASS__, 'wp_welcome_panel' ) );
 
 			// vars to inject into javascript
-			$jps_vars = \JetpackStart\EndPoints::js_vars();
+			$jps_vars = Jetpack_Start_EndPoints::js_vars();
 
 			// JS
 			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'underscore' ) );
