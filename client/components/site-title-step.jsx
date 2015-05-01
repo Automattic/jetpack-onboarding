@@ -1,29 +1,13 @@
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
-
-function getSiteTitleState() {
-	return {
-		title: SiteStore.getTitle()
-	};
-}
-
+	
 var SiteTitleStep = React.createClass({
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getSiteTitleState());
-  	},
-
 	getInitialState: function() {
-		return getSiteTitleState();
+		return {
+			title: SiteStore.getTitle()
+		}
 	},
 
 	handleChangeTitle: function(e) {

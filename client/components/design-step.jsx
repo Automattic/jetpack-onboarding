@@ -2,26 +2,10 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
 
-function getThemeState() {
-	return { themes: SiteStore.getThemes() };
-}
-
 var DesignStep = React.createClass({
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getThemeState());
-  	},
-
 	getInitialState: function() {
-		return getThemeState();
+		return { themes: SiteStore.getThemes() };
 	},
 
 	handleActivateTheme: function( e ) {

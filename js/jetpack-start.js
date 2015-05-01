@@ -196,26 +196,10 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
 
-function getThemeState() {
-	return { themes: SiteStore.getThemes() };
-}
-
 var DesignStep = React.createClass({displayName: "DesignStep",
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getThemeState());
-  	},
-
 	getInitialState: function() {
-		return getThemeState();
+		return { themes: SiteStore.getThemes() };
 	},
 
 	handleActivateTheme: function( e ) {
@@ -420,17 +404,6 @@ function getFlashState() {
 }
 
 var Flash = React.createClass({displayName: "Flash",
-	componentDidMount: function() {
-		FlashStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		FlashStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getFlashState());
-  	},
 
 	getInitialState: function() {
 		var flashState = getFlashState();
@@ -449,37 +422,33 @@ var Flash = React.createClass({displayName: "Flash",
 module.exports = Flash;
 
 },{"../stores/flash-store":17,"react":27}],7:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
 
 var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
+	getInitialState: function() {
+		return {
+			jetpackConfigured: SiteStore.getJetpackConfigured()
+		};
+	},
+
+	handleJetpackConnect: function (e) {
+		e.preventDefault();
+
+		SiteActions.configureJetpack();
+	},
+
 	render: function() {
+		var component;
 
-		var component, feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
-		} else {
-			feedbackMessage = null;
-		}
-
-		if ( ! this.props.model.get('jetpack_enabled') ) {
+		if ( ! this.state.jetpackConfigured ) {
 			component = (
 				React.createElement("div", {className: "welcome__connect"}, 
-					"Connect Jetpack to enable free stats, site monitoring, and more.", 
+					"Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!", 
 					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {className: "download-jetpack", href: "#"}, "Connect Jetpack"), 
-					React.createElement("p", null, 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
-					)
-				)
-			);
-		} else if ( ! this.props.model.get('jetpack_active') ) {
-			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
-					"You have downloaded JetPack but not yet enabled it", 
-					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {href: "#", className: "download-jetpack"}, "Connect to WordPress.com"), 
+					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
 					)
@@ -488,6 +457,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 		} else {
 			component = (
 				React.createElement("div", null, 
+					"//XXX TODO: enable publicize" + ' ' +
 					"You have successfully connected Jetpack for stats, monitoring, and more!", 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Continue"})
@@ -496,10 +466,8 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 			);
 		}
 
-		// FIXME - show GUI to configure sharing
 		return (
-			React.createElement("div", {className: "welcome__section", id: "welcome__traffic"}, 
-				feedbackMessage, 
+			React.createElement("div", {className: "welcome__section", id: "welcome__stats"}, 
 				React.createElement("h4", null, "Get web traffic"), 
 				component
 			)
@@ -509,33 +477,17 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"react":27}],8:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],8:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
 
-function getSiteLayoutState() {
-	return {
-		layout: SiteStore.getLayout()
-	}
-}
-
 var LayoutStep = React.createClass({displayName: "LayoutStep",
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getSiteLayoutState());
-  	},
-
 	getInitialState: function() {
-		return getSiteLayoutState();
+		return {
+			layout: SiteStore.getLayout()
+		};
 	},
 
 	handleSetLayout: function( e ) {
@@ -584,29 +536,13 @@ module.exports = LayoutStep;
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
-
-function getSiteTitleState() {
-	return {
-		title: SiteStore.getTitle()
-	};
-}
-
+	
 var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getSiteTitleState());
-  	},
-
 	getInitialState: function() {
-		return getSiteTitleState();
+		return {
+			title: SiteStore.getTitle()
+		}
 	},
 
 	handleChangeTitle: function(e) {
@@ -662,28 +598,12 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions');
 
-function getJetpackState() {
-	return {
-		jetpackConfigured: SiteStore.getJetpackConfigured()
-	};
-}
-
 var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
-	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
-	},
-
-	_onChange: function() {
-    	this.setState(getJetpackState());
-  	},
-
 	getInitialState: function() {
-		return getJetpackState();
+		return {
+			jetpackConfigured: SiteStore.getJetpackConfigured()
+		};
 	},
 
 	handleJetpackConnect: function (e) {
@@ -781,7 +701,12 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 		return (
 			React.createElement("div", {className: "getting-started__steps"}, 
-				React.createElement("h3", null, "Your Progress ", React.createElement("div", {style: {marginTop: '7px'}}, React.createElement(WelcomeProgressBar, {progressPercent: this.props.progressPercent}))), 
+				React.createElement("h3", null, 
+					"Your Progress",  
+					React.createElement("div", {style: {marginTop: '7px'}}, 
+						React.createElement(WelcomeProgressBar, {progressPercent: this.props.progressPercent})
+					)
+				), 
 				
 				React.createElement("ol", null, 
 					menuItems
@@ -826,6 +751,7 @@ module.exports = ProgressBar;
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
+	SiteStore = require('../stores/setup-progress-store'),
 	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
@@ -835,10 +761,14 @@ function getSetupProgress() {
 var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
+		SiteStore.addChangeListener(this._onChange);
+		FlashStore.addChangeListener(this._onChange);
 	},
 
 	componentWillUnmount: function() {
 		SetupProgressStore.removeChangeListener(this._onChange);
+		SiteStore.removeChangeListener(this._onChange);
+		FlashStore.removeChangeListener(this._onChange);
 	},
 
 	_onChange: function() {

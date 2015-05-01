@@ -1,6 +1,7 @@
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
+	SiteStore = require('../stores/setup-progress-store'),
 	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
@@ -10,10 +11,14 @@ function getSetupProgress() {
 var WelcomeWidget = React.createClass({
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
+		SiteStore.addChangeListener(this._onChange);
+		FlashStore.addChangeListener(this._onChange);
 	},
 
 	componentWillUnmount: function() {
 		SetupProgressStore.removeChangeListener(this._onChange);
+		SiteStore.removeChangeListener(this._onChange);
+		FlashStore.removeChangeListener(this._onChange);
 	},
 
 	_onChange: function() {
