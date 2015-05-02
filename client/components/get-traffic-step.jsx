@@ -1,34 +1,46 @@
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
+
+function getJetpackState() {
+	return {
+		jetpackConfigured: SiteStore.getJetpackConfigured()
+	};
+}
 
 var GetTrafficStep = React.createClass({
+	
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getJetpackState());
+  	},
+
+	getInitialState: function() {
+		return getJetpackState();
+	},
+
+	handleJetpackConnect: function (e) {
+		e.preventDefault();
+
+		SiteActions.configureJetpack();
+	},
 
 	render: function() {
+		var component;
 
-		var component, feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (<div className="notice updated">{this.state.message}</div>);
-		} else {
-			feedbackMessage = null;
-		}
-
-		if ( ! this.props.model.get('jetpack_enabled') ) {
+		if ( ! this.state.jetpackConfigured ) {
 			component = (
 				<div className="welcome__connect">
-					Connect Jetpack to enable free stats, site monitoring, and more.
+					Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!
 					<br /><br />
-					<a className="download-jetpack" href="#">Connect Jetpack</a>
-					<p>
-						<a className="skip" href="#">Skip this step</a>
-					</p>
-				</div>
-			);
-		} else if ( ! this.props.model.get('jetpack_active') ) {
-			component = (
-				<div className="welcome__connect">
-					You have downloaded JetPack but not yet enabled it
-					<br /><br />
-					<a href="#" className="download-jetpack">Connect to WordPress.com</a>
+					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
 					<p className="submit">
 						<a className="skip" href="#">Skip this step</a>
 					</p>
@@ -37,6 +49,7 @@ var GetTrafficStep = React.createClass({
 		} else {
 			component = (
 				<div>
+					//XXX TODO: enable publicize
 					You have successfully connected Jetpack for stats, monitoring, and more!
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Continue" />
@@ -45,10 +58,8 @@ var GetTrafficStep = React.createClass({
 			);
 		}
 
-		// FIXME - show GUI to configure sharing
 		return (
-			<div className="welcome__section" id="welcome__traffic">
-				{feedbackMessage}
+			<div className="welcome__section" id="welcome__stats">
 				<h4>Get web traffic</h4>
 				{component}
 			</div>

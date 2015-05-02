@@ -452,37 +452,49 @@ var Flash = React.createClass({displayName: "Flash",
 module.exports = Flash;
 
 },{"../stores/flash-store":17,"react":27}],7:[function(require,module,exports){
-var React = require('react');
+var React = require('react'),
+	SiteStore = require('../stores/site-store'),
+	SiteActions = require('../actions/site-actions');
+
+function getJetpackState() {
+	return {
+		jetpackConfigured: SiteStore.getJetpackConfigured()
+	};
+}
 
 var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
+	
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getJetpackState());
+  	},
+
+	getInitialState: function() {
+		return getJetpackState();
+	},
+
+	handleJetpackConnect: function (e) {
+		e.preventDefault();
+
+		SiteActions.configureJetpack();
+	},
 
 	render: function() {
+		var component;
 
-		var component, feedbackMessage;
-
-		if ( this.state.message != null ) {
-			feedbackMessage = (React.createElement("div", {className: "notice updated"}, this.state.message));
-		} else {
-			feedbackMessage = null;
-		}
-
-		if ( ! this.props.model.get('jetpack_enabled') ) {
+		if ( ! this.state.jetpackConfigured ) {
 			component = (
 				React.createElement("div", {className: "welcome__connect"}, 
-					"Connect Jetpack to enable free stats, site monitoring, and more.", 
+					"Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!", 
 					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {className: "download-jetpack", href: "#"}, "Connect Jetpack"), 
-					React.createElement("p", null, 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
-					)
-				)
-			);
-		} else if ( ! this.props.model.get('jetpack_active') ) {
-			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
-					"You have downloaded JetPack but not yet enabled it", 
-					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {href: "#", className: "download-jetpack"}, "Connect to WordPress.com"), 
+					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
 					)
@@ -491,6 +503,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 		} else {
 			component = (
 				React.createElement("div", null, 
+					"//XXX TODO: enable publicize" + ' ' +
 					"You have successfully connected Jetpack for stats, monitoring, and more!", 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Continue"})
@@ -499,10 +512,8 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 			);
 		}
 
-		// FIXME - show GUI to configure sharing
 		return (
-			React.createElement("div", {className: "welcome__section", id: "welcome__traffic"}, 
-				feedbackMessage, 
+			React.createElement("div", {className: "welcome__section", id: "welcome__stats"}, 
 				React.createElement("h4", null, "Get web traffic"), 
 				component
 			)
@@ -512,7 +523,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"react":27}],8:[function(require,module,exports){
+},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],8:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store');
