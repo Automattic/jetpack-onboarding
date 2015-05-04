@@ -42,11 +42,19 @@ module.exports = {
 	    });
 	},
 
+	// moves on to the next step, but doesn't mark it as "skipped"
 	selectNextStep: function() {
 		FlashActions.unset();
 		AppDispatcher.dispatch({
-			actionType: JPSConstants.STEP_NEXT,
-			slug: Paths.STATS_MONITORING_STEP_SLUG
+			actionType: JPSConstants.STEP_NEXT
+	    });
+	},
+
+	// mark current step as skipped and move on
+	skipStep: function() {
+		FlashActions.unset();
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SKIP
 	    });
 	},
 
@@ -257,6 +265,11 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		SetupProgressActions.submitDesignStep(themeId);
 	},
 
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
 	findTheme: function ( themeId )	{
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
@@ -328,7 +341,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				React.createElement("div", {style: {clear: 'both'}}), 
 				React.createElement("p", {className: "submit"}, 
 					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-					React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+					React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
 				), 
 				overlay
 			)
@@ -530,6 +543,11 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 		SetupProgressActions.selectNextStep();
 	},
 
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
 	render: function() {
 		var component;
 
@@ -540,7 +558,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
 					)
 				)
 			);
@@ -678,6 +696,11 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 		SetupProgressActions.submitTitleStep();
 	},
 
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
 	render: function() {
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
@@ -689,7 +712,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
 					)
 				), 
 				React.createElement("div", {className: "welcome__helper"}, 
@@ -755,8 +778,14 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 	handleNext: function (e) {
 		e.preventDefault();
-		
+
 		SetupProgressActions.selectNextStep();
+	},
+
+	handleSkip: function (e) {
+		e.preventDefault();
+
+		SetupProgressActions.skipStep();
 	},
 
 	render: function() {
@@ -769,7 +798,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
 					)
 				)
 			);
@@ -957,7 +986,7 @@ module.exports = keyMirror({
 	STEP_COMPLETE: null,
 	STEP_SELECT: null,
 	STEP_NEXT: null,
-	STEP_SKIPPED: null,
+	STEP_SKIP: null,
 	SITE_SET_TITLE: null,
 	SITE_SAVE_TITLE: null,
 	SITE_SET_THEME: null,
@@ -1130,6 +1159,7 @@ var _steps = [
 // set the completion status of each step from JPS.step_status hash
 _steps.forEach( function(step) {
   if ( typeof step.completed == 'undefined' ) {
+    step.skipped = false;
     step.completed = JPS.step_status[step.slug] || false;  
   }
 }); 
@@ -1139,22 +1169,25 @@ ensureValidStepSlug();
 
 function complete(step) {
 
-  WPAjax.post(JPS.step_actions.complete, { step: step })
-    .done( function(data) {
-      //XXX TODO: set completion data from response
-      getStepFromSlug(step).completed = true;
-      selectNextPendingStep();
-    })
-    .fail( function(msg) {
-      FlashActions.error(msg);
-    });
+  if ( ! getStepFromSlug(step).completed ) {
+    WPAjax.post(JPS.step_actions.complete, { step: step })
+      .done( function(data) {
+        //XXX TODO: set completion data from response
+        getStepFromSlug(step).completed = true;
+        selectNextPendingStep();
+      })
+      .fail( function(msg) {
+        FlashActions.error(msg);
+      });  
+  }
 }
 
-function skip(step) {
-
+function skip() {
+  getStepFromSlug( currentStepSlug() ).skipped = true;
+  next();
 }
 
-function next(step) {
+function next() {
   selectNextPendingStep();
 }
 
@@ -1176,7 +1209,7 @@ function ensureValidStepSlug() {
 }
 
 function selectNextPendingStep() {
-  var pendingStep = _.findWhere( _steps, { completed: false } );
+  var pendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
   if ( pendingStep != null ) {
     select(pendingStep.slug); // also sets the window location hash
   }
@@ -1236,16 +1269,10 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     return Math.round(percentComplete / 10) * 10;
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
@@ -1267,7 +1294,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.STEP_NEXT:
-      next(action.slug);
+      next();
       SetupProgressStore.emitChange();
       break;
 
@@ -1276,8 +1303,8 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
-    case JPSConstants.STEP_SKIPPED:
-      skip(action.text);
+    case JPSConstants.STEP_SKIP:
+      skip();
       SetupProgressStore.emitChange();
       break;
 
@@ -1293,10 +1320,10 @@ module.exports = SetupProgressStore;
  * Store which manages and persists site information
  */
 
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var JPSConstants = require('../constants/jetpack-start-constants');
-var assign = require('object-assign');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+  EventEmitter = require('events').EventEmitter,
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 

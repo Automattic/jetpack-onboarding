@@ -2,10 +2,10 @@
  * Store which manages and persists site information
  */
 
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var JPSConstants = require('../constants/jetpack-start-constants');
-var assign = require('object-assign');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+  EventEmitter = require('events').EventEmitter,
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 

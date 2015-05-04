@@ -211,13 +211,15 @@ $light-gray: #ccc;
 }
 
 #welcome__design .theme-browser {
+	.theme {
+		width: 30% !important;
+	}
 	* { box-sizing: initial; }
 	h3 {
 		line-height: 1.4em; 
 		text-align: left !important; 
 	}
 }
-
 
 // Progress list of steps
 .getting-started__steps {

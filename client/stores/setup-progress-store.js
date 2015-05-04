@@ -71,6 +71,7 @@ var _steps = [
 // set the completion status of each step from JPS.step_status hash
 _steps.forEach( function(step) {
   if ( typeof step.completed == 'undefined' ) {
+    step.skipped = false;
     step.completed = JPS.step_status[step.slug] || false;  
   }
 }); 
@@ -80,22 +81,25 @@ ensureValidStepSlug();
 
 function complete(step) {
 
-  WPAjax.post(JPS.step_actions.complete, { step: step })
-    .done( function(data) {
-      //XXX TODO: set completion data from response
-      getStepFromSlug(step).completed = true;
-      selectNextPendingStep();
-    })
-    .fail( function(msg) {
-      FlashActions.error(msg);
-    });
+  if ( ! getStepFromSlug(step).completed ) {
+    WPAjax.post(JPS.step_actions.complete, { step: step })
+      .done( function(data) {
+        //XXX TODO: set completion data from response
+        getStepFromSlug(step).completed = true;
+        selectNextPendingStep();
+      })
+      .fail( function(msg) {
+        FlashActions.error(msg);
+      });  
+  }
 }
 
-function skip(step) {
-
+function skip() {
+  getStepFromSlug( currentStepSlug() ).skipped = true;
+  next();
 }
 
-function next(step) {
+function next() {
   selectNextPendingStep();
 }
 
@@ -117,7 +121,7 @@ function ensureValidStepSlug() {
 }
 
 function selectNextPendingStep() {
-  var pendingStep = _.findWhere( _steps, { completed: false } );
+  var pendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
   if ( pendingStep != null ) {
     select(pendingStep.slug); // also sets the window location hash
   }
@@ -177,16 +181,10 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     return Math.round(percentComplete / 10) * 10;
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
@@ -208,7 +206,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.STEP_NEXT:
-      next(action.slug);
+      next();
       SetupProgressStore.emitChange();
       break;
 
@@ -217,8 +215,8 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
-    case JPSConstants.STEP_SKIPPED:
-      skip(action.text);
+    case JPSConstants.STEP_SKIP:
+      skip();
       SetupProgressStore.emitChange();
       break;
 

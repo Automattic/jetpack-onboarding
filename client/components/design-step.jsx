@@ -35,6 +35,11 @@ var DesignStep = React.createClass({
 		SetupProgressActions.submitDesignStep(themeId);
 	},
 
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
 	findTheme: function ( themeId )	{
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
@@ -106,7 +111,7 @@ var DesignStep = React.createClass({
 				<div style={{clear: 'both'}}></div>
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
-					<a className="skip" href="#">Skip this step</a>
+					<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
 				</p>
 				{overlay}
 			</div>

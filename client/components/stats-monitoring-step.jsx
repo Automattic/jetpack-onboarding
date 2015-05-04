@@ -35,8 +35,14 @@ var StatsMonitoringStep = React.createClass({
 
 	handleNext: function (e) {
 		e.preventDefault();
-		
+
 		SetupProgressActions.selectNextStep();
+	},
+
+	handleSkip: function (e) {
+		e.preventDefault();
+
+		SetupProgressActions.skipStep();
 	},
 
 	render: function() {
@@ -49,7 +55,7 @@ var StatsMonitoringStep = React.createClass({
 					<br /><br />
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
 					<p className="submit">
-						<a className="skip" href="#">Skip this step</a>
+						<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
 					</p>
 				</div>
 			);

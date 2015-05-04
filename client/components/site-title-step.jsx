@@ -36,6 +36,11 @@ var SiteTitleStep = React.createClass({
 		SetupProgressActions.submitTitleStep();
 	},
 
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
 	render: function() {
 		return (
 			<div className="welcome__section" id="welcome__site-title">
@@ -47,7 +52,7 @@ var SiteTitleStep = React.createClass({
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
-						<a className="skip" href="#">Skip this step</a>
+						<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
 					</p>
 				</form>
 				<div className="welcome__helper">

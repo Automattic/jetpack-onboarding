@@ -13,11 +13,19 @@ module.exports = {
 	    });
 	},
 
+	// moves on to the next step, but doesn't mark it as "skipped"
 	selectNextStep: function() {
 		FlashActions.unset();
 		AppDispatcher.dispatch({
-			actionType: JPSConstants.STEP_NEXT,
-			slug: Paths.STATS_MONITORING_STEP_SLUG
+			actionType: JPSConstants.STEP_NEXT
+	    });
+	},
+
+	// mark current step as skipped and move on
+	skipStep: function() {
+		FlashActions.unset();
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SKIP
 	    });
 	},
 
