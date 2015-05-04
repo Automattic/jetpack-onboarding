@@ -1,4 +1,5 @@
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
@@ -39,11 +40,6 @@ var GetTrafficStep = React.createClass({
 		SetupProgressActions.selectNextStep();
 	},
 
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
-	},
-
 	render: function() {
 		var component;
 
@@ -54,14 +50,13 @@ var GetTrafficStep = React.createClass({
 					<br /><br />
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
 					<p className="submit">
-						<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
+						<SkipButton />
 					</p>
 				</div>
 			);
 		} else {
 			component = (
 				<div>
-					//XXX TODO: enable publicize
 					You have successfully connected Jetpack for stats, monitoring, and more!
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Continue" />

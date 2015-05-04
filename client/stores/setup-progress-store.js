@@ -6,78 +6,28 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
   JPSConstants = require('../constants/jetpack-start-constants'),
   Paths = require('../constants/jetpack-start-paths'),
-  assign = require('object-assign'),
   WPAjax = require('../utils/wp-ajax'),
   FlashActions = require('../actions/flash-actions');
 
 var CHANGE_EVENT = 'change';
 
 //XXX TODO: maybe this should just be plain JSON
-var _steps = [
-  {
-    name: "Sign up",
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Create admin account',
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Verify email address',
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Site title',
-    slug: Paths.SITE_TITLE_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/site-title-step.jsx')
-  },
-  {
-    name: 'Pick a layout',
-    slug: Paths.LAYOUT_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/layout-step.jsx')
-  },
-  {
-    name: 'Stats & Monitoring',
-    slug: Paths.STATS_MONITORING_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/stats-monitoring-step.jsx'),
-  },
-  { 
-    name: "Pick a design", 
-    slug: Paths.DESIGN_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/design-step.jsx'), 
-    themes: JPS.themes
-  },
-  { 
-    name: "Get some traffic", 
-    slug: Paths.TRAFFIC_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/get-traffic-step.jsx') 
-  },
-  { 
-    name: "Advanced settings", 
-    slug: Paths.ADVANCED_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/advanced-settings-step.jsx')
-  }
-];
+var _steps;
 
-// set the completion status of each step from JPS.step_status hash
-_steps.forEach( function(step) {
-  if ( typeof step.completed == 'undefined' ) {
-    step.skipped = false;
-    step.completed = JPS.step_status[step.slug] || false;  
-  }
-}); 
-
-// set location to first pending step, if not set
-ensureValidStepSlug();  
+function setSteps(steps) {
+  // set the completion status of each step from JPS.step_status hash
+  steps.forEach( function(step) {
+    if ( typeof step.completed == 'undefined' ) {
+      step.skipped = false;
+      step.completed = JPS.step_status[step.slug] || false;  
+    }
+  }); 
+  
+  _steps = steps;
+  
+  // set location to first pending step, if not set
+  ensureValidStepSlug(); 
+}
 
 function complete(step) {
 
@@ -141,12 +91,12 @@ function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
-var SetupProgressStore = assign({}, EventEmitter.prototype, {
+var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
-  /**
-   * Tests whether all the remaining TODO items are marked as completed.
-   * @return {boolean}
-   */
+  init: function(steps) {
+    setSteps(steps);
+  },
+
   areAllComplete: function() {
     var complete = true;
     _.each( _steps ), function( step ) {
@@ -157,10 +107,6 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     return complete;
   },
 
-  /**
-   * Get the entire collection of TODOs.
-   * @return {object}
-   */
   getAllSteps: function() {
     return _steps;
   },

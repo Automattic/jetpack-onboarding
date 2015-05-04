@@ -1,4 +1,5 @@
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
@@ -59,7 +60,7 @@ var LayoutStep = React.createClass({
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
-						<a className="skip" href="#">Skip this step</a>
+						<SkipButton />
 					</p>
 				</form>
 			</div>

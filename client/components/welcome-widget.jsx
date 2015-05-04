@@ -1,3 +1,4 @@
+console.log('requiring welcome widget');
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),

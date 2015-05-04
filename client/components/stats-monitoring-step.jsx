@@ -1,11 +1,13 @@
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
 	return {
-		jetpackConfigured: SiteStore.getJetpackConfigured()
+		jetpackConfigured: SiteStore.getJetpackConfigured(),
+		statsModuleEnabled: SiteStore.getJetpackModuleStatus('stats')
 	};
 }
 
@@ -30,6 +32,12 @@ var StatsMonitoringStep = React.createClass({
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
+		SiteActions.configureJetpack(Paths.STATS_MONITORING_STEP_SLUG);
+	},
+
+	handleEnableStats: function (e) {
+		e.preventDefault();
+
 		SetupProgressActions.submitStatsMonitoringStep();
 	},
 
@@ -37,12 +45,6 @@ var StatsMonitoringStep = React.createClass({
 		e.preventDefault();
 
 		SetupProgressActions.selectNextStep();
-	},
-
-	handleSkip: function (e) {
-		e.preventDefault();
-
-		SetupProgressActions.skipStep();
 	},
 
 	render: function() {
@@ -55,7 +57,18 @@ var StatsMonitoringStep = React.createClass({
 					<br /><br />
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
 					<p className="submit">
-						<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
+						<SkipButton />
+					</p>
+				</div>
+			);
+		} else if ( ! this.state.statsModuleEnabled ) {
+			component = (
+				<div className="welcome__connect">
+					Enable the Stats module to track visitors to your site.
+					<br /><br />
+					<a href="#" className="download-jetpack" onClick={this.handleEnableStats}>Enable Stats Module</a>
+					<p className="submit">
+						<SkipButton />
 					</p>
 				</div>
 			);

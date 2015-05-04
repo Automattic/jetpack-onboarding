@@ -42,9 +42,13 @@ var WelcomeMenu = React.createClass({
 			}
 
 			status = step.completed ? 'completed' : '';
+
+			if ( step.skipped ) {
+
+			}
 			
 			return (
-				<li key={step.slug} className={status + (current ? ' current' : '')}>{title}</li>
+				<li key={step.slug} className={status + (current ? ' current' : '')}>{title} {step.skipped ? '(skipped)' : null}</li>
 			);
 		}.bind(this) );
 

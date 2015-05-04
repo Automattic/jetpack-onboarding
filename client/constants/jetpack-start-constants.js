@@ -9,6 +9,7 @@ module.exports = keyMirror({
 	SITE_SAVE_TITLE: null,
 	SITE_SET_THEME: null,
 	SITE_JETPACK_CONFIGURED: null,
+	SITE_JETPACK_MODULE_ENABLED: null,
 	SITE_SET_LAYOUT: null,
 
 	SET_FLASH: null,

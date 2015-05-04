@@ -1,6 +1,8 @@
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {
@@ -36,12 +38,9 @@ var SiteTitleStep = React.createClass({
 		SetupProgressActions.submitTitleStep();
 	},
 
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
-	},
-
 	render: function() {
+		// var currentStep = SetupProgressStore.getCurrentStep();
+		// console.log(currentStep);
 		return (
 			<div className="welcome__section" id="welcome__site-title">
 				<h4>Set your site title</h4>
@@ -52,7 +51,7 @@ var SiteTitleStep = React.createClass({
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
-						<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
+						<SkipButton />
 					</p>
 				</form>
 				<div className="welcome__helper">

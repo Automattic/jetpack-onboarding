@@ -26,7 +26,7 @@ module.exports = {
 	}
 }
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16}],2:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":17}],2:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	Paths = require('../constants/jetpack-start-paths'),
@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	submitTrafficStep: function() {
-		SiteActions.configureJetpack().done(function() {
+		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG).done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.TRAFFIC_STEP_SLUG
@@ -95,7 +95,7 @@ module.exports = {
 	},
 
 	submitStatsMonitoringStep: function() {
-		SiteActions.configureJetpack().done(function() {
+		SiteActions.activateJetpackModule('stats').done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.STATS_MONITORING_STEP_SLUG
@@ -104,12 +104,11 @@ module.exports = {
 	}
 };
 
-},{"../constants/jetpack-start-constants":14,"../constants/jetpack-start-paths":15,"../dispatcher/app-dispatcher":16,"./flash-actions":1,"./site-actions":3}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../constants/jetpack-start-paths":16,"../dispatcher/app-dispatcher":17,"./flash-actions":1,"./site-actions":3}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
 	FlashActions = require('./flash-actions.js'),
-	assign = require('object-assign'),
 	WPAjax = require('../utils/wp-ajax');
 
 var SiteActions = {
@@ -167,8 +166,8 @@ var SiteActions = {
 			});
 	},
 
-	configureJetpack: function() {
-		return WPAjax.post( JPS.site_actions.configure_jetpack )
+	configureJetpack: function(return_to_step) {
+		return WPAjax.post( JPS.site_actions.configure_jetpack, {return_to_step: return_to_step} )
 			.done( function ( data ) {
 				FlashActions.notice("Jetpack Enabled");
 				AppDispatcher.dispatch({
@@ -183,12 +182,26 @@ var SiteActions = {
 			}).fail( function (msg ) {
 				FlashActions.error("Error enabling Jetpack: "+msg);
 			});
+	},
+
+	activateJetpackModule: function(module_slug) {
+		return WPAjax.post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] })
+			.done( function ( data ) {
+				FlashActions.notice("Enabled "+module_slug);
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
+					slug: module_slug
+			    });
+
+			}).fail( function (msg ) {
+				FlashActions.error("Error activating Jetpack module: "+msg);
+			});
 	}
 };
 
 module.exports = SiteActions;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"../stores/site-store":20,"../utils/wp-ajax":21,"./flash-actions.js":1,"object-assign":28}],4:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":17,"../stores/site-store":21,"../utils/wp-ajax":22,"./flash-actions.js":1}],4:[function(require,module,exports){
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
@@ -229,8 +242,10 @@ module.exports = AdvancedSettingsStep;
 
 },{"react":29}],5:[function(require,module,exports){
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
@@ -263,11 +278,6 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		var themeId = $el.data('theme-id');
 
 		SetupProgressActions.submitDesignStep(themeId);
-	},
-
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
 	},
 
 	findTheme: function ( themeId )	{
@@ -341,7 +351,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				React.createElement("div", {style: {clear: 'both'}}), 
 				React.createElement("p", {className: "submit"}, 
 					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-					React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
+					React.createElement(SkipButton, null)
 				), 
 				overlay
 			)
@@ -464,7 +474,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 module.exports = DesignStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],6:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/setup-progress-store":20,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],6:[function(require,module,exports){
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -501,8 +511,9 @@ var Flash = React.createClass({displayName: "Flash",
 
 module.exports = Flash;
 
-},{"../stores/flash-store":18,"react":29}],7:[function(require,module,exports){
+},{"../stores/flash-store":19,"react":29}],7:[function(require,module,exports){
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
@@ -543,11 +554,6 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 		SetupProgressActions.selectNextStep();
 	},
 
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
-	},
-
 	render: function() {
 		var component;
 
@@ -558,14 +564,13 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
+						React.createElement(SkipButton, null)
 					)
 				)
 			);
 		} else {
 			component = (
 				React.createElement("div", null, 
-					"//XXX TODO: enable publicize" + ' ' +
 					"You have successfully connected Jetpack for stats, monitoring, and more!", 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleNext, value: "Continue"})
@@ -585,8 +590,9 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],8:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],8:[function(require,module,exports){
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
@@ -647,7 +653,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-						React.createElement("a", {className: "skip", href: "#"}, "Skip this step")
+						React.createElement(SkipButton, null)
 					)
 				)
 			)
@@ -657,10 +663,12 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],9:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],9:[function(require,module,exports){
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {
@@ -696,12 +704,9 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 		SetupProgressActions.submitTitleStep();
 	},
 
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
-	},
-
 	render: function() {
+		// var currentStep = SetupProgressStore.getCurrentStep();
+		// console.log(currentStep);
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
 				React.createElement("h4", null, "Set your site title"), 
@@ -712,7 +717,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
-						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
+						React.createElement(SkipButton, null)
 					)
 				), 
 				React.createElement("div", {className: "welcome__helper"}, 
@@ -740,15 +745,67 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 module.exports = SiteTitleStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],10:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/setup-progress-store":20,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],10:[function(require,module,exports){
+console.log('requiring skip button');
 var React = require('react'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	// SetupProgressStore = require('../stores/setup-progress-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
+
+// debugger;
+
+function getSetupProgress() {
+	return {
+		completed: SetupProgressStore.getCurrentStep().completed
+	}
+}
+
+var SkipButton = React.createClass({displayName: "SkipButton",
+
+	componentDidMount: function() {
+		SetupProgressStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SetupProgressStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSetupProgress());
+  	},
+
+  	getInitialState: function() {
+		return getSetupProgress();
+	},
+
+	handleSkip: function (e) {
+		e.preventDefault();
+		SetupProgressActions.skipStep();
+	},
+
+	render: function() {
+		var completed = (this.state.completed);
+		if ( completed ) {
+			return null;
+		} else {
+			return (React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step"));
+		}
+	}
+});
+
+module.exports = SkipButton;
+
+},{"../actions/setup-progress-actions":2,"../stores/setup-progress-store":20,"react":29}],11:[function(require,module,exports){
+var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
 	return {
-		jetpackConfigured: SiteStore.getJetpackConfigured()
+		jetpackConfigured: SiteStore.getJetpackConfigured(),
+		statsModuleEnabled: SiteStore.getJetpackModuleStatus('stats')
 	};
 }
 
@@ -773,6 +830,12 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
+		SiteActions.configureJetpack(Paths.STATS_MONITORING_STEP_SLUG);
+	},
+
+	handleEnableStats: function (e) {
+		e.preventDefault();
+
 		SetupProgressActions.submitStatsMonitoringStep();
 	},
 
@@ -780,12 +843,6 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 		e.preventDefault();
 
 		SetupProgressActions.selectNextStep();
-	},
-
-	handleSkip: function (e) {
-		e.preventDefault();
-
-		SetupProgressActions.skipStep();
 	},
 
 	render: function() {
@@ -798,7 +855,18 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("a", {className: "skip", href: "#", onClick: this.handleSkip}, "Skip this step")
+						React.createElement(SkipButton, null)
+					)
+				)
+			);
+		} else if ( ! this.state.statsModuleEnabled ) {
+			component = (
+				React.createElement("div", {className: "welcome__connect"}, 
+					"Enable the Stats module to track visitors to your site.", 
+					React.createElement("br", null), React.createElement("br", null), 
+					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleEnableStats}, "Enable Stats Module"), 
+					React.createElement("p", {className: "submit"}, 
+						React.createElement(SkipButton, null)
 					)
 				)
 			);
@@ -824,7 +892,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 module.exports = StatsMonitoringStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],11:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],12:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions')
@@ -869,9 +937,13 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 			}
 
 			status = step.completed ? 'completed' : '';
+
+			if ( step.skipped ) {
+
+			}
 			
 			return (
-				React.createElement("li", {key: step.slug, className: status + (current ? ' current' : '')}, title)
+				React.createElement("li", {key: step.slug, className: status + (current ? ' current' : '')}, title, " ", step.skipped ? '(skipped)' : null)
 			);
 		}.bind(this) );
 
@@ -894,7 +966,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 module.exports = WelcomeMenu;
 
-},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":29}],12:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":13,"react":29}],13:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -923,7 +995,8 @@ var ProgressBar = React.createClass({displayName: "ProgressBar",
 
 module.exports = ProgressBar;
 
-},{"react":29}],13:[function(require,module,exports){
+},{"react":29}],14:[function(require,module,exports){
+console.log('requiring welcome widget');
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
@@ -979,7 +1052,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 
 module.exports = WelcomeWidget;
 
-},{"../stores/setup-progress-store":19,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":29}],14:[function(require,module,exports){
+},{"../stores/setup-progress-store":20,"./flash.jsx":6,"./welcome-menu.jsx":12,"react":29}],15:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -991,6 +1064,7 @@ module.exports = keyMirror({
 	SITE_SAVE_TITLE: null,
 	SITE_SET_THEME: null,
 	SITE_JETPACK_CONFIGURED: null,
+	SITE_JETPACK_MODULE_ENABLED: null,
 	SITE_SET_LAYOUT: null,
 
 	SET_FLASH: null,
@@ -999,7 +1073,7 @@ module.exports = keyMirror({
 	FLASH_SEVERITY_ERROR: null
 });
 
-},{"keymirror":27}],15:[function(require,module,exports){
+},{"keymirror":28}],16:[function(require,module,exports){
 module.exports = {
 	// steps
 	SITE_TITLE_STEP_SLUG: 'title',
@@ -1010,7 +1084,7 @@ module.exports = {
 	ADVANCED_STEP_SLUG: 'advanced',
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -1028,16 +1102,15 @@ var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
-},{"flux":23}],17:[function(require,module,exports){
+},{"flux":24}],18:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":22}],18:[function(require,module,exports){
+},{"./welcome-panel":23}],19:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter;
-	JPSConstants = require('../constants/jetpack-start-constants'),
-	assign = require('object-assign');
+	JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
 var message, severity;
@@ -1047,7 +1120,7 @@ function setFlash(newMessage, newSeverity) {
 	severity = newSeverity;
 }
 
-FlashStore = assign({}, EventEmitter.prototype, {
+FlashStore = _.extend({}, EventEmitter.prototype, {
 	getFlash: function() {
 		return {message: message, severity: severity};
 	},
@@ -1085,7 +1158,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = FlashStore;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"events":26,"object-assign":28}],19:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":17,"events":27}],20:[function(require,module,exports){
 /*
  * Store which manages and persists setup wizard progress
  */
@@ -1094,78 +1167,28 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
   JPSConstants = require('../constants/jetpack-start-constants'),
   Paths = require('../constants/jetpack-start-paths'),
-  assign = require('object-assign'),
   WPAjax = require('../utils/wp-ajax'),
   FlashActions = require('../actions/flash-actions');
 
 var CHANGE_EVENT = 'change';
 
 //XXX TODO: maybe this should just be plain JSON
-var _steps = [
-  {
-    name: "Sign up",
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Create admin account',
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Verify email address',
-    completed: true,
-    repeatable: false
-  },
-  {
-    name: 'Site title',
-    slug: Paths.SITE_TITLE_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/site-title-step.jsx')
-  },
-  {
-    name: 'Pick a layout',
-    slug: Paths.LAYOUT_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/layout-step.jsx')
-  },
-  {
-    name: 'Stats & Monitoring',
-    slug: Paths.STATS_MONITORING_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/stats-monitoring-step.jsx'),
-  },
-  { 
-    name: "Pick a design", 
-    slug: Paths.DESIGN_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/design-step.jsx'), 
-    themes: JPS.themes
-  },
-  { 
-    name: "Get some traffic", 
-    slug: Paths.TRAFFIC_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/get-traffic-step.jsx') 
-  },
-  { 
-    name: "Advanced settings", 
-    slug: Paths.ADVANCED_STEP_SLUG,
-    repeatable: true,
-    welcomeView: require('../components/advanced-settings-step.jsx')
-  }
-];
+var _steps;
 
-// set the completion status of each step from JPS.step_status hash
-_steps.forEach( function(step) {
-  if ( typeof step.completed == 'undefined' ) {
-    step.skipped = false;
-    step.completed = JPS.step_status[step.slug] || false;  
-  }
-}); 
-
-// set location to first pending step, if not set
-ensureValidStepSlug();  
+function setSteps(steps) {
+  // set the completion status of each step from JPS.step_status hash
+  steps.forEach( function(step) {
+    if ( typeof step.completed == 'undefined' ) {
+      step.skipped = false;
+      step.completed = JPS.step_status[step.slug] || false;  
+    }
+  }); 
+  
+  _steps = steps;
+  
+  // set location to first pending step, if not set
+  ensureValidStepSlug(); 
+}
 
 function complete(step) {
 
@@ -1229,12 +1252,12 @@ function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
-var SetupProgressStore = assign({}, EventEmitter.prototype, {
+var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
-  /**
-   * Tests whether all the remaining TODO items are marked as completed.
-   * @return {boolean}
-   */
+  init: function(steps) {
+    setSteps(steps);
+  },
+
   areAllComplete: function() {
     var complete = true;
     _.each( _steps ), function( step ) {
@@ -1245,10 +1268,6 @@ var SetupProgressStore = assign({}, EventEmitter.prototype, {
     return complete;
   },
 
-  /**
-   * Get the entire collection of TODOs.
-   * @return {object}
-   */
   getAllSteps: function() {
     return _steps;
   },
@@ -1315,15 +1334,14 @@ AppDispatcher.register(function(action) {
 
 module.exports = SetupProgressStore;
 
-},{"../actions/flash-actions":1,"../components/advanced-settings-step.jsx":4,"../components/design-step.jsx":5,"../components/get-traffic-step.jsx":7,"../components/layout-step.jsx":8,"../components/site-title-step.jsx":9,"../components/stats-monitoring-step.jsx":10,"../constants/jetpack-start-constants":14,"../constants/jetpack-start-paths":15,"../dispatcher/app-dispatcher":16,"../utils/wp-ajax":21,"events":26,"object-assign":28}],20:[function(require,module,exports){
+},{"../actions/flash-actions":1,"../constants/jetpack-start-constants":15,"../constants/jetpack-start-paths":16,"../dispatcher/app-dispatcher":17,"../utils/wp-ajax":22,"events":27}],21:[function(require,module,exports){
 /*
  * Store which manages and persists site information
  */
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-start-constants'),
-  assign = require('object-assign');
+  JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
 
@@ -1343,6 +1361,12 @@ function setActiveTheme(activeThemeId) {
   } );
 }
 
+function setJetpackModuleActivated(slug) {
+  if ( _.indexOf( JPS.jetpack.active_modules, slug ) == -1 ) {
+    JPS.jetpack.active_modules.push(slug);  
+  }
+}
+
 function setLayout(layoutName) {
   layout = layoutName; // XXX TODO: get this value dynamically from the server!
 }
@@ -1351,7 +1375,7 @@ function setJetpackConfigured() {
   JPS.jetpack.configured = true
 }
 
-var SiteStore = assign({}, EventEmitter.prototype, {
+var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
   	return JPS.bloginfo.name;
@@ -1363,6 +1387,10 @@ var SiteStore = assign({}, EventEmitter.prototype, {
 
   getJetpackConfigured: function() {
     return JPS.jetpack.configured;
+  },
+
+  getJetpackModuleStatus: function(slug) {
+    return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
   },
 
   getLayout: function() {
@@ -1401,6 +1429,11 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
+    case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
+      setJetpackModuleActivated(action.slug);
+      SiteStore.emitChange();
+      break;
+
     case JPSConstants.SITE_SET_LAYOUT:
       setLayout(action.layout);
       SiteStore.emitChange();
@@ -1413,13 +1446,31 @@ AppDispatcher.register(function(action) {
 
 module.exports = SiteStore;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"events":26,"object-assign":28}],21:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../dispatcher/app-dispatcher":17,"events":27}],22:[function(require,module,exports){
+/*
+ * A simple wrapper for calls to WP's "ajaxurl".
+ *
+ * This exists because WP's wp_send_json_error doesn't actually send an error code, but rather
+ * a 200 OK response with a structure like this:
+ * {success: false, data: "something went wrong"}
+ *
+ * So this class smoothes the difference between 50x errors and WP's error object.
+ *
+ * For convenience, this returns a jQuery.Deferred object which can have .done() 
+ * and .fail() methods chained onto it, similar to jQuery.post's "success" and "fail"
+ *
+ * Also, it accepts an "action" param instead of a URL, since all WP ajax requests
+ * actually go via the same URL with different parameters, and it invokes callbacks with
+ * just the "data" portion of WP's ajax payload, rather than the whole structure.
+ * 
+ **/
+
 var WPAjax = (function() {
 
 	return {
 		post: function(action, payload) {
 			payload = typeof payload !== 'undefined' ? payload : {};
-			var data = assign(payload, {action: action, nonce: JPS.nonce});
+			var data = _.extend(payload, {action: action, nonce: JPS.nonce});
 			
 			var deferred = jQuery.Deferred();
 
@@ -1443,19 +1494,77 @@ var WPAjax = (function() {
 
 module.exports = WPAjax;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var React = require('react'),
-    WelcomeWidget = require('./components/welcome-widget.jsx');
+    WelcomeWidget = require('./components/welcome-widget.jsx'),
+    Paths = require('./constants/jetpack-start-paths'),
+    SetupProgressStore = require('./stores/setup-progress-store');
 
 module.exports = function() {
     jQuery(document).ready(function () {
+
+    	SetupProgressStore.init([
+			{
+			  name: "Sign up",
+			  completed: true,
+			  repeatable: false
+			},
+			{
+			  name: 'Create admin account',
+			  completed: true,
+			  repeatable: false
+			},
+			{
+			  name: 'Verify email address',
+			  completed: true,
+			  repeatable: false
+			},
+			{
+			  name: 'Site title',
+			  slug: Paths.SITE_TITLE_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/site-title-step.jsx')
+			},
+			{
+			  name: 'Pick a layout',
+			  slug: Paths.LAYOUT_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/layout-step.jsx')
+			},
+			{
+			  name: 'Stats & Monitoring',
+			  slug: Paths.STATS_MONITORING_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/stats-monitoring-step.jsx'),
+			},
+			{ 
+			  name: "Pick a design", 
+			  slug: Paths.DESIGN_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/design-step.jsx'), 
+			  themes: JPS.themes
+			},
+			{ 
+			  name: "Get some traffic", 
+			  slug: Paths.TRAFFIC_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/get-traffic-step.jsx') 
+			},
+			{ 
+			  name: "Advanced settings", 
+			  slug: Paths.ADVANCED_STEP_SLUG,
+			  repeatable: true,
+			  welcomeView: require('./components/advanced-settings-step.jsx')
+			}
+		]);
+
         React.render(
           React.createElement(WelcomeWidget, {}), document.getElementById('jps-welcome-panel')
         );
     });
 }
 
-},{"./components/welcome-widget.jsx":13,"react":29}],23:[function(require,module,exports){
+},{"./components/advanced-settings-step.jsx":4,"./components/design-step.jsx":5,"./components/get-traffic-step.jsx":7,"./components/layout-step.jsx":8,"./components/site-title-step.jsx":9,"./components/stats-monitoring-step.jsx":11,"./components/welcome-widget.jsx":14,"./constants/jetpack-start-paths":16,"./stores/setup-progress-store":20,"react":29}],24:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -1467,7 +1576,7 @@ module.exports = function() {
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":24}],24:[function(require,module,exports){
+},{"./lib/Dispatcher":25}],25:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1719,7 +1828,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":25}],25:[function(require,module,exports){
+},{"./invariant":26}],26:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1774,7 +1883,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2077,7 +2186,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -2131,34 +2240,6 @@ var keyMirror = function(obj) {
 };
 
 module.exports = keyMirror;
-
-},{}],28:[function(require,module,exports){
-'use strict';
-
-function ToObject(val) {
-	if (val == null) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-module.exports = Object.assign || function (target, source) {
-	var from;
-	var keys;
-	var to = ToObject(target);
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = arguments[s];
-		keys = Object.keys(Object(from));
-
-		for (var i = 0; i < keys.length; i++) {
-			to[keys[i]] = from[keys[i]];
-		}
-	}
-
-	return to;
-};
 
 },{}],29:[function(require,module,exports){
 (function (global){
@@ -21726,4 +21807,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[17]);
+},{}]},{},[18]);

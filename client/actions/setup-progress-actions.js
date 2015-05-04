@@ -57,7 +57,7 @@ module.exports = {
 	},
 
 	submitTrafficStep: function() {
-		SiteActions.configureJetpack().done(function() {
+		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG).done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.TRAFFIC_STEP_SLUG
@@ -66,7 +66,7 @@ module.exports = {
 	},
 
 	submitStatsMonitoringStep: function() {
-		SiteActions.configureJetpack().done(function() {
+		SiteActions.activateJetpackModule('stats').done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.STATS_MONITORING_STEP_SLUG

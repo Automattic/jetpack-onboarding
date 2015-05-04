@@ -18,6 +18,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
 			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
+			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 
 			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
@@ -30,8 +31,27 @@ class Jetpack_Start_EndPoints {
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
 
+		$jetpack_config = array();
+
+		if ( class_exists('Jetpack') ) {
+			$jetpack_config = array(
+				'plugin_active' => true,
+				'configured' => Jetpack::is_active(),
+				'jumpstart_modules' => Jetpack_Landing_Page::jumpstart_module_tag( 'Jumpstart' ),
+				'active_modules' => Jetpack::init()->get_active_modules()
+			);
+		} else {
+			$jetpack_config = array(
+				'plugin_active' => false,
+				'configured' => false,
+				'jumpstart_modules' => [],
+				'active_modules' => []
+			);
+		}
+
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
+
 			'bloginfo' => array(
 				'name' => get_bloginfo('name'),
 			),
@@ -40,19 +60,17 @@ class Jetpack_Start_EndPoints {
 				'set_title' => 'jps_set_title',
 				'set_layout' => 'jps_set_layout',
 				'set_theme' => 'jps_set_theme',
-				'configure_jetpack' => 'jps_configure_jetpack'
+				'configure_jetpack' => 'jps_configure_jetpack',
+				'activate_jetpack_modules' => 'jps_activate_jetpack_modules'
 			),
 
 			'step_actions' => array(
 				'complete' => 'jps_step_complete'
 			),
 
-			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
+			'jetpack' => $jetpack_config,
 
-			'jetpack' => array(
-				'plugin_active' => is_plugin_active('jetpack'),
-				'configured' => (is_plugin_active('jetpack') && Jetpack::is_active())
-			),
+			'themes' => wp_prepare_themes_for_js(),
 
 			'step_status' => $step_statuses,
 
@@ -70,6 +88,53 @@ class Jetpack_Start_EndPoints {
 				)
 			)
 		);
+	}
+
+	static function activate_jetpack_modules() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		
+		// shamelessly copied from class.jetpack.php
+		$module_slugs = $_REQUEST['modules'];
+		$module_slugs_filtered = Jetpack::init()->filter_default_modules( $module_slugs );
+
+		foreach ( $module_slugs_filtered as $module_slug ) {
+			Jetpack::log( 'activate', $module_slug );
+			Jetpack::activate_module( $module_slug, false, false );
+			Jetpack::state( 'message', 'no_message' );
+		}
+
+		self::set_default_publicize_config();
+
+		wp_send_json_success( $module_slugs_filtered );
+	}
+
+	// shamelessly copied from class.jetpack.php
+	static function set_default_publicize_config() {
+		// Set the default sharing buttons and set to display on posts if none have been set.
+		$sharing_services = get_option( 'sharing-services' );
+		$sharing_options  = get_option( 'sharing-options' );
+		if ( empty( $sharing_services['visible'] ) ) {
+			// Default buttons to set
+			$visible = array(
+				'twitter',
+				'facebook',
+				'google-plus-1',
+			);
+			$hidden = array();
+
+			// Set some sharing settings
+			$sharing = new Sharing_Service();
+			$sharing_options['global'] = array(
+				'button_style'  => 'icon',
+				'sharing_label' => $sharing->default_sharing_label,
+				'open_links'    => 'same',
+				'show'          => array( 'post' ),
+				'custom'        => isset( $sharing_options['global']['custom'] ) ? $sharing_options['global']['custom'] : array()
+			);
+
+			update_option( 'sharing-options', $sharing_options );
+			update_option( 'sharing-services', array( 'visible' => $visible, 'hidden' => $hidden ) );
+		}
 	}
 
 	static function step_complete() {
@@ -123,6 +188,9 @@ class Jetpack_Start_EndPoints {
 	// try to activate the plugin if necessary and kick off the jetpack connection flow
 	// in a single action (possibly in a dialog / iframe / something?)
 	static function configure_jetpack() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$return_to_step = $_REQUEST['return_to_step'];
+
 		if ( ! is_plugin_active('jetpack') ) {
 			activate_plugin('jetpack');
 		}
@@ -141,7 +209,7 @@ class Jetpack_Start_EndPoints {
 			(new Jetpack_Landing_Page())->add_actions();
 
 			// redirect to activate link
-			$connect_url = Jetpack::init()->build_connect_url( true, admin_url('index.php') );
+			$connect_url = Jetpack::init()->build_connect_url( true, admin_url('index.php#welcome/steps/'.$return_to_step) );
 
 			wp_send_json_success( array('next' => $connect_url) );
 		} else {

@@ -1,6 +1,8 @@
 var React = require('react'),
+	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
@@ -33,11 +35,6 @@ var DesignStep = React.createClass({
 		var themeId = $el.data('theme-id');
 
 		SetupProgressActions.submitDesignStep(themeId);
-	},
-
-	handleSkip: function (e) {
-		e.preventDefault();
-		SetupProgressActions.skipStep();
 	},
 
 	findTheme: function ( themeId )	{
@@ -111,7 +108,7 @@ var DesignStep = React.createClass({
 				<div style={{clear: 'both'}}></div>
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
-					<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>
+					<SkipButton />
 				</p>
 				{overlay}
 			</div>

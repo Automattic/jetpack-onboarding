@@ -34,7 +34,6 @@
     "underscore": "global:_"
   },
   "dependencies": {
-    "keymirror": "^0.1.1",
-    "object-assign": "^2.0.0"
+    "keymirror": "^0.1.1"
   }
 }

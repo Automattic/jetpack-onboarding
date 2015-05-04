@@ -4,8 +4,7 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-start-constants'),
-  assign = require('object-assign');
+  JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
 
@@ -25,6 +24,12 @@ function setActiveTheme(activeThemeId) {
   } );
 }
 
+function setJetpackModuleActivated(slug) {
+  if ( _.indexOf( JPS.jetpack.active_modules, slug ) == -1 ) {
+    JPS.jetpack.active_modules.push(slug);  
+  }
+}
+
 function setLayout(layoutName) {
   layout = layoutName; // XXX TODO: get this value dynamically from the server!
 }
@@ -33,7 +38,7 @@ function setJetpackConfigured() {
   JPS.jetpack.configured = true
 }
 
-var SiteStore = assign({}, EventEmitter.prototype, {
+var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
   	return JPS.bloginfo.name;
@@ -45,6 +50,10 @@ var SiteStore = assign({}, EventEmitter.prototype, {
 
   getJetpackConfigured: function() {
     return JPS.jetpack.configured;
+  },
+
+  getJetpackModuleStatus: function(slug) {
+    return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
   },
 
   getLayout: function() {
@@ -80,6 +89,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_JETPACK_CONFIGURED:
       setJetpackConfigured();
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
+      setJetpackModuleActivated(action.slug);
       SiteStore.emitChange();
       break;
 

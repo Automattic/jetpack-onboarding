@@ -2,7 +2,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
 	FlashActions = require('./flash-actions.js'),
-	assign = require('object-assign'),
 	WPAjax = require('../utils/wp-ajax');
 
 var SiteActions = {
@@ -60,8 +59,8 @@ var SiteActions = {
 			});
 	},
 
-	configureJetpack: function() {
-		return WPAjax.post( JPS.site_actions.configure_jetpack )
+	configureJetpack: function(return_to_step) {
+		return WPAjax.post( JPS.site_actions.configure_jetpack, {return_to_step: return_to_step} )
 			.done( function ( data ) {
 				FlashActions.notice("Jetpack Enabled");
 				AppDispatcher.dispatch({
@@ -75,6 +74,20 @@ var SiteActions = {
 				} 
 			}).fail( function (msg ) {
 				FlashActions.error("Error enabling Jetpack: "+msg);
+			});
+	},
+
+	activateJetpackModule: function(module_slug) {
+		return WPAjax.post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] })
+			.done( function ( data ) {
+				FlashActions.notice("Enabled "+module_slug);
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
+					slug: module_slug
+			    });
+
+			}).fail( function (msg ) {
+				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 	}
 };
