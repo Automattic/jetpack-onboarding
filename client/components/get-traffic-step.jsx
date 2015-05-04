@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+	SiteActions = require('../actions/site-actions'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
 	return {
@@ -29,7 +30,13 @@ var GetTrafficStep = React.createClass({
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		SiteActions.configureJetpack();
+		SetupProgressActions.submitTrafficStep();
+	},
+
+	handleNext: function (e) {
+		e.preventDefault();
+		
+		SetupProgressActions.selectNextStep();
 	},
 
 	render: function() {
@@ -52,7 +59,7 @@ var GetTrafficStep = React.createClass({
 					//XXX TODO: enable publicize
 					You have successfully connected Jetpack for stats, monitoring, and more!
 					<p className="submit">
-						<input type="submit" name="save" className="button button-primary button-large" value="Continue" />
+						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Continue" />
 					</p>
 				</div>
 			);

@@ -3,6 +3,7 @@ var keyMirror = require('keymirror');
 module.exports = keyMirror({
 	STEP_COMPLETE: null,
 	STEP_SELECT: null,
+	STEP_NEXT: null,
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
 	SITE_SAVE_TITLE: null,

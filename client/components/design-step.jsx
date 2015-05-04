@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+	SiteActions = require('../actions/site-actions'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes() };
@@ -29,10 +30,9 @@ var DesignStep = React.createClass({
 		e.stopPropagation();
 		
 		var $el = jQuery(e.currentTarget);
-		var activateUrl = $el.attr('href');
 		var themeId = $el.data('theme-id');
 
-		SiteActions.setActiveTheme( themeId, activateUrl );
+		SetupProgressActions.submitDesignStep(themeId);
 	},
 
 	findTheme: function ( themeId )	{
@@ -40,6 +40,9 @@ var DesignStep = React.createClass({
 	},
 
 	handleShowOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var $el   = jQuery(e.currentTarget),
 			theme = this.findTheme($el.data('theme-id'));
 		
@@ -47,10 +50,16 @@ var DesignStep = React.createClass({
 	},
 
 	handleCloseOverlay: function( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		this.setState({overlayTheme: null});
 	},
 
 	handlePreviousThemeOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
@@ -63,6 +72,9 @@ var DesignStep = React.createClass({
 	},
 
 	handleNextThemeOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
@@ -190,7 +202,7 @@ var DesignStep = React.createClass({
 			} else {
 				actions = (
 					<div>
-						<a className="button button-secondary activate" data-theme-id={theme.id} onClick={this.handleActivateTheme} href={_.unescape(theme.actions.activate)}>Activate</a>
+						<a className="button button-secondary activate" data-theme-id={theme.id} onClick={this.handleActivateTheme} href="#">Activate</a>
 						<a className="button button-primary load-customize hide-if-no-customize" href={_.unescape(theme.actions.customize)}>Live Preview</a>
 						<a className="button button-secondary hide-if-customize" href={_.unescape(theme.actions.preview)}>Preview</a>
 					</div>

@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
-	SiteStore = require('../stores/site-store');
+	SiteStore = require('../stores/site-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
 	return {
@@ -32,7 +33,7 @@ var LayoutStep = React.createClass({
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		SiteActions.setLayout(this.state.layout);
+		SetupProgressActions.submitLayoutStep(this.state.layout);
 	},
 
 	render: function() {

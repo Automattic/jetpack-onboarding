@@ -1,7 +1,9 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
-	FlashActions = require('./flash-actions.js');
+	FlashActions = require('./flash-actions.js'),
+	assign = require('object-assign'),
+	WPAjax = require('../utils/wp-ajax');
 
 var SiteActions = {
 	setTitle: function(title) {
@@ -18,94 +20,62 @@ var SiteActions = {
 			title: SiteStore.getTitle()
 		};
 		
-		jQuery.post( ajaxurl, data )
-			.success( function( response ) {
-				if ( ! response.success ) {
-					FlashActions.error("Error setting title: "+response.data);
-				} else {
-					FlashActions.notice("Saved title");
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_SAVE_TITLE,
-						title: title
-				    });
-				}
-			})
-			.fail( function() {
-				FlashActions.error("Failed to set title");
-			});	
+		return WPAjax.post( JPS.site_actions.set_title, { title: SiteStore.getTitle() } )
+			.done( function ( msg ) {
+				FlashActions.notice("Saved title");
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SAVE_TITLE,
+					title: title
+			    });
+			}).fail( function (msg ) {
+				FlashActions.error("Error setting title: "+msg);
+			});
 	},
 
-	setActiveTheme: function( themeId, activateUrl ) {
+	setActiveTheme: function( themeId ) {
 
-		jQuery.get( activateUrl )
-			.success( function () {
+		return WPAjax.post( JPS.site_actions.set_theme, { themeId: themeId } )
+			.done( function ( msg ) {
 				FlashActions.notice("Set theme to "+themeId);
-
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_SET_THEME,
 					themeId: themeId
 			    });
-			} )
-			.fail( function () {
-				FlashActions.error("Server error setting theme");
-			} ); 
+			}).fail( function ( msg ) {
+				FlashActions.error("Server error setting theme: "+msg);
+			});
 	},
 
 	setLayout: function( layoutName ) {
-		var data = {
-			action: JPS.site_actions.set_layout,
-			nonce: JPS.nonce,
-			layout: layoutName,
-			completed: true
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function( response ) { 
 
-				if ( ! response.success ) {
-					FlashActions.error("Error setting layout: "+response.data);
-				} else {
-					FlashActions.notice("Set layout to "+layoutName);
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_SET_LAYOUT,
-						layout: layoutName
-				    });
-				}
-
-			} )
-			.fail( function() {
-				FlashActions.error("Server error");
-			} );
+		return WPAjax.post( JPS.site_actions.set_layout, { layout: layoutName } )
+			.done( function ( msg ) {
+				FlashActions.notice("Set layout to "+layoutName);
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SET_LAYOUT,
+					layout: layoutName
+			    });
+			}).fail( function (msg ) {
+				FlashActions.error("Error setting layout: "+msg);
+			});
 	},
 
 	configureJetpack: function() {
-		var data = {
-			action: JPS.site_actions.configure_jetpack,
-			nonce: JPS.nonce
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function( response ) { 
+		return WPAjax.post( JPS.site_actions.configure_jetpack )
+			.done( function ( data ) {
+				FlashActions.notice("Jetpack Enabled");
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_JETPACK_CONFIGURED
+			    });
 
-				if ( ! response.success ) {
-					FlashActions.error("Error enabling Jetpack: "+response.data);
-					return;
-				}
-
-				if ( response.data.next ) {
-					window.location.replace(response.data.next); // no need to propagate response, this should redirect off the page...
-				} else {
-					FlashActions.notice("Jetpack Enabled");
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_JETPACK_CONFIGURED,
-						themeId: themeId
-				    });
-				}
-				
-			} )
-			.fail( function() {
-				FlashActions.error("Server error");
-			} );
+				if ( data.next ) {
+					//XXX TODO: make sure thing happens AFTER any other callbacks, 
+					// e.g. to save wizard state or post analytics
+					window.location.replace(data.next); // no need to propagate response, this should redirect off the page...
+				} 
+			}).fail( function (msg ) {
+				FlashActions.error("Error enabling Jetpack: "+msg);
+			});
 	}
 };
 

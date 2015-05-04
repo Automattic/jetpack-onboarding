@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
-	SiteStore = require('../stores/site-store');
+	SiteStore = require('../stores/site-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {
 	return {
@@ -32,7 +33,7 @@ var SiteTitleStep = React.createClass({
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-		SiteActions.saveTitle();
+		SetupProgressActions.submitTitleStep();
 	},
 
 	render: function() {

@@ -2,13 +2,15 @@
  * Store which manages and persists setup wizard progress
  */
 
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var JPSConstants = require('../constants/jetpack-start-constants');
-var assign = require('object-assign');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+  EventEmitter = require('events').EventEmitter,
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  Paths = require('../constants/jetpack-start-paths'),
+  assign = require('object-assign'),
+  WPAjax = require('../utils/wp-ajax'),
+  FlashActions = require('../actions/flash-actions');
 
-var CHANGE_EVENT = 'change',
-  TITLE_STEP_SLUG = 'title';
+var CHANGE_EVENT = 'change';
 
 //XXX TODO: maybe this should just be plain JSON
 var _steps = [
@@ -29,59 +31,72 @@ var _steps = [
   },
   {
     name: 'Site title',
-    slug: TITLE_STEP_SLUG,
-    completed: false,
+    slug: Paths.SITE_TITLE_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
   {
     name: 'Pick a layout',
-    slug: 'layout',
-    completed: false,
+    slug: Paths.LAYOUT_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/layout-step.jsx')
   },
   {
     name: 'Stats & Monitoring',
-    slug: 'stats-monitoring',
-    completed: false,
+    slug: Paths.STATS_MONITORING_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/stats-monitoring-step.jsx'),
   },
   { 
     name: "Pick a design", 
-    slug: 'design',
-    completed: false,
+    slug: Paths.DESIGN_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/design-step.jsx'), 
     themes: JPS.themes
   },
   { 
     name: "Get some traffic", 
-    slug: 'traffic',
-    completed: false,
+    slug: Paths.TRAFFIC_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/get-traffic-step.jsx') 
   },
   { 
     name: "Advanced settings", 
-    slug: 'advanced',
-    completed: false,
+    slug: Paths.ADVANCED_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/advanced-settings-step.jsx')
   }
 ];
 
+// set the completion status of each step from JPS.step_status hash
+_steps.forEach( function(step) {
+  if ( typeof step.completed == 'undefined' ) {
+    step.completed = JPS.step_status[step.slug] || false;  
+  }
+}); 
+
 // set location to first pending step, if not set
 ensureValidStepSlug();  
 
-
 function complete(step) {
-  getStepFromSlug(step).complete = true;
+
+  WPAjax.post(JPS.step_actions.complete, { step: step })
+    .done( function(data) {
+      //XXX TODO: set completion data from response
+      getStepFromSlug(step).completed = true;
+      selectNextPendingStep();
+    })
+    .fail( function(msg) {
+      FlashActions.error(msg);
+    });
 }
 
 function skip(step) {
 
+}
+
+function next(step) {
+  selectNextPendingStep();
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -192,19 +207,18 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
+    case JPSConstants.STEP_NEXT:
+      next(action.slug);
+      SetupProgressStore.emitChange();
+      break;
+
     case JPSConstants.STEP_COMPLETE:
-      complete(action.text);
+      complete(action.slug);
       SetupProgressStore.emitChange();
       break;
 
     case JPSConstants.STEP_SKIPPED:
       skip(action.text);
-      SetupProgressStore.emitChange();
-      break;
-
-    // actions triggered by step completion
-    case JPSConstants.SITE_SAVE_TITLE:
-      complete(TITLE_STEP_SLUG);
       SetupProgressStore.emitChange();
       break;
 

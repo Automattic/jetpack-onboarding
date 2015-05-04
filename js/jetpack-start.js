@@ -26,10 +26,12 @@ module.exports = {
 	}
 }
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15}],2:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16}],2:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
-	FlashActions = require('./flash-actions');
+	Paths = require('../constants/jetpack-start-paths'),
+	FlashActions = require('./flash-actions'),
+	SiteActions = require('./site-actions');
 
 module.exports = {
 	setCurrentStep: function(slug) {
@@ -38,14 +40,69 @@ module.exports = {
 	      actionType: JPSConstants.STEP_SELECT,
 	      slug: slug
 	    });
+	},
+
+	selectNextStep: function() {
+		FlashActions.unset();
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_NEXT,
+			slug: Paths.STATS_MONITORING_STEP_SLUG
+	    });
+	},
+
+	submitTitleStep: function() {
+		SiteActions.saveTitle().done(function() {
+			AppDispatcher.dispatch({
+		      actionType: JPSConstants.STEP_COMPLETE,
+		      slug: Paths.SITE_TITLE_STEP_SLUG
+		    });
+		});
+	},
+
+	submitLayoutStep: function(layout) {
+		SiteActions.setLayout(layout).done(function() {
+			AppDispatcher.dispatch({
+		      actionType: JPSConstants.STEP_COMPLETE,
+		      slug: Paths.LAYOUT_STEP_SLUG
+		    });
+		});
+	},
+
+	submitDesignStep: function(themeId) {
+		SiteActions.setActiveTheme(themeId).done(function() {
+			AppDispatcher.dispatch({
+		      actionType: JPSConstants.STEP_COMPLETE,
+		      slug: Paths.DESIGN_STEP_SLUG
+		    });
+		});	
+	},
+
+	submitTrafficStep: function() {
+		SiteActions.configureJetpack().done(function() {
+			AppDispatcher.dispatch({
+		      actionType: JPSConstants.STEP_COMPLETE,
+		      slug: Paths.TRAFFIC_STEP_SLUG
+		    });
+		});	
+	},
+
+	submitStatsMonitoringStep: function() {
+		SiteActions.configureJetpack().done(function() {
+			AppDispatcher.dispatch({
+		      actionType: JPSConstants.STEP_COMPLETE,
+		      slug: Paths.STATS_MONITORING_STEP_SLUG
+		    });
+		});	
 	}
 };
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"./flash-actions":1}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../constants/jetpack-start-paths":15,"../dispatcher/app-dispatcher":16,"./flash-actions":1,"./site-actions":3}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
-	FlashActions = require('./flash-actions.js');
+	FlashActions = require('./flash-actions.js'),
+	assign = require('object-assign'),
+	WPAjax = require('../utils/wp-ajax');
 
 var SiteActions = {
 	setTitle: function(title) {
@@ -62,100 +119,68 @@ var SiteActions = {
 			title: SiteStore.getTitle()
 		};
 		
-		jQuery.post( ajaxurl, data )
-			.success( function( response ) {
-				if ( ! response.success ) {
-					FlashActions.error("Error setting title: "+response.data);
-				} else {
-					FlashActions.notice("Saved title");
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_SAVE_TITLE,
-						title: title
-				    });
-				}
-			})
-			.fail( function() {
-				FlashActions.error("Failed to set title");
-			});	
+		return WPAjax.post( JPS.site_actions.set_title, { title: SiteStore.getTitle() } )
+			.done( function ( msg ) {
+				FlashActions.notice("Saved title");
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SAVE_TITLE,
+					title: title
+			    });
+			}).fail( function (msg ) {
+				FlashActions.error("Error setting title: "+msg);
+			});
 	},
 
-	setActiveTheme: function( themeId, activateUrl ) {
+	setActiveTheme: function( themeId ) {
 
-		jQuery.get( activateUrl )
-			.success( function () {
+		return WPAjax.post( JPS.site_actions.set_theme, { themeId: themeId } )
+			.done( function ( msg ) {
 				FlashActions.notice("Set theme to "+themeId);
-
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_SET_THEME,
 					themeId: themeId
 			    });
-			} )
-			.fail( function () {
-				FlashActions.error("Server error setting theme");
-			} ); 
+			}).fail( function ( msg ) {
+				FlashActions.error("Server error setting theme: "+msg);
+			});
 	},
 
 	setLayout: function( layoutName ) {
-		var data = {
-			action: JPS.site_actions.set_layout,
-			nonce: JPS.nonce,
-			layout: layoutName,
-			completed: true
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function( response ) { 
 
-				if ( ! response.success ) {
-					FlashActions.error("Error setting layout: "+response.data);
-				} else {
-					FlashActions.notice("Set layout to "+layoutName);
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_SET_LAYOUT,
-						layout: layoutName
-				    });
-				}
-
-			} )
-			.fail( function() {
-				FlashActions.error("Server error");
-			} );
+		return WPAjax.post( JPS.site_actions.set_layout, { layout: layoutName } )
+			.done( function ( msg ) {
+				FlashActions.notice("Set layout to "+layoutName);
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_SET_LAYOUT,
+					layout: layoutName
+			    });
+			}).fail( function (msg ) {
+				FlashActions.error("Error setting layout: "+msg);
+			});
 	},
 
 	configureJetpack: function() {
-		var data = {
-			action: JPS.site_actions.configure_jetpack,
-			nonce: JPS.nonce
-		};
-		
-		jQuery.post(ajaxurl, data)
-			.success( function( response ) { 
+		return WPAjax.post( JPS.site_actions.configure_jetpack )
+			.done( function ( data ) {
+				FlashActions.notice("Jetpack Enabled");
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_JETPACK_CONFIGURED
+			    });
 
-				if ( ! response.success ) {
-					FlashActions.error("Error enabling Jetpack: "+response.data);
-					return;
-				}
-
-				if ( response.data.next ) {
-					window.location.replace(response.data.next); // no need to propagate response, this should redirect off the page...
-				} else {
-					FlashActions.notice("Jetpack Enabled");
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.SITE_JETPACK_CONFIGURED,
-						themeId: themeId
-				    });
-				}
-				
-			} )
-			.fail( function() {
-				FlashActions.error("Server error");
-			} );
+				if ( data.next ) {
+					//XXX TODO: make sure thing happens AFTER any other callbacks, 
+					// e.g. to save wizard state or post analytics
+					window.location.replace(data.next); // no need to propagate response, this should redirect off the page...
+				} 
+			}).fail( function (msg ) {
+				FlashActions.error("Error enabling Jetpack: "+msg);
+			});
 	}
 };
 
 module.exports = SiteActions;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"../stores/site-store":19,"./flash-actions.js":1}],4:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"../stores/site-store":20,"../utils/wp-ajax":21,"./flash-actions.js":1,"object-assign":28}],4:[function(require,module,exports){
 var React = require('react');
 
 var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep",
@@ -194,10 +219,11 @@ var AdvancedSettingsStep = React.createClass({displayName: "AdvancedSettingsStep
 
 module.exports = AdvancedSettingsStep;
 
-},{"react":27}],5:[function(require,module,exports){
+},{"react":29}],5:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+	SiteActions = require('../actions/site-actions'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes() };
@@ -226,10 +252,9 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		e.stopPropagation();
 		
 		var $el = jQuery(e.currentTarget);
-		var activateUrl = $el.attr('href');
 		var themeId = $el.data('theme-id');
 
-		SiteActions.setActiveTheme( themeId, activateUrl );
+		SetupProgressActions.submitDesignStep(themeId);
 	},
 
 	findTheme: function ( themeId )	{
@@ -237,6 +262,9 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 	},
 
 	handleShowOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var $el   = jQuery(e.currentTarget),
 			theme = this.findTheme($el.data('theme-id'));
 		
@@ -244,10 +272,16 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 	},
 
 	handleCloseOverlay: function( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		this.setState({overlayTheme: null});
 	},
 
 	handlePreviousThemeOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
@@ -260,6 +294,9 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 	},
 
 	handleNextThemeOverlay: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
@@ -387,7 +424,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 			} else {
 				actions = (
 					React.createElement("div", null, 
-						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: _.unescape(theme.actions.activate)}, "Activate"), 
+						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: "#"}, "Activate"), 
 						React.createElement("a", {className: "button button-primary load-customize hide-if-no-customize", href: _.unescape(theme.actions.customize)}, "Live Preview"), 
 						React.createElement("a", {className: "button button-secondary hide-if-customize", href: _.unescape(theme.actions.preview)}, "Preview")
 					)
@@ -414,7 +451,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 module.exports = DesignStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],6:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],6:[function(require,module,exports){
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -451,10 +488,11 @@ var Flash = React.createClass({displayName: "Flash",
 
 module.exports = Flash;
 
-},{"../stores/flash-store":17,"react":27}],7:[function(require,module,exports){
+},{"../stores/flash-store":18,"react":29}],7:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+	SiteActions = require('../actions/site-actions'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
 	return {
@@ -483,7 +521,13 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		SiteActions.configureJetpack();
+		SetupProgressActions.submitTrafficStep();
+	},
+
+	handleNext: function (e) {
+		e.preventDefault();
+		
+		SetupProgressActions.selectNextStep();
 	},
 
 	render: function() {
@@ -506,7 +550,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 					"//XXX TODO: enable publicize" + ' ' +
 					"You have successfully connected Jetpack for stats, monitoring, and more!", 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Continue"})
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleNext, value: "Continue"})
 					)
 				)
 			);
@@ -523,10 +567,11 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],8:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],8:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
-	SiteStore = require('../stores/site-store');
+	SiteStore = require('../stores/site-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
 	return {
@@ -558,7 +603,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		SiteActions.setLayout(this.state.layout);
+		SetupProgressActions.submitLayoutStep(this.state.layout);
 	},
 
 	render: function() {
@@ -594,10 +639,11 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 
 module.exports = LayoutStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],9:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],9:[function(require,module,exports){
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
-	SiteStore = require('../stores/site-store');
+	SiteStore = require('../stores/site-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {
 	return {
@@ -629,7 +675,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-		SiteActions.saveTitle();
+		SetupProgressActions.submitTitleStep();
 	},
 
 	render: function() {
@@ -671,10 +717,11 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 
 module.exports = SiteTitleStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],10:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],10:[function(require,module,exports){
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions');
+	SiteActions = require('../actions/site-actions'),
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
 	return {
@@ -703,7 +750,13 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		SiteActions.configureJetpack();
+		SetupProgressActions.submitStatsMonitoringStep();
+	},
+
+	handleNext: function (e) {
+		e.preventDefault();
+		
+		SetupProgressActions.selectNextStep();
 	},
 
 	render: function() {
@@ -725,7 +778,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 				React.createElement("div", null, 
 					"You have successfully connected Jetpack for stats, monitoring, and more!", 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Continue"})
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleNext, value: "Continue"})
 					)
 				)
 			);
@@ -742,7 +795,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 module.exports = StatsMonitoringStep;
 
-},{"../actions/site-actions":3,"../stores/site-store":19,"react":27}],11:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":20,"react":29}],11:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions')
@@ -812,7 +865,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 
 module.exports = WelcomeMenu;
 
-},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":27}],12:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"./welcome-progress-bar.jsx":12,"react":29}],12:[function(require,module,exports){
 var React = require('react');
 
 /**
@@ -841,7 +894,7 @@ var ProgressBar = React.createClass({displayName: "ProgressBar",
 
 module.exports = ProgressBar;
 
-},{"react":27}],13:[function(require,module,exports){
+},{"react":29}],13:[function(require,module,exports){
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
@@ -861,7 +914,6 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 	},
 
 	_onChange: function() {
-		console.log('wizard change');
     	this.setState(getSetupProgress());
   	},
 
@@ -898,12 +950,13 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 
 module.exports = WelcomeWidget;
 
-},{"../stores/setup-progress-store":18,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":27}],14:[function(require,module,exports){
+},{"../stores/setup-progress-store":19,"./flash.jsx":6,"./welcome-menu.jsx":11,"react":29}],14:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
 	STEP_COMPLETE: null,
 	STEP_SELECT: null,
+	STEP_NEXT: null,
 	STEP_SKIPPED: null,
 	SITE_SET_TITLE: null,
 	SITE_SAVE_TITLE: null,
@@ -917,7 +970,18 @@ module.exports = keyMirror({
 	FLASH_SEVERITY_ERROR: null
 });
 
-},{"keymirror":25}],15:[function(require,module,exports){
+},{"keymirror":27}],15:[function(require,module,exports){
+module.exports = {
+	// steps
+	SITE_TITLE_STEP_SLUG: 'title',
+	LAYOUT_STEP_SLUG: 'layout',
+	TRAFFIC_STEP_SLUG: 'traffic',
+	STATS_MONITORING_STEP_SLUG: 'stats-monitoring',
+	DESIGN_STEP_SLUG: 'design',
+	ADVANCED_STEP_SLUG: 'advanced',
+}
+
+},{}],16:[function(require,module,exports){
 /*
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -935,12 +999,12 @@ var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
-},{"flux":21}],16:[function(require,module,exports){
+},{"flux":23}],17:[function(require,module,exports){
 var WelcomePanel = require('./welcome-panel');
 
 WelcomePanel();
 
-},{"./welcome-panel":20}],17:[function(require,module,exports){
+},{"./welcome-panel":22}],18:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter;
 	JPSConstants = require('../constants/jetpack-start-constants'),
@@ -992,18 +1056,20 @@ AppDispatcher.register(function(action) {
 
 module.exports = FlashStore;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],18:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"events":26,"object-assign":28}],19:[function(require,module,exports){
 /*
  * Store which manages and persists setup wizard progress
  */
 
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var JPSConstants = require('../constants/jetpack-start-constants');
-var assign = require('object-assign');
+var AppDispatcher = require('../dispatcher/app-dispatcher'),
+  EventEmitter = require('events').EventEmitter,
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  Paths = require('../constants/jetpack-start-paths'),
+  assign = require('object-assign'),
+  WPAjax = require('../utils/wp-ajax'),
+  FlashActions = require('../actions/flash-actions');
 
-var CHANGE_EVENT = 'change',
-  TITLE_STEP_SLUG = 'title';
+var CHANGE_EVENT = 'change';
 
 //XXX TODO: maybe this should just be plain JSON
 var _steps = [
@@ -1024,59 +1090,72 @@ var _steps = [
   },
   {
     name: 'Site title',
-    slug: TITLE_STEP_SLUG,
-    completed: false,
+    slug: Paths.SITE_TITLE_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/site-title-step.jsx')
   },
   {
     name: 'Pick a layout',
-    slug: 'layout',
-    completed: false,
+    slug: Paths.LAYOUT_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/layout-step.jsx')
   },
   {
     name: 'Stats & Monitoring',
-    slug: 'stats-monitoring',
-    completed: false,
+    slug: Paths.STATS_MONITORING_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/stats-monitoring-step.jsx'),
   },
   { 
     name: "Pick a design", 
-    slug: 'design',
-    completed: false,
+    slug: Paths.DESIGN_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/design-step.jsx'), 
     themes: JPS.themes
   },
   { 
     name: "Get some traffic", 
-    slug: 'traffic',
-    completed: false,
+    slug: Paths.TRAFFIC_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/get-traffic-step.jsx') 
   },
   { 
     name: "Advanced settings", 
-    slug: 'advanced',
-    completed: false,
+    slug: Paths.ADVANCED_STEP_SLUG,
     repeatable: true,
     welcomeView: require('../components/advanced-settings-step.jsx')
   }
 ];
 
+// set the completion status of each step from JPS.step_status hash
+_steps.forEach( function(step) {
+  if ( typeof step.completed == 'undefined' ) {
+    step.completed = JPS.step_status[step.slug] || false;  
+  }
+}); 
+
 // set location to first pending step, if not set
 ensureValidStepSlug();  
 
-
 function complete(step) {
-  getStepFromSlug(step).complete = true;
+
+  WPAjax.post(JPS.step_actions.complete, { step: step })
+    .done( function(data) {
+      //XXX TODO: set completion data from response
+      getStepFromSlug(step).completed = true;
+      selectNextPendingStep();
+    })
+    .fail( function(msg) {
+      FlashActions.error(msg);
+    });
 }
 
 function skip(step) {
 
+}
+
+function next(step) {
+  selectNextPendingStep();
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -1187,19 +1266,18 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
+    case JPSConstants.STEP_NEXT:
+      next(action.slug);
+      SetupProgressStore.emitChange();
+      break;
+
     case JPSConstants.STEP_COMPLETE:
-      complete(action.text);
+      complete(action.slug);
       SetupProgressStore.emitChange();
       break;
 
     case JPSConstants.STEP_SKIPPED:
       skip(action.text);
-      SetupProgressStore.emitChange();
-      break;
-
-    // actions triggered by step completion
-    case JPSConstants.SITE_SAVE_TITLE:
-      complete(TITLE_STEP_SLUG);
       SetupProgressStore.emitChange();
       break;
 
@@ -1210,7 +1288,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = SetupProgressStore;
 
-},{"../components/advanced-settings-step.jsx":4,"../components/design-step.jsx":5,"../components/get-traffic-step.jsx":7,"../components/layout-step.jsx":8,"../components/site-title-step.jsx":9,"../components/stats-monitoring-step.jsx":10,"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],19:[function(require,module,exports){
+},{"../actions/flash-actions":1,"../components/advanced-settings-step.jsx":4,"../components/design-step.jsx":5,"../components/get-traffic-step.jsx":7,"../components/layout-step.jsx":8,"../components/site-title-step.jsx":9,"../components/stats-monitoring-step.jsx":10,"../constants/jetpack-start-constants":14,"../constants/jetpack-start-paths":15,"../dispatcher/app-dispatcher":16,"../utils/wp-ajax":21,"events":26,"object-assign":28}],20:[function(require,module,exports){
 /*
  * Store which manages and persists site information
  */
@@ -1308,7 +1386,37 @@ AppDispatcher.register(function(action) {
 
 module.exports = SiteStore;
 
-},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":15,"events":24,"object-assign":26}],20:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":14,"../dispatcher/app-dispatcher":16,"events":26,"object-assign":28}],21:[function(require,module,exports){
+var WPAjax = (function() {
+
+	return {
+		post: function(action, payload) {
+			payload = typeof payload !== 'undefined' ? payload : {};
+			var data = assign(payload, {action: action, nonce: JPS.nonce});
+			
+			var deferred = jQuery.Deferred();
+
+			jQuery.post( ajaxurl, data )
+				.success( function( response ) {
+					if ( ! response.success ) {
+						deferred.reject(response.data);
+					} else {
+						deferred.resolve(response.data);
+					}
+				})
+				.fail( function() {
+					deferred.reject("Server error");
+				});	
+
+			return deferred;
+		}
+	}
+
+})();
+
+module.exports = WPAjax;
+
+},{}],22:[function(require,module,exports){
 var React = require('react'),
     WelcomeWidget = require('./components/welcome-widget.jsx');
 
@@ -1320,7 +1428,7 @@ module.exports = function() {
     });
 }
 
-},{"./components/welcome-widget.jsx":13,"react":27}],21:[function(require,module,exports){
+},{"./components/welcome-widget.jsx":13,"react":29}],23:[function(require,module,exports){
 /**
  * Copyright (c) 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -1332,7 +1440,7 @@ module.exports = function() {
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":22}],22:[function(require,module,exports){
+},{"./lib/Dispatcher":24}],24:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1584,7 +1692,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":23}],23:[function(require,module,exports){
+},{"./invariant":25}],25:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -1639,7 +1747,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1942,7 +2050,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -1997,7 +2105,7 @@ var keyMirror = function(obj) {
 
 module.exports = keyMirror;
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -2025,7 +2133,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (global){
 /**
  * React v0.13.2
@@ -21591,4 +21699,4 @@ module.exports = warning;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[16]);
+},{}]},{},[17]);

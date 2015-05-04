@@ -1,6 +1,7 @@
 <?php
 class Jetpack_Start_EndPoints { 
 	const AJAX_NONCE = 'jps-ajax';
+	const STEP_STATUS_KEY = 'jps_step_statuses';
 
 	static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -15,7 +16,10 @@ class Jetpack_Start_EndPoints {
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
+			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
+			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
+
 			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
@@ -24,6 +28,8 @@ class Jetpack_Start_EndPoints {
 	// so in the meantime I'm trying to make it map closest to the conceptual model of WordPress itself, rather than the
 	// currently-implemented React components
 	static function js_vars() {
+		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
+
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 			'bloginfo' => array(
@@ -33,7 +39,12 @@ class Jetpack_Start_EndPoints {
 			'site_actions' => array(
 				'set_title' => 'jps_set_title',
 				'set_layout' => 'jps_set_layout',
+				'set_theme' => 'jps_set_theme',
 				'configure_jetpack' => 'jps_configure_jetpack'
+			),
+
+			'step_actions' => array(
+				'complete' => 'jps_step_complete'
 			),
 
 			'themes' => wp_prepare_themes_for_js(),//\JetpackStart\EndPoints::get_themes(),
@@ -43,9 +54,15 @@ class Jetpack_Start_EndPoints {
 				'configured' => (is_plugin_active('jetpack') && Jetpack::is_active())
 			),
 
+			'step_status' => $step_statuses,
+
 			'steps' => array(
-				'set_title' => array('url_action' => 'jps_set_title'),
-				'set_layout' => array('url_action' => 'jps_set_layout'),
+				'set_title' => array(
+					'completed' => ($step_statuses['title'] == true), 
+				),
+				'set_layout' => array(
+					'completed' => ($step_statuses['layout'] == true), 
+				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -55,10 +72,19 @@ class Jetpack_Start_EndPoints {
 		);
 	}
 
+	static function step_complete() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$step = $_REQUEST['step'];
+		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
+		$step_statuses[$step] = true;
+		update_option( self::STEP_STATUS_KEY, $step_statuses );
+		wp_send_json_success( $step_statuses );
+	}
+
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		$title = esc_html( $_REQUEST['title'] );
-		if ( update_option( 'blogname', $title ) ) {
+		if ( get_option( 'blogname' ) === $title || update_option( 'blogname', $title ) ) {
 			wp_send_json_success( $title );
 		} else {
 			wp_send_json_error();
@@ -78,6 +104,20 @@ class Jetpack_Start_EndPoints {
 		} else {
 			wp_send_json_error('Unknown layout type: '.$layout);
 		}
+	}
+
+	static function set_theme() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$theme_id = $_REQUEST['themeId'];
+		$theme = wp_get_theme( $theme_id );
+		if ( ! $theme->exists() )
+			wp_send_json_error('Theme does not exist: '.$theme_id);
+		elseif ( ! $theme->is_allowed() ) {
+			wp_send_json_error('Action not permitted for '.$theme_id);
+		}
+
+		switch_theme( $theme->get_stylesheet() );
+		wp_send_json_success( $theme_id );
 	}
 
 	// try to activate the plugin if necessary and kick off the jetpack connection flow
