@@ -21,14 +21,9 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
-
-			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
 		}
 	}
 
-	// this is quite coupled right now to the implementation - it would be nice to componentise it, but I'm not sure how
-	// so in the meantime I'm trying to make it map closest to the conceptual model of WordPress itself, rather than the
-	// currently-implemented React components
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
 
@@ -77,12 +72,6 @@ class Jetpack_Start_EndPoints {
 			'step_status' => $step_statuses,
 
 			'steps' => array(
-				'set_title' => array(
-					'completed' => ($step_statuses['title'] == true), 
-				),
-				'set_layout' => array(
-					'completed' => ($step_statuses['layout'] == true), 
-				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
