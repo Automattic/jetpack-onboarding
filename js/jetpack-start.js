@@ -52,6 +52,14 @@ var SetupProgressActions = {
 	    });
 	},
 
+	completeAndNextStep: function(slug) {
+		FlashActions.unset();
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE,
+	      slug: slug
+	    });
+	},
+
 	// mark current step as skipped and move on
 	skipStep: function() {
 		FlashActions.unset();
@@ -85,6 +93,13 @@ var SetupProgressActions = {
 		      slug: Paths.DESIGN_STEP_SLUG
 		    });
 		});	
+	},
+
+	saveDesignStep: function() {
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE,
+	      slug: Paths.DESIGN_STEP_SLUG
+	    });
 	},
 
 	submitTrafficStep: function() {
@@ -274,7 +289,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		return getThemeState();
 	},
 
-	handleActivateTheme: function( e ) {
+	handleActivateTheme: function ( e ) {
 		e.preventDefault();
 		e.stopPropagation();
 		
@@ -286,6 +301,11 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 	findTheme: function ( themeId )	{
 		return _.findWhere(this.state.themes, {id: themeId});
+	},
+
+	handleSave: function ( e ) {
+		e.preventDefault();
+		SetupProgressActions.saveDesignStep();
 	},
 
 	handleCustomize: function ( e ) {
@@ -370,7 +390,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				
 				React.createElement("div", {style: {clear: 'both'}}), 
 				React.createElement("p", {className: "submit"}, 
-					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
+					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleSave, value: "Save"}), 
 					React.createElement(SkipButton, null)
 				), 
 				overlay
@@ -588,7 +608,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 	handleNext: function (e) {
 		e.preventDefault();
 		
-		SetupProgressActions.selectNextStep();
+		SetupProgressActions.completeAndNextStep(Paths.TRAFFIC_STEP_SLUG);
 	},
 
 	render: function() {
@@ -889,7 +909,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 	handleNext: function (e) {
 		e.preventDefault();
 
-		SetupProgressActions.selectNextStep();
+		SetupProgressActions.completeAndNextStep(Paths.STATS_MONITORING_STEP_SLUG);
 	},
 
 	render: function() {

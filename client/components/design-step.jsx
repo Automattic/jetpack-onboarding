@@ -25,7 +25,7 @@ var DesignStep = React.createClass({
 		return getThemeState();
 	},
 
-	handleActivateTheme: function( e ) {
+	handleActivateTheme: function ( e ) {
 		e.preventDefault();
 		e.stopPropagation();
 		
@@ -37,6 +37,11 @@ var DesignStep = React.createClass({
 
 	findTheme: function ( themeId )	{
 		return _.findWhere(this.state.themes, {id: themeId});
+	},
+
+	handleSave: function ( e ) {
+		e.preventDefault();
+		SetupProgressActions.saveDesignStep();
 	},
 
 	handleCustomize: function ( e ) {
@@ -121,7 +126,7 @@ var DesignStep = React.createClass({
 				
 				<div style={{clear: 'both'}}></div>
 				<p className="submit">
-					<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
+					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleSave} value="Save"/>
 					<SkipButton />
 				</p>
 				{overlay}

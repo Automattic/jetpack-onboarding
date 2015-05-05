@@ -21,6 +21,14 @@ var SetupProgressActions = {
 	    });
 	},
 
+	completeAndNextStep: function(slug) {
+		FlashActions.unset();
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE,
+	      slug: slug
+	    });
+	},
+
 	// mark current step as skipped and move on
 	skipStep: function() {
 		FlashActions.unset();
@@ -54,6 +62,13 @@ var SetupProgressActions = {
 		      slug: Paths.DESIGN_STEP_SLUG
 		    });
 		});	
+	},
+
+	saveDesignStep: function() {
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE,
+	      slug: Paths.DESIGN_STEP_SLUG
+	    });
 	},
 
 	submitTrafficStep: function() {

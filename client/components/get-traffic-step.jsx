@@ -45,7 +45,7 @@ var GetTrafficStep = React.createClass({
 	handleNext: function (e) {
 		e.preventDefault();
 		
-		SetupProgressActions.selectNextStep();
+		SetupProgressActions.completeAndNextStep(Paths.TRAFFIC_STEP_SLUG);
 	},
 
 	render: function() {

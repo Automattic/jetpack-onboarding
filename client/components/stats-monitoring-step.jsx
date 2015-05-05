@@ -45,7 +45,7 @@ var StatsMonitoringStep = React.createClass({
 	handleNext: function (e) {
 		e.preventDefault();
 
-		SetupProgressActions.selectNextStep();
+		SetupProgressActions.completeAndNextStep(Paths.STATS_MONITORING_STEP_SLUG);
 	},
 
 	render: function() {

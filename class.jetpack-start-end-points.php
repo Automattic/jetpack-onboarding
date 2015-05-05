@@ -33,14 +33,14 @@ class Jetpack_Start_EndPoints {
 			$jetpack_config = array(
 				'plugin_active' => true,
 				'configured' => Jetpack::is_active(),
-				'jumpstart_modules' => Jetpack_Landing_Page::jumpstart_module_tag( 'Jumpstart' ),
-				'active_modules' => Jetpack::init()->get_active_modules()
+				// 'jumpstart_modules' => Jetpack_Landing_Page::jumpstart_module_tag( 'Jumpstart' ),
+				'active_modules' => array_values(Jetpack::init()->get_active_modules())
 			);
 		} else {
 			$jetpack_config = array(
 				'plugin_active' => false,
 				'configured' => false,
-				'jumpstart_modules' => [],
+				// 'jumpstart_modules' => [],
 				'active_modules' => []
 			);
 		}
