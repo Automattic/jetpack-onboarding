@@ -250,8 +250,6 @@ module.exports = AdvancedSettingsStep;
 var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
@@ -314,7 +312,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
-			if ( theme == this.state.overlayTheme ) {
+			if ( theme === this.state.overlayTheme ) {
 				this.setState({overlayTheme: prevTheme});
 				return;
 			}
@@ -329,7 +327,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
-			if ( prevTheme == this.state.overlayTheme ) {
+			if ( prevTheme === this.state.overlayTheme ) {
 				this.setState({overlayTheme: theme});
 				return;
 			}
@@ -480,7 +478,16 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 module.exports = DesignStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/setup-progress-store":20,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],6:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],6:[function(require,module,exports){
+/**
+ * Displays a flash message, if set.
+ * JSON structure:
+ * { severity: 'notice', message: 'My message' }
+ *
+ * Valid severities:
+ * - error, notice
+ */
+
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
@@ -522,6 +529,7 @@ var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
+	Paths = require('../constants/jetpack-start-paths'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
@@ -616,7 +624,7 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 module.exports = GetTrafficStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],8:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../constants/jetpack-start-paths":16,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],8:[function(require,module,exports){
 var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
@@ -1073,7 +1081,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 					currentView
 				), 
 
-				React.createElement(WelcomeMenu, {currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progress})
+				React.createElement(WelcomeMenu, {currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent})
 			)
     	);
 	}
@@ -1207,9 +1215,18 @@ var _steps;
 function setSteps(steps) {
   // set the completion status of each step from JPS.step_status hash
   steps.forEach( function(step) {
+    // default values for skipped and completed
     if ( typeof step.completed == 'undefined' ) {
-      step.skipped = false;
-      step.completed = JPS.step_status[step.slug] || false;  
+      step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
+    }
+
+    if ( typeof step.skipped == 'undefined' ) {
+      step.skipped = (JPS.step_status[step.slug] && JPS.step_status[step.slug].skipped) || false;  
+    }
+
+    // default value for includeInProgress
+    if ( typeof step.includeInProgress == 'undefined') {
+      step.includeInProgress = true;
     }
   }); 
   
@@ -1219,28 +1236,43 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function complete(step) {
+function complete(stepSlug) {
 
-  if ( ! getStepFromSlug(step).completed ) {
-    WPAjax.post(JPS.step_actions.complete, { step: step })
-      .done( function(data) {
+  var step = getStepFromSlug(stepSlug);
+
+  if ( ! step.completed ) {
+    WPAjax.
+      post(JPS.step_actions.complete, { step: stepSlug }).
+      done( function(data) {
         //XXX TODO: set completion data from response
-        getStepFromSlug(step).completed = true;
+        step.completed = true;
+        step.skipped = false;
         selectNextPendingStep();
-      })
-      .fail( function(msg) {
+      }).
+      fail( function(msg) {
         FlashActions.error(msg);
-      });  
+      }).
+      always( function() { SetupProgressStore.emitChange(); } );  
   }
 }
 
 function skip() {
-  getStepFromSlug( currentStepSlug() ).skipped = true;
-  next();
-}
+  var stepSlug = currentStepSlug();
+  var step = getStepFromSlug(stepSlug);
 
-function next() {
-  selectNextPendingStep();
+  if ( ! step.skipped ) {
+    WPAjax.
+      post(JPS.step_actions.skip, { step: stepSlug }).
+      done( function(data) {
+        //XXX TODO: set completion data from response
+        step.skipped = true;
+        selectNextPendingStep();
+      }).
+      fail( function(msg) {
+        FlashActions.error(msg);
+      }).
+      always( function() { SetupProgressStore.emitChange(); } );  
+  }
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -1310,11 +1342,11 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getProgressPercent: function() {
-  	var numSteps = _steps.length;
-    var completedSteps = _.where(_steps, {completed: true}).length;
+  	var numSteps = _.where(_steps, {includeInProgress: true}).length;
+    var completedSteps = _.where(_steps, {includeInProgress: true, completed: true}).length;
     var percentComplete = (completedSteps / numSteps) * 100;
-
-    return Math.round(percentComplete / 10) * 10;
+    var output = Math.round(percentComplete / 10) * 10;
+    return output;
   },
 
   addChangeListener: function(callback) {
@@ -1342,7 +1374,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.STEP_NEXT:
-      next();
+      selectNextPendingStep();
       SetupProgressStore.emitChange();
       break;
 
@@ -1583,7 +1615,8 @@ module.exports = function() {
 			  name: "Advanced settings", 
 			  slug: Paths.ADVANCED_STEP_SLUG,
 			  repeatable: true,
-			  welcomeView: require('./components/advanced-settings-step.jsx')
+			  welcomeView: require('./components/advanced-settings-step.jsx'),
+			  includeInProgress: false
 			}
 		]);
 

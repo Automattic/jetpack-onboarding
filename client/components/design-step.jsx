@@ -1,8 +1,6 @@
 var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getThemeState() {
@@ -65,7 +63,7 @@ var DesignStep = React.createClass({
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
-			if ( theme == this.state.overlayTheme ) {
+			if ( theme === this.state.overlayTheme ) {
 				this.setState({overlayTheme: prevTheme});
 				return;
 			}
@@ -80,7 +78,7 @@ var DesignStep = React.createClass({
 		var prevTheme = null;
 
 		this.state.themes.forEach( function ( theme ) {
-			if ( prevTheme == this.state.overlayTheme ) {
+			if ( prevTheme === this.state.overlayTheme ) {
 				this.setState({overlayTheme: theme});
 				return;
 			}

@@ -17,9 +17,18 @@ var _steps;
 function setSteps(steps) {
   // set the completion status of each step from JPS.step_status hash
   steps.forEach( function(step) {
+    // default values for skipped and completed
     if ( typeof step.completed == 'undefined' ) {
-      step.skipped = false;
-      step.completed = JPS.step_status[step.slug] || false;  
+      step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
+    }
+
+    if ( typeof step.skipped == 'undefined' ) {
+      step.skipped = (JPS.step_status[step.slug] && JPS.step_status[step.slug].skipped) || false;  
+    }
+
+    // default value for includeInProgress
+    if ( typeof step.includeInProgress == 'undefined') {
+      step.includeInProgress = true;
     }
   }); 
   
@@ -29,28 +38,43 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function complete(step) {
+function complete(stepSlug) {
 
-  if ( ! getStepFromSlug(step).completed ) {
-    WPAjax.post(JPS.step_actions.complete, { step: step })
-      .done( function(data) {
+  var step = getStepFromSlug(stepSlug);
+
+  if ( ! step.completed ) {
+    WPAjax.
+      post(JPS.step_actions.complete, { step: stepSlug }).
+      done( function(data) {
         //XXX TODO: set completion data from response
-        getStepFromSlug(step).completed = true;
+        step.completed = true;
+        step.skipped = false;
         selectNextPendingStep();
-      })
-      .fail( function(msg) {
+      }).
+      fail( function(msg) {
         FlashActions.error(msg);
-      });  
+      }).
+      always( function() { SetupProgressStore.emitChange(); } );  
   }
 }
 
 function skip() {
-  getStepFromSlug( currentStepSlug() ).skipped = true;
-  next();
-}
+  var stepSlug = currentStepSlug();
+  var step = getStepFromSlug(stepSlug);
 
-function next() {
-  selectNextPendingStep();
+  if ( ! step.skipped ) {
+    WPAjax.
+      post(JPS.step_actions.skip, { step: stepSlug }).
+      done( function(data) {
+        //XXX TODO: set completion data from response
+        step.skipped = true;
+        selectNextPendingStep();
+      }).
+      fail( function(msg) {
+        FlashActions.error(msg);
+      }).
+      always( function() { SetupProgressStore.emitChange(); } );  
+  }
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -120,11 +144,11 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getProgressPercent: function() {
-  	var numSteps = _steps.length;
-    var completedSteps = _.where(_steps, {completed: true}).length;
+  	var numSteps = _.where(_steps, {includeInProgress: true}).length;
+    var completedSteps = _.where(_steps, {includeInProgress: true, completed: true}).length;
     var percentComplete = (completedSteps / numSteps) * 100;
-
-    return Math.round(percentComplete / 10) * 10;
+    var output = Math.round(percentComplete / 10) * 10;
+    return output;
   },
 
   addChangeListener: function(callback) {
@@ -152,7 +176,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.STEP_NEXT:
-      next();
+      selectNextPendingStep();
       SetupProgressStore.emitChange();
       break;
 

@@ -46,7 +46,7 @@ var WelcomeWidget = React.createClass({
 					{currentView}
 				</div>
 
-				<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progress}/>
+				<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 			</div>
     	);
 	}

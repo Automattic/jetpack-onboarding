@@ -57,7 +57,8 @@ module.exports = function() {
 			  name: "Advanced settings", 
 			  slug: Paths.ADVANCED_STEP_SLUG,
 			  repeatable: true,
-			  welcomeView: require('./components/advanced-settings-step.jsx')
+			  welcomeView: require('./components/advanced-settings-step.jsx'),
+			  includeInProgress: false
 			}
 		]);
 

@@ -19,6 +19,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
+			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 
 			// add_action( 'wp_ajax_jps_change_theme', array( __CLASS__, 'change_theme' ) );
@@ -65,6 +66,7 @@ class Jetpack_Start_EndPoints {
 			),
 
 			'step_actions' => array(
+				'skip' => 'jps_step_skip',
 				'complete' => 'jps_step_complete'
 			),
 
@@ -137,13 +139,30 @@ class Jetpack_Start_EndPoints {
 		}
 	}
 
+	static function step_skip() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		
+		$result = self::update_step_status($_REQUEST['step'], 'skipped', true);
+
+		wp_send_json_success( $result );
+	}
+
 	static function step_complete() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		$step = $_REQUEST['step'];
+		
+		self::update_step_status($_REQUEST['step'], 'completed', true);
+		
+		$result = self::update_step_status($_REQUEST['step'], 'skipped', false);
+
+		wp_send_json_success( $result );
+	}
+
+	static function update_step_status($step, $field, $value) {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
-		$step_statuses[$step] = true;
+		$step_statuses[$step] = ($step_statuses[$step] || array());
+		$step_statuses[$step][$field] = $value;
 		update_option( self::STEP_STATUS_KEY, $step_statuses );
-		wp_send_json_success( $step_statuses );
+		return $step_statuses;
 	}
 
 	static function set_title() {

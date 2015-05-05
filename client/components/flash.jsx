@@ -1,3 +1,12 @@
+/**
+ * Displays a flash message, if set.
+ * JSON structure:
+ * { severity: 'notice', message: 'My message' }
+ *
+ * Valid severities:
+ * - error, notice
+ */
+
 var React = require('react'),
 	FlashStore = require('../stores/flash-store');
 
