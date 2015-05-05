@@ -148,7 +148,9 @@ class Jetpack_Start_EndPoints {
 
 	static function update_step_status($step, $field, $value) {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
-		$step_statuses[$step] = ($step_statuses[$step] || array());
+		if( ! array_key_exists( $step, $step_statuses ) ) {
+			$step_statuses[$step] = array();	
+		}
 		$step_statuses[$step][$field] = $value;
 		update_option( self::STEP_STATUS_KEY, $step_statuses );
 		return $step_statuses;
