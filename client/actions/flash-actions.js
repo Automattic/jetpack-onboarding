@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants');
 
-module.exports = {
+var FlashActions = {
 	notice: function(msg) {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SET_FLASH,
@@ -23,4 +23,6 @@ module.exports = {
 			actionType: JPSConstants.UNSET_FLASH
 		});
 	}
-}
+};
+
+module.exports = FlashActions;

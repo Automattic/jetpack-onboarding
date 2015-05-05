@@ -4,7 +4,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions');
 
-module.exports = {
+var SetupProgressActions = {
 	setCurrentStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({
@@ -74,3 +74,5 @@ module.exports = {
 		});	
 	}
 };
+
+module.exports = SetupProgressActions;
