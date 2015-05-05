@@ -6,7 +6,8 @@ var React = require('react'),
 
 function getJetpackState() {
 	return {
-		jetpackConfigured: SiteStore.getJetpackConfigured()
+		jetpackConfigured: SiteStore.getJetpackConfigured(),
+		publicizeModuleEnabled: SiteStore.getJetpackModuleStatus('publicize')
 	};
 }
 
@@ -31,6 +32,12 @@ var GetTrafficStep = React.createClass({
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
+		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG);
+	},
+
+	handleEnablePublicize: function (e) {
+		e.preventDefault();
+
 		SetupProgressActions.submitTrafficStep();
 	},
 
@@ -45,10 +52,21 @@ var GetTrafficStep = React.createClass({
 
 		if ( ! this.state.jetpackConfigured ) {
 			component = (
-				<div className="welcome__connect">
+				<div>
 					Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!
 					<br /><br />
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
+					<p className="submit">
+						<SkipButton />
+					</p>
+				</div>
+			);
+		} else if ( ! this.state.publicizeModuleEnabled ) {
+			component = (
+				<div>				
+					Enable the Publicize module to enable sharing content on social networks.
+					<br /><br />
+					<a href="#" className="button button-primary button-large" onClick={this.handleEnablePublicize}>Enable Publicize Module</a>
 					<p className="submit">
 						<SkipButton />
 					</p>
@@ -68,7 +86,9 @@ var GetTrafficStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__stats">
 				<h4>Get web traffic</h4>
-				{component}
+				<div className="welcome__connect">
+					{component}
+				</div>
 			</div>
 		);
 	}

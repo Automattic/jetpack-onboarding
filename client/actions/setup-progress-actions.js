@@ -57,7 +57,7 @@ module.exports = {
 	},
 
 	submitTrafficStep: function() {
-		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG).done(function() {
+		SiteActions.activateJetpackModule('publicize').done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.TRAFFIC_STEP_SLUG

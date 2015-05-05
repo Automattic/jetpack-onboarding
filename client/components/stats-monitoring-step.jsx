@@ -2,6 +2,7 @@ var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
+	Paths = require('../constants/jetpack-start-paths'), 
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
@@ -52,7 +53,7 @@ var StatsMonitoringStep = React.createClass({
 
 		if ( ! this.state.jetpackConfigured ) {
 			component = (
-				<div className="welcome__connect">
+				<div>
 					Enable Jetpack and connect to WordPress.com for powerful analytics and site monitoring.
 					<br /><br />
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Enable Jetpack</a>
@@ -63,10 +64,10 @@ var StatsMonitoringStep = React.createClass({
 			);
 		} else if ( ! this.state.statsModuleEnabled ) {
 			component = (
-				<div className="welcome__connect">
+				<div>				
 					Enable the Stats module to track visitors to your site.
 					<br /><br />
-					<a href="#" className="download-jetpack" onClick={this.handleEnableStats}>Enable Stats Module</a>
+					<a href="#" className="button button-primary button-large" onClick={this.handleEnableStats}>Enable Stats Module</a>
 					<p className="submit">
 						<SkipButton />
 					</p>
@@ -86,7 +87,9 @@ var StatsMonitoringStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__stats">
 				<h4>Enable stats and monitoring</h4>
-				{component}
+				<div className="welcome__connect">
+					{component}
+				</div>
 			</div>
 		);
 	}

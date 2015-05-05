@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	submitTrafficStep: function() {
-		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG).done(function() {
+		SiteActions.activateJetpackModule('publicize').done(function() {
 			AppDispatcher.dispatch({
 		      actionType: JPSConstants.STEP_COMPLETE,
 		      slug: Paths.TRAFFIC_STEP_SLUG
@@ -520,7 +520,8 @@ var React = require('react'),
 
 function getJetpackState() {
 	return {
-		jetpackConfigured: SiteStore.getJetpackConfigured()
+		jetpackConfigured: SiteStore.getJetpackConfigured(),
+		publicizeModuleEnabled: SiteStore.getJetpackModuleStatus('publicize')
 	};
 }
 
@@ -545,6 +546,12 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
+		SiteActions.configureJetpack(Paths.TRAFFIC_STEP_SLUG);
+	},
+
+	handleEnablePublicize: function (e) {
+		e.preventDefault();
+
 		SetupProgressActions.submitTrafficStep();
 	},
 
@@ -559,10 +566,21 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 
 		if ( ! this.state.jetpackConfigured ) {
 			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
+				React.createElement("div", null, 
 					"Enable Jetpack and connect to WordPress.com so you can publicize your content on Facebook, Twitter and more!", 
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
+					React.createElement("p", {className: "submit"}, 
+						React.createElement(SkipButton, null)
+					)
+				)
+			);
+		} else if ( ! this.state.publicizeModuleEnabled ) {
+			component = (
+				React.createElement("div", null, 
+					"Enable the Publicize module to enable sharing content on social networks.", 
+					React.createElement("br", null), React.createElement("br", null), 
+					React.createElement("a", {href: "#", className: "button button-primary button-large", onClick: this.handleEnablePublicize}, "Enable Publicize Module"), 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement(SkipButton, null)
 					)
@@ -582,7 +600,9 @@ var GetTrafficStep = React.createClass({displayName: "GetTrafficStep",
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__stats"}, 
 				React.createElement("h4", null, "Get web traffic"), 
-				component
+				React.createElement("div", {className: "welcome__connect"}, 
+					component
+				)
 			)
 		);
 	}
@@ -800,6 +820,7 @@ var React = require('react'),
 	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
+	Paths = require('../constants/jetpack-start-paths'), 
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
@@ -850,7 +871,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 		if ( ! this.state.jetpackConfigured ) {
 			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
+				React.createElement("div", null, 
 					"Enable Jetpack and connect to WordPress.com for powerful analytics and site monitoring.", 
 					React.createElement("br", null), React.createElement("br", null), 
 					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleJetpackConnect}, "Enable Jetpack"), 
@@ -861,10 +882,10 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 			);
 		} else if ( ! this.state.statsModuleEnabled ) {
 			component = (
-				React.createElement("div", {className: "welcome__connect"}, 
+				React.createElement("div", null, 
 					"Enable the Stats module to track visitors to your site.", 
 					React.createElement("br", null), React.createElement("br", null), 
-					React.createElement("a", {href: "#", className: "download-jetpack", onClick: this.handleEnableStats}, "Enable Stats Module"), 
+					React.createElement("a", {href: "#", className: "button button-primary button-large", onClick: this.handleEnableStats}, "Enable Stats Module"), 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement(SkipButton, null)
 					)
@@ -884,7 +905,9 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__stats"}, 
 				React.createElement("h4", null, "Enable stats and monitoring"), 
-				component
+				React.createElement("div", {className: "welcome__connect"}, 
+					component
+				)
 			)
 		);
 	}
@@ -892,7 +915,7 @@ var StatsMonitoringStep = React.createClass({displayName: "StatsMonitoringStep",
 
 module.exports = StatsMonitoringStep;
 
-},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],12:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../constants/jetpack-start-paths":16,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],12:[function(require,module,exports){
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions')
