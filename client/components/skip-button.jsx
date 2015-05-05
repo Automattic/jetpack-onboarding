@@ -1,10 +1,6 @@
-console.log('requiring skip button');
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
-	// SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
-
-// debugger;
 
 function getSetupProgress() {
 	return {

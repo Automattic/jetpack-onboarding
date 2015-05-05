@@ -288,6 +288,22 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
+	handleCustomize: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var $el   = jQuery(e.currentTarget);
+
+		var Loader = window.wp.customize.Loader;
+
+		// Store a reference to the link that opened the Customizer.
+		Loader.link = $el;
+		// Load the theme.
+		Loader.open( Loader.link.attr('href') );
+
+		// window.location.replace(link);
+	},
+
 	handleShowOverlay: function ( e ) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -387,7 +403,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 			previewAction = (
 				React.createElement("div", {className: "theme-actions"}, 
 					React.createElement("div", {className: "inactive-theme"}, 
-						React.createElement("a", {href: _.unescape(theme.actions.customize), target: "_top", className: "button button-primary"}, "Live Preview")
+						React.createElement("a", {href: _.unescape(theme.actions.customize), onClick: this.handleCustomize, target: "_top", className: "button button-primary"}, "Live Preview")
 					)
 				)
 			);
@@ -446,13 +462,13 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 
 			if ( theme.active ) {
 				if ( theme.actions.customize ) {
-					actions = (React.createElement("a", {className: "button button-primary customize load-customize hide-if-no-customize", href: _.unescape(theme.actions.customize)}, "Customize"));
+					actions = (React.createElement("a", {className: "button button-primary customize hide-if-no-customize", href: _.unescape(theme.actions.customize), onClick: this.handleCustomize}, "Customize"));
 				}
 			} else {
 				actions = (
 					React.createElement("div", null, 
 						React.createElement("a", {className: "button button-secondary activate", "data-theme-id": theme.id, onClick: this.handleActivateTheme, href: "#"}, "Activate"), 
-						React.createElement("a", {className: "button button-primary load-customize hide-if-no-customize", href: _.unescape(theme.actions.customize)}, "Live Preview"), 
+						React.createElement("a", {className: "button button-primary hide-if-no-customize", href: _.unescape(theme.actions.customize), onClick: this.handleCustomize}, "Live Preview"), 
 						React.createElement("a", {className: "button button-secondary hide-if-customize", href: _.unescape(theme.actions.preview)}, "Preview")
 					)
 				);
@@ -780,13 +796,9 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 module.exports = SiteTitleStep;
 
 },{"../actions/setup-progress-actions":2,"../actions/site-actions":3,"../stores/setup-progress-store":20,"../stores/site-store":21,"./skip-button.jsx":10,"react":29}],10:[function(require,module,exports){
-console.log('requiring skip button');
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
-	// SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
-
-// debugger;
 
 function getSetupProgress() {
 	return {
@@ -1033,7 +1045,6 @@ var ProgressBar = React.createClass({displayName: "ProgressBar",
 module.exports = ProgressBar;
 
 },{"react":29}],14:[function(require,module,exports){
-console.log('requiring welcome widget');
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),

@@ -39,6 +39,22 @@ var DesignStep = React.createClass({
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
+	handleCustomize: function ( e ) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var $el   = jQuery(e.currentTarget);
+
+		var Loader = window.wp.customize.Loader;
+
+		// Store a reference to the link that opened the Customizer.
+		Loader.link = $el;
+		// Load the theme.
+		Loader.open( Loader.link.attr('href') );
+
+		// window.location.replace(link);
+	},
+
 	handleShowOverlay: function ( e ) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -138,7 +154,7 @@ var DesignStep = React.createClass({
 			previewAction = (
 				<div className="theme-actions">
 					<div className="inactive-theme">
-						<a href={_.unescape(theme.actions.customize)} target="_top" className="button button-primary">Live Preview</a>
+						<a href={_.unescape(theme.actions.customize)} onClick={this.handleCustomize} target="_top" className="button button-primary">Live Preview</a>
 					</div>
 				</div>
 			);
@@ -197,13 +213,13 @@ var DesignStep = React.createClass({
 
 			if ( theme.active ) {
 				if ( theme.actions.customize ) {
-					actions = (<a className="button button-primary customize load-customize hide-if-no-customize" href={_.unescape(theme.actions.customize)}>Customize</a>);
+					actions = (<a className="button button-primary customize hide-if-no-customize" href={_.unescape(theme.actions.customize)} onClick={this.handleCustomize}>Customize</a>);
 				}
 			} else {
 				actions = (
 					<div>
 						<a className="button button-secondary activate" data-theme-id={theme.id} onClick={this.handleActivateTheme} href="#">Activate</a>
-						<a className="button button-primary load-customize hide-if-no-customize" href={_.unescape(theme.actions.customize)}>Live Preview</a>
+						<a className="button button-primary hide-if-no-customize" href={_.unescape(theme.actions.customize)} onClick={this.handleCustomize}>Live Preview</a>
 						<a className="button button-secondary hide-if-customize" href={_.unescape(theme.actions.preview)}>Preview</a>
 					</div>
 				);
