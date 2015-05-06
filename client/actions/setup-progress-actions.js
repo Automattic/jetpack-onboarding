@@ -3,11 +3,13 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	Paths = require('../constants/jetpack-start-paths'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
+	SpinnerActions = require('./spinner-actions.js'),
 	WPAjax = require('../utils/wp-ajax');
 
 var SetupProgressActions = {
 	resetData: function() {
 		// resets all wizard data on the server
+		SpinnerActions.show();
 		WPAjax.
 			post(JPS.site_actions.reset_data).
 			done( function ( data ) {
@@ -18,6 +20,9 @@ var SetupProgressActions = {
 			}).
 			fail( function ( msg ) {
 				FlashActions.error("Failed to save data: " + msg);
+			}).
+			always( function() {
+				SpinnerActions.hide();
 			});
 	},
 

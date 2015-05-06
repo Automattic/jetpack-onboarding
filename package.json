@@ -27,13 +27,13 @@
     ]
   },
   "browser": {
-    "backbone-react": "./vendor/backbone-react-component-min.js",
-    "react": "./vendor/react-0.13.2.js"
+    "backbone-react": "./vendor/backbone-react-component-min.js"
   },
   "browserify-shim": {
     "underscore": "global:_"
   },
   "dependencies": {
-    "keymirror": "^0.1.1"
+    "keymirror": "^0.1.1",
+    "react": "^0.13.2"
   }
 }

@@ -2,23 +2,31 @@ var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Flash = require('./flash.jsx');
+	Flash = require('./flash.jsx'),
+	SpinnerStore = require('../stores/spinner-store'),
+	SpinnerActions = require('../actions/spinner-actions');
 
 function getSetupProgress() {
-	return { currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
+	return { showSpinner: SpinnerStore.showing(), currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
 }
 
 var WelcomeWidget = React.createClass({
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
+		SpinnerStore.addChangeListener(this._onSpinnerChange);
 	},
 
 	componentWillUnmount: function() {
 		SetupProgressStore.removeChangeListener(this._onChange);
+		SpinnerStore.removeChangeListener(this._onSpinnerChange);
 	},
 
 	_onChange: function() {
     	this.setState(getSetupProgress());
+  	},
+
+  	_onSpinnerChange: function() {
+  		this.setState({ showSpinner: SpinnerStore.showing() });
   	},
 
 	getInitialState: function() {
@@ -30,8 +38,18 @@ var WelcomeWidget = React.createClass({
 		SetupProgressActions.resetData();
 	},
 
+	handleShowSpinner: function ( e ) {
+		e.preventDefault();
+		SpinnerActions.show();
+	},
+
+	handleHideSpinner: function ( e ) {
+		e.preventDefault();
+		SpinnerActions.hide();
+	},
+
   	render: function() {
-  		var currentView, debug;
+  		var currentView, debug, spinner;
   		if ( this.state.currentStep ) {
   			currentView = (<this.state.currentStep.welcomeView />);
   		} else {
@@ -39,7 +57,20 @@ var WelcomeWidget = React.createClass({
   		}
 
   		if ( JPS.debug ) {
-  			debug = (<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>)
+  			debug = (<div>
+  				<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
+  				<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
+  				<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
+  			</div>)
+  		}
+
+  		if ( this.state.showSpinner ) {
+  			spinner = (
+  				<div className="loading">Loading&#8230;</div>
+  			);
+
+  		} else {
+  			spinner = null;
   		}
 
 	    return (
@@ -51,12 +82,16 @@ var WelcomeWidget = React.createClass({
 					<p className="getting-started__subhead">Take these steps to supercharge your WordPress site.</p>
 				</div>
 
-				<div className="getting-started__sections">
-					<Flash />
-					{currentView}
-				</div>
+				<div className="getting-started__wrapper">
+					{spinner}
+					<div className="getting-started__sections">
+						<Flash />
+						{currentView}
+					</div>
 
-				<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<div className="clear"></div>
+				</div>
 			</div>
     	);
 	}
