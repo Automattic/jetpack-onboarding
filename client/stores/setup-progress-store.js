@@ -43,56 +43,18 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function complete(stepSlug, opts) {
-
-  var force = (typeof(opts) === 'undefined') ? false : opts.force;
-
+function complete(stepSlug) {
   var step = getStepFromSlug(stepSlug);
-
-  if ( ! step.completed ) {
-    SpinnerActions.show();
-    WPAjax.
-      post(JPS.step_actions.complete, { step: stepSlug }).
-      done( function(data) {
-        //XXX TODO: set completion data from response
-        step.completed = true;
-        step.skipped = false;
-        selectNextPendingStep();
-      }).
-      fail( function(msg) {
-        FlashActions.error(msg);
-      }).
-      always( function() { 
-        SpinnerActions.hide(); 
-        SetupProgressStore.emitChange(); 
-      });
-  } else if ( force ) {
-    step.skipped = false;
-    selectNextPendingStep();
-  }
+  step.completed = true;
+  step.skipped = false;
+  selectNextPendingStep();
 }
 
 function skip() {
   var stepSlug = currentStepSlug();
   var step = getStepFromSlug(stepSlug);
-
-  if ( ! step.skipped ) {
-    SpinnerActions.show();
-    WPAjax.
-      post(JPS.step_actions.skip, { step: stepSlug }).
-      done( function(data) {
-        //XXX TODO: set completion data from response
-        step.skipped = true;
-        selectNextPendingStep();
-      }).
-      fail( function(msg) {
-        FlashActions.error(msg);
-      }).
-      always( function() { 
-        SpinnerActions.hide(); 
-        SetupProgressStore.emitChange(); 
-      });
-  }
+  step.skipped = true;
+  selectNextPendingStep();
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -168,6 +130,10 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   getCurrentStep: function() {
     return getStepFromSlug( currentStepSlug() );
+  },
+
+  getStepFromSlug: function(slug) {
+    return getStepFromSlug( slug );
   },
 
   getProgressPercent: function() {

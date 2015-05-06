@@ -35,7 +35,8 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
 	SpinnerActions = require('./spinner-actions.js'),
-	WPAjax = require('../utils/wp-ajax');
+	WPAjax = require('../utils/wp-ajax'),
+	SetupProgressStore = require('../stores/setup-progress-store');
 
 var SetupProgressActions = {
 	resetData: function() {
@@ -55,6 +56,58 @@ var SetupProgressActions = {
 			always( function() {
 				SpinnerActions.hide();
 			});
+	},
+
+	completeStep: function(slug) {
+		
+		var step = SetupProgressStore.getStepFromSlug(slug);
+
+		if ( ! step.completed ) {
+			SpinnerActions.show();
+			WPAjax.
+			  	post(JPS.step_actions.complete, { step: slug }).
+			  	done( function(data) {
+				    AppDispatcher.dispatch({
+						actionType: JPSConstants.STEP_COMPLETE,
+						slug: slug
+				    });
+			  	}).
+				fail( function(msg) {
+					FlashActions.error(msg);
+				}).
+				always( function() { 
+					SpinnerActions.hide(); 
+				});
+		} else {
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_COMPLETE,
+				slug: slug
+		    });
+		}
+	},
+
+	// mark current step as skipped and move on
+	skipStep: function() {
+		FlashActions.unset();
+		
+		var step = SetupProgressStore.getCurrentStep();
+
+		if ( ! step.skipped ) {
+			SpinnerActions.show();
+		    WPAjax.
+				post(JPS.step_actions.skip, { step: step.slug }).
+				done( function(data) {
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.STEP_SKIP
+				    });
+				}).
+				fail( function(msg) {
+					FlashActions.error(msg);
+				}).
+				always( function() { 
+					SpinnerActions.hide();
+				});
+		 }	
 	},
 
 	setCurrentStep: function(slug) {
@@ -81,70 +134,44 @@ var SetupProgressActions = {
 	    });
 	},
 
-	// mark current step as skipped and move on
-	skipStep: function() {
-		FlashActions.unset();
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.STEP_SKIP
-	    });
-	},
-
 	submitTitleStep: function() {
 		SiteActions.saveTitle().done(function() {
-			AppDispatcher.dispatch({
-		      actionType: JPSConstants.STEP_COMPLETE,
-		      slug: Paths.SITE_TITLE_STEP_SLUG
-		    });
-		});
+			this.completeStep(Paths.SITE_TITLE_STEP_SLUG);
+		}.bind(this));
 	},
 
 	submitLayoutStep: function(layout) {
 		SiteActions.setLayout(layout).done(function() {
-			AppDispatcher.dispatch({
-		      actionType: JPSConstants.STEP_COMPLETE,
-		      slug: Paths.LAYOUT_STEP_SLUG
-		    });
-		});
+			this.completeStep(Paths.LAYOUT_STEP_SLUG);
+		}.bind(this));
 	},
 
 	submitDesignStep: function(themeId) {
 		SiteActions.setActiveTheme(themeId).done(function() {
-			AppDispatcher.dispatch({
-		      actionType: JPSConstants.STEP_COMPLETE,
-		      slug: Paths.DESIGN_STEP_SLUG
-		    });
-		});	
+			this.completeStep(Paths.DESIGN_STEP_SLUG);
+		}.bind(this));	
 	},
 
 	saveDesignStep: function() {
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE,
-	      slug: Paths.DESIGN_STEP_SLUG
-	    });
+		this.completeStep(Paths.DESIGN_STEP_SLUG);
 	},
 
 	submitTrafficStep: function() {
 		SiteActions.activateJetpackModule('publicize').done(function() {
-			AppDispatcher.dispatch({
-		      actionType: JPSConstants.STEP_COMPLETE,
-		      slug: Paths.TRAFFIC_STEP_SLUG
-		    });
-		});	
+			this.completeStep(Paths.TRAFFIC_STEP_SLUG);
+		}.bind(this));	
 	},
 
 	submitStatsMonitoringStep: function() {
 		SiteActions.activateJetpackModule('stats').done(function() {
-			AppDispatcher.dispatch({
-		      actionType: JPSConstants.STEP_COMPLETE,
-		      slug: Paths.STATS_MONITORING_STEP_SLUG
-		    });
-		});	
+			this.completeStep(Paths.STATS_MONITORING_STEP_SLUG);
+		}.bind(this));	
 	}
 };
 
 module.exports = SetupProgressActions;
 
-},{"../constants/jetpack-start-constants":16,"../constants/jetpack-start-paths":17,"../dispatcher/app-dispatcher":18,"../utils/wp-ajax":24,"./flash-actions":1,"./site-actions":3,"./spinner-actions.js":4}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":16,"../constants/jetpack-start-paths":17,"../dispatcher/app-dispatcher":18,"../stores/setup-progress-store":21,"../utils/wp-ajax":24,"./flash-actions":1,"./site-actions":3,"./spinner-actions.js":4}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
@@ -1387,56 +1414,18 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function complete(stepSlug, opts) {
-
-  var force = (typeof(opts) === 'undefined') ? false : opts.force;
-
+function complete(stepSlug) {
   var step = getStepFromSlug(stepSlug);
-
-  if ( ! step.completed ) {
-    SpinnerActions.show();
-    WPAjax.
-      post(JPS.step_actions.complete, { step: stepSlug }).
-      done( function(data) {
-        //XXX TODO: set completion data from response
-        step.completed = true;
-        step.skipped = false;
-        selectNextPendingStep();
-      }).
-      fail( function(msg) {
-        FlashActions.error(msg);
-      }).
-      always( function() { 
-        SpinnerActions.hide(); 
-        SetupProgressStore.emitChange(); 
-      });
-  } else if ( force ) {
-    step.skipped = false;
-    selectNextPendingStep();
-  }
+  step.completed = true;
+  step.skipped = false;
+  selectNextPendingStep();
 }
 
 function skip() {
   var stepSlug = currentStepSlug();
   var step = getStepFromSlug(stepSlug);
-
-  if ( ! step.skipped ) {
-    SpinnerActions.show();
-    WPAjax.
-      post(JPS.step_actions.skip, { step: stepSlug }).
-      done( function(data) {
-        //XXX TODO: set completion data from response
-        step.skipped = true;
-        selectNextPendingStep();
-      }).
-      fail( function(msg) {
-        FlashActions.error(msg);
-      }).
-      always( function() { 
-        SpinnerActions.hide(); 
-        SetupProgressStore.emitChange(); 
-      });
-  }
+  step.skipped = true;
+  selectNextPendingStep();
 }
 
 function getStepFromSlug( stepSlug ) {
@@ -1512,6 +1501,10 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   getCurrentStep: function() {
     return getStepFromSlug( currentStepSlug() );
+  },
+
+  getStepFromSlug: function(slug) {
+    return getStepFromSlug( slug );
   },
 
   getProgressPercent: function() {
