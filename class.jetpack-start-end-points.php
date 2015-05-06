@@ -225,7 +225,13 @@ class Jetpack_Start_EndPoints {
 		if ( ! Jetpack::is_active() ) {
 
 			if ( ! Jetpack_Options::get_option( 'blog_token' ) ) {
-				Jetpack::init()->register();
+				$result = Jetpack::try_registration();
+				if ( is_wp_error( $result ) ) {
+					$error = $result->get_error_code();
+					$message = $result->get_error_message();
+					wp_send_json_error($message.' (code: '.$error.')');
+					die();
+				}
 			}
 
 			$jp_landing_page = new Jetpack_Landing_Page();
