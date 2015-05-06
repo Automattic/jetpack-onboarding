@@ -76,7 +76,11 @@ var SetupProgressActions = {
 				always( function() { 
 					SpinnerActions.hide();
 				});
-		 }	
+		 } else {
+		 	AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_SKIP
+		    });
+		 }
 	},
 
 	setCurrentStep: function(slug) {

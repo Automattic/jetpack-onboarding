@@ -39,7 +39,7 @@ var DesignStep = React.createClass({
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
-	handleSave: function ( e ) {
+	handleContinue: function ( e ) {
 		e.preventDefault();
 		SetupProgressActions.saveDesignStep();
 	},
@@ -120,15 +120,15 @@ var DesignStep = React.createClass({
 			<div className="welcome__section" id="welcome__design">
 				<h4>Pick a design</h4>
 				<p className="step-description">To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)</p>
+				<p className="submit">
+					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Continue"/>
+					<SkipButton />
+				</p>
 				<div className="theme-browser">
 					{themes}
 				</div>
 				
 				<div style={{clear: 'both'}}></div>
-				<p className="submit">
-					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleSave} value="Save"/>
-					<SkipButton />
-				</p>
 				{overlay}
 			</div>
 		);

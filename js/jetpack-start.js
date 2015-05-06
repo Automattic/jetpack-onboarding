@@ -107,7 +107,11 @@ var SetupProgressActions = {
 				always( function() { 
 					SpinnerActions.hide();
 				});
-		 }	
+		 } else {
+		 	AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_SKIP
+		    });
+		 }
 	},
 
 	setCurrentStep: function(slug) {
@@ -393,7 +397,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 		return _.findWhere(this.state.themes, {id: themeId});
 	},
 
-	handleSave: function ( e ) {
+	handleContinue: function ( e ) {
 		e.preventDefault();
 		SetupProgressActions.saveDesignStep();
 	},
@@ -474,15 +478,15 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 			React.createElement("div", {className: "welcome__section", id: "welcome__design"}, 
 				React.createElement("h4", null, "Pick a design"), 
 				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
+				React.createElement("p", {className: "submit"}, 
+					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleContinue, value: "Continue"}), 
+					React.createElement(SkipButton, null)
+				), 
 				React.createElement("div", {className: "theme-browser"}, 
 					themes
 				), 
 				
 				React.createElement("div", {style: {clear: 'both'}}), 
-				React.createElement("p", {className: "submit"}, 
-					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleSave, value: "Save"}), 
-					React.createElement(SkipButton, null)
-				), 
 				overlay
 			)
 		);
