@@ -330,7 +330,7 @@ $light-gray: #ccc;
 	.theme {
 		width: 30% !important;
 	}
-	* { box-sizing: initial; }
+	* { box-sizing: content-box; }
 	h3 {
 		line-height: 1.4em; 
 		text-align: left !important; 

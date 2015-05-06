@@ -1036,9 +1036,9 @@ big {
   width: 30% !important;
 }
 #welcome__design .theme-browser * {
-  -webkit-box-sizing: initial;
-  -moz-box-sizing: initial;
-  box-sizing: initial;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 #welcome__design .theme-browser h3 {
   line-height: 1.4em;
