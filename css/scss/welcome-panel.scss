@@ -337,6 +337,10 @@ $light-gray: #ccc;
 	}
 }
 
+#welcome__design .theme-overlay {
+	* { box-sizing: content-box; }
+}
+
 // Progress list of steps
 .getting-started__steps {
 	float: right;
