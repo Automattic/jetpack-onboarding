@@ -1351,7 +1351,8 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
   JPSConstants = require('../constants/jetpack-start-constants'),
   Paths = require('../constants/jetpack-start-paths'),
   WPAjax = require('../utils/wp-ajax'),
-  FlashActions = require('../actions/flash-actions');
+  FlashActions = require('../actions/flash-actions'),
+  SpinnerActions = require('../actions/spinner-actions');
 
 var CHANGE_EVENT = 'change';
 
@@ -1393,6 +1394,7 @@ function complete(stepSlug, opts) {
   var step = getStepFromSlug(stepSlug);
 
   if ( ! step.completed ) {
+    SpinnerActions.show();
     WPAjax.
       post(JPS.step_actions.complete, { step: stepSlug }).
       done( function(data) {
@@ -1404,7 +1406,10 @@ function complete(stepSlug, opts) {
       fail( function(msg) {
         FlashActions.error(msg);
       }).
-      always( function() { SetupProgressStore.emitChange(); } );  
+      always( function() { 
+        SpinnerActions.hide(); 
+        SetupProgressStore.emitChange(); 
+      });
   } else if ( force ) {
     step.skipped = false;
     selectNextPendingStep();
@@ -1416,6 +1421,7 @@ function skip() {
   var step = getStepFromSlug(stepSlug);
 
   if ( ! step.skipped ) {
+    SpinnerActions.show();
     WPAjax.
       post(JPS.step_actions.skip, { step: stepSlug }).
       done( function(data) {
@@ -1426,7 +1432,10 @@ function skip() {
       fail( function(msg) {
         FlashActions.error(msg);
       }).
-      always( function() { SetupProgressStore.emitChange(); } );  
+      always( function() { 
+        SpinnerActions.hide(); 
+        SetupProgressStore.emitChange(); 
+      });
   }
 }
 
@@ -1569,7 +1578,7 @@ AppDispatcher.register(function(action) {
 
 module.exports = SetupProgressStore;
 
-},{"../actions/flash-actions":1,"../constants/jetpack-start-constants":16,"../constants/jetpack-start-paths":17,"../dispatcher/app-dispatcher":18,"../utils/wp-ajax":24,"events":29}],22:[function(require,module,exports){
+},{"../actions/flash-actions":1,"../actions/spinner-actions":4,"../constants/jetpack-start-constants":16,"../constants/jetpack-start-paths":17,"../dispatcher/app-dispatcher":18,"../utils/wp-ajax":24,"events":29}],22:[function(require,module,exports){
 /*
  * Store which manages and persists site information
  */
