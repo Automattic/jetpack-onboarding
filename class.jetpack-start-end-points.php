@@ -228,7 +228,8 @@ class Jetpack_Start_EndPoints {
 				Jetpack::init()->register();
 			}
 
-			(new Jetpack_Landing_Page())->add_actions();
+			$jp_landing_page = new Jetpack_Landing_Page();
+			$jp_landing_page->add_actions();
 
 			// redirect to activate link
 			$connect_url = Jetpack::init()->build_connect_url( true, admin_url('index.php#welcome/steps/'.$return_to_step) );
