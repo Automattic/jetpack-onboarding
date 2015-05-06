@@ -301,7 +301,8 @@ class Jetpack_Start_EndPoints {
 		if ( get_option( 'page_on_front' ) == null ) {
 
 			// set to earliest published page if possible
-			$first_page_created = get_pages( array('sort_column' => 'post_date', 'number' => 1, 'post_status' => 'publish'))[0];
+			$pages = get_pages( array('sort_column' => 'post_date', 'number' => 1, 'post_status' => 'publish') );
+			$first_page_created = $pages[0];
 
 			if ( $first_page_created != null ) {
 				$page_id = $first_page_created->ID;
