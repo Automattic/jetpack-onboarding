@@ -42,7 +42,7 @@ class Jetpack_Start_EndPoints {
 				'plugin_active' => false,
 				'configured' => false,
 				// 'jumpstart_modules' => [],
-				'active_modules' => []
+				'active_modules' => array()
 			);
 		}
 
