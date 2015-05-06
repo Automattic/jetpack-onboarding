@@ -29,12 +29,7 @@ class Jetpack_Start_WelcomePanel {
 	}
 
 	static function wp_welcome_panel() {
-		echo "<div id='jps-welcome-panel'>React goes here</div>";
-		// require_once ( JETPACK_START_BASE_DIR . '/views/welcome-panel.php' );
-	}
-
-	static function add_action_arg($arg) {
-		//noop
+		echo "<div id='jps-welcome-panel'>Loading Welcome Wizard</div>";
 	}
 }
 
