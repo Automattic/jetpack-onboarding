@@ -182,8 +182,8 @@ var DesignStep = React.createClass({
 						<div className="theme-info">
 							{currentThemeLabel}
 							<h3 className="theme-name">{theme.name}<span className="theme-version">Version: {theme.version}</span></h3>
-							<h4 className="theme-author">By {_.unescape(theme.authorAndUri)}</h4>
-							<p className="theme-description">{_.unescape(theme.description)}</p>
+							<h4 className="theme-author">By <span dangerouslySetInnerHTML={{__html: _.unescape(theme.authorAndUri)}}></span></h4>
+							<p className="theme-description" dangerouslySetInnerHTML={{__html: _.unescape(theme.description)}}></p>
 
 							{parentLabel}
 							{tagsLabel}

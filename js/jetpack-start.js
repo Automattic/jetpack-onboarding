@@ -509,8 +509,8 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 						React.createElement("div", {className: "theme-info"}, 
 							currentThemeLabel, 
 							React.createElement("h3", {className: "theme-name"}, theme.name, React.createElement("span", {className: "theme-version"}, "Version: ", theme.version)), 
-							React.createElement("h4", {className: "theme-author"}, "By ", _.unescape(theme.authorAndUri)), 
-							React.createElement("p", {className: "theme-description"}, _.unescape(theme.description)), 
+							React.createElement("h4", {className: "theme-author"}, "By ", React.createElement("span", {dangerouslySetInnerHTML: {__html: _.unescape(theme.authorAndUri)}})), 
+							React.createElement("p", {className: "theme-description", dangerouslySetInnerHTML: {__html: _.unescape(theme.description)}}), 
 
 							parentLabel, 
 							tagsLabel
