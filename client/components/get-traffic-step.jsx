@@ -76,7 +76,7 @@ var GetTrafficStep = React.createClass({
 		} else {
 			component = (
 				<div>
-					You have successfully connected Jetpack for stats, monitoring, and more!
+					You have successfully connected Jetpack and enabled the Publicize plugin.
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Continue" />
 					</p>

@@ -24,7 +24,7 @@ var SetupProgressActions = {
 	completeAndNextStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE,
+	      actionType: JPSConstants.STEP_COMPLETE_AND_NEXT,
 	      slug: slug
 	    });
 	},

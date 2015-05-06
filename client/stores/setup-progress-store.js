@@ -11,23 +11,23 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-//XXX TODO: maybe this should just be plain JSON
 var _steps;
 
 function setSteps(steps) {
-  // set the completion status of each step from JPS.step_status hash
+
+  // set the completion status of each step to the saved values
   steps.forEach( function(step) {
     // default values for skipped and completed
-    if ( typeof step.completed == 'undefined' ) {
+    if ( typeof( step.completed ) === 'undefined' ) {
       step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
     }
 
-    if ( typeof step.skipped == 'undefined' ) {
+    if ( typeof( step.skipped ) === 'undefined' ) {
       step.skipped = (JPS.step_status[step.slug] && JPS.step_status[step.slug].skipped) || false;  
     }
 
     // default value for includeInProgress
-    if ( typeof step.includeInProgress == 'undefined') {
+    if ( typeof( step.includeInProgress ) === 'undefined') {
       step.includeInProgress = true;
     }
   }); 
@@ -38,7 +38,9 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function complete(stepSlug) {
+function complete(stepSlug, opts) {
+
+  var force = (typeof(opts) === 'undefined') ? false : opts.force;
 
   var step = getStepFromSlug(stepSlug);
 
@@ -55,6 +57,9 @@ function complete(stepSlug) {
         FlashActions.error(msg);
       }).
       always( function() { SetupProgressStore.emitChange(); } );  
+  } else if ( force ) {
+    step.skipped = false;
+    selectNextPendingStep();
   }
 }
 
@@ -102,7 +107,7 @@ function selectNextPendingStep() {
 }
 
 function currentStepSlug() {
-  if ( window.location.hash.startsWith('#welcome/steps')) {
+  if ( window.location.hash.indexOf('#welcome/steps') === 0 ) {
     var parts = window.location.hash.split('/');
     var stepSlug = parts[parts.length-1];
     return stepSlug;
@@ -182,6 +187,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.STEP_COMPLETE:
       complete(action.slug);
+      SetupProgressStore.emitChange();
+      break;
+
+    case JPSConstants.STEP_COMPLETE_AND_NEXT:
+      complete(action.slug, {force: true});
       SetupProgressStore.emitChange();
       break;
 
