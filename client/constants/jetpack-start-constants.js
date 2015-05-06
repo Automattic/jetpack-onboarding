@@ -16,5 +16,7 @@ module.exports = keyMirror({
 	SET_FLASH: null,
 	UNSET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
-	FLASH_SEVERITY_ERROR: null
+	FLASH_SEVERITY_ERROR: null,
+
+	RESET_DATA: null
 });

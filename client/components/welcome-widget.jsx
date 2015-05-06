@@ -1,6 +1,7 @@
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
@@ -24,16 +25,26 @@ var WelcomeWidget = React.createClass({
 		return getSetupProgress();
 	},
 
+	handleReset: function( e ) {
+		e.preventDefault();
+		SetupProgressActions.resetData();
+	},
+
   	render: function() {
-  		var currentView;
+  		var currentView, debug;
   		if ( this.state.currentStep ) {
   			currentView = (<this.state.currentStep.welcomeView />);
   		} else {
   			currentView = (<h3>Nothing</h3>);
   		}
 
+  		if ( JPS.debug ) {
+  			debug = (<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>)
+  		}
+
 	    return (
 			<div className="getting-started">
+				{debug}
 				<div className="getting-started__intro">
 					<h3>You're almost done!</h3>
 

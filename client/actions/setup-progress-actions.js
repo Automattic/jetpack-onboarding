@@ -2,9 +2,25 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	Paths = require('../constants/jetpack-start-paths'),
 	FlashActions = require('./flash-actions'),
-	SiteActions = require('./site-actions');
+	SiteActions = require('./site-actions'),
+	WPAjax = require('../utils/wp-ajax');
 
 var SetupProgressActions = {
+	resetData: function() {
+		// resets all wizard data on the server
+		WPAjax.
+			post(JPS.site_actions.reset_data).
+			done( function ( data ) {
+				FlashActions.notice("Reset data");
+				AppDispatcher.dispatch({
+			      actionType: JPSConstants.RESET_DATA
+			    });
+			}).
+			fail( function ( msg ) {
+				FlashActions.error("Failed to save data: " + msg);
+			});
+	},
+
 	setCurrentStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({

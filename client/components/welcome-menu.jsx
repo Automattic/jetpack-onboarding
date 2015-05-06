@@ -35,7 +35,7 @@ var WelcomeMenu = React.createClass({
 				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( step.repeatable ) {
+			if ( ! step.static ) {
 				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>
 			} else {
 				title = step.name;

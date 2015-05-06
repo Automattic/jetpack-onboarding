@@ -17,13 +17,17 @@ function setSteps(steps) {
 
   // set the completion status of each step to the saved values
   steps.forEach( function(step) {
-    // default values for skipped and completed
+    // default values for skipped, completed and static
     if ( typeof( step.completed ) === 'undefined' ) {
       step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
     }
 
     if ( typeof( step.skipped ) === 'undefined' ) {
       step.skipped = (JPS.step_status[step.slug] && JPS.step_status[step.slug].skipped) || false;  
+    }
+
+    if ( typeof( step.static ) === 'undefined' ) {
+      step.static = false;
     }
 
     // default value for includeInProgress
@@ -120,6 +124,15 @@ function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
+//reset everything back to defaults
+function reset() {
+  JPS.step_status = {};
+  _.where( _steps, { static: false} ).forEach( function ( step ) { 
+    step.completed = false;
+    step.skipped = false;
+  } );
+}
+
 var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   init: function(steps) {
@@ -141,7 +154,7 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   emitChange: function() {
-    this.emit(CHANGE_EVENT);
+    this.emit( CHANGE_EVENT );
   },
 
   getCurrentStep: function() {
@@ -149,19 +162,19 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getProgressPercent: function() {
-  	var numSteps = _.where(_steps, {includeInProgress: true}).length;
-    var completedSteps = _.where(_steps, {includeInProgress: true, completed: true}).length;
+  	var numSteps = _.where( _steps, { includeInProgress: true } ).length;
+    var completedSteps = _.where( _steps, { includeInProgress: true, completed: true } ).length;
     var percentComplete = (completedSteps / numSteps) * 100;
     var output = Math.round(percentComplete / 10) * 10;
     return output;
   },
 
   addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
+    this.on( CHANGE_EVENT, callback );
   },
 
   removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+    this.removeListener( CHANGE_EVENT, callback );
   }
 });
 
@@ -192,6 +205,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.STEP_COMPLETE_AND_NEXT:
       complete(action.slug, {force: true});
+      SetupProgressStore.emitChange();
+      break;
+
+    case JPSConstants.RESET_DATA:
+      reset();
       SetupProgressStore.emitChange();
       break;
 

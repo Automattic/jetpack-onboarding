@@ -33,9 +33,25 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	Paths = require('../constants/jetpack-start-paths'),
 	FlashActions = require('./flash-actions'),
-	SiteActions = require('./site-actions');
+	SiteActions = require('./site-actions'),
+	WPAjax = require('../utils/wp-ajax');
 
 var SetupProgressActions = {
+	resetData: function() {
+		// resets all wizard data on the server
+		WPAjax.
+			post(JPS.site_actions.reset_data).
+			done( function ( data ) {
+				FlashActions.notice("Reset data");
+				AppDispatcher.dispatch({
+			      actionType: JPSConstants.RESET_DATA
+			    });
+			}).
+			fail( function ( msg ) {
+				FlashActions.error("Failed to save data: " + msg);
+			});
+	},
+
 	setCurrentStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({
@@ -123,7 +139,7 @@ var SetupProgressActions = {
 
 module.exports = SetupProgressActions;
 
-},{"../constants/jetpack-start-constants":15,"../constants/jetpack-start-paths":16,"../dispatcher/app-dispatcher":17,"./flash-actions":1,"./site-actions":3}],3:[function(require,module,exports){
+},{"../constants/jetpack-start-constants":15,"../constants/jetpack-start-paths":16,"../dispatcher/app-dispatcher":17,"../utils/wp-ajax":22,"./flash-actions":1,"./site-actions":3}],3:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants'),
 	SiteStore = require('../stores/site-store'),
@@ -999,7 +1015,7 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( step.repeatable ) {
+			if ( ! step.static ) {
 				title = React.createElement("a", {href: "#", "data-step-slug": step.slug, onClick: this.selectStep}, step.name)
 			} else {
 				title = step.name;
@@ -1068,6 +1084,7 @@ module.exports = ProgressBar;
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu.jsx'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
+	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash.jsx');
 
 function getSetupProgress() {
@@ -1091,16 +1108,26 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 		return getSetupProgress();
 	},
 
+	handleReset: function( e ) {
+		e.preventDefault();
+		SetupProgressActions.resetData();
+	},
+
   	render: function() {
-  		var currentView;
+  		var currentView, debug;
   		if ( this.state.currentStep ) {
   			currentView = (React.createElement(this.state.currentStep.welcomeView, null));
   		} else {
   			currentView = (React.createElement("h3", null, "Nothing"));
   		}
 
+  		if ( JPS.debug ) {
+  			debug = (React.createElement("a", {href: "#", className: "button", onClick: this.handleReset}, "Reset Wizard"))
+  		}
+
 	    return (
 			React.createElement("div", {className: "getting-started"}, 
+				debug, 
 				React.createElement("div", {className: "getting-started__intro"}, 
 					React.createElement("h3", null, "You're almost done!"), 
 
@@ -1120,7 +1147,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 
 module.exports = WelcomeWidget;
 
-},{"../stores/setup-progress-store":20,"./flash.jsx":6,"./welcome-menu.jsx":12,"react":29}],15:[function(require,module,exports){
+},{"../actions/setup-progress-actions":2,"../stores/setup-progress-store":20,"./flash.jsx":6,"./welcome-menu.jsx":12,"react":29}],15:[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
@@ -1139,7 +1166,9 @@ module.exports = keyMirror({
 	SET_FLASH: null,
 	UNSET_FLASH: null,
 	FLASH_SEVERITY_NOTICE: null,
-	FLASH_SEVERITY_ERROR: null
+	FLASH_SEVERITY_ERROR: null,
+
+	RESET_DATA: null
 });
 
 },{"keymirror":28}],16:[function(require,module,exports){
@@ -1247,13 +1276,17 @@ function setSteps(steps) {
 
   // set the completion status of each step to the saved values
   steps.forEach( function(step) {
-    // default values for skipped and completed
+    // default values for skipped, completed and static
     if ( typeof( step.completed ) === 'undefined' ) {
       step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
     }
 
     if ( typeof( step.skipped ) === 'undefined' ) {
       step.skipped = (JPS.step_status[step.slug] && JPS.step_status[step.slug].skipped) || false;  
+    }
+
+    if ( typeof( step.static ) === 'undefined' ) {
+      step.static = false;
     }
 
     // default value for includeInProgress
@@ -1350,6 +1383,15 @@ function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
 }
 
+//reset everything back to defaults
+function reset() {
+  JPS.step_status = {};
+  _.where( _steps, { static: false} ).forEach( function ( step ) { 
+    step.completed = false;
+    step.skipped = false;
+  } );
+}
+
 var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   init: function(steps) {
@@ -1371,7 +1413,7 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   emitChange: function() {
-    this.emit(CHANGE_EVENT);
+    this.emit( CHANGE_EVENT );
   },
 
   getCurrentStep: function() {
@@ -1379,19 +1421,19 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getProgressPercent: function() {
-  	var numSteps = _.where(_steps, {includeInProgress: true}).length;
-    var completedSteps = _.where(_steps, {includeInProgress: true, completed: true}).length;
+  	var numSteps = _.where( _steps, { includeInProgress: true } ).length;
+    var completedSteps = _.where( _steps, { includeInProgress: true, completed: true } ).length;
     var percentComplete = (completedSteps / numSteps) * 100;
     var output = Math.round(percentComplete / 10) * 10;
     return output;
   },
 
   addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
+    this.on( CHANGE_EVENT, callback );
   },
 
   removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+    this.removeListener( CHANGE_EVENT, callback );
   }
 });
 
@@ -1422,6 +1464,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.STEP_COMPLETE_AND_NEXT:
       complete(action.slug, {force: true});
+      SetupProgressStore.emitChange();
+      break;
+
+    case JPSConstants.RESET_DATA:
+      reset();
       SetupProgressStore.emitChange();
       break;
 
@@ -1610,53 +1657,47 @@ module.exports = function() {
 			{
 			  name: "Sign up",
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Create admin account',
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Verify email address',
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Site title',
 			  slug: Paths.SITE_TITLE_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/site-title-step.jsx')
 			},
 			{
 			  name: 'Pick a layout',
 			  slug: Paths.LAYOUT_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/layout-step.jsx')
 			},
 			{
 			  name: 'Stats & Monitoring',
 			  slug: Paths.STATS_MONITORING_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/stats-monitoring-step.jsx'),
 			},
 			{ 
 			  name: "Pick a design", 
 			  slug: Paths.DESIGN_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/design-step.jsx'), 
 			  themes: JPS.themes
 			},
 			{ 
 			  name: "Get some traffic", 
 			  slug: Paths.TRAFFIC_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/get-traffic-step.jsx') 
 			},
 			{ 
 			  name: "Advanced settings", 
 			  slug: Paths.ADVANCED_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/advanced-settings-step.jsx'),
 			  includeInProgress: false
 			}

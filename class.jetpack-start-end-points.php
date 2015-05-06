@@ -21,6 +21,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
+			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
 	}
 
@@ -48,6 +49,8 @@ class Jetpack_Start_EndPoints {
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 
+			'debug' => WP_DEBUG ? true : false,
+
 			'bloginfo' => array(
 				'name' => get_bloginfo('name'),
 			),
@@ -57,7 +60,8 @@ class Jetpack_Start_EndPoints {
 				'set_layout' => 'jps_set_layout',
 				'set_theme' => 'jps_set_theme',
 				'configure_jetpack' => 'jps_configure_jetpack',
-				'activate_jetpack_modules' => 'jps_activate_jetpack_modules'
+				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
+				'reset_data' => 'jps_reset_data'
 			),
 
 			'step_actions' => array(
@@ -79,6 +83,14 @@ class Jetpack_Start_EndPoints {
 				)
 			)
 		);
+	}
+
+	static function reset_data() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+
+		delete_option( self::STEP_STATUS_KEY );
+
+		wp_send_json_success( 'deleted' );
 	}
 
 	static function activate_jetpack_modules() {

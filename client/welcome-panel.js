@@ -10,53 +10,47 @@ module.exports = function() {
 			{
 			  name: "Sign up",
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Create admin account',
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Verify email address',
 			  completed: true,
-			  repeatable: false
+			  static: true
 			},
 			{
 			  name: 'Site title',
 			  slug: Paths.SITE_TITLE_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/site-title-step.jsx')
 			},
 			{
 			  name: 'Pick a layout',
 			  slug: Paths.LAYOUT_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/layout-step.jsx')
 			},
 			{
 			  name: 'Stats & Monitoring',
 			  slug: Paths.STATS_MONITORING_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/stats-monitoring-step.jsx'),
 			},
 			{ 
 			  name: "Pick a design", 
 			  slug: Paths.DESIGN_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/design-step.jsx'), 
 			  themes: JPS.themes
 			},
 			{ 
 			  name: "Get some traffic", 
 			  slug: Paths.TRAFFIC_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/get-traffic-step.jsx') 
 			},
 			{ 
 			  name: "Advanced settings", 
 			  slug: Paths.ADVANCED_STEP_SLUG,
-			  repeatable: true,
 			  welcomeView: require('./components/advanced-settings-step.jsx'),
 			  includeInProgress: false
 			}
