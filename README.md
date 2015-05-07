@@ -47,11 +47,11 @@ class JetpackStartTracking {
 	static function record_user_event($step_slug, $event_type) {
 		$current_user = wp_get_current_user();
 		$event = array(
-			'_en' => 'jps_step_'.$event_type,
+			'_event_type' => 'jps_step_'.$event_type,
 			'step' => $step_slug,
 			'user_id' => $current_user->ID,
 			'user_email' => $current_user->user_email,
-			'_via_ip' => $_SERVER['REMOTE_ADDR']
+			'_ip' => $_SERVER['REMOTE_ADDR']
 		);
 		error_log("Recorded step: ".print_r($event, true));
 	}
