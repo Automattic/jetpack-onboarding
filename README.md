@@ -22,22 +22,42 @@ This plugin publishes two hooks:
 Each is invoked with a string (a "slug") which names the step, so integration looks like this:
 
 ```php
-class MyPlugin {
+<?php
+/**
+ * Plugin Name: My Jetpack Start Tracking Plugin
+ * Plugin URI: https://github.com/someone/jetpack-start-tracker
+ * Description: Tracking for Jetpack Start
+ * Version: 0.1
+ */
 
-	static function init() {
-		add_action('jps_step_skipped', array( __CLASS__, 'log_skipped' ));
-		add_action('jps_step_complete', array( __CLASS__, 'log_complete' ));
-	}
-	
-	static function log_skipped($slug) {
-		echo "User skipped step ".$slug;
-		// your code goes here
+class JetpackStartTracking {
+	static function track_jps_usage() {
+		add_action('jps_step_skipped', array(__CLASS__, 'track_step_skipped'));
+		add_action('jps_step_completed', array(__CLASS__, 'track_step_completed'));
 	}
 
-	static function log_complete($slug) {
-		echo "User completed step ".$slug;
-		// your code goes here
+	static function track_step_skipped($step_slug) {
+		self::record_user_event($step_slug, 'skipped');
 	}
+
+	static function track_step_completed($step_slug) {
+		self::record_user_event($step_slug, 'completed');
+	}
+
+	static function record_user_event($step_slug, $event_type) {
+		$current_user = wp_get_current_user();
+		$event = array(
+			'_en' => 'jps_step_'.$event_type,
+			'step' => $step_slug,
+			'user_id' => $current_user->ID,
+			'user_email' => $current_user->user_email,
+			'_via_ip' => $_SERVER['REMOTE_ADDR']
+		);
+		error_log("Recorded step: ".print_r($event, true));
+	}
+}
+
+add_action( 'init',  array('JetpackStartTracking', 'track_jps_usage') );
 }
 ```
 
