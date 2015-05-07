@@ -12,7 +12,20 @@ function setFlash(newMessage, newSeverity) {
 
 FlashStore = _.extend({}, EventEmitter.prototype, {
 	getFlash: function() {
-		return {message: message, severity: severity};
+		var severityString;
+
+		switch(severity) {
+			case JPSConstants.FLASH_SEVERITY_ERROR:
+				severityString = 'error';
+				break;
+			case JPSConstants.FLASH_SEVERITY_NOTICE:
+				severityString = 'notice';
+				break;
+			default:
+				//noop
+		}
+		return {message: message, severity: severityString};
+
 	},
 
 	addChangeListener: function(callback) {

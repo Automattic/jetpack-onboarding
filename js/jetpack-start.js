@@ -797,7 +797,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 	render: function() {
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__layout"}, 
-				React.createElement("h4", null, "Pick a layout"), 
+				React.createElement("h4", null, "Select a layout"), 
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
 					React.createElement("label", null, 
@@ -1336,7 +1336,20 @@ function setFlash(newMessage, newSeverity) {
 
 FlashStore = _.extend({}, EventEmitter.prototype, {
 	getFlash: function() {
-		return {message: message, severity: severity};
+		var severityString;
+
+		switch(severity) {
+			case JPSConstants.FLASH_SEVERITY_ERROR:
+				severityString = 'error';
+				break;
+			case JPSConstants.FLASH_SEVERITY_NOTICE:
+				severityString = 'notice';
+				break;
+			default:
+				//noop
+		}
+		return {message: message, severity: severityString};
+
 	},
 
 	addChangeListener: function(callback) {
