@@ -13,6 +13,34 @@ Previous contributors who laid the foundation are Dave Martin [@growthdesigner](
 
 Pull Requests and Issues are always welcome. :)
 
+## Integrating
+
+This plugin publishes two hooks:
+- jps_step_skipped
+- jps_step_complete
+
+Each is invoked with a string (a "slug") which names the step, so integration looks like this:
+
+```php
+class MyPlugin {
+
+	static function init() {
+		add_action('jps_step_skipped', array( __CLASS__, 'log_skipped' ));
+		add_action('jps_step_complete', array( __CLASS__, 'log_complete' ));
+	}
+	
+	static function log_skipped($slug) {
+		echo "User skipped step ".$slug;
+		// your code goes here
+	}
+
+	static function log_complete($slug) {
+		echo "User completed step ".$slug;
+		// your code goes here
+	}
+}
+```
+
 ## Building
 
 ```bash
