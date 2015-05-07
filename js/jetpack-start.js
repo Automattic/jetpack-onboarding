@@ -1599,7 +1599,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-var layout = 'website'; //XXX DEBUG temporary
+var layout = JPS.steps.layout.current;
 
 function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;

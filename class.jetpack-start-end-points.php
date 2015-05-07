@@ -47,6 +47,16 @@ class Jetpack_Start_EndPoints {
 			);
 		}
 
+		if ( get_option( 'show_on_front' ) == 'page') {
+			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
+				$layout = 'website';
+			} else {
+				$layout = 'site-blog';
+			}
+		} else {
+			$layout = 'blog';
+		}
+
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 
@@ -77,6 +87,9 @@ class Jetpack_Start_EndPoints {
 			'step_status' => $step_statuses,
 
 			'steps' => array(
+				'layout' => array(
+					'current' => $layout
+				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -302,14 +315,17 @@ class Jetpack_Start_EndPoints {
 
 	static function set_front_page_to_page()
 	{
-		error_log(get_option( 'show_on_front' ));
 		// ensure that front page is a static page
 		if ( get_option( 'show_on_front' ) == 'posts' ) {
 			update_option( 'show_on_front', 'page' );
 		}
 
 		// if no specific front page already set, find first or create
-		if ( get_option( 'page_on_front' ) == null ) {
+		$existing_front_page = get_option( 'page_on_front' ) && 
+								(get_option( 'page_on_front' ) != 0) && 
+								get_page(get_option( 'page_on_front' ));
+
+		if ( ! $existing_front_page ) {
 
 			// set to earliest published page if possible
 			$pages = get_pages( array('sort_column' => 'post_date', 'number' => 1, 'post_status' => 'publish') );
