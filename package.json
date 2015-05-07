@@ -4,6 +4,7 @@
   "devDependencies": {
     "browserify": "^9.0.8",
     "browserify-shim": "^3.8.5",
+    "es5-shim": "^4.1.1",
     "flux": "^2.0.3",
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.6.5",
