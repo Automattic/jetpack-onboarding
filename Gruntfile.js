@@ -71,17 +71,24 @@ module.exports = function(grunt) {
 		browserify: {
 			options: {
 				debug: true,
-				transform: ['reactify'],
+				transform: ['reactify', 'envify'],
 				extension: ['.jsx'],
 			},
 			app: {
 				src:        'client/jetpack-start.js',
 				dest:       'js/jetpack-start.js'
 			}
+		},
+
+		envify: {
+			options: {
+
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-notify');
+	grunt.loadNpmTasks('grunt-envify');
 	grunt.loadNpmTasks('grunt-minifyify');
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-react');

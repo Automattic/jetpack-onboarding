@@ -4,6 +4,7 @@
   "devDependencies": {
     "browserify": "^9.0.8",
     "browserify-shim": "^3.8.5",
+    "envify": "^3.4.0",
     "es5-shim": "^4.1.1",
     "flux": "^2.0.3",
     "grunt": "~0.4.1",
@@ -13,6 +14,8 @@
     "grunt-contrib-sass": "~0.7.1",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-env": "^0.4.4",
+    "grunt-envify": "0.0.2",
     "grunt-minifyify": "^3.2.1",
     "grunt-notify": "^0.4.1",
     "grunt-react": "^0.12.2",
@@ -24,11 +27,19 @@
       ".jsx"
     ],
     "transform": [
-      "browserify-shim"
+      "browserify-shim",
+      "envify"
+    ],
+    "transforms": [
+      "browserify-shim",
+      "envify"
     ]
   },
   "browser": {
     "backbone-react": "./vendor/backbone-react-component-min.js"
+  },
+  "envify": {
+    "NODE_ENV": "production"
   },
   "browserify-shim": {
     "underscore": "global:_"
