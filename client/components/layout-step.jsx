@@ -40,7 +40,7 @@ var LayoutStep = React.createClass({
 	render: function() {
 		return (
 			<div className="welcome__section" id="welcome__layout">
-				<h4>Pick a layout</h4>
+				<h4>Select a layout</h4>
 
 				<form onSubmit={this.handleSubmit}>
 					<label>
