@@ -31,17 +31,18 @@ class Jetpack_Start_EndPoints {
 		$jetpack_config = array();
 
 		if ( class_exists('Jetpack') ) {
+			$jetpack_landing_page = new Jetpack_Landing_Page();
 			$jetpack_config = array(
 				'plugin_active' => true,
 				'configured' => Jetpack::is_active(),
-				// 'jumpstart_modules' => Jetpack_Landing_Page::jumpstart_module_tag( 'Jumpstart' ),
+				'jumpstart_modules' => array_values($jetpack_landing_page->jumpstart_module_tag( 'Jumpstart' )),
 				'active_modules' => array_values(Jetpack::init()->get_active_modules())
 			);
 		} else {
 			$jetpack_config = array(
 				'plugin_active' => false,
 				'configured' => false,
-				// 'jumpstart_modules' => [],
+				'jumpstart_modules' => array(),
 				'active_modules' => array()
 			);
 		}
@@ -145,6 +146,8 @@ class Jetpack_Start_EndPoints {
 		
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', true);
 
+		do_action('jps_step_skipped', $_REQUEST['step']);
+
 		wp_send_json_success( $result );
 	}
 
@@ -154,6 +157,8 @@ class Jetpack_Start_EndPoints {
 		self::update_step_status($_REQUEST['step'], 'completed', true);
 		
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', false);
+
+		do_action('jps_step_complete', $_REQUEST['step']);
 
 		wp_send_json_success( $result );
 	}
