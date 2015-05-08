@@ -1279,10 +1279,28 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 	},
 
   	render: function() {
-  		if ( this.state.newUser ) {
-  			return this._renderGetStarted();
+  		return (
+			React.createElement("div", {className: "getting-started"}, 
+				this._renderDebug(), 
+				React.createElement("div", {className: "getting-started__wrapper"}, 
+					this._renderSpinner(), 
+					React.createElement("div", {className: "getting-started__sections"}, 
+						React.createElement(Flash, null), 
+						this._renderSection()
+					), 
+
+					React.createElement(WelcomeMenu, {clickable: !this.state.newUser, currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
+					React.createElement("div", {className: "clear"})
+				)
+			)
+		);
+	},
+
+	_renderSection: function() {
+		if ( this.state.newUser ) {
+  			return (React.createElement(GetStarted, null));
   		} else {
-  			return this._renderWizard();
+  			return this._renderCurrentView();
   		}
 	},
 
@@ -1296,24 +1314,6 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
   		} else {
   			return null;
   		}
-	},
-
-	_renderGetStarted: function() {
-		return (
-			React.createElement("div", {className: "getting-started"}, 
-				this._renderDebug(), 
-				React.createElement("div", {className: "getting-started__wrapper"}, 
-					this._renderSpinner(), 
-					React.createElement("div", {className: "getting-started__sections"}, 
-						React.createElement(Flash, null), 
-						React.createElement(GetStarted, null)
-					), 
-
-					React.createElement(WelcomeMenu, {clickable: false, currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
-					React.createElement("div", {className: "clear"})
-				)
-			)
-		);
 	},
 
 	_renderSpinner: function() {
@@ -1333,25 +1333,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
   		} else {
   			return (React.createElement("h3", null, "Nothing"));
   		}
-	},	
-
-	_renderWizard: function() {
-	    return (
-			React.createElement("div", {className: "getting-started"}, 
-				this._renderDebug(), 
-				React.createElement("div", {className: "getting-started__wrapper"}, 
-					this._renderSpinner(), 
-					React.createElement("div", {className: "getting-started__sections"}, 
-						React.createElement(Flash, null), 
-						this._renderCurrentView()
-					), 
-
-					React.createElement(WelcomeMenu, {clickable: true, currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
-					React.createElement("div", {className: "clear"})
-				)
-			)
-    	);
-	}
+	},
 
 });
 

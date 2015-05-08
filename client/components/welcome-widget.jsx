@@ -50,10 +50,28 @@ var WelcomeWidget = React.createClass({
 	},
 
   	render: function() {
-  		if ( this.state.newUser ) {
-  			return this._renderGetStarted();
+  		return (
+			<div className="getting-started">
+				{this._renderDebug()}
+				<div className="getting-started__wrapper">
+					{this._renderSpinner()}
+					<div className="getting-started__sections">
+						<Flash />
+						{this._renderSection()}
+					</div>
+
+					<WelcomeMenu clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<div className="clear"></div>
+				</div>
+			</div>
+		);
+	},
+
+	_renderSection: function() {
+		if ( this.state.newUser ) {
+  			return (<GetStarted />);
   		} else {
-  			return this._renderWizard();
+  			return this._renderCurrentView();
   		}
 	},
 
@@ -67,24 +85,6 @@ var WelcomeWidget = React.createClass({
   		} else {
   			return null;
   		}
-	},
-
-	_renderGetStarted: function() {
-		return (
-			<div className="getting-started">
-				{this._renderDebug()}
-				<div className="getting-started__wrapper">
-					{this._renderSpinner()}
-					<div className="getting-started__sections">
-						<Flash />
-						<GetStarted />
-					</div>
-
-					<WelcomeMenu clickable={false} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
-					<div className="clear"></div>
-				</div>
-			</div>
-		);
 	},
 
 	_renderSpinner: function() {
@@ -104,25 +104,7 @@ var WelcomeWidget = React.createClass({
   		} else {
   			return (<h3>Nothing</h3>);
   		}
-	},	
-
-	_renderWizard: function() {
-	    return (
-			<div className="getting-started">
-				{this._renderDebug()}
-				<div className="getting-started__wrapper">
-					{this._renderSpinner()}
-					<div className="getting-started__sections">
-						<Flash />
-						{this._renderCurrentView()}
-					</div>
-
-					<WelcomeMenu clickable={true} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
-					<div className="clear"></div>
-				</div>
-			</div>
-    	);
-	}
+	},
 
 });
 
