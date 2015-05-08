@@ -804,10 +804,20 @@ var JetpackJumpstart = React.createClass({displayName: "JetpackJumpstart",
 		}
 
 		if ( this.state.showModules ) {
-			var moduleDescriptions = JPS.jetpack.jumpstart_modules.map( function (module) {
+			
+			var moduleDescriptions = SiteStore.getJumpstartModules().map( function (module) {
+				
+				var activeModule;
+				if ( _.indexOf( SiteStore.getActiveModuleSlugs(), module.slug ) >= 0 ) {
+					activeModule = (React.createElement("span", {className: "activated"}, "Activated"));
+				} else {
+					activeModule = null;
+				}
+
 				return (
 					React.createElement("div", {className: "welcome__jumpstart_module"}, 
 						React.createElement("strong", null, module.name), 
+						activeModule, 
 						React.createElement("small", {className: "jumpstart_module__description", dangerouslySetInnerHTML: {__html: module.description}})
 					)
 				)
@@ -1652,12 +1662,20 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.jetpack.configured;
   },
 
+  getActiveModuleSlugs: function() {
+    return JPS.jetpack.active_modules;
+  },
+
   isJetpackModuleEnabled: function(slug) {
     return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
   },
 
   getJumpstartModuleSlugs: function() {
     return JPS.jetpack.jumpstart_modules.map(function(module) { return module.slug; });
+  },
+
+  getJumpstartModules: function() {
+    return JPS.jetpack.jumpstart_modules;
   },
 
   getJetpackJumpstartEnabled: function() {

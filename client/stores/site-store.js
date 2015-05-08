@@ -66,12 +66,20 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.jetpack.configured;
   },
 
+  getActiveModuleSlugs: function() {
+    return JPS.jetpack.active_modules;
+  },
+
   isJetpackModuleEnabled: function(slug) {
     return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
   },
 
   getJumpstartModuleSlugs: function() {
     return JPS.jetpack.jumpstart_modules.map(function(module) { return module.slug; });
+  },
+
+  getJumpstartModules: function() {
+    return JPS.jetpack.jumpstart_modules;
   },
 
   getJetpackJumpstartEnabled: function() {

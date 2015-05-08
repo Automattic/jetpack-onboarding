@@ -337,6 +337,18 @@ $light-gray: #ccc;
 	position: relative;
 	height: 147px;
 	padding: 10px;
+	.activated {
+		text-transform: uppercase;
+		font-size: 10px;
+		font-weight: bold;
+		line-height: 100%;
+		color: #fff;
+		background: #9fbd72;
+		border-radius: 2px;
+		padding: 2px 4px;
+		display: inline-block;
+		margin-left: 5px;
+	}
 	small {
 		display: block;
 		margin-top: 5px;

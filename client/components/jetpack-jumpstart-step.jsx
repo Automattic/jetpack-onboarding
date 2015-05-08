@@ -113,10 +113,20 @@ var JetpackJumpstart = React.createClass({
 		}
 
 		if ( this.state.showModules ) {
-			var moduleDescriptions = JPS.jetpack.jumpstart_modules.map( function (module) {
+			
+			var moduleDescriptions = SiteStore.getJumpstartModules().map( function (module) {
+				
+				var activeModule;
+				if ( _.indexOf( SiteStore.getActiveModuleSlugs(), module.slug ) >= 0 ) {
+					activeModule = (<span className="activated">Activated</span>);
+				} else {
+					activeModule = null;
+				}
+
 				return (
 					<div className="welcome__jumpstart_module">
 						<strong>{module.name}</strong>
+						{activeModule}
 						<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
 					</div>
 				)
