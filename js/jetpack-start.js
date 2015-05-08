@@ -1890,6 +1890,11 @@ welcomeView: require('./components/site-title-step.jsx')
 				slug: Paths.LAYOUT_STEP_SLUG,
 				welcomeView: require('./components/layout-step.jsx')
 			},
+			{ 
+				name: "Pick a design", 
+				slug: Paths.DESIGN_STEP_SLUG,
+				welcomeView: require('./components/design-step.jsx'), 
+			},
 			{
 				name: 'Jump Start',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
@@ -1901,11 +1906,6 @@ welcomeView: require('./components/site-title-step.jsx')
 			//   slug: Paths.STATS_MONITORING_STEP_SLUG,
 			//   welcomeView: require('./components/stats-monitoring-step.jsx'),
 			// },
-			{ 
-				name: "Pick a design", 
-				slug: Paths.DESIGN_STEP_SLUG,
-				welcomeView: require('./components/design-step.jsx'), 
-			},
 			// { 
 			//   name: "Get some traffic", 
 			//   slug: Paths.TRAFFIC_STEP_SLUG,
