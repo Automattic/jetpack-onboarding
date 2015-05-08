@@ -703,6 +703,7 @@ var GetStarted = React.createClass({displayName: "GetStarted",
 	},
 
 	handleGetStarted: function(e) {
+		e.preventDefault();
 		SetupProgressActions.getStarted();
 	},
 

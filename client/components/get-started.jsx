@@ -24,6 +24,7 @@ var GetStarted = React.createClass({
 	},
 
 	handleGetStarted: function(e) {
+		e.preventDefault();
 		SetupProgressActions.getStarted();
 	},
 
