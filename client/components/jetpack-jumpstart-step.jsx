@@ -106,7 +106,7 @@ var JetpackJumpstart = React.createClass({
 					You have successfully enabled Jetpack Jump Start for stats, monitoring, carousels, social plugins, and more!
 					<p>
 						{moduleButton}&nbsp;&nbsp;
-						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Continue" />
+						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
 					</p>
 				</div>
 			);

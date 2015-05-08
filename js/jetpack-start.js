@@ -502,7 +502,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				React.createElement("h4", null, "Pick a design"), 
 				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
 				React.createElement("p", {className: "submit"}, 
-					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleContinue, value: "Continue"}), 
+					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleContinue, value: "Next Step →"}), 
 					React.createElement(SkipButton, null)
 				), 
 				React.createElement("div", {className: "theme-browser"}, 
@@ -833,7 +833,7 @@ var JetpackJumpstart = React.createClass({displayName: "JetpackJumpstart",
 					"You have successfully enabled Jetpack Jump Start for stats, monitoring, carousels, social plugins, and more!", 
 					React.createElement("p", null, 
 						moduleButton, "  ", 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleNext, value: "Continue"})
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleNext, value: "Next Step →"})
 					)
 				)
 			);
@@ -947,7 +947,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 					), 
 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"}), 
 						React.createElement(SkipButton, null)
 					)
 				)
@@ -1018,7 +1018,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 					       placeholder: "Site Description"}), 
 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"}), 
 						React.createElement(SkipButton, null)
 					)
 				), 

@@ -57,7 +57,7 @@ var SiteTitleStep = React.createClass({
 					       placeholder="Site Description"/>
 
 					<p className="submit">
-						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>
+						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
 						<SkipButton />
 					</p>
 				</form>
