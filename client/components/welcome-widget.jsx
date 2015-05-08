@@ -75,7 +75,13 @@ var WelcomeWidget = React.createClass({
 				{this._renderDebug()}
 				<div className="getting-started__wrapper">
 					{this._renderSpinner()}
-					<GetStarted />
+					<div className="getting-started__sections">
+						<Flash />
+						<GetStarted />
+					</div>
+
+					<WelcomeMenu clickable={false} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<div className="clear"></div>
 				</div>
 			</div>
 		);
@@ -111,7 +117,7 @@ var WelcomeWidget = React.createClass({
 						{this._renderCurrentView()}
 					</div>
 
-					<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<WelcomeMenu clickable={true} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 					<div className="clear"></div>
 				</div>
 			</div>

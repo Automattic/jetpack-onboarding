@@ -1137,8 +1137,15 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 	
 	propTypes: {
 		currentStep: stepShape.isRequired,
+		clickable: React.PropTypes.bool,
 		allSteps: React.PropTypes.arrayOf(stepShape).isRequired,
 		progressPercent: React.PropTypes.number.isRequired
+	},
+
+	getDefaultProps: function() {
+		return {
+			clickable: true
+		};
 	},
 
 	selectStep: function(e) {
@@ -1154,21 +1161,17 @@ var WelcomeMenu = React.createClass({displayName: "WelcomeMenu",
 		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current, status;
 
-			if ( this.props.currentStep ) {
+			if ( this.props.clickable && this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( ! step.static ) {
+			if ( !step.static && this.props.clickable ) {
 				title = React.createElement("a", {href: "#", "data-step-slug": step.slug, onClick: this.selectStep}, step.name)
 			} else {
 				title = step.name;
 			}
 
 			status = step.completed ? 'completed' : '';
-
-			if ( step.skipped ) {
-
-			}
 			
 			return (
 				React.createElement("li", {key: step.slug, className: status + (current ? ' current' : '')}, title, " ", step.skipped ? '(skipped)' : null)
@@ -1301,7 +1304,13 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 				this._renderDebug(), 
 				React.createElement("div", {className: "getting-started__wrapper"}, 
 					this._renderSpinner(), 
-					React.createElement(GetStarted, null)
+					React.createElement("div", {className: "getting-started__sections"}, 
+						React.createElement(Flash, null), 
+						React.createElement(GetStarted, null)
+					), 
+
+					React.createElement(WelcomeMenu, {clickable: false, currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
+					React.createElement("div", {className: "clear"})
 				)
 			)
 		);
@@ -1337,7 +1346,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 						this._renderCurrentView()
 					), 
 
-					React.createElement(WelcomeMenu, {currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
+					React.createElement(WelcomeMenu, {clickable: true, currentStep: this.state.currentStep, allSteps: this.state.allSteps, progressPercent: this.state.progressPercent}), 
 					React.createElement("div", {className: "clear"})
 				)
 			)

@@ -14,8 +14,15 @@ var WelcomeMenu = React.createClass({
 	
 	propTypes: {
 		currentStep: stepShape.isRequired,
+		clickable: React.PropTypes.bool,
 		allSteps: React.PropTypes.arrayOf(stepShape).isRequired,
 		progressPercent: React.PropTypes.number.isRequired
+	},
+
+	getDefaultProps: function() {
+		return {
+			clickable: true
+		};
 	},
 
 	selectStep: function(e) {
@@ -31,21 +38,17 @@ var WelcomeMenu = React.createClass({
 		var menuItems = this.props.allSteps.map(function ( step ) {
 			var title, current, status;
 
-			if ( this.props.currentStep ) {
+			if ( this.props.clickable && this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
 			}
 
-			if ( ! step.static ) {
+			if ( !step.static && this.props.clickable ) {
 				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>
 			} else {
 				title = step.name;
 			}
 
 			status = step.completed ? 'completed' : '';
-
-			if ( step.skipped ) {
-
-			}
 			
 			return (
 				<li key={step.slug} className={status + (current ? ' current' : '')}>{title} {step.skipped ? '(skipped)' : null}</li>
