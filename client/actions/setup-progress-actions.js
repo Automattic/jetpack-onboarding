@@ -83,6 +83,23 @@ var SetupProgressActions = {
 		 }
 	},
 
+	getStarted: function() {
+		SpinnerActions.show();
+	    WPAjax.
+			post(JPS.step_actions.start).
+			done( function(data) {
+				AppDispatcher.dispatch({
+			      actionType: JPSConstants.STEP_GET_STARTED
+			    });
+			}).
+			fail( function(msg) {
+				FlashActions.error(msg);
+			}).
+			always( function() { 
+				SpinnerActions.hide();
+			});
+	},
+
 	setCurrentStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({

@@ -2,6 +2,7 @@
 class Jetpack_Start_EndPoints { 
 	const AJAX_NONCE = 'jps-ajax';
 	const STEP_STATUS_KEY = 'jps_step_statuses';
+	const STARTED_KEY = 'jps_started';
 
 	static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -21,6 +22,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
+			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
 			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
 	}
@@ -45,6 +47,7 @@ class Jetpack_Start_EndPoints {
 
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
+		$started = get_option( self::STARTED_KEY, false);
 
 		$jetpack_config = array();
 
@@ -78,14 +81,11 @@ class Jetpack_Start_EndPoints {
 
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
-
 			'debug' => WP_DEBUG ? true : false,
-
 			'bloginfo' => array(
 				'name' => wp_kses_decode_entities(stripslashes(get_bloginfo('name'))),
 				'description' => wp_kses_decode_entities(stripslashes(get_bloginfo('description')))
 			),
-
 			'site_actions' => array(
 				'set_title' => 'jps_set_title',
 				'set_layout' => 'jps_set_layout',
@@ -94,18 +94,15 @@ class Jetpack_Start_EndPoints {
 				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
 				'reset_data' => 'jps_reset_data'
 			),
-
 			'step_actions' => array(
+				'start' => 'jps_started',
 				'skip' => 'jps_step_skip',
 				'complete' => 'jps_step_complete'
 			),
-
 			'jetpack' => $jetpack_config,
-
 			'themes' => $themes,
-
+			'started' => $started,
 			'step_status' => $step_statuses,
-
 			'steps' => array(
 				'layout' => array(
 					'current' => $layout
@@ -127,6 +124,7 @@ class Jetpack_Start_EndPoints {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
 		delete_option( self::STEP_STATUS_KEY );
+		delete_option( self::STARTED_KEY );
 
 		wp_send_json_success( 'deleted' );
 	}
@@ -176,6 +174,13 @@ class Jetpack_Start_EndPoints {
 			update_option( 'sharing-options', $sharing_options );
 			update_option( 'sharing-services', array( 'visible' => $visible, 'hidden' => $hidden ) );
 		}
+	}
+
+	static function started() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		update_option( self::STARTED_KEY, true );
+		do_action('jps_started');
+		wp_send_json_success( 'true' );
 	}
 
 	static function step_skip() {

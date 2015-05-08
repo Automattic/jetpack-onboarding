@@ -32,28 +32,33 @@ Each is invoked with a string (a "slug") which names the step, so integration lo
 
 class JetpackStartTracking {
 	static function track_jps_usage() {
+		add_action('jps_started', array(__CLASS__, 'track_started'));
 		add_action('jps_step_skipped', array(__CLASS__, 'track_step_skipped'));
 		add_action('jps_step_completed', array(__CLASS__, 'track_step_completed'));
 	}
 
+	static function track_started() {
+		self::record_user_event('none', 'started');
+	}
+
 	static function track_step_skipped($step_slug) {
-		self::record_user_event($step_slug, 'skipped');
+		self::record_user_event($step_slug, 'step_skipped');
 	}
 
 	static function track_step_completed($step_slug) {
-		self::record_user_event($step_slug, 'completed');
+		self::record_user_event($step_slug, 'step_completed');
 	}
 
 	static function record_user_event($step_slug, $event_type) {
 		$current_user = wp_get_current_user();
 		$event = array(
-			'_event_type' => 'jps_step_'.$event_type,
+			'_event_type' => 'jps_'.$event_type,
 			'step' => $step_slug,
 			'user_id' => $current_user->ID,
 			'user_email' => $current_user->user_email,
 			'_ip' => $_SERVER['REMOTE_ADDR']
 		);
-		error_log("Recorded step: ".print_r($event, true));
+		error_log("Recorded event: ".print_r($event, true));
 	}
 }
 

@@ -12,7 +12,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-var _steps;
+var _steps, _started = JPS.started; 
 
 function setSteps(steps) {
 
@@ -41,6 +41,11 @@ function setSteps(steps) {
   
   // set location to first pending step, if not set
   ensureValidStepSlug(); 
+}
+
+function getStarted() {
+  _started = true;
+  selectNextPendingStep();
 }
 
 function complete(stepSlug) {
@@ -102,6 +107,7 @@ function reset() {
     step.completed = false;
     step.skipped = false;
   } );
+  _started = false;
 }
 
 var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
@@ -122,6 +128,10 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   getAllSteps: function() {
     return _steps;
+  },
+
+  isNewUser: function() {
+    return !_started;
   },
 
   emitChange: function() {
@@ -163,6 +173,11 @@ AppDispatcher.register(function(action) {
   var text;
 
   switch(action.actionType) {
+    case JPSConstants.STEP_GET_STARTED:
+      getStarted();
+      SetupProgressStore.emitChange();
+      break;
+
     case JPSConstants.STEP_SELECT:
       select(action.slug);
       SetupProgressStore.emitChange();

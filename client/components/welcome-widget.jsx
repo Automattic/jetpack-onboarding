@@ -3,11 +3,12 @@ var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash.jsx'),
+	GetStarted = require('./get-started.jsx'),
 	SpinnerStore = require('../stores/spinner-store'),
 	SpinnerActions = require('../actions/spinner-actions');
 
 function getSetupProgress() {
-	return { showSpinner: SpinnerStore.showing(), currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
+	return { newUser: SetupProgressStore.isNewUser(), showSpinner: SpinnerStore.showing(), currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
 }
 
 var WelcomeWidget = React.createClass({
@@ -49,44 +50,65 @@ var WelcomeWidget = React.createClass({
 	},
 
   	render: function() {
-  		var currentView, debug, spinner;
-  		if ( this.state.currentStep ) {
-  			currentView = (<this.state.currentStep.welcomeView />);
+  		if ( this.state.newUser ) {
+  			return this._renderGetStarted();
   		} else {
-  			currentView = (<h3>Nothing</h3>);
+  			return this._renderWizard();
   		}
+	},
 
-  		if ( JPS.debug ) {
-  			debug = (<div>
+	_renderDebug: function() {
+		if ( JPS.debug ) {
+  			return (<div>
   				<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
   				<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
   				<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
-  			</div>)
+  			</div>);
+  		} else {
+  			return null;
   		}
+	},
 
-  		if ( this.state.showSpinner ) {
-  			spinner = (
+	_renderGetStarted: function() {
+		return (
+			<div className="getting-started">
+				{this._renderDebug()}
+				<div className="getting-started__wrapper">
+					{this._renderSpinner()}
+					<GetStarted />
+				</div>
+			</div>
+		);
+	},
+
+	_renderSpinner: function() {
+		if ( this.state.showSpinner ) {
+  			return (
   				<div className="loading"></div>
   			);
 
   		} else {
-  			spinner = null;
+  			return null;
   		}
+	},
 
+	_renderCurrentView: function() {
+		if ( this.state.currentStep ) {
+  			return (<this.state.currentStep.welcomeView />);
+  		} else {
+  			return (<h3>Nothing</h3>);
+  		}
+	},	
+
+	_renderWizard: function() {
 	    return (
 			<div className="getting-started">
-				{debug}
-				<div className="getting-started__intro">
-					<h3>You're almost done!</h3>
-
-					<p className="getting-started__subhead">Take these steps to supercharge your WordPress site.</p>
-				</div>
-
+				{this._renderDebug()}
 				<div className="getting-started__wrapper">
-					{spinner}
+					{this._renderSpinner()}
 					<div className="getting-started__sections">
 						<Flash />
-						{currentView}
+						{this._renderCurrentView()}
 					</div>
 
 					<WelcomeMenu currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
@@ -95,6 +117,7 @@ var WelcomeWidget = React.createClass({
 			</div>
     	);
 	}
+
 });
 
 module.exports = WelcomeWidget;
