@@ -876,13 +876,12 @@ big {
 .welcome__jumpstart_module {
   float: left;
   position: relative;
-  height: 147px;
+  height: 140px;
   padding: 10px;
 }
 .welcome__jumpstart_module .activated {
   text-transform: uppercase;
   font-size: 10px;
-  font-weight: bold;
   line-height: 100%;
   color: #fff;
   background: #9fbd72;

@@ -23,61 +23,55 @@ var SiteActions = {
 	saveTitleAndDescription: function() {
 		var title = SiteStore.getTitle();
 		var description = SiteStore.getDescription();
-		SpinnerActions.show();
-		return WPAjax.
+		
+		WPAjax.
 			post( JPS.site_actions.set_title, { title: title, description: description } ).
-			done( function ( msg ) {
-				jQuery('#wp-admin-bar-site-name .ab-item').html(title);
-				FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
-					title: title
-			    });
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Error setting title: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+		FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
+			title: title
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	setActiveTheme: function( themeId ) {
-		SpinnerActions.show();
-		return WPAjax.
+		
+		WPAjax.
 			post( JPS.site_actions.set_theme, { themeId: themeId } ).
-			done( function ( msg ) {
-				FlashActions.notice("Set theme to "+themeId);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SET_THEME,
-					themeId: themeId
-			    });
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Server error setting theme: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Set theme to "+themeId);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_THEME,
+			themeId: themeId
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	setLayout: function( layoutName ) {
-		SpinnerActions.show();
-		return WPAjax.
+	
+		WPAjax.
 			post( JPS.site_actions.set_layout, { layout: layoutName } ).
-			done( function ( msg ) {
-				FlashActions.notice("Set layout to "+layoutName);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SET_LAYOUT,
-					layout: layoutName
-			    });
-			}).
 			fail( function (msg ) {
 				FlashActions.error("Error setting layout: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Set layout to "+layoutName);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_LAYOUT,
+			layout: layoutName
+	    });
+
+	    return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	configureJetpack: function(return_to_step) {
@@ -105,42 +99,35 @@ var SiteActions = {
 	},
 
 	activateJetpackModule: function(module_slug) {
-		SpinnerActions.show();
-		return WPAjax.
-			post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] }).
-			done( function ( data ) {
-				FlashActions.notice("Enabled "+module_slug);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
-					slug: module_slug
-			    });
 
-			}).
+		WPAjax.
+			post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] }).
 			fail( function ( msg ) {
 				FlashActions.error("Error activating Jetpack module: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Enabled "+module_slug);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
+			slug: module_slug
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	enableJumpstart: function() {
-		SpinnerActions.show();
-		return WPAjax.
+		WPAjax.
 			post( JPS.site_actions.activate_jetpack_modules, { modules: SiteStore.getJumpstartModuleSlugs() }).
-			done( function ( data ) {
-				FlashActions.notice("Enabled "+data);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
-			    });
-
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Error activating Jetpack module: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Enabled "+data);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 };
 

@@ -12,6 +12,20 @@ var SpinnerActions = {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.HIDE_SPINNER,
 		});	
+	},
+
+	showAsync: function(msg) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SHOW_ASYNC_SPINNER,
+			message: msg
+		});		
+	},
+
+	hideAsync: function() {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.HIDE_ASYNC_SPINNER,
+			message: msg
+		});			
 	}
 };
 

@@ -9,22 +9,17 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var SetupProgressActions = {
 	resetData: function() {
-		// resets all wizard data on the server
-		SpinnerActions.show();
 		WPAjax.
 			post(JPS.site_actions.reset_data).
 			done( function ( data ) {
 				FlashActions.notice("Reset data");
-				AppDispatcher.dispatch({
-			      actionType: JPSConstants.RESET_DATA
-			    });
 			}).
 			fail( function ( msg ) {
 				FlashActions.error("Failed to save data: " + msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+		AppDispatcher.dispatch({
+	      	actionType: JPSConstants.RESET_DATA
+	    });
 	},
 
 	completeStep: function(slug) {
@@ -32,27 +27,17 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getStepFromSlug(slug);
 
 		if ( ! step.completed ) {
-			SpinnerActions.show();
 			WPAjax.
 			  	post(JPS.step_actions.complete, { step: slug }).
-			  	done( function(data) {
-				    AppDispatcher.dispatch({
-						actionType: JPSConstants.STEP_COMPLETE,
-						slug: slug
-				    });
-			  	}).
 				fail( function(msg) {
 					FlashActions.error(msg);
-				}).
-				always( function() { 
-					SpinnerActions.hide(); 
 				});
-		} else {
-			AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_COMPLETE,
-				slug: slug
-		    });
-		}
+		} 
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_COMPLETE,
+			slug: slug
+	    });
 	},
 
 	// mark current step as skipped and move on
@@ -62,42 +47,28 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getCurrentStep();
 
 		if ( ! step.skipped ) {
-			SpinnerActions.show();
 		    WPAjax.
 				post(JPS.step_actions.skip, { step: step.slug }).
-				done( function(data) {
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.STEP_SKIP
-				    });
-				}).
 				fail( function(msg) {
 					FlashActions.error(msg);
-				}).
-				always( function() { 
-					SpinnerActions.hide();
 				});
-		 } else {
-		 	AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_SKIP
-		    });
-		 }
+		}
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SKIP
+	    });
 	},
 
 	getStarted: function() {
-		SpinnerActions.show();
 	    WPAjax.
 			post(JPS.step_actions.start).
-			done( function(data) {
-				AppDispatcher.dispatch({
-			      actionType: JPSConstants.STEP_GET_STARTED
-			    });
-			}).
 			fail( function(msg) {
 				FlashActions.error(msg);
-			}).
-			always( function() { 
-				SpinnerActions.hide();
 			});
+
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_GET_STARTED
+	    });
 	},
 
 	setCurrentStep: function(slug) {

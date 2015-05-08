@@ -40,22 +40,17 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var SetupProgressActions = {
 	resetData: function() {
-		// resets all wizard data on the server
-		SpinnerActions.show();
 		WPAjax.
 			post(JPS.site_actions.reset_data).
 			done( function ( data ) {
 				FlashActions.notice("Reset data");
-				AppDispatcher.dispatch({
-			      actionType: JPSConstants.RESET_DATA
-			    });
 			}).
 			fail( function ( msg ) {
 				FlashActions.error("Failed to save data: " + msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+		AppDispatcher.dispatch({
+	      	actionType: JPSConstants.RESET_DATA
+	    });
 	},
 
 	completeStep: function(slug) {
@@ -63,27 +58,17 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getStepFromSlug(slug);
 
 		if ( ! step.completed ) {
-			SpinnerActions.show();
 			WPAjax.
 			  	post(JPS.step_actions.complete, { step: slug }).
-			  	done( function(data) {
-				    AppDispatcher.dispatch({
-						actionType: JPSConstants.STEP_COMPLETE,
-						slug: slug
-				    });
-			  	}).
 				fail( function(msg) {
 					FlashActions.error(msg);
-				}).
-				always( function() { 
-					SpinnerActions.hide(); 
 				});
-		} else {
-			AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_COMPLETE,
-				slug: slug
-		    });
-		}
+		} 
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_COMPLETE,
+			slug: slug
+	    });
 	},
 
 	// mark current step as skipped and move on
@@ -93,42 +78,28 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getCurrentStep();
 
 		if ( ! step.skipped ) {
-			SpinnerActions.show();
 		    WPAjax.
 				post(JPS.step_actions.skip, { step: step.slug }).
-				done( function(data) {
-					AppDispatcher.dispatch({
-						actionType: JPSConstants.STEP_SKIP
-				    });
-				}).
 				fail( function(msg) {
 					FlashActions.error(msg);
-				}).
-				always( function() { 
-					SpinnerActions.hide();
 				});
-		 } else {
-		 	AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_SKIP
-		    });
-		 }
+		}
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SKIP
+	    });
 	},
 
 	getStarted: function() {
-		SpinnerActions.show();
 	    WPAjax.
 			post(JPS.step_actions.start).
-			done( function(data) {
-				AppDispatcher.dispatch({
-			      actionType: JPSConstants.STEP_GET_STARTED
-			    });
-			}).
 			fail( function(msg) {
 				FlashActions.error(msg);
-			}).
-			always( function() { 
-				SpinnerActions.hide();
 			});
+
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_GET_STARTED
+	    });
 	},
 
 	setCurrentStep: function(slug) {
@@ -224,61 +195,55 @@ var SiteActions = {
 	saveTitleAndDescription: function() {
 		var title = SiteStore.getTitle();
 		var description = SiteStore.getDescription();
-		SpinnerActions.show();
-		return WPAjax.
+		
+		WPAjax.
 			post( JPS.site_actions.set_title, { title: title, description: description } ).
-			done( function ( msg ) {
-				jQuery('#wp-admin-bar-site-name .ab-item').html(title);
-				FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
-					title: title
-			    });
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Error setting title: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+		FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
+			title: title
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	setActiveTheme: function( themeId ) {
-		SpinnerActions.show();
-		return WPAjax.
+		
+		WPAjax.
 			post( JPS.site_actions.set_theme, { themeId: themeId } ).
-			done( function ( msg ) {
-				FlashActions.notice("Set theme to "+themeId);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SET_THEME,
-					themeId: themeId
-			    });
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Server error setting theme: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Set theme to "+themeId);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_THEME,
+			themeId: themeId
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	setLayout: function( layoutName ) {
-		SpinnerActions.show();
-		return WPAjax.
+	
+		WPAjax.
 			post( JPS.site_actions.set_layout, { layout: layoutName } ).
-			done( function ( msg ) {
-				FlashActions.notice("Set layout to "+layoutName);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SET_LAYOUT,
-					layout: layoutName
-			    });
-			}).
 			fail( function (msg ) {
 				FlashActions.error("Error setting layout: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Set layout to "+layoutName);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_LAYOUT,
+			layout: layoutName
+	    });
+
+	    return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	configureJetpack: function(return_to_step) {
@@ -306,42 +271,35 @@ var SiteActions = {
 	},
 
 	activateJetpackModule: function(module_slug) {
-		SpinnerActions.show();
-		return WPAjax.
-			post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] }).
-			done( function ( data ) {
-				FlashActions.notice("Enabled "+module_slug);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
-					slug: module_slug
-			    });
 
-			}).
+		WPAjax.
+			post( JPS.site_actions.activate_jetpack_modules, { modules: [module_slug] }).
 			fail( function ( msg ) {
 				FlashActions.error("Error activating Jetpack module: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Enabled "+module_slug);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
+			slug: module_slug
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	enableJumpstart: function() {
-		SpinnerActions.show();
-		return WPAjax.
+		WPAjax.
 			post( JPS.site_actions.activate_jetpack_modules, { modules: SiteStore.getJumpstartModuleSlugs() }).
-			done( function ( data ) {
-				FlashActions.notice("Enabled "+data);
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
-			    });
-
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Error activating Jetpack module: "+msg);
-			}).
-			always( function() {
-				SpinnerActions.hide();
 			});
+
+		FlashActions.notice("Enabled "+data);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 };
 
@@ -362,6 +320,20 @@ var SpinnerActions = {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.HIDE_SPINNER,
 		});	
+	},
+
+	showAsync: function(msg) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SHOW_ASYNC_SPINNER,
+			message: msg
+		});		
+	},
+
+	hideAsync: function() {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.HIDE_ASYNC_SPINNER,
+			message: msg
+		});			
 	}
 };
 
