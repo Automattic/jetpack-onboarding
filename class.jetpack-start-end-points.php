@@ -120,7 +120,7 @@ class Jetpack_Start_EndPoints {
 	}
 
 	static function default_theme_filter($theme) {
-		return (get_stylesheet() == $theme['id'] || in_array( $theme['id'], self::$default_themes ));
+		return ( in_array( $theme['id'], self::$default_themes ) || get_stylesheet() == $theme['id'] );
 	}
 
 	static function reset_data() {
