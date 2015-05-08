@@ -1229,7 +1229,7 @@ var WelcomeWidget = React.createClass({displayName: "WelcomeWidget",
 
   		if ( this.state.showSpinner ) {
   			spinner = (
-  				React.createElement("div", {className: "loading"}, "Loading…")
+  				React.createElement("div", {className: "loading"})
   			);
 
   		} else {
