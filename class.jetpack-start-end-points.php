@@ -74,6 +74,8 @@ class Jetpack_Start_EndPoints {
 			$layout = 'blog';
 		}
 
+		$themes = array_values( array_filter( wp_prepare_themes_for_js(), array(__CLASS__, 'default_theme_filter') ) );
+
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 
@@ -100,7 +102,7 @@ class Jetpack_Start_EndPoints {
 
 			'jetpack' => $jetpack_config,
 
-			'themes' => wp_prepare_themes_for_js(),
+			'themes' => $themes,
 
 			'step_status' => $step_statuses,
 
@@ -115,6 +117,10 @@ class Jetpack_Start_EndPoints {
 				)
 			)
 		);
+	}
+
+	static function default_theme_filter($theme) {
+		return (get_stylesheet() == $theme['id'] || in_array( $theme['id'], self::$default_themes ));
 	}
 
 	static function reset_data() {

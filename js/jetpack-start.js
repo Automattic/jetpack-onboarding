@@ -1883,7 +1883,7 @@ module.exports = function() {
 			{
 				name: 'Site title',
 				slug: Paths.SITE_TITLE_STEP_SLUG,
-welcomeView: require('./components/site-title-step.jsx')
+				welcomeView: require('./components/site-title-step.jsx')
 			},
 			{
 				name: 'Pick a layout',
