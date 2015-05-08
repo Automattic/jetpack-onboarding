@@ -211,6 +211,7 @@ var SiteActions = {
 		return WPAjax.
 			post( JPS.site_actions.set_title, { title: title, description: description } ).
 			done( function ( msg ) {
+				jQuery('#wp-admin-bar-site-name .ab-item').html(title);
 				FlashActions.notice("Set title to '"+title+"'");
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
