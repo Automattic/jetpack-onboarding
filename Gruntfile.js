@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'production'; //XXX hack for envify
 module.exports = function(grunt) {
 
 	grunt.initConfig({

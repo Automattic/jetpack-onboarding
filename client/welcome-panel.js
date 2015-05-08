@@ -1,5 +1,4 @@
 var React = require('react'),
-	Es5Shim = require('es5-shim'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
     Paths = require('./constants/jetpack-start-paths'),
     SetupProgressStore = require('./stores/setup-progress-store');
