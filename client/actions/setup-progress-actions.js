@@ -125,6 +125,12 @@ var SetupProgressActions = {
 		}.bind(this));	
 	},
 
+	submitJetpackJumpstart: function() {
+		SiteActions.enableJumpstart().done(function() {
+			this.completeStep(Paths.JETPACK_MODULES_STEP_SLUG);
+		}.bind(this));
+	},
+
 	saveDesignStep: function() {
 		this.completeStep(Paths.DESIGN_STEP_SLUG);
 	},

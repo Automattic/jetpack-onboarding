@@ -25,17 +25,34 @@ class Jetpack_Start_EndPoints {
 		}
 	}
 
+
+	static function jumpstart_modules() {
+		$modules = Jetpack_Admin::init()->get_modules();
+
+		$module_info = array();
+		foreach ( $modules as $module => $value ) {
+			if ( in_array( 'Jumpstart', $value['feature'] ) ) {
+				$module_info[] = array(
+					'slug'   => $value['module'],
+					'name'   => $value['name'],
+					'description'   => $value['jumpstart_desc'],
+					'configure_url' => $value['configure_url'],
+				);
+			}
+		}
+		return $module_info;
+	}
+
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
 
 		$jetpack_config = array();
 
 		if ( class_exists('Jetpack') ) {
-			$jetpack_landing_page = new Jetpack_Landing_Page();
 			$jetpack_config = array(
 				'plugin_active' => true,
 				'configured' => Jetpack::is_active(),
-				'jumpstart_modules' => array_values($jetpack_landing_page->jumpstart_module_tag( 'Jumpstart' )),
+				'jumpstart_modules' => array_values(self::jumpstart_modules()),
 				'active_modules' => array_values(Jetpack::init()->get_active_modules())
 			);
 		} else {

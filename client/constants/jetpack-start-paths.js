@@ -6,4 +6,5 @@ module.exports = {
 	STATS_MONITORING_STEP_SLUG: 'stats-monitoring',
 	DESIGN_STEP_SLUG: 'design',
 	ADVANCED_STEP_SLUG: 'advanced',
+	JETPACK_MODULES_STEP_SLUG: 'jetpack'
 }

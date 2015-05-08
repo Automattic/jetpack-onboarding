@@ -8,7 +8,7 @@ var React = require('react'),
 function getJetpackState() {
 	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
-		statsModuleEnabled: SiteStore.getJetpackModuleStatus('stats')
+		statsModuleEnabled: SiteStore.isJetpackModuleEnabled('stats')
 	};
 }
 

@@ -113,7 +113,26 @@ var SiteActions = {
 			always( function() {
 				SpinnerActions.hide();
 			});
-	}
+	},
+
+	enableJumpstart: function() {
+		SpinnerActions.show();
+		return WPAjax.
+			post( JPS.site_actions.activate_jetpack_modules, { modules: SiteStore.getJumpstartModuleSlugs() }).
+			done( function ( data ) {
+				FlashActions.notice("Enabled "+data);
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
+			    });
+
+			}).
+			fail( function ( msg ) {
+				FlashActions.error("Error activating Jetpack module: "+msg);
+			}).
+			always( function() {
+				SpinnerActions.hide();
+			});
+	},
 };
 
 module.exports = SiteActions;

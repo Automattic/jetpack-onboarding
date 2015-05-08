@@ -8,51 +8,56 @@ module.exports = function() {
 
     	SetupProgressStore.init([
 			{
-			  name: "Sign up",
-			  completed: true,
-			  static: true
+				name: "Sign up",
+				completed: true,
+				static: true
 			},
 			{
-			  name: 'Create admin account',
-			  completed: true,
-			  static: true
+				name: 'Create admin account',
+				completed: true,
+				static: true
 			},
 			{
-			  name: 'Verify email address',
-			  completed: true,
-			  static: true
+				name: 'Verify email address',
+				completed: true,
+				static: true
 			},
 			{
-			  name: 'Site title',
-			  slug: Paths.SITE_TITLE_STEP_SLUG,
-			  welcomeView: require('./components/site-title-step.jsx')
+				name: 'Site title',
+				slug: Paths.SITE_TITLE_STEP_SLUG,
+welcomeView: require('./components/site-title-step.jsx')
 			},
 			{
-			  name: 'Pick a layout',
-			  slug: Paths.LAYOUT_STEP_SLUG,
-			  welcomeView: require('./components/layout-step.jsx')
+				name: 'Pick a layout',
+				slug: Paths.LAYOUT_STEP_SLUG,
+				welcomeView: require('./components/layout-step.jsx')
 			},
 			{
-			  name: 'Stats & Monitoring',
-			  slug: Paths.STATS_MONITORING_STEP_SLUG,
-			  welcomeView: require('./components/stats-monitoring-step.jsx'),
+				name: 'Jump Start',
+				slug: Paths.JETPACK_MODULES_STEP_SLUG,
+				welcomeView: require('./components/jetpack-jumpstart-step.jsx')
 			},
+
+			// {
+			//   name: 'Stats & Monitoring',
+			//   slug: Paths.STATS_MONITORING_STEP_SLUG,
+			//   welcomeView: require('./components/stats-monitoring-step.jsx'),
+			// },
 			{ 
-			  name: "Pick a design", 
-			  slug: Paths.DESIGN_STEP_SLUG,
-			  welcomeView: require('./components/design-step.jsx'), 
-			  themes: JPS.themes
+				name: "Pick a design", 
+				slug: Paths.DESIGN_STEP_SLUG,
+				welcomeView: require('./components/design-step.jsx'), 
 			},
+			// { 
+			//   name: "Get some traffic", 
+			//   slug: Paths.TRAFFIC_STEP_SLUG,
+			//   welcomeView: require('./components/get-traffic-step.jsx') 
+			// },
 			{ 
-			  name: "Get some traffic", 
-			  slug: Paths.TRAFFIC_STEP_SLUG,
-			  welcomeView: require('./components/get-traffic-step.jsx') 
-			},
-			{ 
-			  name: "Advanced settings", 
-			  slug: Paths.ADVANCED_STEP_SLUG,
-			  welcomeView: require('./components/advanced-settings-step.jsx'),
-			  includeInProgress: false
+				name: "Advanced settings", 
+				slug: Paths.ADVANCED_STEP_SLUG,
+				welcomeView: require('./components/advanced-settings-step.jsx'),
+				includeInProgress: false
 			}
 		]);
 

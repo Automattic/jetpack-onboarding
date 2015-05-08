@@ -38,6 +38,12 @@ function setJetpackConfigured() {
   JPS.jetpack.configured = true
 }
 
+function setJetpackJumpstartActivated() {
+  JPS.jetpack.jumpstart_modules.forEach( function( module ) {
+    setJetpackModuleActivated( module.slug );
+  });
+}
+
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
@@ -52,8 +58,22 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.jetpack.configured;
   },
 
-  getJetpackModuleStatus: function(slug) {
+  isJetpackModuleEnabled: function(slug) {
     return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
+  },
+
+  getJumpstartModuleSlugs: function() {
+    return JPS.jetpack.jumpstart_modules.map(function(module) { return module.slug; });
+  },
+
+  getJetpackJumpstartEnabled: function() {
+    for(var i=0; i < JPS.jetpack.jumpstart_modules.length; i++) {
+      var module = JPS.jetpack.jumpstart_modules[i];
+      if ( ! this.isJetpackModuleEnabled( module.slug ) ) {
+        return false;
+      }
+    }
+    return true;
   },
 
   getLayout: function() {
@@ -94,6 +114,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
       setJetpackModuleActivated(action.slug);
+      SiteStore.emitChange();
+      break;
+
+    case JPSCOnstants.SITE_JETPACK_JUMPSTART_ENABLED: 
+      setJetpackJumpstartActivated()
       SiteStore.emitChange();
       break;
 

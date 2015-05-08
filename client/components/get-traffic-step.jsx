@@ -8,7 +8,7 @@ var React = require('react'),
 function getJetpackState() {
 	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
-		publicizeModuleEnabled: SiteStore.getJetpackModuleStatus('publicize')
+		publicizeModuleEnabled: SiteStore.isJetpackModuleEnabled('publicize')
 	};
 }
 
