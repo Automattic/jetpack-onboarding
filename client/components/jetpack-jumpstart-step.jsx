@@ -46,7 +46,7 @@ var JetpackJumpstart = React.createClass({
 	handleNext: function (e) {
 		e.preventDefault();
 
-		SetupProgressActions.completeAndNextStep(Paths.STATS_MONITORING_STEP_SLUG);
+		SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
 	},
 
 	hideJumpstartModules: function (e) {
