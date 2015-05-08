@@ -80,8 +80,8 @@ class Jetpack_Start_EndPoints {
 			'debug' => WP_DEBUG ? true : false,
 
 			'bloginfo' => array(
-				'name' => get_bloginfo('name'),
-				'description' => get_bloginfo('description')
+				'name' => wp_kses_decode_entities(stripslashes(get_bloginfo('name'))),
+				'description' => wp_kses_decode_entities(stripslashes(get_bloginfo('description')))
 			),
 
 			'site_actions' => array(
@@ -206,7 +206,7 @@ class Jetpack_Start_EndPoints {
 
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
+
 		$title = esc_html( $_REQUEST['title'] );
 		$description = esc_html( $_REQUEST['description'] );
 		
