@@ -139,7 +139,7 @@ var SetupProgressActions = {
 	},
 
 	submitTitleStep: function() {
-		SiteActions.saveTitle().done(function() {
+		SiteActions.saveTitleAndDescription().done(function() {
 			this.completeStep(Paths.SITE_TITLE_STEP_SLUG);
 		}.bind(this));
 	},
@@ -197,15 +197,23 @@ var SiteActions = {
 	    });
 	},
 
-	saveTitle: function() {
+	setDescription: function(description) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_DESCRIPTION,
+			description: description
+	    });
+	},
+
+	saveTitleAndDescription: function() {
 		var title = SiteStore.getTitle();
+		var description = SiteStore.getDescription();
 		SpinnerActions.show();
 		return WPAjax.
-			post( JPS.site_actions.set_title, { title: title } ).
+			post( JPS.site_actions.set_title, { title: title, description: description } ).
 			done( function ( msg ) {
 				FlashActions.notice("Set title to '"+title+"'");
 				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SAVE_TITLE,
+					actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 					title: title
 			    });
 			}).
@@ -805,8 +813,11 @@ var JetpackJumpstart = React.createClass({displayName: "JetpackJumpstart",
 			});
 
 			modules = (
-				React.createElement("div", {className: "welcome__jumpstart_modules"}, 
-					moduleDescriptions
+				React.createElement("div", null, 
+					React.createElement("hr", null), 
+					React.createElement("div", {className: "welcome__jumpstart_modules"}, 
+						moduleDescriptions
+					)
 				)
 			);
 		} else {
@@ -818,7 +829,6 @@ var JetpackJumpstart = React.createClass({displayName: "JetpackJumpstart",
 				React.createElement("h4", null, "Jump Start your site"), 
 				React.createElement("div", {className: "welcome__connect"}, 
 					component, 
-					React.createElement("hr", null), 
 					modules
 				)
 			)
@@ -911,7 +921,8 @@ var React = require('react'),
 
 function getSiteTitleState() {
 	return {
-		title: SiteStore.getTitle()
+		title: SiteStore.getTitle(),
+		description: SiteStore.getDescription()
 	};
 }
 
@@ -937,6 +948,10 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 		SiteActions.setTitle(e.currentTarget.value);
 	},
 
+	handleChangeDescription: function(e) {
+		SiteActions.setDescription(e.currentTarget.value);
+	},
+
 	handleSubmit: function(e) {
 		e.preventDefault();
 		SetupProgressActions.submitTitleStep();
@@ -947,11 +962,13 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 		// console.log(currentStep);
 		return (
 			React.createElement("div", {className: "welcome__section", id: "welcome__site-title"}, 
-				React.createElement("h4", null, "Set your site title"), 
+				React.createElement("h4", null, "Set your site title and description"), 
 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
 					React.createElement("input", {type: "text", name: "site_title", id: "site-title", autoComplete: "off", onChange: this.handleChangeTitle, value: this.state.title, 
-					       placeholder: "Site Title (this can be changed later)"}), 					       
+					       placeholder: "Site Title (this can be changed later)"}), 
+					React.createElement("input", {type: "text", name: "site_description", id: "site-description", autoComplete: "off", onChange: this.handleChangeDescription, value: this.state.description, 
+					       placeholder: "Site Description"}), 
 
 					React.createElement("p", {className: "submit"}, 
 						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Save"}), 
@@ -1244,7 +1261,8 @@ module.exports = keyMirror({
 	STEP_NEXT: null,
 	STEP_SKIP: null,
 	SITE_SET_TITLE: null,
-	SITE_SAVE_TITLE: null,
+	SITE_SET_DESCRIPTION: null,
+	SITE_SAVE_TITLE_AND_DESCRIPTION: null,
 	SITE_SET_THEME: null,
 	SITE_JETPACK_CONFIGURED: null,
 	SITE_JETPACK_MODULE_ENABLED: null,
@@ -1581,6 +1599,10 @@ function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;
 }
 
+function setDescription(newDescription) {
+  JPS.bloginfo.description = newDescription; 
+}
+
 function setActiveTheme(activeThemeId) {
   JPS.themes.forEach( function( theme ) {
     if ( theme.id == activeThemeId ) {
@@ -1615,6 +1637,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
   	return JPS.bloginfo.name;
+  },
+
+  getDescription: function() {
+    return JPS.bloginfo.description;
   },
 
   getThemes: function() {
@@ -1669,6 +1695,11 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
+    case JPSConstants.SITE_SET_DESCRIPTION:
+      setDescription(action.description);
+      SiteStore.emitChange();
+      break;
+
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
       SiteStore.emitChange();
@@ -1684,7 +1715,7 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
-    case JPSCOnstants.SITE_JETPACK_JUMPSTART_ENABLED: 
+    case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED: 
       setJetpackJumpstartActivated()
       SiteStore.emitChange();
       break;

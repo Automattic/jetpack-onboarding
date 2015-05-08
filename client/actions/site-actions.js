@@ -13,15 +13,23 @@ var SiteActions = {
 	    });
 	},
 
-	saveTitle: function() {
+	setDescription: function(description) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_DESCRIPTION,
+			description: description
+	    });
+	},
+
+	saveTitleAndDescription: function() {
 		var title = SiteStore.getTitle();
+		var description = SiteStore.getDescription();
 		SpinnerActions.show();
 		return WPAjax.
-			post( JPS.site_actions.set_title, { title: title } ).
+			post( JPS.site_actions.set_title, { title: title, description: description } ).
 			done( function ( msg ) {
 				FlashActions.notice("Set title to '"+title+"'");
 				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_SAVE_TITLE,
+					actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 					title: title
 			    });
 			}).

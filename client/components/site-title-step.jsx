@@ -7,7 +7,8 @@ var React = require('react'),
 
 function getSiteTitleState() {
 	return {
-		title: SiteStore.getTitle()
+		title: SiteStore.getTitle(),
+		description: SiteStore.getDescription()
 	};
 }
 
@@ -33,6 +34,10 @@ var SiteTitleStep = React.createClass({
 		SiteActions.setTitle(e.currentTarget.value);
 	},
 
+	handleChangeDescription: function(e) {
+		SiteActions.setDescription(e.currentTarget.value);
+	},
+
 	handleSubmit: function(e) {
 		e.preventDefault();
 		SetupProgressActions.submitTitleStep();
@@ -43,11 +48,13 @@ var SiteTitleStep = React.createClass({
 		// console.log(currentStep);
 		return (
 			<div className="welcome__section" id="welcome__site-title">
-				<h4>Set your site title</h4>
+				<h4>Set your site title and description</h4>
 
 				<form onSubmit={this.handleSubmit}>
 					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
-					       placeholder="Site Title (this can be changed later)"/>					       
+					       placeholder="Site Title (this can be changed later)"/>
+					<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
+					       placeholder="Site Description"/>
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Save"/>

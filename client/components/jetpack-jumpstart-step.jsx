@@ -123,8 +123,11 @@ var JetpackJumpstart = React.createClass({
 			});
 
 			modules = (
-				<div className="welcome__jumpstart_modules">
-					{moduleDescriptions}
+				<div>
+					<hr />
+					<div className="welcome__jumpstart_modules">
+						{moduleDescriptions}
+					</div>
 				</div>
 			);
 		} else {
@@ -136,7 +139,6 @@ var JetpackJumpstart = React.createClass({
 				<h4>Jump Start your site</h4>
 				<div className="welcome__connect">
 					{component}
-					<hr />
 					{modules}
 				</div>
 			</div>

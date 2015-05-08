@@ -108,7 +108,7 @@ var SetupProgressActions = {
 	},
 
 	submitTitleStep: function() {
-		SiteActions.saveTitle().done(function() {
+		SiteActions.saveTitleAndDescription().done(function() {
 			this.completeStep(Paths.SITE_TITLE_STEP_SLUG);
 		}.bind(this));
 	},

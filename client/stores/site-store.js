@@ -14,6 +14,10 @@ function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;
 }
 
+function setDescription(newDescription) {
+  JPS.bloginfo.description = newDescription; 
+}
+
 function setActiveTheme(activeThemeId) {
   JPS.themes.forEach( function( theme ) {
     if ( theme.id == activeThemeId ) {
@@ -48,6 +52,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
   	return JPS.bloginfo.name;
+  },
+
+  getDescription: function() {
+    return JPS.bloginfo.description;
   },
 
   getThemes: function() {
@@ -102,6 +110,11 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
+    case JPSConstants.SITE_SET_DESCRIPTION:
+      setDescription(action.description);
+      SiteStore.emitChange();
+      break;
+
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
       SiteStore.emitChange();
@@ -117,7 +130,7 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
-    case JPSCOnstants.SITE_JETPACK_JUMPSTART_ENABLED: 
+    case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED: 
       setJetpackJumpstartActivated()
       SiteStore.emitChange();
       break;

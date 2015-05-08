@@ -81,6 +81,7 @@ class Jetpack_Start_EndPoints {
 
 			'bloginfo' => array(
 				'name' => get_bloginfo('name'),
+				'description' => get_bloginfo('description')
 			),
 
 			'site_actions' => array(
@@ -205,8 +206,14 @@ class Jetpack_Start_EndPoints {
 
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		
 		$title = esc_html( $_REQUEST['title'] );
-		if ( get_option( 'blogname' ) === $title || update_option( 'blogname', $title ) ) {
+		$description = esc_html( $_REQUEST['description'] );
+		
+		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
+		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
+		
+		if ( $updated_title && $updated_description ) {
 			wp_send_json_success( $title );
 		} else {
 			wp_send_json_error();
