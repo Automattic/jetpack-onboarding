@@ -298,6 +298,10 @@ $light-gray: #ccc;
 	* { box-sizing: content-box; }
 }
 
+#welcome__design .wp-pointer-content h3:before {
+	content: '\f100';
+}
+
 // Progress list of steps
 .getting-started__steps {
 	float: right;
