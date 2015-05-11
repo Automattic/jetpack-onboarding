@@ -36,7 +36,7 @@ var SkipButton = React.createClass({
 		if ( completed ) {
 			return null;
 		} else {
-			return (<a className="skip" href="#" onClick={this.handleSkip}>Skip this step</a>);
+			return (<a className="skip" href="#" onClick={this.handleSkip}>Not now</a>);
 		}
 	}
 });

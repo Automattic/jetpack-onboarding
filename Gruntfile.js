@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'production'; //XXX hack for envify
+process.env.NODE_ENV = 'development'; //XXX hack for envify
 module.exports = function(grunt) {
 
 	grunt.initConfig({
@@ -77,9 +77,9 @@ module.exports = function(grunt) {
 				debug: true,
 				transform: ['reactify', 'envify'],
 				extension: ['.jsx'],
-				plugin: [
-					['minifyify']
-				]
+				// plugin: [
+				// 	['minifyify']
+				// ]
 			},
 			app: {
 				src:        'client/jetpack-start.js',

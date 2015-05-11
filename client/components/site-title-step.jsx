@@ -54,14 +54,14 @@ var SiteTitleStep = React.createClass({
 					<table className="form-table">
 						<tbody>
 							<tr>
-								<th><label for="site_title">Site Title</label></th>
+								<th><label htmlFor="site_title">Site Title</label></th>
 								<td><input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
-					       placeholder="Site Title (this can be changed later)"/></td>
+					       placeholder="Site Title (this can be changed later)" required/></td>
 					      	</tr>
 					      	<tr>
-								<th><label for="site_description">Site Description</label></th>
+								<th><label htmlFor="site_description">Site Description</label></th>
 								<td><input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
-					       placeholder="Site Description"/></td>
+					       placeholder="Site Description" required/></td>
 							</tr>
 						</tbody>
 					</table>

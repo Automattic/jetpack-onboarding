@@ -2,6 +2,10 @@ $light-gray: #ccc;
 
 @import 'mixins/breakpoint';
 
+.welcome-panel {
+	overflow: visible !important; // for tooltips
+}
+
 .welcome-panel-close {
 	top: 0;
 	right: 13px;
@@ -20,65 +24,49 @@ $light-gray: #ccc;
 	font-weight: 400;
 	font-size: 80%;
 
-	&.progress_10, &.progress_20, &.progress_30, &.progress_40, &.progress_50 {
-		color: #d94f4f; // red - 0-50% complete
+	.progress__bar span {
+		background: #4ab866;
+		width: 0%;
 	}
 
-	&.progress_60, &.progress_70, &.progress_80, &.progress_90 {
-		color: #f0b849; // yellow - 50-90% complete
-	}
-
-	&.progress_100 {
-		color: #4ab866; // green - 90-100% complete
-	}
 
 	&.progress_10 .progress__bar span {
-		background: #d94f4f; 
 		width: 10%;
 	}
 
 	&.progress_20 .progress__bar span {
-		background: #d94f4f; 
 		width: 20%;
 	}
 
 	&.progress_30 .progress__bar span {
-		background: #d94f4f; 
 		width: 30%;
 	}
 
 	&.progress_40 .progress__bar span {
-		background: #d94f4f; 
 		width: 40%;
 	}
 
 	&.progress_50 .progress__bar span {
-		background: #d94f4f; 
 		width: 50%;
 	}
 
 	&.progress_60 .progress__bar span {
-		background: #f0b849;
 		width: 60%;
 	}
 
 	&.progress_70 .progress__bar span {
-		background: #f0b849;
 		width: 70%;
 	}
 
 	&.progress_80 .progress__bar span {
-		background: #f0b849;
 		width: 80%;
 	}
 
 	&.progress_90 .progress__bar span {
-		background: #f0b849;
 		width: 90%;
 	}
 
 	&.progress_100 .progress__bar span {
-		background: #4ab866;
 		width: 100%;
 	}
 
@@ -95,15 +83,23 @@ $light-gray: #ccc;
 		span {
 			display: block;
 			height: 100%;
+			width: 0%;
+			background: #4ab866;
 		}
 	}
 }
 
 .getting-started {
-	overflow: hidden;
 	padding-bottom: 10px;
 	margin-top: 30px;
 
+	h4 {
+		margin: 0;
+		font-size: 20px;
+	}
+}
+
+.getting-started__intro {
 	h3 {
 		margin: 48px 0 17px;
 		font-size: 41px;
@@ -115,10 +111,6 @@ $light-gray: #ccc;
 		@include breakpoint(phone) {
 			font-size: 24px;
 		}
-	}
-	h4 {
-		margin: 0;
-		font-size: 20px;
 	}
 }
 
@@ -271,6 +263,7 @@ $light-gray: #ccc;
 }
 
 #welcome__design .theme-browser {
+	.theme-name { padding-right: 0px; }
 	min-width: 180px;
 	@include minbreakpoint(tablet) {
 		.theme {

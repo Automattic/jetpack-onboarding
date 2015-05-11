@@ -7,21 +7,21 @@ module.exports = function() {
     jQuery(document).ready(function () {
 
     	SetupProgressStore.init([
-			{
-				name: "Sign up",
-				completed: true,
-				static: true
-			},
-			{
-				name: 'Create admin account',
-				completed: true,
-				static: true
-			},
-			{
-				name: 'Verify email address',
-				completed: true,
-				static: true
-			},
+			// {
+			// 	name: "Sign up",
+			// 	completed: true,
+			// 	static: true
+			// },
+			// {
+			// 	name: 'Create admin account',
+			// 	completed: true,
+			// 	static: true
+			// },
+			// {
+			// 	name: 'Verify email address',
+			// 	completed: true,
+			// 	static: true
+			// },
 			{
 				name: 'Site title',
 				slug: Paths.SITE_TITLE_STEP_SLUG,

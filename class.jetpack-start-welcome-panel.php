@@ -24,12 +24,12 @@ class Jetpack_Start_WelcomePanel {
 			
 			$wp_scripts->add_data( 'ie-shims', 'conditional', 'lt IE 9' );
 			
-			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'underscore', 'ie-shims' ) );
+			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims' ) );
 			wp_localize_script( 'jetpack-start', 'JPS', $jps_vars );
 			wp_enqueue_script( 'jetpack-start' );
 
 			// CSS
-			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin' ) );
+			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
 		}
 	}
 
