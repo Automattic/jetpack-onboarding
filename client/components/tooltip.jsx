@@ -17,10 +17,6 @@ var Tooltip = React.createClass({
 		this._recomputePosition();
 	},
 
-	// componentDidUpdate: function () {
-	// 	this._recomputePosition();
-	// },
-
 	componentWillReceiveProps: function () {
 		this._recomputePosition();
 	},

@@ -69,7 +69,7 @@ var DesignStep = React.createClass({
 
 	handleHideTooltip: function ( e ) {
 		console.log("hide");
-		// this.setState({tooltipTheme: null, tooltipPosition: null});
+		this.setState({tooltipTheme: null, tooltipPosition: null});
 	},
 
 	handleMouseEnter: function ( e ) {
