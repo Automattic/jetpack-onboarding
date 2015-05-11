@@ -21,29 +21,12 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
+			add_action( 'wp_ajax_jps_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
 			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
-	}
-
-
-	static function jumpstart_modules() {
-		$modules = Jetpack_Admin::init()->get_modules();
-
-		$module_info = array();
-		foreach ( $modules as $module => $value ) {
-			if ( in_array( 'Jumpstart', $value['feature'] ) ) {
-				$module_info[] = array(
-					'slug'   => $value['module'],
-					'name'   => $value['name'],
-					'description'   => $value['jumpstart_desc'],
-					'configure_url' => $value['configure_url'],
-				);
-			}
-		}
-		return $module_info;
 	}
 
 	static function js_vars() {
@@ -57,6 +40,7 @@ class Jetpack_Start_EndPoints {
 				'plugin_active' => true,
 				'configured' => Jetpack::is_active(),
 				'jumpstart_modules' => array_values(self::jumpstart_modules()),
+				'additional_modules' => array(),
 				'active_modules' => array_values(Jetpack::init()->get_active_modules())
 			);
 		} else {
@@ -64,6 +48,7 @@ class Jetpack_Start_EndPoints {
 				'plugin_active' => false,
 				'configured' => false,
 				'jumpstart_modules' => array(),
+				'additional_modules' => array(),
 				'active_modules' => array()
 			);
 		}
@@ -94,6 +79,7 @@ class Jetpack_Start_EndPoints {
 				'configure_jetpack' => 'jps_configure_jetpack',
 				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
 				'deactivate_jetpack_modules' => 'jps_deactivate_jetpack_modules',
+				'list_jetpack_modules' => 'jps_list_jetpack_modules',
 				'reset_data' => 'jps_reset_data'
 			),
 			'step_actions' => array(
@@ -172,6 +158,40 @@ class Jetpack_Start_EndPoints {
 		}
 
 		wp_send_json_success( $modules );
+	}
+
+	static function list_jetpack_modules() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$modules = Jetpack_Admin::init()->get_modules();
+
+		$module_info = array();
+		foreach ( $modules as $module => $value ) {
+			$module_info[] = array(
+				'slug'   => $value['module'],
+				'name'   => $value['name'],
+				'description'   => $value['jumpstart_desc'] ? $value['jumpstart_desc'] : $value['description'],
+				'configure_url' => $value['configure_url'],
+			);
+		}
+
+		wp_send_json_success( array_values($module_info) );
+	}
+
+	static function jumpstart_modules() {
+		$modules = Jetpack_Admin::init()->get_modules();
+
+		$module_info = array();
+		foreach ( $modules as $module => $value ) {
+			if ( in_array( 'Jumpstart', $value['feature'] ) ) {
+				$module_info[] = array(
+					'slug'   => $value['module'],
+					'name'   => $value['name'],
+					'description'   => $value['jumpstart_desc'],
+					'configure_url' => $value['configure_url'],
+				);
+			}
+		}
+		return $module_info;
 	}
 
 	// shamelessly copied from class.jetpack.php

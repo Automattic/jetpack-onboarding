@@ -38,6 +38,10 @@ function setJetpackModuleDectivated(slug) {
   JPS.jetpack.active_modules = _.without(JPS.jetpack.active_modules, slug);
 }
 
+function setJetpackAdditionalModules(modules) {
+  JPS.jetpack.additional_modules = modules;
+}
+
 function setLayout(layoutName) {
   layout = layoutName; // XXX TODO: get this value dynamically from the server!
 }
@@ -76,6 +80,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   isJetpackModuleEnabled: function(slug) {
     return ( _.indexOf( JPS.jetpack.active_modules, slug ) >= 0 );
+  },
+
+  getJetpackAdditionalModules: function() {
+    return JPS.jetpack.additional_modules;
   },
 
   getJumpstartModuleSlugs: function() {
@@ -134,6 +142,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_JETPACK_CONFIGURED:
       setJetpackConfigured();
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_JETPACK_ADD_MODULES:
+      setJetpackAdditionalModules(action.modules);
       SiteStore.emitChange();
       break;
 

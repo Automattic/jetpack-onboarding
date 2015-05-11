@@ -132,6 +132,24 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
+	loadAllJetpackModules: function() {
+		if ( SiteStore.getJetpackAdditionalModules().length == 0 ) {
+			return WPAjax.
+				post( JPS.site_actions.list_jetpack_modules ).
+				done( function ( all_modules ) {
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_JETPACK_ADD_MODULES,
+						modules: all_modules
+				    });
+				}).
+				fail( function ( msg ) {
+					FlashActions.error("Error fetching all Jetpack modules: "+msg);
+				});
+		} else {
+			return jQuery.Deferred().resolve(); // XXX HACK
+		}
+	},
+
 	enableJumpstart: function() {
 		WPAjax.
 			post( JPS.site_actions.activate_jetpack_modules, { modules: SiteStore.getJumpstartModuleSlugs() }).

@@ -8,7 +8,7 @@ var React = require('react'),
 function getJetpackState() {
 	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
-		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled()
+		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled()		
 	};
 }
 
@@ -27,7 +27,9 @@ var JetpackJumpstart = React.createClass({
   	},
 
 	getInitialState: function() {
-		return getJetpackState();
+		var state = getJetpackState();
+		state.showMoreModules = false;
+		return state;
 	},
 
 	handleJetpackConnect: function (e) {
@@ -63,6 +65,30 @@ var JetpackJumpstart = React.createClass({
 		SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
 	},
 
+	handleShowMoreModules: function (e) {
+		e.preventDefault();
+		
+		SiteActions.loadAllJetpackModules().done(function() {
+			this.setState({showMoreModules: true});
+		}.bind(this));
+	},
+
+	_renderModule: function(module) {
+		var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
+		var moduleId = 'jp-module-'+module.slug;
+
+		return (
+			<div className="welcome__jumpstart_module">
+				<input id={moduleId} type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
+				<label htmlFor={moduleId}><strong>{module.name}</strong></label>
+				<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
+				{isActive && module.configure_url && (
+					<small><a href={module.configure_url}>configure</a></small>
+				)}
+			</div>
+		)
+	},
+
 	render: function() {
 		var moduleOverlay, moduleOverlayBody;
 
@@ -82,18 +108,8 @@ var JetpackJumpstart = React.createClass({
 			);
 		}
 
-		var moduleDescriptions = SiteStore.getJumpstartModules().map( function (module) {
-			
-			var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
-
-			return (
-				<div className="welcome__jumpstart_module">
-					<input type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
-					<strong>{module.name}</strong>
-					<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
-				</div>
-			)
-		}.bind(this));
+		var moduleDescriptions = SiteStore.getJumpstartModules().map(this._renderModule.bind(this));
+		var moreModuleDescriptions = SiteStore.getJetpackAdditionalModules().map(this._renderModule.bind(this))
 
 		return (
 			<div className="welcome__section">
@@ -112,6 +128,12 @@ var JetpackJumpstart = React.createClass({
 						</div>
 						<div className="welcome__jumpstart_modules">
 							{moduleDescriptions}
+							{! this.state.showMoreModules && (
+								<p className="more">
+									<a href="#" onClick={this.handleShowMoreModules}>show more</a>
+								</p>
+							)}
+							{this.state.showMoreModules && moreModuleDescriptions}
 						</div>
 					</div>
 				</div>
