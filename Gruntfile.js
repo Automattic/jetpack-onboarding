@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 			dist: {
 				options: {
 					// Can be nested, compact, compressed, expanded
-					style: 'expanded'
+					style: 'compressed'
 				},
 				files: {
 					'css/welcome-panel.css': 'css/scss/welcome-panel.scss'
