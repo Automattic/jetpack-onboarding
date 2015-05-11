@@ -98,12 +98,15 @@ var JetpackJumpstart = React.createClass({
 		return (
 			<div className="welcome__section">
 				<h4>Enable recommended modules</h4>
+				{this.state.jetpackConfigured && (
+					<p className="step-description">Congratulations! You've connected your site to WordPress.com and unlocked dozens of powerful features.</p>
+				)}
 				<div className="welcome__connect">
 					<div className="welcome__jumpstart_wrapper">
 						{moduleOverlay}
 						{moduleOverlayBody}
 						<div className="submit" style={{textAlign: 'left', margin: '0px 10px'}}>
-							<button disabled={this.state.jumpstartEnabled} className="button button-primary button-large" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'All modules active' : 'Enable recommended modules'}</button>
+							<button disabled={this.state.jumpstartEnabled} className="button button-primary button-large" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'All recommended modules active' : 'Enable recommended modules'}</button>
 							<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
 							<div className="clear"></div>
 						</div>
