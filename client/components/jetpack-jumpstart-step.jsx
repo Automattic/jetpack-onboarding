@@ -102,7 +102,7 @@ var JetpackJumpstart = React.createClass({
 					<div className="welcome__jumpstart_wrapper">
 						{moduleOverlay}
 						{moduleOverlayBody}
-						<div style={{textAlign: 'left', margin: '0px 10px'}}>
+						<div className="submit" style={{textAlign: 'left', margin: '0px 10px'}}>
 							<button disabled={this.state.jumpstartEnabled} className="button button-primary button-large" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'All modules active' : 'Enable recommended modules'}</button>
 							<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
 							<div className="clear"></div>

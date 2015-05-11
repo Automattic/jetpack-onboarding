@@ -77,7 +77,8 @@ var DesignStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__design">
 				<h4>Pick a design</h4>
-				<p className="step-description">To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)</p>
+				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
+				<p className="step-description">Click any theme below to choose it for your site.</p>
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
 				</p>

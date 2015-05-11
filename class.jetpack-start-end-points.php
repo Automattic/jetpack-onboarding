@@ -112,7 +112,13 @@ class Jetpack_Start_EndPoints {
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
-					'customize_url' => wp_customize_url()
+					'themes_url' => admin_url( 'themes.php' ),
+					'plugins_url' => admin_url( 'plugins.php' ),
+					'customize_url' => wp_customize_url(),
+					'new_blog_post_url' => admin_url( 'post-new.php' ),
+					'manage_posts_url' => admin_url( 'edit.php' ),
+					'new_page_url' => admin_url( 'post-new.php?post_type=page' ),
+					'manage_pages_url' => admin_url( 'edit.php?post_type=page' )
 				)
 			)
 		);
