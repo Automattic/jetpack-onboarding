@@ -105,7 +105,7 @@ $light-gray: #ccc;
 	margin-top: 30px;
 
 	h3 {
-		margin: 48px 0 17px;
+		margin: 0;
 		font-size: 41px;
 		text-align: center;
 
@@ -147,6 +147,10 @@ $light-gray: #ccc;
 }
 
 .getting-started__intro {
+	background: url(../img/jps-welcome.png) no-repeat center bottom;
+	background-size: 520px auto;
+	padding-bottom: 200px;
+
 	@include breakpoint(tablet) {
 		padding: 30px;
 	}
@@ -154,8 +158,6 @@ $light-gray: #ccc;
 
 .getting-started__subhead {
 	margin: 0 0 30px;
-	padding: 0 0 20px;
-	border-bottom: 1px solid #eee;
 	color: #666;
 	font-size: 18px;
 	line-height: 1.6;
@@ -172,6 +174,15 @@ $light-gray: #ccc;
 
 .getting-started__action {
 	text-align: center;
+
+	.button.button-large {
+		height: auto;
+		padding: 10px 30px;
+		background: #8dc258;
+		border: none;
+		box-shadow: none;
+		font-size: 1.5em;
+	}
 }
 
 .getting-started__sections {
