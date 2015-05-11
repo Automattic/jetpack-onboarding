@@ -86,6 +86,16 @@ var SetupProgressActions = {
 
 	completeAndNextStep: function(slug) {
 		FlashActions.unset();
+		var step = SetupProgressStore.getStepFromSlug(slug);
+
+		if ( ! step.completed ) {
+			WPAjax.
+			  	post(JPS.step_actions.complete, { step: slug }).
+				fail( function(msg) {
+					FlashActions.error(msg);
+				});
+		} 
+		
 		AppDispatcher.dispatch({
 	      actionType: JPSConstants.STEP_COMPLETE_AND_NEXT,
 	      slug: slug

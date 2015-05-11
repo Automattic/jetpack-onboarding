@@ -38,7 +38,7 @@ module.exports = function() {
 				welcomeView: require('./components/design-step.jsx'), 
 			},
 			{
-				name: 'Jump Start',
+				name: 'Enable modules',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				welcomeView: require('./components/jetpack-jumpstart-step.jsx')
 			},

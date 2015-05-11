@@ -8,8 +8,7 @@ var React = require('react'),
 function getJetpackState() {
 	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
-		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
-		showModules: false
+		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled()
 	};
 }
 
@@ -43,113 +42,75 @@ var JetpackJumpstart = React.createClass({
 		SetupProgressActions.submitJetpackJumpstart();
 	},
 
+	handleChangeModuleStatus: function (e) {
+		var $target = jQuery(e.currentTarget),
+			module = $target.data('module-slug');
+
+		if ( SiteStore.isJetpackModuleEnabled(module) ) {
+			SiteActions.deactivateJetpackModule(module);
+		} else {
+			SiteActions.activateJetpackModule(module);
+		}
+	},
+
+	handleEnableAllModules: function(e) {
+		SiteActions.enableJumpstart();
+	},
+
 	handleNext: function (e) {
 		e.preventDefault();
 
 		SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
 	},
 
-	hideJumpstartModules: function (e) {
-		e.preventDefault();
-		this.setState({showModules: false});
-	},
-
-	showJumpstartModules: function (e) {
-		e.preventDefault();
-		this.setState({showModules: true});
-	},
-
 	render: function() {
-		var component, jetpackCopy, modules, moduleButton;
+		var moduleOverlay, moduleOverlayBody;
 
-		var jetpackCopy = (
-			<p>
-				To immediately boost performance, security, and engagement, we recommend activating Manage, Carousel, Photon, Related Posts, Jetpack Single Sign On and a few others. 
-			</p>
-		)
-
-		if ( this.state.showModules ) {
-			moduleButton = (
-				<a href="#" className="skip" onClick={this.hideJumpstartModules}>Hide modules</a>
-			);
-		} else {
-			moduleButton = (
-				<a href="#" className="skip" onClick={this.showJumpstartModules}>Show more information</a>
-			)
-		}
 
 		if ( ! this.state.jetpackConfigured ) {
-			component = (
-				<div>
-					{jetpackCopy}
-					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Jump Start</a>
-					<p>
-						{moduleButton}&nbsp;&nbsp;
-						<SkipButton />
-					</p>
-				</div>
+			moduleOverlay = (
+				<div className="welcome__jumpstart_overlay"></div>
 			);
-		} else if ( ! this.state.jumpstartEnabled ) {
-			component = (
-				<div>				
-					{jetpackCopy}
-					<a href="#" className="button button-primary button-large" onClick={this.handleEnableJumpstart}>Enable Jumpstart Modules</a>
+			moduleOverlayBody = (
+				<div className="welcome__jumpstart_overlay__body">
+					<p>To enable modules, first click the button below to connect your site to WordPress.com</p>
+					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</a>
 					<p>
-						{moduleButton}&nbsp;&nbsp;
 						<SkipButton />
-					</p>
-				</div>
-			);
-		} else {
-			component = (
-				<div>
-					You have successfully enabled Jetpack Jump Start for stats, monitoring, carousels, social plugins, and more!
-					<p>
-						{moduleButton}&nbsp;&nbsp;
-						<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
 					</p>
 				</div>
 			);
 		}
 
-		if ( this.state.showModules ) {
+		var moduleDescriptions = SiteStore.getJumpstartModules().map( function (module) {
 			
-			var moduleDescriptions = SiteStore.getJumpstartModules().map( function (module) {
-				
-				var activeModule;
-				if ( _.indexOf( SiteStore.getActiveModuleSlugs(), module.slug ) >= 0 ) {
-					activeModule = (<span className="activated">Activated</span>);
-				} else {
-					activeModule = null;
-				}
+			var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
 
-				return (
-					<div className="welcome__jumpstart_module">
-						<strong>{module.name}</strong>
-						{activeModule}
-						<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
-					</div>
-				)
-			});
-
-			modules = (
-				<div>
-					<hr />
-					<div className="welcome__jumpstart_modules">
-						{moduleDescriptions}
-					</div>
+			return (
+				<div className="welcome__jumpstart_module">
+					<input type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
+					<strong>{module.name}</strong>
+					<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
 				</div>
-			);
-		} else {
-			modules = null;
-		}		
+			)
+		}.bind(this));
 
 		return (
-			<div className="welcome__section" id="welcome__stats">
-				<h4>Jump Start your site</h4>
+			<div className="welcome__section">
+				<h4>Enable recommended modules</h4>
 				<div className="welcome__connect">
-					{component}
-					{modules}
+					<div className="welcome__jumpstart_wrapper">
+						{moduleOverlay}
+						{moduleOverlayBody}
+						<div style={{textAlign: 'left', margin: '0px 10px'}}>
+							<button disabled={this.state.jumpstartEnabled} className="button button-primary button-large" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'All modules active' : 'Enable recommended modules'}</button>
+							<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
+							<div className="clear"></div>
+						</div>
+						<div className="welcome__jumpstart_modules">
+							{moduleDescriptions}
+						</div>
+					</div>
 				</div>
 			</div>
 		);

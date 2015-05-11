@@ -79,7 +79,7 @@ var SiteActions = {
 		return WPAjax.
 			post( JPS.site_actions.configure_jetpack, { return_to_step: return_to_step } ).
 			done( function ( data ) {
-				FlashActions.notice("Jetpack Enabled");
+				// FlashActions.notice("Jetpack Enabled");
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_JETPACK_CONFIGURED
 			    });
@@ -106,9 +106,26 @@ var SiteActions = {
 				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 
-		FlashActions.notice("Enabled "+module_slug);
+		// FlashActions.notice("Enabled "+module_slug);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
+			slug: module_slug
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
+	deactivateJetpackModule: function(module_slug) {
+
+		WPAjax.
+			post( JPS.site_actions.deactivate_jetpack_modules, { modules: [module_slug] }).
+			fail( function ( msg ) {
+				FlashActions.error("Error deactivating Jetpack module: "+msg);
+			});
+
+		// FlashActions.notice("Disabled "+module_slug);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_JETPACK_MODULE_DISABLED,
 			slug: module_slug
 	    });
 
@@ -122,7 +139,7 @@ var SiteActions = {
 				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 
-		FlashActions.notice("Enabled Jetpack modules");
+		// FlashActions.notice("Enabled Jetpack modules");
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
 	    });

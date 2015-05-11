@@ -20,6 +20,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
+			add_action( 'wp_ajax_jps_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
@@ -92,6 +93,7 @@ class Jetpack_Start_EndPoints {
 				'set_theme' => 'jps_set_theme',
 				'configure_jetpack' => 'jps_configure_jetpack',
 				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
+				'deactivate_jetpack_modules' => 'jps_deactivate_jetpack_modules',
 				'reset_data' => 'jps_reset_data'
 			),
 			'step_actions' => array(
@@ -133,18 +135,37 @@ class Jetpack_Start_EndPoints {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		
 		// shamelessly copied from class.jetpack.php
-		$module_slugs = $_REQUEST['modules'];
-		$module_slugs_filtered = Jetpack::init()->filter_default_modules( $module_slugs );
+		$modules = $_REQUEST['modules'];
+		$modules = array_map( 'sanitize_key', $modules );
+		// $modules_filtered = Jetpack::init()->filter_default_modules( $modules );
 
-		foreach ( $module_slugs_filtered as $module_slug ) {
+		foreach ( $modules as $module_slug ) {
 			Jetpack::log( 'activate', $module_slug );
 			Jetpack::activate_module( $module_slug, false, false );
 			Jetpack::state( 'message', 'no_message' );
 		}
 
-		self::set_default_publicize_config();
+		//XXX TODO: determine whether this is really useful
+		// self::set_default_publicize_config();
 
-		wp_send_json_success( $module_slugs_filtered );
+		wp_send_json_success( $modules );
+	}
+
+	static function deactivate_jetpack_modules() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		
+		// shamelessly copied from class.jetpack.php
+		$modules = $_REQUEST['modules'];
+		$modules = array_map( 'sanitize_key', $modules );
+		// $modules_filtered = Jetpack::init()->filter_default_modules( $modules );
+
+		foreach ( $modules as $module_slug ) {
+			Jetpack::log( 'deactivate', $module_slug );
+			Jetpack::deactivate_module( $module_slug );
+			Jetpack::state( 'message', 'module_deactivated' );
+		}
+
+		wp_send_json_success( $modules );
 	}
 
 	// shamelessly copied from class.jetpack.php

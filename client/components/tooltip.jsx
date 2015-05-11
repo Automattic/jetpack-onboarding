@@ -23,27 +23,21 @@ var Tooltip = React.createClass({
 
 	getInitialState: function () {
 		return {
-			realTop: this.props.top,
-			realLeft: this.props.left
+			realTop: this.props.top
 		};
 	},
 
 	_recomputePosition: function () {
-		console.log("recomputing position");
-
 		var $wrapper = jQuery(React.findDOMNode(this.refs.wrapper));
 
 		this.setState({
-			realTop: this.props.top - ($wrapper.outerHeight()/2),
-			realLeft: this.props.left
+			realTop: this.props.top - ($wrapper.outerHeight()/2)
 		});
-
-		console.log(this.state);
 	},
 
 	render: function() {
 		return (
-			<div ref="wrapper" className="wp-pointer wp-pointer-left" style={{position: 'absolute', width: this.props.width, top: this.state.realTop, left: this.state.realLeft, zIndex: 9999}}>
+			<div ref="wrapper" className="wp-pointer wp-pointer-left" style={{position: 'absolute', width: this.props.width, top: this.state.realTop, left: this.props.left, zIndex: 9999}}>
 				<div className="wp-pointer-content">
 					<h3>{this.props.title}</h3>
 					<p>{this.props.children}</p>

@@ -34,6 +34,10 @@ function setJetpackModuleActivated(slug) {
   }
 }
 
+function setJetpackModuleDectivated(slug) {
+  JPS.jetpack.active_modules = _.without(JPS.jetpack.active_modules, slug);
+}
+
 function setLayout(layoutName) {
   layout = layoutName; // XXX TODO: get this value dynamically from the server!
 }
@@ -135,6 +139,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
       setJetpackModuleActivated(action.slug);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_JETPACK_MODULE_DISABLED:
+      setJetpackModuleDectivated(action.slug);
       SiteStore.emitChange();
       break;
 
