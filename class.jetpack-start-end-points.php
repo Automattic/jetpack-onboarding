@@ -117,8 +117,7 @@ class Jetpack_Start_EndPoints {
 	}
 
 	static function default_theme_filter($theme) {
-		return true;
-		// return ( in_array( $theme['id'], self::$default_themes ) || get_stylesheet() == $theme['id'] );
+		return ( in_array( $theme['id'], self::$default_themes ) || get_stylesheet() == $theme['id'] );
 	}
 
 	static function reset_data() {
