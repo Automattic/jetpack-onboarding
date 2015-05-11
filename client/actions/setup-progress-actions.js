@@ -11,9 +11,6 @@ var SetupProgressActions = {
 	resetData: function() {
 		WPAjax.
 			post(JPS.site_actions.reset_data).
-			done( function ( data ) {
-				FlashActions.notice("Reset data");
-			}).
 			fail( function ( msg ) {
 				FlashActions.error("Failed to save data: " + msg);
 			});

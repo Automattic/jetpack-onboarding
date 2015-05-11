@@ -51,10 +51,20 @@ var SiteTitleStep = React.createClass({
 				<h4>Set your site title and description</h4>
 
 				<form onSubmit={this.handleSubmit}>
-					<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
-					       placeholder="Site Title (this can be changed later)"/>
-					<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
-					       placeholder="Site Description"/>
+					<table className="form-table">
+						<tbody>
+							<tr>
+								<th><label for="site_title">Site Title</label></th>
+								<td><input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
+					       placeholder="Site Title (this can be changed later)"/></td>
+					      	</tr>
+					      	<tr>
+								<th><label for="site_description">Site Description</label></th>
+								<td><input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
+					       placeholder="Site Description"/></td>
+							</tr>
+						</tbody>
+					</table>
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
