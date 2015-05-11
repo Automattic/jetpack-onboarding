@@ -262,17 +262,22 @@ $light-gray: #ccc;
 	}
 }
 
-@media (min-width: 782px) {
+@include minbreakpoint(tablet) {
 	.welcome__jumpstart_module { width: 33%; }
 }
 
-#poststuff {
-	min-width: 0;
-}
-
 #welcome__design .theme-browser {
-	.theme {
-		width: 30% !important;
+	min-width: 180px;
+	@include minbreakpoint(tablet) {
+		.theme {
+			width: 30%;
+		}
+	}
+	@include breakpoint(phablet) {
+		.theme {
+			display: block;
+			float: none;
+		}
 	}
 	* { box-sizing: content-box; }
 	h3 {
@@ -335,6 +340,18 @@ $light-gray: #ccc;
 		a {
 			color: inherit;
 			border-bottom: 1px dashed;
+		}
+	}
+
+	@include breakpoint(tablet) {
+		li {
+			font-size: small;
+		}
+	}
+
+	@include breakpoint(phablet) {
+		li {
+			font-size: smaller;
 		}
 	}
 }

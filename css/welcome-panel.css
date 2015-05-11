@@ -92,7 +92,7 @@
   font-size: 41px;
   text-align: center;
 }
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   .getting-started h3 {
     font-size: 30px;
   }
@@ -131,7 +131,7 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 782px) {
   .getting-started__intro {
     padding: 30px;
   }
@@ -248,12 +248,19 @@
     width: 33%;
   }
 }
-#poststuff {
-  min-width: 0;
+#welcome__design .theme-browser {
+  min-width: 180px;
 }
-
-#welcome__design .theme-browser .theme {
-  width: 30% !important;
+@media (min-width: 782px) {
+  #welcome__design .theme-browser .theme {
+    width: 30%;
+  }
+}
+@media (max-width: 600px) {
+  #welcome__design .theme-browser .theme {
+    display: block;
+    float: none;
+  }
 }
 #welcome__design .theme-browser * {
   -webkit-box-sizing: content-box;
@@ -315,6 +322,16 @@
   color: inherit;
   border-bottom: 1px dashed;
 }
+@media (max-width: 782px) {
+  .getting-started__steps li {
+    font-size: small;
+  }
+}
+@media (max-width: 600px) {
+  .getting-started__steps li {
+    font-size: smaller;
+  }
+}
 
 ul.welcome__advanced {
   margin-left: 0;
@@ -373,9 +390,30 @@ ul.welcome__advanced .button {
   width: 100%;
   height: 100%;
 }
-@media (max-width: 960px) {
+@media (max-width: 1147px) {
+  .download-jetpack {
+    font-size: em(21px);
+  }
+  .download-jetpack:before {
+    top: -1px;
+    width: 23px;
+    height: 23px;
+  }
+}
+@media (max-width: 900px) {
   .download-jetpack:active {
     top: 0;
+  }
+}
+@media (max-width: 530px) {
+  .download-jetpack {
+    font-size: em(17px);
+    font-weight: 600;
+  }
+  .download-jetpack:before {
+    width: 19px;
+    height: 19px;
+    margin-right: 9px;
   }
 }
 

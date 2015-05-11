@@ -122,7 +122,6 @@ var DesignStep = React.createClass({
 				<p className="step-description">To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)</p>
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
-					<SkipButton />
 				</p>
 				<div className="theme-browser">
 					{themes}

@@ -203,7 +203,7 @@ var SiteActions = {
 			});
 
 		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
-		FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 			title: title
@@ -220,7 +220,7 @@ var SiteActions = {
 				FlashActions.error("Server error setting theme: "+msg);
 			});
 
-		FlashActions.notice("Set theme to "+themeId);
+		// FlashActions.notice("Set theme to "+themeId);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_THEME,
 			themeId: themeId
@@ -237,7 +237,7 @@ var SiteActions = {
 				FlashActions.error("Error setting layout: "+msg);
 			});
 
-		FlashActions.notice("Set layout to "+layoutName);
+		// FlashActions.notice("Set layout to "+layoutName);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_LAYOUT,
 			layout: layoutName
@@ -294,7 +294,7 @@ var SiteActions = {
 				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 
-		FlashActions.notice("Enabled "+data);
+		FlashActions.notice("Enabled Jetpack modules");
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
 	    });
@@ -502,8 +502,7 @@ var DesignStep = React.createClass({displayName: "DesignStep",
 				React.createElement("h4", null, "Pick a design"), 
 				React.createElement("p", {className: "step-description"}, "To get started, select from one of the themes below. You can always change it later. (There are over 250 themes to choose from.)"), 
 				React.createElement("p", {className: "submit"}, 
-					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleContinue, value: "Next Step →"}), 
-					React.createElement(SkipButton, null)
+					React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", onClick: this.handleContinue, value: "Next Step →"})
 				), 
 				React.createElement("div", {className: "theme-browser"}, 
 					themes
@@ -947,8 +946,7 @@ var LayoutStep = React.createClass({displayName: "LayoutStep",
 					), 
 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"}), 
-						React.createElement(SkipButton, null)
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"})
 					)
 				)
 			)
@@ -1018,26 +1016,7 @@ var SiteTitleStep = React.createClass({displayName: "SiteTitleStep",
 					       placeholder: "Site Description"}), 
 
 					React.createElement("p", {className: "submit"}, 
-						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"}), 
-						React.createElement(SkipButton, null)
-					)
-				), 
-				React.createElement("div", {className: "welcome__helper"}, 
-					"Stuck? Here are some ideas to get you going:", 
-					React.createElement("ul", null, 
-						React.createElement("li", null, 
-							React.createElement("small", null, React.createElement("em", null, "Your company name: \"ACME Consulting\""))
-						), 
-						React.createElement("li", null, 
-							React.createElement("small", null, 
-								React.createElement("em", null, "What you do: \"Quality gardening tools by ACME\"")
-							)
-						), 
-						React.createElement("li", null, 
-							React.createElement("small", null, 
-								React.createElement("em", null, "What you will write about: \"Richard\\'s Travel Blog\"")
-							)
-						)
+						React.createElement("input", {type: "submit", name: "save", className: "button button-primary button-large", value: "Next Step →"})
 					)
 				)
 			)

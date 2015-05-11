@@ -31,7 +31,7 @@ var SiteActions = {
 			});
 
 		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
-		FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 			title: title
@@ -48,7 +48,7 @@ var SiteActions = {
 				FlashActions.error("Server error setting theme: "+msg);
 			});
 
-		FlashActions.notice("Set theme to "+themeId);
+		// FlashActions.notice("Set theme to "+themeId);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_THEME,
 			themeId: themeId
@@ -65,7 +65,7 @@ var SiteActions = {
 				FlashActions.error("Error setting layout: "+msg);
 			});
 
-		FlashActions.notice("Set layout to "+layoutName);
+		// FlashActions.notice("Set layout to "+layoutName);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_LAYOUT,
 			layout: layoutName
@@ -122,7 +122,7 @@ var SiteActions = {
 				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 
-		FlashActions.notice("Enabled "+data);
+		FlashActions.notice("Enabled Jetpack modules");
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
 	    });

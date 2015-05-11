@@ -58,27 +58,8 @@ var SiteTitleStep = React.createClass({
 
 					<p className="submit">
 						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
-						<SkipButton />
 					</p>
 				</form>
-				<div className="welcome__helper">
-					Stuck? Here are some ideas to get you going:
-					<ul>
-						<li>
-							<small><em>Your company name: "ACME Consulting"</em></small>
-						</li>
-						<li>
-							<small>
-								<em>What you do: "Quality gardening tools by ACME"</em>
-							</small>
-						</li>
-						<li>
-							<small>
-								<em>What you will write about: "Richard\'s Travel Blog"</em>
-							</small>
-						</li>
-					</ul>
-				</div>
 			</div>
 		);
 	}
