@@ -71,9 +71,15 @@ module.exports = function(grunt) {
 
 		browserify: {
 			options: {
+				browserifyOptions: {
+					debug: true
+				},
 				debug: true,
 				transform: ['reactify', 'envify'],
 				extension: ['.jsx'],
+				plugin: [
+					['minifyify']
+				]
 			},
 			app: {
 				src:        'client/jetpack-start.js',
@@ -82,7 +88,21 @@ module.exports = function(grunt) {
 			shims: {
 				src: 		'client/ie-shims.js',
 				dest: 		'js/ie-shims.js'
-			}
+			},
+			// shims_prod: {
+			// 	options: {
+			// 		transform: ['uglifyify'],
+			// 	},
+			// 	src: 		'js/ie-shims.js',
+			// 	dest: 		'js/ie-shims.min.js'
+			// },
+			// app_prod: {
+			// 	options: {
+			// 		transform: ['uglifyify'],
+			// 	},
+			// 	src:        'js/jetpack-start.js',
+			// 	dest:       'js/jetpack-start.min.js'
+			// },
 		},
 
 		envify: {

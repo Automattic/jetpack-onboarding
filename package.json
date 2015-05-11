@@ -27,12 +27,7 @@
       ".jsx"
     ],
     "transform": [
-      "browserify-shim",
-      "envify"
-    ],
-    "transforms": [
-      "browserify-shim",
-      "envify"
+      "browserify-shim"
     ]
   },
   "browser": {
