@@ -4,7 +4,7 @@ var React = require('react'),
 
 var stepShape = React.PropTypes.shape({
 	name: React.PropTypes.string.isRequired,
-	slug: React.PropTypes.string.isRequired
+	slug: React.PropTypes.string
 });
 
 /**
