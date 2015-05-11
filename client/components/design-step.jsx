@@ -29,7 +29,6 @@ var DesignStep = React.createClass({
 
 	handleActivateTheme: function ( e ) {
 		e.preventDefault();
-		// e.stopPropagation();
 		
 		var $el = jQuery(e.currentTarget);
 		var themeId = $el.data('theme-id');
