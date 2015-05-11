@@ -58,8 +58,8 @@ var WelcomeMenu = React.createClass({
 		return (
 			<div className="getting-started__steps">
 				<h3>
-					Your Progress 
-					<div style={{marginTop: '7px'}}>
+					<span>Your Progress</span>
+					<div>
 						<WelcomeProgressBar progressPercent={this.props.progressPercent}/>
 					</div>
 				</h3>
