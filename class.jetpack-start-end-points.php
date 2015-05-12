@@ -3,6 +3,7 @@ class Jetpack_Start_EndPoints {
 	const AJAX_NONCE = 'jps-ajax';
 	const STEP_STATUS_KEY = 'jps_step_statuses';
 	const STARTED_KEY = 'jps_started';
+	const MAX_THEMES = 6;
 
 	static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -63,7 +64,14 @@ class Jetpack_Start_EndPoints {
 			$layout = 'blog';
 		}
 
-		$themes = array_values( array_filter( wp_prepare_themes_for_js(), array(__CLASS__, 'default_theme_filter') ) );
+		$themes = 
+			array_slice ( 
+				array_values ( 
+					array_filter ( 
+						wp_prepare_themes_for_js(), array(__CLASS__, 'default_theme_filter') 
+					) 
+				), 
+			0, self::MAX_THEMES);
 
 		return array(
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
@@ -170,7 +178,7 @@ class Jetpack_Start_EndPoints {
 				'slug'   => $value['module'],
 				'name'   => $value['name'],
 				'description'   => $value['jumpstart_desc'] ? $value['jumpstart_desc'] : $value['description'],
-				'configure_url' => $value['configure_url'],
+				'configure_url' => $value['configurable'] ? $value['configure_url'] : null,
 			);
 		}
 
@@ -187,7 +195,7 @@ class Jetpack_Start_EndPoints {
 					'slug'   => $value['module'],
 					'name'   => $value['name'],
 					'description'   => $value['jumpstart_desc'],
-					'configure_url' => $value['configure_url'],
+					'configure_url' => $value['configurable'] ? $value['configure_url'] : null,
 				);
 			}
 		}
