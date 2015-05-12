@@ -44,12 +44,12 @@ var SiteTitleStep = React.createClass({
 	},
 
 	render: function() {
-		// var currentStep = SetupProgressStore.getCurrentStep();
-		// console.log(currentStep);
 		return (
 			<div className="welcome__section" id="welcome__site-title">
-				<h4>Set your site title and description</h4>
-				<p className="step-description">Let's get the basics right first!</p>
+				<h4>Title and Description</h4>
+				<p className="step-description">
+					Make your site stand out from the crowd.
+				</p>
 				<form onSubmit={this.handleSubmit}>
 					<table className="form-table">
 						<tbody>
@@ -66,7 +66,7 @@ var SiteTitleStep = React.createClass({
 								<td>
 									<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
 					       placeholder="Site Description" required/>
-					       			<p className="description">A motto or tagline. This appears below the title on your site, and next to the title in search results.</p>
+					       			<p className="description">A motto or tagline. This appears below the title on your site, and next to the title in search results. Try to be brief and descriptive, e.g. "Your online bait and tackle store"</p>
 					       		</td>
 							</tr>
 						</tbody>
