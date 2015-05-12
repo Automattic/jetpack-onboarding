@@ -106,7 +106,6 @@ var SiteActions = {
 				FlashActions.error("Error activating Jetpack module: "+msg);
 			});
 
-		// FlashActions.notice("Enabled "+module_slug);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_MODULE_ENABLED,
 			slug: module_slug
@@ -123,7 +122,6 @@ var SiteActions = {
 				FlashActions.error("Error deactivating Jetpack module: "+msg);
 			});
 
-		// FlashActions.notice("Disabled "+module_slug);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_MODULE_DISABLED,
 			slug: module_slug
@@ -154,16 +152,15 @@ var SiteActions = {
 		WPAjax.
 			post( JPS.site_actions.activate_jetpack_modules, { modules: SiteStore.getJumpstartModuleSlugs() }).
 			fail( function ( msg ) {
-				FlashActions.error("Error activating Jetpack module: "+msg);
+				FlashActions.error("Error activating Jetpack modules: "+msg);
 			});
 
-		// FlashActions.notice("Enabled Jetpack modules");
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK
-	},
+	}
 };
 
 module.exports = SiteActions;
