@@ -15,11 +15,12 @@ Pull Requests and Issues are always welcome. :)
 
 ## Integrating
 
-This plugin publishes two hooks:
+This plugin publishes three hooks:
+- jps_started
 - jps_step_skipped
 - jps_step_complete
 
-Each is invoked with a string (a "slug") which names the step, so integration looks like this:
+jps_started is invoked when the user clicks the "Get Started ->" link on the front page of the wizard. The latter two "step" hooks are invoked with a string (a "slug") which names the step. An integration might look like this:
 
 ```php
 <?php
