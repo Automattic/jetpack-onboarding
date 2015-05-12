@@ -41,21 +41,21 @@ var LayoutStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__layout">
 				<h4>Select a layout</h4>
-				<p className="step-description">WordPress can be a blog, a fully-fledged web site, or a combination of the two.</p>
+				<p className="step-description">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>
 					<label>
-						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Website
-						<p className="description">Choose this one if you're creating a site for your company that will rarely change</p>
+						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Static Website
+						<p className="description">A web site with a hierarchy of pages</p>
 					</label>
 					<br/>
 					<label>
-						<input type="radio" name="site_layout" value="site-blog" checked={this.state.layout === 'site-blog'} onChange={this.handleSetLayout}/> Website with a blog
-						<p className="description">Choose this one if you're creating a company or personal site that will also have a blog or news section</p>
+						<input type="radio" name="site_layout" value="site-blog" checked={this.state.layout === 'site-blog'} onChange={this.handleSetLayout}/> Static Website with a blog
+						<p className="description">A web site with pages that also has a blog or news section</p>
 					</label>
 					<br/>
 					<label>
 						<input type="radio" name="site_layout" value="blog" checked={this.state.layout === 'blog'} onChange={this.handleSetLayout}/> Just a blog
-						<p className="description">Choose this one if you want a site that will constantly show new content (articles, photos, videos, etc.)</p>
+						<p className="description">A web site that will constantly show new content (articles, photos, videos, etc.)</p>
 					</label>
 
 					<p className="submit">
