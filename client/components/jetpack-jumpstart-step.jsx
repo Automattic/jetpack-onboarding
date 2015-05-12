@@ -8,7 +8,8 @@ var React = require('react'),
 function getJetpackState() {
 	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
-		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled()		
+		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
+		modulesEnabled: SiteStore.getActiveModuleSlugs()	
 	};
 }
 
@@ -38,29 +39,19 @@ var JetpackJumpstart = React.createClass({
 		SiteActions.configureJetpack(Paths.JETPACK_MODULES_STEP_SLUG);
 	},
 
-	handleEnableJumpstart: function (e) {
-		e.preventDefault();
-
-		SetupProgressActions.submitJetpackJumpstart();
-	},
-
 	handleChangeModuleStatus: function (e) {
-		e.preventDefault();
 		var $target = jQuery(e.currentTarget),
-			module = $target.data('module-slug');
+			module_slug = $target.data('module-slug');
 
-		if ( SiteStore.isJetpackModuleEnabled(module) ) {
-			console.log("deactivating "+module);
-			SiteActions.deactivateJetpackModule(module);
+		if ( SiteStore.isJetpackModuleEnabled(module_slug) ) {
+			SiteActions.deactivateJetpackModule(module_slug);
 		} else {
-			console.log("activating "+module);
-			SiteActions.activateJetpackModule(module);
+			SiteActions.activateJetpackModule(module_slug);
 		}
 	},
 
 	handleEnableAllModules: function(e) {
 		e.preventDefault();
-		e.stopPropagation();
 		SiteActions.enableJumpstart();
 	},
 
@@ -86,9 +77,9 @@ var JetpackJumpstart = React.createClass({
 	_renderModule: function(module) {
 		var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
 		var moduleId = 'jp-module-'+module.slug;
-
+		
 		return (
-			<div className="welcome__jumpstart_module">
+			<div key={'modules-'+module.slug} className="welcome__jumpstart_module">
 				<input id={moduleId} type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
 				<label htmlFor={moduleId}><strong>{module.name}</strong></label>
 				<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
@@ -100,7 +91,6 @@ var JetpackJumpstart = React.createClass({
 	},
 
 	render: function() {
-		console.log("rendered");
 		var moduleOverlay, moduleOverlayBody;
 
 

@@ -29,13 +29,18 @@ function setActiveTheme(activeThemeId) {
 }
 
 function setJetpackModuleActivated(slug) {
-  if ( _.indexOf( JPS.jetpack.active_modules, slug ) == -1 ) {
+  if ( _.indexOf( JPS.jetpack.active_modules, slug ) === -1 ) {
     JPS.jetpack.active_modules.push(slug);  
   }
+  console.log("added "+slug);
 }
 
 function setJetpackModuleDectivated(slug) {
-  JPS.jetpack.active_modules = _.without(JPS.jetpack.active_modules, slug);
+  var index = _.indexOf( JPS.jetpack.active_modules, slug );
+  if ( index >= 0) {
+    JPS.jetpack.active_modules.splice(index, 1);
+  }
+  console.log("removed "+slug);
 }
 
 function setJetpackAdditionalModules(modules) {
