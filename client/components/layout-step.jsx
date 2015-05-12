@@ -41,7 +41,7 @@ var LayoutStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__layout">
 				<h4>Select a layout</h4>
-
+				<p className="step-description">WordPress can be a blog, a fully-fledged web site, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Website

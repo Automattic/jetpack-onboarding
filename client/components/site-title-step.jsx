@@ -49,7 +49,7 @@ var SiteTitleStep = React.createClass({
 		return (
 			<div className="welcome__section" id="welcome__site-title">
 				<h4>Set your site title and description</h4>
-
+				<p className="step-description">Let's get the basics right first!</p>
 				<form onSubmit={this.handleSubmit}>
 					<table className="form-table">
 						<tbody>
