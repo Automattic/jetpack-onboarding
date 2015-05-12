@@ -18,6 +18,7 @@ function setSteps(steps) {
 
   // set the completion status of each step to the saved values
   steps.forEach( function(step) {
+    
     // default values for skipped, completed and static
     if ( typeof( step.completed ) === 'undefined' ) {
       step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  
@@ -149,7 +150,7 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   getProgressPercent: function() {
   	var numSteps = _.where( _steps, { includeInProgress: true } ).length;
     var completedSteps = _.where( _steps, { includeInProgress: true, completed: true } ).length;
-    var percentComplete = (completedSteps / numSteps) * 100;
+    var percentComplete = (completedSteps / numSteps) * 90 + 10;
     var output = Math.round(percentComplete / 10) * 10;
     return output;
   },
@@ -162,11 +163,6 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
     this.removeListener( CHANGE_EVENT, callback );
   }
 });
-
-// Update the UI when the window hash changes
-// jQuery(window).on('hashchange', function() {
-//   SetupProgressStore.emitChange();
-// });
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
