@@ -69,11 +69,6 @@ var DesignStep = React.createClass({
 	},
 
 	render: function() {
-		var tooltip; 
-		if ( this.state.tooltipTheme ) {
-			tooltip = this._renderTooltip();
-		} 
-
 		return (
 			<div className="welcome__section" id="welcome__design">
 				<h4>Pick a design</h4>
@@ -82,12 +77,12 @@ var DesignStep = React.createClass({
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
 				</p>
-				<div className="theme-browser">
+				<div className="theme-browser rendered">
 					{this._renderThemeList()}
 				</div>
 				
 				<div style={{clear: 'both'}}></div>
-				{tooltip}
+				{this.state.tooltipTheme && this._renderTooltip()}
 			</div>
 		);
 	},
@@ -108,28 +103,24 @@ var DesignStep = React.createClass({
 
 	_renderThemeList: function() {
 		var themes = this.state.themes.map( function(theme) {
-
-			var screenshot;
-
-			var wrapperClass = 'theme';
-			if ( theme.active ) { wrapperClass += ' active'; }
-
-			var ariaDescribedBy = theme.id+'-action '+theme.id+'-name';
-
-			if ( theme.screenshot[0] ) {
-				screenshot = (
-					<div className="theme-screenshot">
-						<img src={theme.screenshot[0]} alt="" />
-					</div>
-				);
-			} else {
-				screenshot = (<div className="theme-screenshot blank"></div>);
-			}
-
 			return (
-				<div key={theme.id} className={wrapperClass} tabIndex="0" data-theme-id={theme.id} onClick={this.handleActivateTheme} onMouseEnter={this.handleShowTooltip} onMouseLeave={this.handleHideTooltip} aria-describedby={ariaDescribedBy}>
-					{screenshot}
-					<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Active:' : ''}</span> {theme.name}</h3>
+				<div key={theme.id} 
+					className={'theme' + (theme.active ? ' active' : '')} 
+					data-theme-id={theme.id} 
+					onClick={this.handleActivateTheme} 
+					onMouseEnter={this.handleShowTooltip} 
+					onMouseLeave={this.handleHideTooltip} 
+					aria-describedby={theme.id+'-action '+theme.id+'-name'}>
+
+					{theme.screenshot[0] ? (
+						<div className="theme-screenshot">
+							<img src={theme.screenshot[0]} alt="" />
+						</div>
+					) : (
+						<div className="theme-screenshot blank"></div>
+					)}
+					<span className="more-details">Click to select</span>
+					<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Selected:' : ''}</span> {theme.name}</h3>
 				</div>
 			);
 		}.bind(this) );
