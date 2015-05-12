@@ -16,7 +16,7 @@ var AdvancedSettingsStep = React.createClass({
 						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.customize_url}>Customize my site</a>
 						&nbsp;
 						&nbsp;
-						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.themes_url}>Browse and add plugins</a>
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.themes_url}>Browse and add themes</a>
 						
 					</li>
 					{(SiteStore.getLayout() == 'blog' || SiteStore.getLayout() == 'site-blog') && (
@@ -28,7 +28,6 @@ var AdvancedSettingsStep = React.createClass({
 							&nbsp;&nbsp;
 							<a className="button button-primary button-large" href={JPS.steps.advanced_settings.manage_posts_url}>Manage posts</a>
 						</li>
-						
 					)}
 					<li>
 						<h5>Create a static page</h5>
@@ -37,6 +36,19 @@ var AdvancedSettingsStep = React.createClass({
 						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.new_page_url}>Create a new page</a>
 						&nbsp;&nbsp;
 						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.manage_pages_url}>Manage pages</a>
+					</li>
+					<li>
+						<h5>Extend your site's functionality</h5>
+						WordPress offers thousands of plugins from Jetpack and the WordPress community.
+						<br />
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.plugins_url}>Manage plugins</a>
+						&nbsp;
+						&nbsp;
+						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</a>
+					</li>
+					<li>
+						<h5>Learn more</h5>
+						<a href="https://codex.wordpress.org/First_Steps_With_WordPress">First Steps with WordPress</a> - an online guide from the creators of WordPress
 					</li>
 				</ul>
 			</div>
