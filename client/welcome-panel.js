@@ -7,18 +7,10 @@ module.exports = function() {
     jQuery(document).ready(function () {
 
     	SetupProgressStore.init([
+    		// NOTE: You can have "static: true" to include un-clickable 
+    		// prefilled steps that act as though they've already been completed
 			// {
 			// 	name: "Sign up",
-			// 	completed: true,
-			// 	static: true
-			// },
-			// {
-			// 	name: 'Create admin account',
-			// 	completed: true,
-			// 	static: true
-			// },
-			// {
-			// 	name: 'Verify email address',
 			// 	completed: true,
 			// 	static: true
 			// },
@@ -42,17 +34,6 @@ module.exports = function() {
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				welcomeView: require('./components/jetpack-jumpstart-step.jsx')
 			},
-
-			// {
-			//   name: 'Stats & Monitoring',
-			//   slug: Paths.STATS_MONITORING_STEP_SLUG,
-			//   welcomeView: require('./components/stats-monitoring-step.jsx'),
-			// },
-			// { 
-			//   name: "Get some traffic", 
-			//   slug: Paths.TRAFFIC_STEP_SLUG,
-			//   welcomeView: require('./components/get-traffic-step.jsx') 
-			// },
 			{ 
 				name: "Advanced settings", 
 				slug: Paths.ADVANCED_STEP_SLUG,

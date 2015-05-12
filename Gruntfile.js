@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 			},
 			global: {
 				options: {
-					browsers: ['> 1%', 'last 2 versions', 'ff 17', 'opera 12.1', 'ie 8', 'ie 9'],
+					browsers: ['> 1%', 'last 2 versions', 'ff 17', 'opera 12.1', 'ie 8', 'ie 9', 'safari 7', 'safari 8'],
 					map: true
 				},
 				src: 'css/*.css'
