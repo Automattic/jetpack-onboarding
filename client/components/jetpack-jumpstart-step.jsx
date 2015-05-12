@@ -45,17 +45,22 @@ var JetpackJumpstart = React.createClass({
 	},
 
 	handleChangeModuleStatus: function (e) {
+		e.preventDefault();
 		var $target = jQuery(e.currentTarget),
 			module = $target.data('module-slug');
 
 		if ( SiteStore.isJetpackModuleEnabled(module) ) {
+			console.log("deactivating "+module);
 			SiteActions.deactivateJetpackModule(module);
 		} else {
+			console.log("activating "+module);
 			SiteActions.activateJetpackModule(module);
 		}
 	},
 
 	handleEnableAllModules: function(e) {
+		e.preventDefault();
+		e.stopPropagation();
 		SiteActions.enableJumpstart();
 	},
 
@@ -73,6 +78,11 @@ var JetpackJumpstart = React.createClass({
 		}.bind(this));
 	},
 
+	handleShowFewerModules: function (e) {
+		e.preventDefault();
+		this.setState({showMoreModules: false});
+	},
+
 	_renderModule: function(module) {
 		var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
 		var moduleId = 'jp-module-'+module.slug;
@@ -83,13 +93,14 @@ var JetpackJumpstart = React.createClass({
 				<label htmlFor={moduleId}><strong>{module.name}</strong></label>
 				<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
 				{isActive && module.configure_url && (
-					<small><a href={module.configure_url}>configure</a></small>
+					<small><a target="_configure" href={module.configure_url}>configure</a></small>
 				)}
 			</div>
 		)
 	},
 
 	render: function() {
+		console.log("rendered");
 		var moduleOverlay, moduleOverlayBody;
 
 
@@ -108,32 +119,61 @@ var JetpackJumpstart = React.createClass({
 			);
 		}
 
-		var moduleDescriptions = SiteStore.getJumpstartModules().map(this._renderModule.bind(this));
-		var moreModuleDescriptions = SiteStore.getJetpackAdditionalModules().map(this._renderModule.bind(this))
+		var moduleDescriptions = SiteStore.getJumpstartModules().map(this._renderModule);
+		var moreModuleDescriptions = SiteStore.getJetpackAdditionalModules().map(this._renderModule);
 
 		return (
 			<div className="welcome__section">
-				<h4>Enable recommended modules</h4>
+				<h4>Enable popular features</h4>
 				{this.state.jetpackConfigured && (
-					<p className="step-description">Congratulations! You've connected your site to WordPress.com and unlocked dozens of powerful features.</p>
+					<div>
+						<span className="jetpack-logo">Powered by<br /><a href="http://192.168.59.103/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
+						<p className="step-description">Congratulations! You've connected your site to WordPress.com and unlocked dozens of powerful features.</p>
+						<p className="step-description">We've highlighted some of the most popular WordPress-connected modules for you.</p>
+					</div>
 				)}
 				<div className="welcome__connect">
 					<div className="welcome__jumpstart_wrapper">
 						{moduleOverlay}
 						{moduleOverlayBody}
-						<div className="submit" style={{textAlign: 'left', margin: '0px 10px'}}>
-							<button disabled={this.state.jumpstartEnabled} className="button button-primary button-large" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'All recommended modules active' : 'Enable recommended modules'}</button>
+						
+						<div className="submit">
 							<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
 							<div className="clear"></div>
 						</div>
+
 						<div className="welcome__jumpstart_modules">
-							{moduleDescriptions}
-							{! this.state.showMoreModules && (
+							
+							<div className="modules">
+								<h3>Popular modules
+									&nbsp;&nbsp;<button disabled={this.state.jumpstartEnabled} className="button button-primary" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</button>
+								</h3>
+
+								<div className="inside">
+									{moduleDescriptions}
+									<div className="clear"></div>
+								</div>
+							</div>
+							
+							{this.state.showMoreModules ? (
 								<p className="more">
-									<a href="#" onClick={this.handleShowMoreModules}>show more</a>
+									<a href="#" onClick={this.handleShowFewerModules}>hide additional modules</a>
+								</p>
+							) : (
+								<p className="more">
+									<a href="#" onClick={this.handleShowMoreModules}>show additional modules</a>
 								</p>
 							)}
-							{this.state.showMoreModules && moreModuleDescriptions}
+
+							{this.state.showMoreModules && (
+								<div className="modules">
+									<h3>Additional modules</h3>
+									<div className="inside">
+										{moreModuleDescriptions}
+										<div className="clear"></div>
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
