@@ -57,7 +57,12 @@ class Jetpack_Start_WelcomePanel {
 			wp_enqueue_script( 'jetpack-start' );
 
 			// CSS
+			global $wp_styles;
+			wp_register_style( 'ie8', plugins_url( 'css/ie8.css', __FILE__ ) );
+			$wp_styles->add_data( 'ie8', 'conditional', 'lt IE 9' );
+
 			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
+			wp_enqueue_style( 'ie8' );
 		}
 	}
 
