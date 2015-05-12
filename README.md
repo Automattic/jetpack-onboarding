@@ -3,6 +3,8 @@ Jetpack Start
 
 Jetpack Start is our attempt at exploring a better New User Experience flow when a user first sets up WordPress.
 
+![alt tag](https://raw.github.com/Automattic/jetpack-start/master/img/jps_started.png)
+
 It is designed to be extensible, so that hosting companies that choose to bundle it can easily modify, add, or remove any of the steps that we've included by default.
 
 Most of the code lives in the client, and uses [ReactJS](https://github.com/facebook/react) and Facebook's [Flux Dispatcher](https://github.com/facebook/flux) to manage the flow of data and UI updates. 
