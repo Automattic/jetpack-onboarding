@@ -35,6 +35,8 @@ class Jetpack_Start_WelcomePanel {
 				delete_option( 'jetpack_auto_installed' );
 				delete_transient( 'jetpack_register'    );
 
+				wp_redirect(remove_query_arg('jps_reset'));
+				die();
 			}
 
 			//replace the usual welcome panel with our own
