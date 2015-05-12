@@ -31,7 +31,7 @@ var AdvancedSettingsStep = React.createClass({
 					)}
 					<li>
 						<h5>Create a static page</h5>
-						"About me", "Our Services" or anything else you can imagine!
+						"About me", "Our Services" or anything else you can imagine.
 						<br />
 						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.new_page_url}>Create a new page</a>
 						&nbsp;&nbsp;
