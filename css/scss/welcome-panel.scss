@@ -365,6 +365,13 @@ $very-light-gray: #f5f5f5;
 	margin-top: 10px;
 	min-width: 180px;
 
+	.theme.active {
+		-webkit-box-shadow: 0px 0px 8px 0px rgba(53, 146, 182,1);
+		-moz-box-shadow: 0px 0px 8px 0px rgba(53, 146, 182,1);
+		box-shadow: 0px 0px 8px 0px rgba(53, 146, 182,1);
+		border: 1px solid rgba(53, 146, 182,1);
+	}
+
 	.theme-name { padding-right: 0px; }
 	@include minbreakpoint(tablet) {
 		.theme {

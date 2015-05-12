@@ -119,7 +119,7 @@ var DesignStep = React.createClass({
 					) : (
 						<div className="theme-screenshot blank"></div>
 					)}
-					<span className="more-details">Click to select</span>
+					{!theme.active && (<span className="more-details">Click to select</span>)}
 					<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Selected:' : ''}</span> {theme.name}</h3>
 				</div>
 			);

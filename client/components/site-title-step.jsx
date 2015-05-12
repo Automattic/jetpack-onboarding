@@ -48,7 +48,7 @@ var SiteTitleStep = React.createClass({
 			<div className="welcome__section" id="welcome__site-title">
 				<h4>Title and Description</h4>
 				<p className="step-description">
-					Make your site stand out from the crowd.
+					Make your site stand out from the crowd with a catchy name.
 				</p>
 				<form onSubmit={this.handleSubmit}>
 					<table className="form-table">

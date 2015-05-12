@@ -110,7 +110,7 @@ var JetpackJumpstart = React.createClass({
 			);
 			moduleOverlayBody = (
 				<div className="welcome__jumpstart_overlay__body">
-					<p>These recommended modules require a connection to WordPress.com</p>
+					<p>These modules require a WordPress.com account - it's free!</p>
 					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</a>
 					<p>
 						<SkipButton />
@@ -124,7 +124,7 @@ var JetpackJumpstart = React.createClass({
 
 		return (
 			<div className="welcome__section">
-				<h4>Enable popular features</h4>
+				<h4>Enable modules</h4>
 				{this.state.jetpackConfigured && (
 					<div>
 						<span className="jetpack-logo">Powered by<br /><a href="http://192.168.59.103/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
@@ -137,10 +137,12 @@ var JetpackJumpstart = React.createClass({
 						{moduleOverlay}
 						{moduleOverlayBody}
 						
-						<div className="submit">
-							<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
-							<div className="clear"></div>
-						</div>
+						{this.state.jetpackConfigured && (
+							<div className="submit">
+								<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
+								<div className="clear"></div>
+							</div>
+						)}
 
 						<div className="welcome__jumpstart_modules">
 							
