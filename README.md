@@ -1,6 +1,8 @@
 Jetpack Start
 =============
 
+![alt tag](https://raw.github.com/Automattic/jetpack-start/master/img/jps_started.png)
+
 Jetpack Start is our attempt at exploring a better New User Experience flow when a user first sets up WordPress.
 
 It is designed to be extensible, so that hosting companies that choose to bundle it can easily modify, add, or remove any of the steps that we've included by default.
