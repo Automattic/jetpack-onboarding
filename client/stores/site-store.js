@@ -44,7 +44,9 @@ function setJetpackModuleDectivated(slug) {
 }
 
 function setJetpackAdditionalModules(modules) {
-  JPS.jetpack.additional_modules = modules;
+  JPS.jetpack.additional_modules = _.filter(modules, function(module) {
+    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function(mod){return mod.slug}), module.slug) == -1;
+  });
 }
 
 function setLayout(layoutName) {
