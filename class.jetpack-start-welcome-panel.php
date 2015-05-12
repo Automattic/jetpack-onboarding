@@ -16,6 +16,25 @@ class Jetpack_Start_WelcomePanel {
 			if ( isset( $_GET['jps_reset'] ) ) {
 				delete_option( Jetpack_Start_EndPoints::STEP_STATUS_KEY );
 				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
+
+
+				delete_option( 'jetpack_blog_token' );
+				delete_option( 'jetpack_id' );
+
+				//also reset JP data
+				delete_option( 'jetpack_options'        );
+
+				// Delete all non-compact options
+				delete_option( 'jetpack_register'       );
+				delete_option( 'jetpack_activated'      );
+				delete_option( 'jetpack_active_modules' );
+				delete_option( 'jetpack_do_activate'    );
+
+				// Delete all legacy options
+				delete_option( 'jetpack_was_activated'  );
+				delete_option( 'jetpack_auto_installed' );
+				delete_transient( 'jetpack_register'    );
+
 			}
 
 			//replace the usual welcome panel with our own

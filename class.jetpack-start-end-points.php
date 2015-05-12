@@ -332,7 +332,7 @@ class Jetpack_Start_EndPoints {
 
 		if ( ! Jetpack::is_active() ) {
 
-			if ( ! Jetpack_Options::get_option( 'blog_token' ) ) {
+			if ( ! Jetpack_Options::get_option( 'blog_token' ) || ! Jetpack_Options::get_option( 'id' ) ) {
 				$result = Jetpack::try_registration();
 				if ( is_wp_error( $result ) ) {
 					$error = $result->get_error_code();
