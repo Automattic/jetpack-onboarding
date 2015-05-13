@@ -42,7 +42,7 @@ var SiteActions = {
 
 	_installTheme: function ( theme ) {
 		if ( ! theme.installed ) {
-			SpinnerActions.show();
+			SpinnerActions.show("Installing '"+theme.name+"'");
 			return WPAjax.
 				post( JPS.site_actions.install_theme, { themeId: theme.id } ).
 				done( function ( msg ) {
@@ -104,19 +104,16 @@ var SiteActions = {
 	},
 
 	configureJetpack: function(return_to_step) {
-		SpinnerActions.show();
+		SpinnerActions.show("Connecting to WordPress.com");
 		return WPAjax.
 			post( JPS.site_actions.configure_jetpack, { return_to_step: return_to_step } ).
 			done( function ( data ) {
-				// FlashActions.notice("Jetpack Enabled");
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_JETPACK_CONFIGURED
 			    });
 
 				if ( data.next ) {
-					//XXX TODO: make sure thing happens AFTER any other callbacks, 
-					// e.g. to save wizard state or post analytics
-					window.location.replace(data.next); // no need to propagate response, this should redirect off the page...
+					window.location.replace(data.next);
 				} else {
 					SpinnerActions.hide();
 				}

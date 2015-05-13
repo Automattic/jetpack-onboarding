@@ -8,7 +8,14 @@ var React = require('react'),
 	SpinnerActions = require('../actions/spinner-actions');
 
 function getSetupProgress() {
-	return { newUser: SetupProgressStore.isNewUser(), showSpinner: SpinnerStore.showing(), currentStep: SetupProgressStore.getCurrentStep(), allSteps: SetupProgressStore.getAllSteps(), progressPercent: SetupProgressStore.getProgressPercent() };
+	return { 
+		newUser: SetupProgressStore.isNewUser(), 
+		showSpinner: SpinnerStore.showing(), 
+		spinnerMessage: SpinnerStore.getMessage(), 
+		currentStep: SetupProgressStore.getCurrentStep(), 
+		allSteps: SetupProgressStore.getAllSteps(), 
+		progressPercent: SetupProgressStore.getProgressPercent() 
+	};
 }
 
 var WelcomeWidget = React.createClass({
@@ -27,7 +34,7 @@ var WelcomeWidget = React.createClass({
   	},
 
   	_onSpinnerChange: function() {
-  		this.setState({ showSpinner: SpinnerStore.showing() });
+  		this.setState({ showSpinner: SpinnerStore.showing(), spinnerMessage: SpinnerStore.getMessage() });
   	},
 
 	getInitialState: function() {
@@ -41,7 +48,7 @@ var WelcomeWidget = React.createClass({
 
 	handleShowSpinner: function ( e ) {
 		e.preventDefault();
-		SpinnerActions.show();
+		SpinnerActions.show("Testing spinner");
 	},
 
 	handleHideSpinner: function ( e ) {
@@ -90,7 +97,12 @@ var WelcomeWidget = React.createClass({
 	_renderSpinner: function() {
 		if ( this.state.showSpinner ) {
   			return (
-  				<div className="loading"></div>
+  				<div className="loading">
+  					<div className="loading__message">
+  						<img src="/wp-admin/images/spinner-2x.gif" width="16px" height="16px"/>
+  						&nbsp;&nbsp;{this.state.spinnerMessage}
+  					</div>
+  				</div>
   			);
 
   		} else {

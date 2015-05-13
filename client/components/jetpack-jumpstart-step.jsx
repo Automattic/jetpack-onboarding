@@ -4,7 +4,8 @@ var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths'), 
 	ContentBox = require('./content-box.jsx'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressActions = require('../actions/setup-progress-actions'),
+	SpinnerStore = require('../stores/spinner-store');
 
 function getJetpackState() {
 	return {
@@ -95,7 +96,7 @@ var JetpackJumpstart = React.createClass({
 		var moduleOverlay, moduleOverlayBody;
 
 
-		if ( ! this.state.jetpackConfigured ) {
+		if ( ! this.state.jetpackConfigured && !SpinnerStore.showing() ) {
 			moduleOverlay = (
 				<div className="welcome__jumpstart_overlay"></div>
 			);

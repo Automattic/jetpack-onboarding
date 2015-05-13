@@ -5,19 +5,26 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 var CHANGE_EVENT = 'change';
 var message, severity;
 
-var spinnerEnabled = false;
+var spinnerEnabled = false,
+	spinnerMessage = null;
 
-function show() {
+function show(message) {
 	spinnerEnabled = true;
+	spinnerMessage = message;
 }
 
 function hide() {
 	spinnerEnabled = false;
+	spinnerMessage = null;
 }
 
 SpinnerStore = _.extend({}, EventEmitter.prototype, {
 	showing: function() {
 		return spinnerEnabled;
+	},
+
+	getMessage: function() {
+		return spinnerMessage;
 	},
 
 	addChangeListener: function(callback) {
@@ -37,7 +44,7 @@ AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case JPSConstants.SHOW_SPINNER:
-		show();
+		show(action.message);
 		SpinnerStore.emitChange();
 		break;
 

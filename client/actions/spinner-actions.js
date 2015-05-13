@@ -2,9 +2,10 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants');
 
 var SpinnerActions = {
-	show: function() {
+	show: function(msg) {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SHOW_SPINNER,
+			message: msg
 		});
 	},
 
