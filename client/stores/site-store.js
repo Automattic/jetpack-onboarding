@@ -81,6 +81,16 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.themes;
   },
 
+  getActiveThemeId: function() {
+    for(var i=0; i < JPS.themes.length; i++) {
+      var theme = JPS.themes[i];
+      if ( theme.active ) {
+        return theme.id;
+      }
+    }
+    return null;
+  },
+
   getJetpackConfigured: function() {
     return JPS.jetpack.configured;
   },

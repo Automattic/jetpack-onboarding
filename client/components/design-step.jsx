@@ -35,13 +35,13 @@ var DesignStep = React.createClass({
 		e.preventDefault();
 		
 		this.setState({tooltipTheme: null, tooltipPosition: null});
-		
+
 		var $el = jQuery(e.currentTarget),
 			themeId = $el.data('theme-id'),
 			theme = this.findTheme(themeId),
 			needsInstallation = !theme.installed;
 
-		var response = SiteActions.setActiveTheme(theme);
+		var response = SetupProgressActions.setActiveTheme(theme);
 
 		//if we just installed a theme from the "popular" list, let's load some new
 		//selections once installation is finished
@@ -50,6 +50,12 @@ var DesignStep = React.createClass({
 				this._loadPopularThemes();
 			}.bind(this));
 		}
+
+		// response.done(function() {
+		// 	// this step is done when they've selected a theme
+		// 	SetupProgressActions.saveDesignStep();
+		// });
+		
 	},
 
 	findTheme: function ( themeId )	{

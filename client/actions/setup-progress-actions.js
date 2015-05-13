@@ -5,7 +5,8 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	SiteActions = require('./site-actions'),
 	SpinnerActions = require('./spinner-actions.js'),
 	WPAjax = require('../utils/wp-ajax'),
-	SetupProgressStore = require('../stores/setup-progress-store');
+	SetupProgressStore = require('../stores/setup-progress-store'),
+	SiteStore = require('../stores/site-store');
 
 var SetupProgressActions = {
 	resetData: function() {
@@ -19,22 +20,38 @@ var SetupProgressActions = {
 	    });
 	},
 
-	completeStep: function(slug) {
+	completeStep: function(slug, meta) {
 		
 		var step = SetupProgressStore.getStepFromSlug(slug);
 
-		if ( ! step.completed ) {
-			WPAjax.
-			  	post(JPS.step_actions.complete, { step: slug }).
-				fail( function(msg) {
-					FlashActions.error(msg);
-				});
-		} 
+		this._recordComplete(step, meta);
 
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_COMPLETE,
 			slug: slug
 	    });
+	},
+
+	completeAndNextStep: function(slug, meta) {
+		FlashActions.unset();
+		var step = SetupProgressStore.getStepFromSlug(slug);
+
+		this._recordComplete(step, meta);
+		
+		AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_COMPLETE_AND_NEXT,
+	      slug: slug
+	    });
+	},
+
+	_recordComplete: function(step, meta) {
+		if ( ! step.completed ) {
+			WPAjax.
+			  	post(JPS.step_actions.complete, { step: step.slug, data: meta }).
+				fail( function(msg) {
+					FlashActions.error(msg);
+				});
+		} 
 	},
 
 	// mark current step as skipped and move on
@@ -84,33 +101,15 @@ var SetupProgressActions = {
 	    });
 	},
 
-	completeAndNextStep: function(slug) {
-		FlashActions.unset();
-		var step = SetupProgressStore.getStepFromSlug(slug);
-
-		if ( ! step.completed ) {
-			WPAjax.
-			  	post(JPS.step_actions.complete, { step: slug }).
-				fail( function(msg) {
-					FlashActions.error(msg);
-				});
-		} 
-		
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE_AND_NEXT,
-	      slug: slug
-	    });
-	},
-
 	submitTitleStep: function() {
 		SiteActions.saveTitleAndDescription().done(function() {
-			this.completeStep(Paths.SITE_TITLE_STEP_SLUG);
+			this.completeAndNextStep(Paths.SITE_TITLE_STEP_SLUG);
 		}.bind(this));
 	},
 
 	submitLayoutStep: function(layout) {
 		SiteActions.setLayout(layout).done(function() {
-			this.completeStep(Paths.LAYOUT_STEP_SLUG);
+			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
 		}.bind(this));
 	},
 
@@ -120,20 +119,14 @@ var SetupProgressActions = {
 		}.bind(this));
 	},
 
+	setActiveTheme: function(theme) {
+		SiteActions.setActiveTheme(theme).done( function () {
+			this.completeStep(Paths.DESIGN_STEP_SLUG, {themeId: theme.id});
+		}.bind(this));
+	},
+
 	saveDesignStep: function() {
-		this.completeStep(Paths.DESIGN_STEP_SLUG);
-	},
-
-	submitTrafficStep: function() {
-		SiteActions.activateJetpackModule('publicize').done(function() {
-			this.completeStep(Paths.TRAFFIC_STEP_SLUG);
-		}.bind(this));	
-	},
-
-	submitStatsMonitoringStep: function() {
-		SiteActions.activateJetpackModule('stats').done(function() {
-			this.completeStep(Paths.STATS_MONITORING_STEP_SLUG);
-		}.bind(this));	
+		this.completeAndNextStep(Paths.DESIGN_STEP_SLUG, {themeId: SiteStore.getActiveThemeId()});
 	}
 };
 

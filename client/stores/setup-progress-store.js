@@ -53,7 +53,6 @@ function complete(stepSlug) {
   var step = getStepFromSlug(stepSlug);
   step.completed = true;
   step.skipped = false;
-  selectNextPendingStep();
 }
 
 function skip() {
@@ -190,7 +189,8 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.STEP_COMPLETE_AND_NEXT:
-      complete(action.slug, {force: true});
+      complete(action.slug);
+      selectNextPendingStep();
       SetupProgressStore.emitChange();
       break;
 

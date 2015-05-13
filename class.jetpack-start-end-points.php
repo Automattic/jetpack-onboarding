@@ -306,7 +306,12 @@ class Jetpack_Start_EndPoints {
 		
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', false);
 
-		do_action('jps_step_complete', $_REQUEST['step']);
+		if ( array_key_exists('data', $_REQUEST) ) {
+			$data = $_REQUEST['data'];
+		} else {
+			$data = null;
+		}
+		do_action('jps_step_complete', $_REQUEST['step'], $data);
 
 		wp_send_json_success( $result );
 	}
