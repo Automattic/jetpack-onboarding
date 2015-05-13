@@ -48,7 +48,9 @@ class JetpackStartTracking {
 		self::record_user_event($step_slug, 'step_skipped');
 	}
 
-	static function track_step_completed($step_slug) {
+	static function track_step_completed($step_slug, $data) {
+		// note: $data is an associative array of metadata related to the step completed
+		// e.g. when the "design" step is completed, data looks like: {themeId: 'the-theme-id'}
 		self::record_user_event($step_slug, 'step_completed');
 	}
 
