@@ -21,7 +21,6 @@ var SetupProgressActions = {
 	},
 
 	completeStep: function(slug, meta) {
-		
 		var step = SetupProgressStore.getStepFromSlug(slug);
 
 		this._recordComplete(step, meta);
@@ -33,13 +32,10 @@ var SetupProgressActions = {
 	},
 
 	completeAndNextStep: function(slug, meta) {
-		FlashActions.unset();
-		var step = SetupProgressStore.getStepFromSlug(slug);
+		this.completeStep(slug, meta);
 
-		this._recordComplete(step, meta);
-		
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_COMPLETE_AND_NEXT,
+	    AppDispatcher.dispatch({
+	      actionType: JPSConstants.STEP_NEXT,
 	      slug: slug
 	    });
 	},

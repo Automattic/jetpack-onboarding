@@ -16,6 +16,8 @@
  * 
  **/
 
+var DataActions = require('../actions/data-actions');
+
 var WPAjax = (function() {
 
 	return {
@@ -24,6 +26,8 @@ var WPAjax = (function() {
 			var data = _.extend(payload, {action: action, nonce: JPS.nonce});
 			
 			var deferred = jQuery.Deferred();
+
+			DataActions.requestStarted();
 
 			jQuery.post( ajaxurl, data )
 				.success( function( response ) {
@@ -35,6 +39,9 @@ var WPAjax = (function() {
 				})
 				.fail( function() {
 					deferred.reject("Server error");
+				})
+				.always( function () {
+					DataActions.requestFinished();
 				});	
 
 			return deferred;

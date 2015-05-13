@@ -43,19 +43,13 @@ var DesignStep = React.createClass({
 
 		var response = SetupProgressActions.setActiveTheme(theme);
 
-		//if we just installed a theme from the "popular" list, let's load some new
-		//selections once installation is finished
+		// if we just installed a theme from the "popular" list, let's load some new
+		// selections once installation is finished
 		if ( needsInstallation ) {
 			response.done( function () {
 				this._loadPopularThemes();
 			}.bind(this));
 		}
-
-		// response.done(function() {
-		// 	// this step is done when they've selected a theme
-		// 	SetupProgressActions.saveDesignStep();
-		// });
-		
 	},
 
 	findTheme: function ( themeId )	{

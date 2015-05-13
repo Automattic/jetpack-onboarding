@@ -1,7 +1,8 @@
 var React = require('react'),
     WelcomeWidget = require('./components/welcome-widget.jsx'),
     Paths = require('./constants/jetpack-start-paths'),
-    SetupProgressStore = require('./stores/setup-progress-store');
+    SetupProgressStore = require('./stores/setup-progress-store'),
+    DataStore = require('./stores/data-store');
 
 module.exports = function() {
     jQuery(document).ready(function () {

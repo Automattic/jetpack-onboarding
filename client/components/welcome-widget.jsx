@@ -5,7 +5,8 @@ var React = require('react'),
 	Flash = require('./flash.jsx'),
 	GetStarted = require('./get-started.jsx'),
 	SpinnerStore = require('../stores/spinner-store'),
-	SpinnerActions = require('../actions/spinner-actions');
+	SpinnerActions = require('../actions/spinner-actions'),
+	DataStore = require('../stores/data-store');
 
 function getSetupProgress() {
 	return { 
@@ -18,15 +19,18 @@ function getSetupProgress() {
 	};
 }
 
+// TODO: visual "saving" for this.state.saving
 var WelcomeWidget = React.createClass({
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
 		SpinnerStore.addChangeListener(this._onSpinnerChange);
+		DataStore.addChangeListener(this._onDataChange);
 	},
 
 	componentWillUnmount: function() {
 		SetupProgressStore.removeChangeListener(this._onChange);
 		SpinnerStore.removeChangeListener(this._onSpinnerChange);
+		DataStore.removeChangeListener(this._onDataChange);
 	},
 
 	_onChange: function() {
@@ -35,6 +39,10 @@ var WelcomeWidget = React.createClass({
 
   	_onSpinnerChange: function() {
   		this.setState({ showSpinner: SpinnerStore.showing(), spinnerMessage: SpinnerStore.getMessage() });
+  	},
+
+  	_onDataChange: function() {
+  		this.setState({ saving: DataStore.isSaving() });
   	},
 
 	getInitialState: function() {

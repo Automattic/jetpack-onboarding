@@ -139,6 +139,10 @@ class Jetpack_Start_EndPoints {
 			'fields'   => $theme_field_defaults
 		);
 		$themes = themes_api( 'query_themes', $args );
+		if ( is_wp_error( $themes )) {
+			wp_send_json_error("There was an error loading themes: ".$themes->get_error_message());
+			die();
+		} 
 		$non_installed_themes = array_filter($themes->themes, array(__CLASS__, 'existing_theme_filter'));
 		$rand_keys_to_exclude = array_rand( $non_installed_themes, ( sizeof($non_installed_themes) - self::NUM_RAND_THEMES ) );
 

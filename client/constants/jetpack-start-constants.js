@@ -2,7 +2,6 @@ var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
 	STEP_COMPLETE: null,
-	STEP_COMPLETE_AND_NEXT: null,
 	STEP_GET_STARTED: null,
 	STEP_SELECT: null,
 	STEP_NEXT: null,
@@ -18,6 +17,9 @@ module.exports = keyMirror({
 	SITE_JETPACK_JUMPSTART_ENABLED: null,
 	SITE_JETPACK_ADD_MODULES: null,
 	SITE_SET_LAYOUT: null,
+
+	SAVE_STARTED: null,
+	SAVE_FINISHED: null,
 
 	SET_FLASH: null,
 	UNSET_FLASH: null,
