@@ -127,7 +127,7 @@ $very-light-gray: #f5f5f5;
 		min-height: 100%;
 		z-index: 999;
 		background: url(../../../../wp-admin/images/spinner-2x.gif) no-repeat center center;
-		background-size: 16px 16px;
+		background-size: 32px 32px;
 
 		&:before {
 			content: '';
@@ -359,6 +359,7 @@ $very-light-gray: #f5f5f5;
 
 #welcome__design .theme-browser {
 	margin-top: 10px;
+	padding-left: 10px;
 	min-width: 180px;
 
 	.theme.active {
