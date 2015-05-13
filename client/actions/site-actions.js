@@ -40,19 +40,48 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
-	setActiveTheme: function( themeId ) {
-		
+	_installTheme: function ( theme ) {
+		if ( ! theme.installed ) {
+			SpinnerActions.show();
+			return WPAjax.
+				post( JPS.site_actions.install_theme, { themeId: theme.id } ).
+				done( function ( msg ) {
+					theme.installed = true;
+					AppDispatcher.dispatch({
+						actionType: JPSConstants.SITE_INSTALL_THEME,
+						theme: theme
+				    });
+				}).
+				fail( function ( msg ) {
+					FlashActions.error("Server error installing theme: "+msg);
+				}).
+				always( function() {
+					SpinnerActions.hide();
+				});
+		} else {
+			return jQuery.Deferred().resolve();
+		}
+	},
+
+	_activateTheme: function ( theme ) {
 		WPAjax.
-			post( JPS.site_actions.set_theme, { themeId: themeId } ).
+			post( JPS.site_actions.set_theme, { themeId: theme.id } ).
 			fail( function ( msg ) {
 				FlashActions.error("Server error setting theme: "+msg);
 			});
 
-		// FlashActions.notice("Set theme to "+themeId);
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_THEME,
-			themeId: themeId
+			themeId: theme.id
 	    });
+	},
+
+	setActiveTheme: function( theme ) {
+
+		this._installTheme(theme).
+			done( function() {
+				this._activateTheme(theme);
+			}.bind(this));
 
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},

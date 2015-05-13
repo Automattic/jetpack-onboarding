@@ -3,9 +3,10 @@ class Jetpack_Start_EndPoints {
 	const AJAX_NONCE = 'jps-ajax';
 	const STEP_STATUS_KEY = 'jps_step_statuses';
 	const STARTED_KEY = 'jps_started';
-	const MAX_THEMES = 6;
+	const MAX_THEMES = 3;
+	const NUM_RAND_THEMES = 3;
 
-	static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
+	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
 
 	static function init() {
@@ -19,6 +20,8 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
 			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
+			add_action( 'wp_ajax_jps_install_theme', array( __CLASS__, 'install_theme' ) );
+			add_action( 'wp_ajax_jps_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
 			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
 			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
@@ -66,11 +69,10 @@ class Jetpack_Start_EndPoints {
 
 		$themes = 
 			array_slice ( 
-				array_values ( 
-					array_filter ( 
-						wp_prepare_themes_for_js(), array(__CLASS__, 'default_theme_filter') 
-					) 
-				), 
+				array_map( 
+					array(__CLASS__, 'normalize_installed_theme'),
+					wp_prepare_themes_for_js()
+				),
 			0, self::MAX_THEMES);
 
 		return array(
@@ -84,6 +86,8 @@ class Jetpack_Start_EndPoints {
 				'set_title' => 'jps_set_title',
 				'set_layout' => 'jps_set_layout',
 				'set_theme' => 'jps_set_theme',
+				'install_theme' => 'jps_install_theme',
+				'get_popular_themes' => 'jps_get_popular_themes',
 				'configure_jetpack' => 'jps_configure_jetpack',
 				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
 				'deactivate_jetpack_modules' => 'jps_deactivate_jetpack_modules',
@@ -120,6 +124,53 @@ class Jetpack_Start_EndPoints {
 
 	static function default_theme_filter($theme) {
 		return ( in_array( $theme['id'], self::$default_themes ) || get_stylesheet() == $theme['id'] );
+	}
+
+	static function existing_theme_filter($theme) {
+		return !wp_get_theme( $theme->slug )->exists();
+	}
+
+	static function get_popular_themes() {
+		// add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
+		global $theme_field_defaults;
+		$args = array(
+			'browse' => 'popular',
+			'per_page' => 40,
+			'fields'   => $theme_field_defaults
+		);
+		$themes = themes_api( 'query_themes', $args );
+		$non_installed_themes = array_filter($themes->themes, array(__CLASS__, 'existing_theme_filter'));
+		$rand_keys_to_exclude = array_rand( $non_installed_themes, ( sizeof($non_installed_themes) - self::NUM_RAND_THEMES ) );
+
+		$random_non_installed_themes = array_diff_key( $non_installed_themes, array_flip($rand_keys_to_exclude) );
+
+
+
+		// error_log(print_r($random_non_installed_themes, true));
+		
+		wp_send_json_success( array_map( array(__CLASS__, 'normalize_api_theme'), array_values( $random_non_installed_themes ) ) );
+	}
+
+	static function normalize_api_theme($theme) {
+		return array(
+			'id' => $theme->slug,
+			'screenshot' => array($theme->screenshot_url),
+			'name' => $theme->name,
+			'author' => $theme->author,
+			'description' => $theme->description,
+			'installed' => false
+		);
+	}
+
+	static function normalize_installed_theme($theme) {
+		return array(
+			'id' => $theme['id'],
+			'screenshot' => array($theme['screenshot'][0]),
+			'name' => $theme['name'],
+			'author' => $theme['author'],
+			'description' => $theme['description'],
+			'installed' => true
+		);
 	}
 
 	static function reset_data() {
@@ -305,13 +356,55 @@ class Jetpack_Start_EndPoints {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		$theme_id = $_REQUEST['themeId'];
 		$theme = wp_get_theme( $theme_id );
-		if ( ! $theme->exists() )
-			wp_send_json_error('Theme does not exist: '.$theme_id);
-		elseif ( ! $theme->is_allowed() ) {
+
+		// try to install the theme if it doesn't exist
+ 		if ( ! $theme->exists() ) {
+ 			wp_send_json_error('Theme does not exist: '.$theme_id);
+ 			die();
+		}
+		
+		if ( ! $theme->is_allowed() ) {
 			wp_send_json_error('Action not permitted for '.$theme_id);
+			die();
 		}
 
 		switch_theme( $theme->get_stylesheet() );
+		wp_send_json_success( $theme_id );
+	}
+
+	static function install_theme() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$theme_id = $_REQUEST['themeId'];
+		$theme = wp_get_theme( $theme_id );
+
+		if ( ! $theme->exists() ) {
+			include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+			include_once( ABSPATH . 'wp-admin/includes/theme-install.php' );
+			
+			$theme_info = themes_api( 'theme_information', array(
+				'slug' => $theme_id, 
+				'fields' => array( 'sections' => false, 'tags' => false ) 
+			) );
+
+			error_log(print_r($theme_info, true));
+
+			if ( is_wp_error( $theme_info ) ) {
+				wp_send_json_error('Could not look up theme '.$theme_id.': '.$theme_info->get_error_message());
+				die();
+			} else {
+				$upgrader = new Theme_Upgrader( new Automatic_Upgrader_Skin() );
+				$install_response = $upgrader->install( $theme_info->download_link );
+
+				if( is_wp_error($install_response) ) {
+					wp_send_json_error('Could not install theme: '.$install_response->get_error_message());
+					die();
+				} elseif ( ! $install_response ) {
+					wp_send_json_error('Could not install theme (unspecified server error)');
+					die();
+				}
+			} 
+		}
+
 		wp_send_json_success( $theme_id );
 	}
 

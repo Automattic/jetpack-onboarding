@@ -4,7 +4,8 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-start-constants');
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  WPAjax = require('../utils/wp-ajax');
 
 var CHANGE_EVENT = 'change';
 
@@ -28,11 +29,15 @@ function setActiveTheme(activeThemeId) {
   } );
 }
 
+function installedTheme(theme) {
+  JPS.themes.unshift(theme);
+  JPS.themes = JPS.themes.slice(0, 3);
+}
+
 function setJetpackModuleActivated(slug) {
   if ( _.indexOf( JPS.jetpack.active_modules, slug ) === -1 ) {
     JPS.jetpack.active_modules.push(slug);  
   }
-  console.log("added "+slug);
 }
 
 function setJetpackModuleDectivated(slug) {
@@ -40,7 +45,6 @@ function setJetpackModuleDectivated(slug) {
   if ( index >= 0) {
     JPS.jetpack.active_modules.splice(index, 1);
   }
-  console.log("removed "+slug);
 }
 
 function setJetpackAdditionalModules(modules) {
@@ -101,6 +105,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.jetpack.jumpstart_modules;
   },
 
+  getPopularThemes: function() {
+    return WPAjax.post(JPS.site_actions.get_popular_themes);
+  },
+
   getJetpackJumpstartEnabled: function() {
     for(var i=0; i < JPS.jetpack.jumpstart_modules.length; i++) {
       var module = JPS.jetpack.jumpstart_modules[i];
@@ -144,6 +152,11 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
+      SiteStore.emitChange();
+      break;
+
+    case JPSConstants.SITE_INSTALL_THEME:
+      installedTheme(action.theme);
       SiteStore.emitChange();
       break;
 

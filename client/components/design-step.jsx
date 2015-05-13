@@ -3,7 +3,8 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Tooltip = require('./tooltip.jsx');
+	Tooltip = require('./tooltip.jsx'),
+	ContentBox = require('./content-box.jsx');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes() };
@@ -13,6 +14,7 @@ var DesignStep = React.createClass({
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener(this._onChange);
+		this._loadPopularThemes();
 	},
 
 	componentWillUnmount: function() {
@@ -24,20 +26,34 @@ var DesignStep = React.createClass({
   	},
 
 	getInitialState: function() {
-		return getThemeState();
+		var initialState = getThemeState();
+		initialState.popularThemes = [];
+		return initialState;
 	},
 
 	handleActivateTheme: function ( e ) {
 		e.preventDefault();
 		
-		var $el = jQuery(e.currentTarget);
-		var themeId = $el.data('theme-id');
+		this.setState({tooltipTheme: null, tooltipPosition: null});
+		
+		var $el = jQuery(e.currentTarget),
+			themeId = $el.data('theme-id'),
+			theme = this.findTheme(themeId),
+			needsInstallation = !theme.installed;
 
-		SiteActions.setActiveTheme(themeId);
+		var response = SiteActions.setActiveTheme(theme);
+
+		//if we just installed a theme from the "popular" list, let's load some new
+		//selections once installation is finished
+		if ( needsInstallation ) {
+			response.done( function () {
+				this._loadPopularThemes();
+			}.bind(this));
+		}
 	},
 
 	findTheme: function ( themeId )	{
-		return _.findWhere(this.state.themes, {id: themeId});
+		return _.findWhere(this.state.themes, {id: themeId}) || _.findWhere(this.state.popularThemes, {id: themeId});
 	},
 
 	handleContinue: function ( e ) {
@@ -68,7 +84,19 @@ var DesignStep = React.createClass({
 		this.setState({tooltipTheme: null, tooltipPosition: null});
 	},
 
+	handleGetPopularThemes: function ( e ) {
+		e.preventDefault();
+		this._loadPopularThemes();		
+	},
+
+	_loadPopularThemes: function() {
+		SiteStore.getPopularThemes().done(function(themes) {
+			this.setState({popularThemes: themes});
+		}.bind(this));
+	},
+
 	render: function() {
+
 		return (
 			<div className="welcome__section" id="welcome__design">
 				<h4>Pick a design</h4>
@@ -77,10 +105,22 @@ var DesignStep = React.createClass({
 				<p className="submit">
 					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
 				</p>
-				<div className="theme-browser rendered">
-					{this._renderThemeList()}
-				</div>
+				<ContentBox>
+					<h3>Installed themes</h3>
+					<div className="theme-browser rendered">
+						{this._renderThemeList()}
+					</div>
+				</ContentBox>
 				
+				<ContentBox>
+					<h3>Popular themes from WordPress.org
+					<a href="#" className="button button-primary button-large" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</a>
+					</h3>
+					<div className="theme-browser rendered">
+						{this._renderPopularThemeList()}
+					</div>
+				</ContentBox>
+
 				<div style={{clear: 'both'}}></div>
 				{this.state.tooltipTheme && this._renderTooltip()}
 			</div>
@@ -95,37 +135,41 @@ var DesignStep = React.createClass({
 				top={position.top} 
 				width={320} 
 				title={theme.name}>
-				<p>By <span dangerouslySetInnerHTML={{__html: _.unescape(theme.authorAndUri)}}></span></p>
+				<p>By {theme.author}</p>
 				<p dangerouslySetInnerHTML={{__html: _.unescape(theme.description)}}></p>
 			</Tooltip>
 		);
 	},
 
+	_renderTheme: function(theme) {
+		return (
+			<div key={theme.id} 
+				className={'theme' + (theme.active ? ' active' : '')} 
+				data-theme-id={theme.id} 
+				onClick={this.handleActivateTheme} 
+				onMouseEnter={this.handleShowTooltip} 
+				onMouseLeave={this.handleHideTooltip} 
+				aria-describedby={theme.id+'-action '+theme.id+'-name'}>
+
+				{theme.screenshot ? (
+					<div className="theme-screenshot">
+						<img src={theme.screenshot} alt="" />
+					</div>
+				) : (
+					<div className="theme-screenshot blank"></div>
+				)}
+				{!theme.active && (<span className="more-details">{theme.installed ? 'Click to select' : 'Click to install'}</span>)}
+				<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Selected:' : ''}</span> {theme.name}</h3>
+			</div>
+		);
+	},
+
+	_renderPopularThemeList: function() {
+		return this.state.popularThemes.map( this._renderTheme );
+	},
+
 	_renderThemeList: function() {
-		var themes = this.state.themes.map( function(theme) {
-			return (
-				<div key={theme.id} 
-					className={'theme' + (theme.active ? ' active' : '')} 
-					data-theme-id={theme.id} 
-					onClick={this.handleActivateTheme} 
-					onMouseEnter={this.handleShowTooltip} 
-					onMouseLeave={this.handleHideTooltip} 
-					aria-describedby={theme.id+'-action '+theme.id+'-name'}>
-
-					{theme.screenshot[0] ? (
-						<div className="theme-screenshot">
-							<img src={theme.screenshot[0]} alt="" />
-						</div>
-					) : (
-						<div className="theme-screenshot blank"></div>
-					)}
-					{!theme.active && (<span className="more-details">Click to select</span>)}
-					<h3 className="theme-name" id={theme.id+'-name'}><span>{theme.active ? 'Selected:' : ''}</span> {theme.name}</h3>
-				</div>
-			);
-		}.bind(this) );
-
-		return themes;
+		return this.state.themes.map( this._renderTheme );
 	}
 });
 

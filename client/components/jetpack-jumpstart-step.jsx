@@ -3,6 +3,7 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths'), 
+	ContentBox = require('./content-box.jsx'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getJetpackState() {
@@ -134,39 +135,29 @@ var JetpackJumpstart = React.createClass({
 							</div>
 						)}
 
-						<div className="welcome__jumpstart_modules">
-							
-							<div className="modules">
-								<h3>Popular modules
-									&nbsp;&nbsp;<button disabled={this.state.jumpstartEnabled} className="button button-primary" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</button>
-								</h3>
+						<ContentBox>
+							<h3>Popular modules
+								&nbsp;&nbsp;<button disabled={this.state.jumpstartEnabled} className="button button-primary" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</button>
+							</h3>
+							{moduleDescriptions}
+						</ContentBox>
+						
+						{this.state.showMoreModules ? (
+							<p className="more">
+								<a href="#" onClick={this.handleShowFewerModules}>hide additional modules</a>
+							</p>
+						) : (
+							<p className="more">
+								<a href="#" onClick={this.handleShowMoreModules}>show additional modules</a>
+							</p>
+						)}
 
-								<div className="inside">
-									{moduleDescriptions}
-									<div className="clear"></div>
-								</div>
-							</div>
-							
-							{this.state.showMoreModules ? (
-								<p className="more">
-									<a href="#" onClick={this.handleShowFewerModules}>hide additional modules</a>
-								</p>
-							) : (
-								<p className="more">
-									<a href="#" onClick={this.handleShowMoreModules}>show additional modules</a>
-								</p>
-							)}
-
-							{this.state.showMoreModules && (
-								<div className="modules">
-									<h3>Additional modules</h3>
-									<div className="inside">
-										{moreModuleDescriptions}
-										<div className="clear"></div>
-									</div>
-								</div>
-							)}
-						</div>
+						{this.state.showMoreModules && (
+							<ContentBox>
+								<h3>Additional modules</h3>
+								{moreModuleDescriptions}
+							</ContentBox>
+						)}
 					</div>
 				</div>
 			</div>
