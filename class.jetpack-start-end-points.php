@@ -158,6 +158,7 @@ class Jetpack_Start_EndPoints {
 			'name' => $theme->name,
 			'author' => $theme->author,
 			'description' => $theme->description,
+			'active' => false,
 			'installed' => false
 		);
 	}
@@ -169,6 +170,7 @@ class Jetpack_Start_EndPoints {
 			'name' => $theme['name'],
 			'author' => $theme['author'],
 			'description' => $theme['description'],
+			'active' => $theme['active'],
 			'installed' => true
 		);
 	}
