@@ -22,7 +22,18 @@ This plugin publishes three hooks:
 - jps_step_skipped
 - jps_step_complete
 
-jps_started is invoked when the user clicks the "Get Started ->" link on the front page of the wizard. The latter two "step" hooks are invoked with a string (a "slug") which names the step. An integration might look like this:
+jps_started is invoked when the user clicks the "Get Started ->" link on the front page of the wizard. The latter two "step" hooks are invoked with a string (a "slug") which names the step. 
+
+Each "jps_step_completed" step is accompanied by a data hash, which at a minimum includes an entry called "completion", which is the % completion of the wizard. For example, a step completion hash for the "design" step might look like this:
+
+```
+$data = array(
+	'themeId' => 'edit',
+	'completion' => 60
+)
+```
+
+An integration might look like this:
 
 ```php
 <?php
@@ -45,23 +56,24 @@ class JetpackStartTracking {
 	}
 
 	static function track_step_skipped($step_slug) {
-		self::record_user_event($step_slug, 'step_skipped');
+		self::record_user_event($step_slug, 'step_skipped', array());
 	}
 
 	static function track_step_completed($step_slug, $data) {
 		// note: $data is an associative array of metadata related to the step completed
 		// e.g. when the "design" step is completed, data looks like: {themeId: 'the-theme-id'}
-		self::record_user_event($step_slug, 'step_completed');
+		self::record_user_event($step_slug, 'step_completed', $data);
 	}
 
-	static function record_user_event($step_slug, $event_type) {
+	static function record_user_event($step_slug, $event_type, $data) {
 		$current_user = wp_get_current_user();
 		$event = array(
 			'_event_type' => 'jps_'.$event_type,
 			'step' => $step_slug,
 			'user_id' => $current_user->ID,
 			'user_email' => $current_user->user_email,
-			'_ip' => $_SERVER['REMOTE_ADDR']
+			'_ip' => $_SERVER['REMOTE_ADDR'],
+			'data' => $data
 		);
 		error_log("Recorded event: ".print_r($event, true));
 	}

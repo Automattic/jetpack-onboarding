@@ -23,12 +23,14 @@ var SetupProgressActions = {
 	completeStep: function(slug, meta) {
 		var step = SetupProgressStore.getStepFromSlug(slug);
 
-		this._recordComplete(step, meta);
-
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_COMPLETE,
 			slug: slug
 	    });
+
+		// NOTE: this needs to come after the dispatch, so that the completion % 
+		// is already updated and can be included in the metadata
+		this._recordComplete(step, meta);
 	},
 
 	completeAndNextStep: function(slug, meta) {
@@ -41,13 +43,17 @@ var SetupProgressActions = {
 	},
 
 	_recordComplete: function(step, meta) {
-		if ( ! step.completed ) {
-			WPAjax.
-			  	post(JPS.step_actions.complete, { step: step.slug, data: meta }).
-				fail( function(msg) {
-					FlashActions.error(msg);
-				});
-		} 
+		if (typeof(meta) === 'undefined') {
+			meta = {};
+		}
+
+		meta.completion = SetupProgressStore.getProgressPercent();
+
+		WPAjax.
+		  	post(JPS.step_actions.complete, { step: step.slug, data: meta }).
+			fail( function(msg) {
+				FlashActions.error(msg);
+			});
 	},
 
 	// mark current step as skipped and move on
