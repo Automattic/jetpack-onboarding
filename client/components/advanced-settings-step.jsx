@@ -44,7 +44,9 @@ var AdvancedSettingsStep = React.createClass({
 						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.plugins_url}>Manage plugins</a>
 						&nbsp;
 						&nbsp;
-						<a className="button button-primary button-large" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</a>
+						{SiteStore.getJetpackConfigured() && (
+							<a className="button button-primary button-large" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</a>
+						)}
 					</li>
 					<li>
 						<h5>Learn more</h5>
