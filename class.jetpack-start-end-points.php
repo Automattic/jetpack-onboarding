@@ -452,6 +452,10 @@ class Jetpack_Start_EndPoints {
 			// redirect to activate link
 			$connect_url = Jetpack::init()->build_connect_url( true, admin_url('index.php#welcome/steps/'.$return_to_step) );
 
+			if ( JETPACK_STEP_AUTO_REDIRECT ) {
+				$connect_url = add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, $connect_url );
+			}
+
 			wp_send_json_success( array('next' => $connect_url) );
 		} else {
 			wp_send_json_success( 'already_active' );
