@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	EventEmitter = require('events').EventEmitter;
+	EventEmitter = require('events').EventEmitter,
 	JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
@@ -18,7 +18,7 @@ function hide() {
 	spinnerMessage = null;
 }
 
-SpinnerStore = _.extend({}, EventEmitter.prototype, {
+var SpinnerStore = _.extend({}, EventEmitter.prototype, {
 	showing: function() {
 		return spinnerEnabled;
 	},
