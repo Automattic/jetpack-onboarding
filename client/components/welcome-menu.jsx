@@ -1,6 +1,6 @@
 var React = require('react'),
 	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressActions = require('../actions/setup-progress-actions')
+	SetupProgressActions = require('../actions/setup-progress-actions');
 
 var stepShape = React.PropTypes.shape({
 	name: React.PropTypes.string.isRequired,
@@ -43,7 +43,7 @@ var WelcomeMenu = React.createClass({
 			}
 
 			if ( !step.static && this.props.clickable ) {
-				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>
+				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>;
 			} else {
 				title = step.name;
 			}
@@ -68,7 +68,7 @@ var WelcomeMenu = React.createClass({
 					{menuItems}
 				</ol>
 			</div>
-		)
+		);
 	}
 });
 

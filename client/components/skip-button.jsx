@@ -5,7 +5,7 @@ var React = require('react'),
 function getSetupProgress() {
 	return {
 		completed: SetupProgressStore.getCurrentStep().completed
-	}
+	};
 }
 
 var SkipButton = React.createClass({

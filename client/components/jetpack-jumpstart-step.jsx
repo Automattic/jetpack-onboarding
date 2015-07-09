@@ -89,7 +89,7 @@ var JetpackJumpstart = React.createClass({
 					<small><a target="_configure" href={module.configure_url}>configure</a></small>
 				)}
 			</div>
-		)
+		);
 	},
 
 	render: function() {

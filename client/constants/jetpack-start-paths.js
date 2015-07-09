@@ -7,4 +7,4 @@ module.exports = {
 	DESIGN_STEP_SLUG: 'design',
 	ADVANCED_STEP_SLUG: 'advanced',
 	JETPACK_MODULES_STEP_SLUG: 'jetpack'
-}
+};

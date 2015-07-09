@@ -4,11 +4,7 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-start-constants'),
-  Paths = require('../constants/jetpack-start-paths'),
-  WPAjax = require('../utils/wp-ajax'),
-  FlashActions = require('../actions/flash-actions'),
-  SpinnerActions = require('../actions/spinner-actions');
+  JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
 
@@ -81,7 +77,7 @@ function ensureValidStepSlug() {
 
 function selectNextPendingStep() {
   var pendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
-  if ( pendingStep != null ) {
+  if ( pendingStep !== null ) {
     select(pendingStep.slug); // also sets the window location hash
   }
 }
@@ -114,16 +110,6 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
   init: function(steps) {
     setSteps(steps);
-  },
-
-  areAllComplete: function() {
-    var complete = true;
-    _.each( _steps ), function( step ) {
-      if ( ! step.complete() ) {
-        complete = false;
-      }
-    }
-    return complete;
   },
 
   getAllSteps: function() {
@@ -165,8 +151,7 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-  var text;
-
+  
   switch(action.actionType) {
     case JPSConstants.STEP_GET_STARTED:
       getStarted();

@@ -46,7 +46,7 @@ var WPAjax = (function() {
 
 			return deferred;
 		}
-	}
+	};
 
 })();
 

@@ -1,7 +1,5 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Tooltip = require('./tooltip.jsx'),
 	ContentBox = require('./content-box.jsx');

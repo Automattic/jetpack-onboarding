@@ -45,7 +45,7 @@ var SiteActions = {
 			SpinnerActions.show("Installing '"+theme.name+"'");
 			return WPAjax.
 				post( JPS.site_actions.install_theme, { themeId: theme.id } ).
-				done( function ( msg ) {
+				done( function ( ) {
 					theme.installed = true;
 					AppDispatcher.dispatch({
 						actionType: JPSConstants.SITE_INSTALL_THEME,
@@ -157,7 +157,7 @@ var SiteActions = {
 	},
 
 	loadAllJetpackModules: function() {
-		if ( SiteStore.getJetpackAdditionalModules().length == 0 ) {
+		if ( SiteStore.getJetpackAdditionalModules().length === 0 ) {
 			return WPAjax.
 				post( JPS.site_actions.list_jetpack_modules ).
 				done( function ( all_modules ) {

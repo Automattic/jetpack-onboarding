@@ -1,8 +1,6 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {

@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 			},
 			browserify: {
 				files: ['client/*.js', 'client/**/*.js', 'client/components/*.jsx'],
-				tasks: ['browserify', 'notify:js']	
+				tasks: ['jshint-jsx', 'browserify', 'notify:js']	
 			}
 		},
 
@@ -109,7 +109,22 @@ module.exports = function(grunt) {
 			options: {
 
 			}
-		}
+		},
+
+		'jshint-jsx': {
+			options: {
+				esnext: true,
+				convertJSX: true,
+				curly: true,
+				undef: true,
+				unused: true,
+				funcscope: true,
+				browser: true,
+				debug: true,
+				globals: { module: true, require: true, jQuery: true, JPS: true, console: true, _: true, ajaxurl: true }
+			},
+			all: ['client/**/*.js', 'client/**/*.jsx']
+		},
 	});
 
 	grunt.loadNpmTasks('grunt-notify');
@@ -118,6 +133,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-react');
 	grunt.loadNpmTasks('grunt-contrib-concat');     // concatenate
+	grunt.loadNpmTasks('grunt-contrib-jshint-jsx');
 	grunt.loadNpmTasks('grunt-contrib-uglify');     // minify
 	grunt.loadNpmTasks('grunt-contrib-watch');      // watch files for changes
 	grunt.loadNpmTasks('grunt-contrib-sass');       // Gettin Sassy!

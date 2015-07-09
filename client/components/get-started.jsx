@@ -39,7 +39,7 @@ var GetStarted = React.createClass({
 					<a href="#" className="button button-primary button-large" onClick={this.handleGetStarted}>Get Started &rarr;</a>
 				</p>
 			</div>
-		)
+		);
 	}
 });
 

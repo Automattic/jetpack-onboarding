@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	EventEmitter = require('events').EventEmitter;
+	EventEmitter = require('events').EventEmitter,
 	JPSConstants = require('../constants/jetpack-start-constants');
 
 /*
@@ -30,7 +30,7 @@ function decrementSaveCounter() {
 	_currentSaves = _currentSaves - 1;
 }
 
-DataStore = _.extend({}, EventEmitter.prototype, {
+var DataStore = _.extend({}, EventEmitter.prototype, {
 	isSaving: function() {
 		return _currentSaves > 0;
 	},

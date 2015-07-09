@@ -1,13 +1,11 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
-	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
 	return {
 		layout: SiteStore.getLayout()
-	}
+	};
 }
 
 var LayoutStep = React.createClass({

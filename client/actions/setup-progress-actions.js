@@ -3,7 +3,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	Paths = require('../constants/jetpack-start-paths'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
-	SpinnerActions = require('./spinner-actions.js'),
 	WPAjax = require('../utils/wp-ajax'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SiteStore = require('../stores/site-store');

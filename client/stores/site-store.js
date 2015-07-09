@@ -49,7 +49,7 @@ function setJetpackModuleDectivated(slug) {
 
 function setJetpackAdditionalModules(modules) {
   JPS.jetpack.additional_modules = _.filter(modules, function(module) {
-    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function(mod){return mod.slug}), module.slug) == -1;
+    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function(mod){return mod.slug;}), module.slug) == -1;
   });
 }
 
@@ -58,7 +58,7 @@ function setLayout(layoutName) {
 }
 
 function setJetpackConfigured() {
-  JPS.jetpack.configured = true
+  JPS.jetpack.configured = true;
 }
 
 function setJetpackJumpstartActivated() {
@@ -191,7 +191,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED: 
-      setJetpackJumpstartActivated()
+      setJetpackJumpstartActivated();
       SiteStore.emitChange();
       break;
 
