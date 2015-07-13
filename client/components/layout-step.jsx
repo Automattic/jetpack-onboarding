@@ -4,6 +4,7 @@ var React = require('react'),
 
 function getSiteLayoutState() {
 	return {
+		site_title: SiteStore.getTitle(),
 		layout: SiteStore.getLayout()
 	};
 }
@@ -38,6 +39,7 @@ var LayoutStep = React.createClass({
 	render: function() {
 		return (
 			<div className="welcome__section" id="welcome__layout">
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Select a layout</h4>
 				<p className="step-description">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>

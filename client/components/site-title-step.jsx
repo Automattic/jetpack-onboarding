@@ -44,6 +44,7 @@ var SiteTitleStep = React.createClass({
 	render: function() {
 		return (
 			<div className="welcome__section" id="welcome__site-title">
+				<h3>Let's launch your new website</h3>
 				<h4>Title and Description</h4>
 				<p className="step-description">
 					Make your site stand out with a catchy name.
