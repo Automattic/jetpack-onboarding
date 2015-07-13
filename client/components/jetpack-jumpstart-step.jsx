@@ -9,6 +9,7 @@ var React = require('react'),
 
 function getJetpackState() {
 	return {
+		site_title: SiteStore.getTitle(),
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
 		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
 		modulesEnabled: SiteStore.getActiveModuleSlugs()	
@@ -116,6 +117,7 @@ var JetpackJumpstart = React.createClass({
 
 		return (
 			<div className="welcome__section">
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Enable modules</h4>
 				{this.state.jetpackConfigured && (
 					<div>
