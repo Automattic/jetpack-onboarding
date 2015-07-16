@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	Button = require('@automattic/dops-react/js/components/button'),
+	WelcomeSection = require('./welcome-section'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
@@ -39,7 +40,8 @@ var LayoutStep = React.createClass({
 
 	render: function() {
 		return (
-			<div className="welcome__section" id="welcome__layout">
+			<WelcomeSection id="welcome__layout">
+			
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Select a layout</h4>
 				<p className="step-description">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
@@ -63,7 +65,7 @@ var LayoutStep = React.createClass({
 						<Button color="blue">Next Step &rarr;</Button>
 					</p>
 				</form>
-			</div>
+			</WelcomeSection>
 		);
 	}
 });

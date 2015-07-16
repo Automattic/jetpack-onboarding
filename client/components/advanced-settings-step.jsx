@@ -1,6 +1,7 @@
 var React = require('react'),
 	Button = require('@automattic/dops-react/js/components/button'),
-	SiteStore = require('../stores/site-store');
+	SiteStore = require('../stores/site-store'),
+	WelcomeSection = require('./welcome-section');
 
 var SettingsItem = React.createClass({
 	styles: {
@@ -39,7 +40,7 @@ var AdvancedSettingsStep = React.createClass({
 
 	render: function() {
 		return (
-			<div className="welcome__section">
+			<WelcomeSection>
 				<h4>Advanced settings</h4>
 
 				<ul style={this.styles.wrapper}>
@@ -47,8 +48,7 @@ var AdvancedSettingsStep = React.createClass({
 						Customize your site’s colors, fonts, sidebars and other settings.
 						<br />
 						<Button color="blue" href={JPS.steps.advanced_settings.customize_url}>Customize my site</Button>
-						&nbsp;
-						&nbsp;
+						&nbsp;&nbsp;
 						<Button color="blue" href={JPS.steps.advanced_settings.themes_url}>Browse and add themes</Button>
 					</SettingsItem>
 
@@ -72,8 +72,7 @@ var AdvancedSettingsStep = React.createClass({
 						WordPress offers thousands of plugins from Jetpack and the WordPress community.
 						<br />
 						<Button color="blue" href={JPS.steps.advanced_settings.plugins_url}>Manage plugins</Button>
-						&nbsp;
-						&nbsp;
+						&nbsp;&nbsp;
 						{SiteStore.getJetpackConfigured() && (
 							<Button color="blue" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</Button>
 						)} 
@@ -82,7 +81,7 @@ var AdvancedSettingsStep = React.createClass({
 						<a href="https://codex.wordpress.org/First_Steps_With_WordPress">First Steps with WordPress</a> - an online guide from the creators of WordPress
 					</SettingsItem>
 				</ul>
-			</div>
+			</WelcomeSection>
 		);
 	}
 });

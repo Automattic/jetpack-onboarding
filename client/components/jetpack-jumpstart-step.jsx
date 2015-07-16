@@ -4,6 +4,7 @@ var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths'), 
 	ContentBox = require('./content-box'),
+	WelcomeSection = require('./welcome-section'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	SpinnerStore = require('../stores/spinner-store'),
 	Button = require('@automattic/dops-react/js/components/button');
@@ -117,12 +118,12 @@ var JetpackJumpstart = React.createClass({
 		var moreModuleDescriptions = SiteStore.getJetpackAdditionalModules().map(this._renderModule);
 
 		return (
-			<div className="welcome__section">
+			<WelcomeSection>
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Enable Jetpack features</h4>
 				{this.state.jetpackConfigured && (
 					<div>
-						<span className="jetpack-logo">Powered by<br /><a href="http://192.168.59.103/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
+						<span className="jetpack-logo">Powered by<br /><a href="/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
 						<p className="step-description">Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
 						<p className="step-description">Check the boxes below to enable our most popular features.</p>
 					</div>
@@ -141,7 +142,6 @@ var JetpackJumpstart = React.createClass({
 
 						<ContentBox>
 							<h3>Popular features
-
 								&nbsp;&nbsp;<Button disabled={this.state.jumpstartEnabled} color="blue" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</Button>
 							</h3>
 							{moduleDescriptions}
@@ -165,7 +165,7 @@ var JetpackJumpstart = React.createClass({
 						)}
 					</div>
 				</div>
-			</div>
+			</WelcomeSection>
 		);
 	}
 });

@@ -2,6 +2,7 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Tooltip = require('./tooltip'),
+	WelcomeSection = require('./welcome-section'),
 	ContentBox = require('./content-box'),
 	Button = require('@automattic/dops-react/js/components/button');
 
@@ -97,7 +98,7 @@ var DesignStep = React.createClass({
 	render: function() {
 
 		return (
-			<div className="welcome__section" id="welcome__design">
+			<WelcomeSection id="welcome__design">
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Pick a design</h4>
 				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
@@ -123,7 +124,7 @@ var DesignStep = React.createClass({
 
 				<div style={{clear: 'both'}}></div>
 				{this.state.tooltipTheme && this._renderTooltip()}
-			</div>
+			</WelcomeSection>
 		);
 	},
 

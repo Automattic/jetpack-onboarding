@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
+	WelcomeSection = require('./welcome-section'),
 	Button = require('@automattic/dops-react/js/components/button'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
@@ -44,7 +45,8 @@ var SiteTitleStep = React.createClass({
 
 	render: function() {
 		return (
-			<div className="welcome__section" id="welcome__site-title">
+
+			<WelcomeSection id="welcome__site-title">
 				<h3>Let's launch your new website</h3>
 				<h4>Title and Description</h4>
 				<p className="step-description">
@@ -76,7 +78,7 @@ var SiteTitleStep = React.createClass({
 						<Button color="blue">Next Step &rarr;</Button>
 					</p>
 				</form>
-			</div>
+			</WelcomeSection>
 		);
 	}
 });
