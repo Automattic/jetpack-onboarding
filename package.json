@@ -2,6 +2,7 @@
   "name": "jetpack-start",
   "version": "0.1.0",
   "devDependencies": {
+    "@automattic/dops-react": "git+https://github.com/Automattic/dops-react.git",
     "browserify": "^9.0.8",
     "browserify-shim": "^3.8.5",
     "envify": "^3.4.0",

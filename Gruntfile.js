@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 				}
 			},
 			browserify: {
-				files: ['client/*', 'client/**/*'],
+				files: ['client/*', 'client/**/*', 'node_modules/@automattic/dops-react/js/**'],
 				tasks: ['jshint-jsx', 'browserify', 'notify:js']	
 			}
 		},

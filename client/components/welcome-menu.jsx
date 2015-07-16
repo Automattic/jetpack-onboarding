@@ -1,5 +1,5 @@
 var React = require('react'),
-	WelcomeProgressBar = require('./welcome-progress-bar'),
+	ProgressBar = require('@automattic/dops-react/js/components/progress-bar'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 var stepShape = React.PropTypes.shape({
@@ -67,7 +67,7 @@ var WelcomeMenu = React.createClass({
 				<h3>
 					<span>Your Progress</span>
 					<div>
-						<WelcomeProgressBar progressPercent={this.props.progressPercent}/>
+						<ProgressBar style={{ float: 'left'}} progressPercent={this.props.progressPercent}/>
 					</div>
 				</h3>
 				
