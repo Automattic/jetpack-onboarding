@@ -36,7 +36,7 @@ var GetStarted = React.createClass({
 				<p className="getting-started__subhead">
 					Take these steps to supercharge your WordPress site.
 				</p>
-				<p className="getting-started__action">
+				<p style={{textAlign: 'center'}}>
 					<Button color="green" size="big" theme="jetpack" onClick={this.handleGetStarted}>Get Started &rarr;</Button>
 				</p>
 			</div>
