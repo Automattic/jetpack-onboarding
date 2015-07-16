@@ -48,7 +48,7 @@ var WelcomeMenu = React.createClass({
 				title = step.name;
 			}
 
-			if ( step.menuView ) {
+			if ( step.menuView && this.props.clickable ) {
 				menuView = <step.menuView/>;
 			}
 
