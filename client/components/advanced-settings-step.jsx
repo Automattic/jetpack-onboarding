@@ -2,44 +2,73 @@ var React = require('react'),
 	Button = require('@automattic/dops-react/js/components/button'),
 	SiteStore = require('../stores/site-store');
 
-var AdvancedSettingsStep = React.createClass({
+var SettingsItem = React.createClass({
+	styles: {
+		item: {
+			padding: '1em',
+			marginBottom: '1em',
+			listStyle: 'none',
+			background: '#f5f5f5',
+			border: '1px solid #ddd'
+		},
+
+		heading: {
+			margin: 0,
+			fontSize: '1.2em',
+			fontWeight: 800
+		}
+	},
 
 	render: function() {
 		return (
-			<div className="welcome__section" id="welcome__advanced">
+			<li style={this.styles.item}>
+				<h5 style={this.styles.heading}>{this.props.title}</h5>
+				{this.props.children}				
+			</li>
+		);
+	}
+});
+
+var AdvancedSettingsStep = React.createClass({
+
+	styles: {
+		wrapper: {
+			marginLeft: 0
+		}
+	},
+
+	render: function() {
+		return (
+			<div className="welcome__section">
 				<h4>Advanced settings</h4>
 
-				<ul className="welcome__advanced">
-					<li>
-						<h5>Fine-tune your site's layout and appearance</h5>
+				<ul style={this.styles.wrapper}>
+					<SettingsItem title="Fine-tune your site's layout and appearance">
 						Customize your site’s colors, fonts, sidebars and other settings.
 						<br />
 						<Button color="blue" href={JPS.steps.advanced_settings.customize_url}>Customize my site</Button>
 						&nbsp;
 						&nbsp;
 						<Button color="blue" href={JPS.steps.advanced_settings.themes_url}>Browse and add themes</Button>
-						
-					</li>
+					</SettingsItem>
+
 					{(SiteStore.getLayout() == 'blog' || SiteStore.getLayout() == 'site-blog') && (
-						<li>
-							<h5>Create your first blog post</h5>
+						<SettingsItem title="Create your first blog post">
 							An epic essay or just "Hello World!"
 							<br />
 							<Button color="blue" href={JPS.steps.advanced_settings.new_blog_post_url}>Write a new blog post</Button>
 							&nbsp;&nbsp;
 							<Button color="blue" href={JPS.steps.advanced_settings.manage_posts_url}>Manage posts</Button>
-						</li>
+						</SettingsItem>
 					)}
-					<li>
-						<h5>Create a static page</h5>
+					<SettingsItem title="Create a static page">
 						"About me", "Our Services" or anything else you can imagine.
 						<br />
 						<Button color="blue" href={JPS.steps.advanced_settings.new_page_url}>Create a new page</Button>
 						&nbsp;&nbsp;
 						<Button color="blue" href={JPS.steps.advanced_settings.manage_pages_url}>Manage pages</Button>
-					</li>
-					<li>
-						<h5>Extend your site's functionality</h5>
+					</SettingsItem>
+					<SettingsItem title="Extend your site's functionality">
 						WordPress offers thousands of plugins from Jetpack and the WordPress community.
 						<br />
 						<Button color="blue" href={JPS.steps.advanced_settings.plugins_url}>Manage plugins</Button>
@@ -48,11 +77,10 @@ var AdvancedSettingsStep = React.createClass({
 						{SiteStore.getJetpackConfigured() && (
 							<Button color="blue" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</Button>
 						)} 
-					</li>
-					<li>
-						<h5>Learn more</h5>
+					</SettingsItem>
+					<SettingsItem title="Learn more">
 						<a href="https://codex.wordpress.org/First_Steps_With_WordPress">First Steps with WordPress</a> - an online guide from the creators of WordPress
-					</li>
+					</SettingsItem>
 				</ul>
 			</div>
 		);
