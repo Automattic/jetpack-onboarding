@@ -22,6 +22,7 @@
     "grunt-notify": "^0.4.1",
     "grunt-react": "^0.12.2",
     "minifyify": "^6.4.0",
+    "radium": "^0.13.4",
     "reactify": "^1.1.0",
     "uglifyify": "^3.0.1"
   },

@@ -75,32 +75,6 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-.getting-started__intro {
-	background: url(../img/jps-welcome.png) no-repeat center bottom;
-	background-size: 520px auto;
-	padding-bottom: 200px;
-
-	@include breakpoint(tablet) {
-		padding: 30px;
-	}
-}
-
-.getting-started__subhead {
-	margin: 0 0 30px;
-	color: #666;
-	font-size: 18px;
-	line-height: 1.6;
-	text-align: center;
-
-	@media (max-width: 600px) {
-		margin-bottom: 15px;
-		font-size: 15px;
-	}
-	@include breakpoint(phone) {
-		font-size: 13px;
-	}
-}
-
 .getting-started__sections {
 	float: left;
 	width: 70%;

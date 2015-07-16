@@ -76,6 +76,7 @@ class Jetpack_Start_EndPoints {
 			0, self::MAX_THEMES);
 
 		return array(
+			'base_url' => JETPACK_START_BASE_URL,
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 			'debug' => WP_DEBUG ? true : false,
 			'bloginfo' => array(
