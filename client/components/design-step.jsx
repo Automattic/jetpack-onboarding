@@ -6,7 +6,7 @@ var React = require('react'),
 	Button = require('@automattic/dops-react/js/components/button');
 
 function getThemeState() {
-	return { themes: SiteStore.getThemes() };
+	return { themes: SiteStore.getThemes(), site_title: SiteStore.getTitle() };
 }
 
 var DesignStep = React.createClass({
@@ -98,6 +98,7 @@ var DesignStep = React.createClass({
 
 		return (
 			<div className="welcome__section" id="welcome__design">
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Pick a design</h4>
 				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
 				<p className="step-description">Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
