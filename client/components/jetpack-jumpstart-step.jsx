@@ -118,12 +118,12 @@ var JetpackJumpstart = React.createClass({
 		return (
 			<div className="welcome__section">
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
-				<h4>Enable modules</h4>
+				<h4>Enable Jetpack features</h4>
 				{this.state.jetpackConfigured && (
 					<div>
 						<span className="jetpack-logo">Powered by<br /><a href="http://192.168.59.103/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
-						<p className="step-description">Congratulations! You've connected your site to WordPress.com and unlocked dozens of powerful features.</p>
-						<p className="step-description">We've highlighted some of the most popular WordPress-connected modules for you.</p>
+						<p className="step-description">Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
+						<p className="step-description">Check the boxes below to enable our most popular features.</p>
 					</div>
 				)}
 				<div className="welcome__connect">
@@ -139,7 +139,7 @@ var JetpackJumpstart = React.createClass({
 						)}
 
 						<ContentBox>
-							<h3>Popular modules
+							<h3>Popular features
 								&nbsp;&nbsp;<button disabled={this.state.jumpstartEnabled} className="button button-primary" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</button>
 							</h3>
 							{moduleDescriptions}
@@ -147,11 +147,11 @@ var JetpackJumpstart = React.createClass({
 						
 						{this.state.showMoreModules ? (
 							<p className="more">
-								<a href="#" onClick={this.handleShowFewerModules}>hide additional modules</a>
+								<a href="#" onClick={this.handleShowFewerModules}>hide additional features</a>
 							</p>
 						) : (
 							<p className="more">
-								<a href="#" onClick={this.handleShowMoreModules}>show additional modules</a>
+								<a href="#" onClick={this.handleShowMoreModules}>show additional features</a>
 							</p>
 						)}
 

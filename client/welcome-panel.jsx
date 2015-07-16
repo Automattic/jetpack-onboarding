@@ -30,7 +30,7 @@ module.exports = function() {
 				welcomeView: require('./components/design-step'), 
 			},
 			{
-				name: 'Enable modules',
+				name: 'Enable Jetpack',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				welcomeView: require('./components/jetpack-jumpstart-step'),
 				menuView: require('./components/jetpack-jumpstart-menu')

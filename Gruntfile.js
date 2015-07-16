@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 				}
 			},
 			browserify: {
-				files: ['client/*.js', 'client/**/*.js', 'client/components/*.jsx'],
+				files: ['client/*', 'client/**/*'],
 				tasks: ['jshint-jsx', 'browserify', 'notify:js']	
 			}
 		},
