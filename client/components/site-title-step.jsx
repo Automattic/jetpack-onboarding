@@ -1,6 +1,7 @@
 var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
+	Button = require('@automattic/dops-react/js/components/button'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {
@@ -72,7 +73,7 @@ var SiteTitleStep = React.createClass({
 					</table>
 
 					<p className="submit">
-						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
+						<Button color="blue">Next Step &rarr;</Button>
 					</p>
 				</form>
 			</div>

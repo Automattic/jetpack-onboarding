@@ -5,7 +5,8 @@ var React = require('react'),
 	Paths = require('../constants/jetpack-start-paths'), 
 	ContentBox = require('./content-box'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	SpinnerStore = require('../stores/spinner-store');
+	SpinnerStore = require('../stores/spinner-store'),
+	Button = require('@automattic/dops-react/js/components/button');
 
 function getJetpackState() {
 	return {
@@ -133,14 +134,15 @@ var JetpackJumpstart = React.createClass({
 						
 						{this.state.jetpackConfigured && (
 							<div className="submit">
-								<input style={{float: 'right'}} type="submit" name="save" className="button button-primary button-large" onClick={this.handleNext} value="Next Step &rarr;" />
+								<Button style={{float: 'right'}} color="blue" onClick={this.handleNext}>Next Step &rarr;</Button>
 								<div className="clear"></div>
 							</div>
 						)}
 
 						<ContentBox>
 							<h3>Popular features
-								&nbsp;&nbsp;<button disabled={this.state.jumpstartEnabled} className="button button-primary" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</button>
+
+								&nbsp;&nbsp;<Button disabled={this.state.jumpstartEnabled} color="blue" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</Button>
 							</h3>
 							{moduleDescriptions}
 						</ContentBox>

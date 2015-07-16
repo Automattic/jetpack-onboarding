@@ -1,6 +1,7 @@
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressActions = require('../actions/setup-progress-actions'),
+	Button = require('@automattic/dops-react/js/components/button');
 
 function getSetupState() {
 	return {};
@@ -36,7 +37,7 @@ var GetStarted = React.createClass({
 					Take these steps to supercharge your WordPress site.
 				</p>
 				<p className="getting-started__action">
-					<a href="#" className="button button-primary button-large" onClick={this.handleGetStarted}>Get Started &rarr;</a>
+					<Button color="green" size="big" theme="jetpack" onClick={this.handleGetStarted}>Get Started &rarr;</Button>
 				</p>
 			</div>
 		);

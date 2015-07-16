@@ -2,7 +2,8 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Tooltip = require('./tooltip'),
-	ContentBox = require('./content-box');
+	ContentBox = require('./content-box'),
+	Button = require('@automattic/dops-react/js/components/button');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes() };
@@ -101,7 +102,7 @@ var DesignStep = React.createClass({
 				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
 				<p className="step-description">Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
 				<p className="submit">
-					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
+					<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
 				</p>
 				<ContentBox>
 					<h3>Installed themes</h3>
@@ -112,7 +113,7 @@ var DesignStep = React.createClass({
 				
 				<ContentBox>
 					<h3>Popular themes from WordPress.org
-					<a href="#" className="button button-primary button-large" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</a>
+					<Button color="blue" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</Button>
 					</h3>
 					<div className="theme-browser rendered">
 						{this._renderPopularThemeList()}

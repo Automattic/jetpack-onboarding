@@ -1,5 +1,6 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
+	Button = require('@automattic/dops-react/js/components/button'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
@@ -59,7 +60,7 @@ var LayoutStep = React.createClass({
 					</label>
 
 					<p className="submit">
-						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
+						<Button color="blue">Next Step &rarr;</Button>
 					</p>
 				</form>
 			</div>
