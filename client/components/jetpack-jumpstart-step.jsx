@@ -105,7 +105,7 @@ var JetpackJumpstart = React.createClass({
 			moduleOverlayBody = (
 				<div className="welcome__jumpstart_overlay__body">
 					<p>These modules require a WordPress.com account - it's free!</p>
-					<a href="#" className="download-jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</a>
+					<Button color="green" size="big" theme="jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</Button>
 					<p>
 						<SkipButton />
 					</p>
