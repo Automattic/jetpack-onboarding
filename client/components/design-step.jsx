@@ -1,8 +1,8 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Tooltip = require('./tooltip.jsx'),
-	ContentBox = require('./content-box.jsx');
+	Tooltip = require('./tooltip'),
+	ContentBox = require('./content-box');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes() };

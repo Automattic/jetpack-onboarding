@@ -1,5 +1,5 @@
 var React = require('react'),
-    WelcomeWidget = require('./components/welcome-widget.jsx'),
+    WelcomeWidget = require('./components/welcome-widget'),
     Paths = require('./constants/jetpack-start-paths'),
     SetupProgressStore = require('./stores/setup-progress-store');
 
@@ -17,27 +17,28 @@ module.exports = function() {
 			{
 				name: 'Site title',
 				slug: Paths.SITE_TITLE_STEP_SLUG,
-				welcomeView: require('./components/site-title-step.jsx')
+				welcomeView: require('./components/site-title-step')
 			},
 			{
 				name: 'Pick a layout',
 				slug: Paths.LAYOUT_STEP_SLUG,
-				welcomeView: require('./components/layout-step.jsx')
+				welcomeView: require('./components/layout-step')
 			},
 			{ 
 				name: "Pick a design", 
 				slug: Paths.DESIGN_STEP_SLUG,
-				welcomeView: require('./components/design-step.jsx'), 
+				welcomeView: require('./components/design-step'), 
 			},
 			{
 				name: 'Enable modules',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
-				welcomeView: require('./components/jetpack-jumpstart-step.jsx')
+				welcomeView: require('./components/jetpack-jumpstart-step'),
+				menuView: require('./components/jetpack-jumpstart-menu')
 			},
 			{ 
 				name: "Advanced settings", 
 				slug: Paths.ADVANCED_STEP_SLUG,
-				welcomeView: require('./components/advanced-settings-step.jsx'),
+				welcomeView: require('./components/advanced-settings-step'),
 				includeInProgress: false
 			}
 		]);

@@ -1,9 +1,9 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
+	SkipButton = require('./skip-button'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths'), 
-	ContentBox = require('./content-box.jsx'),
+	ContentBox = require('./content-box'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	SpinnerStore = require('../stores/spinner-store');
 

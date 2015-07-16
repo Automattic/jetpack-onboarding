@@ -1,9 +1,9 @@
 var React = require('react'),
-	WelcomeMenu = require('./welcome-menu.jsx'),
+	WelcomeMenu = require('./welcome-menu'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Flash = require('./flash.jsx'),
-	GetStarted = require('./get-started.jsx'),
+	Flash = require('./flash'),
+	GetStarted = require('./get-started'),
 	SpinnerStore = require('../stores/spinner-store'),
 	SpinnerActions = require('../actions/spinner-actions'),
 	DataStore = require('../stores/data-store');

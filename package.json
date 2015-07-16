@@ -21,7 +21,8 @@
     "grunt-notify": "^0.4.1",
     "grunt-react": "^0.12.2",
     "minifyify": "^6.4.0",
-    "reactify": "^1.1.0"
+    "reactify": "^1.1.0",
+    "uglifyify": "^3.0.1"
   },
   "browserify": {
     "extensions": [
@@ -38,7 +39,8 @@
     "NODE_ENV": "production"
   },
   "browserify-shim": {
-    "underscore": "global:_"
+    "underscore": "global:_",
+    "react": "global:React"
   },
   "dependencies": {
     "keymirror": "^0.1.1",

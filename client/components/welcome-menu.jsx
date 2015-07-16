@@ -1,5 +1,5 @@
 var React = require('react'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
+	WelcomeProgressBar = require('./welcome-progress-bar'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 var stepShape = React.PropTypes.shape({
@@ -36,7 +36,7 @@ var WelcomeMenu = React.createClass({
 	render: function() {
 
 		var menuItems = this.props.allSteps.map(function ( step ) {
-			var title, current, status;
+			var title, current, status, menuView;
 
 			if ( this.props.clickable && this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
@@ -48,10 +48,17 @@ var WelcomeMenu = React.createClass({
 				title = step.name;
 			}
 
+			if ( step.menuView ) {
+				menuView = <step.menuView/>;
+			}
+
 			status = step.completed ? 'completed' : '';
 			
 			return (
-				<li key={step.slug} className={status + (current ? ' current' : '')}>{title} {step.skipped ? '(skipped)' : null}</li>
+				<li key={step.slug} className={status + (current ? ' current' : '')}>
+					{title} {step.skipped ? '(skipped)' : null}
+					{menuView}
+				</li>
 			);
 		}.bind(this) );
 

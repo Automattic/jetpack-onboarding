@@ -72,11 +72,20 @@ module.exports = function(grunt) {
 		browserify: {
 			options: {
 				browserifyOptions: {
-					debug: true
+					debug: true,
+					extensions: ['.jsx'],
+					external: {
+						'react/addons':'React',
+						'react':'React'
+					}
 				},
 				debug: true,
-				transform: ['reactify', 'envify'],
-				extension: ['.jsx'],
+				transform: [
+					[require('grunt-react').browserify, { harmony: true }],
+					['browserify-shim', { global: true }],
+					'envify',
+					['uglifyify', { global: true }]
+				],
 				// plugin: [
 				// 	['minifyify']
 				// ]
