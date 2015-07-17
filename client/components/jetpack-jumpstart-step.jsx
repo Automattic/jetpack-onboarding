@@ -1,4 +1,5 @@
 var React = require('react'),
+	Radium = require('radium'),
 	SkipButton = require('./skip-button'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
@@ -8,6 +9,48 @@ var React = require('react'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	SpinnerStore = require('../stores/spinner-store'),
 	Button = require('@automattic/dops-react/js/components/button');
+
+
+var JetpackLogo = React.createClass({
+	styles: {
+		jetpackLogoWrapper: {
+			display: 'block',
+			textAlign: 'center',
+			height: 70,
+			color: 'white',
+			marginLeft: 5,
+			backgroundColor: '#81a844'
+		},
+		jetpackLogo: {
+			display: 'inline-block',
+			position: 'relative',
+			width: 214,
+			marginRight: 6,
+			background: 'url('+JPS.base_url+'/../jetpack/images/jetpack-logo.png) center center no-repeat',
+			backgroundSize: '183px auto',
+			color: '#fff',
+			fontWeight: 'normal'
+		},
+		jetpackLogoName: {
+			textIndent: -9999,
+			visibility: 'hidden'
+		}
+
+	},
+
+	render: function() {
+		return (
+			<span style={[this.styles.jetpackLogoWrapper, this.props.style]}>
+				Powered by<br />
+				<a href="/wp-admin/admin.php?page=jetpack" title="Jetpack" style={this.styles.jetpackLogo}>
+					<span style={this.styles.jetpackLogoName}>Jetpack</span>
+				</a>
+			</span>
+		);
+	}
+});
+
+JetpackLogo = Radium(JetpackLogo);
 
 function getJetpackState() {
 	return {
@@ -19,6 +62,31 @@ function getJetpackState() {
 }
 
 var JetpackJumpstart = React.createClass({
+
+	styles: {
+		jetpackLogo: {
+			float: 'left',
+			'@media (min-width: 782px)': {
+				float: 'none',
+				marginLeft: 0
+			}
+		},
+		jumpstartModule: {
+			float: 'left',
+			position: 'relative',
+			height: 160,
+			padding: 10,
+			'@media (min-width: 782px)': {
+				width: '33%'
+			}
+		},
+
+		jumpstartModuleDesc: {
+			display: 'block',
+			marginTop: 5,
+			lineHeight: '150%'
+		}
+	},
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener(this._onChange);
@@ -84,13 +152,15 @@ var JetpackJumpstart = React.createClass({
 		var moduleId = 'jp-module-'+module.slug;
 		
 		return (
-			<div key={'modules-'+module.slug} className="welcome__jumpstart_module">
+			<div key={'modules-'+module.slug} style={this.styles.jumpstartModule}>
 				<input id={moduleId} type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
 				<label htmlFor={moduleId}><strong>{module.name}</strong></label>
-				<small className="jumpstart_module__description" dangerouslySetInnerHTML={{__html: module.description}}></small>
-				{isActive && module.configure_url && (
-					<small><a target="_configure" href={module.configure_url}>configure</a></small>
-				)}
+				<div style={this.styles.jumpstartModuleDesc}>
+					<div dangerouslySetInnerHTML={{__html: module.description}}></div>
+					{isActive && module.configure_url && (
+						<div><a target="_configure" href={module.configure_url}>configure</a></div>
+					)}
+				</div>
 			</div>
 		);
 	},
@@ -123,9 +193,9 @@ var JetpackJumpstart = React.createClass({
 				<h4>Enable Jetpack features</h4>
 				{this.state.jetpackConfigured && (
 					<div>
-						<span className="jetpack-logo">Powered by<br /><a href="/wp-admin/admin.php?page=jetpack" title="Jetpack" className="current"><span>Jetpack</span></a></span>
-						<p className="step-description">Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
-						<p className="step-description">Check the boxes below to enable our most popular features.</p>
+						<JetpackLogo style={this.styles.jetpackLogo}/>
+						<p style={{fontSize: 'larger'}}>Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
+						<p style={{fontSize: 'larger'}}>Check the boxes below to enable our most popular features.</p>
 					</div>
 				)}
 				<div className="welcome__connect">
@@ -170,4 +240,4 @@ var JetpackJumpstart = React.createClass({
 	}
 });
 
-module.exports = JetpackJumpstart;
+module.exports = Radium(JetpackJumpstart);

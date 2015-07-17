@@ -1,6 +1,7 @@
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
+	Reset = require('@automattic/dops-react/js/components/reset'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash'),
 	GetStarted = require('./get-started'),
@@ -63,10 +64,11 @@ var WelcomeWidget = React.createClass({
 		e.preventDefault();
 		SpinnerActions.hide();
 	},
+	
 
   	render: function() {
   		return (
-			<div className="getting-started">
+			<Reset className="getting-started">
 				{this._renderDebug()}
 				<div className="getting-started__wrapper">
 					{this._renderSpinner()}
@@ -78,7 +80,7 @@ var WelcomeWidget = React.createClass({
 					<WelcomeMenu clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 					<div className="clear"></div>
 				</div>
-			</div>
+			</Reset>
 		);
 	},
 

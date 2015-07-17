@@ -16,10 +16,6 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-.getting-started * {
-	box-sizing: border-box;
-}
-
 .getting-started {
 	padding-bottom: 10px;
 	margin-top: 30px;
@@ -92,47 +88,6 @@ $very-light-gray: #f5f5f5;
 }
 
 .welcome__section {
-	.jetpack-logo {
-		display: block;
-		text-align: center;
-		float: right;
-		height: 70px;
-		color: white;
-		margin-left: 5px;
-		background-color: #81a844;
-		a {
-			&:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background-size: 183px 32px;
-			}
-			span {
-				text-indent: -9999px;
-				visibility: hidden;
-			}
-			display: inline-block;
-			position: relative;
-			width: 214px;
-			margin-right: 6px;
-			background: url(../../jetpack/images/jetpack-logo.png) center center no-repeat;
-			background: url(../../jetpack/images/jetpack-logo.svg) center center no-repeat, none;
-			background-size: 183px auto;
-			color: #fff;
-			font-weight: normal;
-		}
-	}
-
-	@include breakpoint(tablet){ 
-		.jetpack-logo {
-			float: none;
-			margin-left: 0;
-		}
-	}
-
 	h4 {
 		margin-bottom: 10px;
 	}
@@ -141,10 +96,6 @@ $very-light-gray: #f5f5f5;
 		margin-top: 0;
 		font-size: 1em;
 		font-weight: 400;
-	}
-
-	.step-description {
-		font-size: larger;
 	}
 
 	ul {
@@ -185,29 +136,6 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-.welcome__jumpstart_module {
-	float: left;
-	position: relative;
-	height: 140px;
-	padding: 10px;
-	.activated {
-		text-transform: uppercase;
-		font-size: 10px;
-		line-height: 100%;
-		color: #fff;
-		background: #9fbd72;
-		border-radius: 2px;
-		padding: 2px 4px;
-		display: inline-block;
-		margin-left: 5px;
-	}
-	small {
-		display: block;
-		margin-top: 5px;
-		line-height: 150%;
-	}
-}
-
 .welcome__jumpstart_overlay {
 	position: absolute;
 	top: 0;
@@ -239,10 +167,6 @@ $very-light-gray: #f5f5f5;
   	transform: translate(-50%,-50%);
 	width: 70%;
 	background-color: #fff;
-}
-
-@include minbreakpoint(tablet) {
-	.welcome__jumpstart_module { width: 33%; }
 }
 
 #welcome__design .theme-browser {
@@ -284,26 +208,6 @@ $very-light-gray: #f5f5f5;
 
 // Progress list of steps
 .getting-started__steps {
-	float: right;
-	width: 28%;
-	height: 100%;
-	background: #fafafa;
-	border: 1px solid #eee;
-
-	h3 {
-		margin: 0;
-		padding: 12px;
-		overflow: hidden;
-		background: #444;
-		color: #fff;
-		font-size: 12px;
-		text-transform: uppercase;
-
-		> span {
-			float: left;
-			margin-right: 10px;
-		}
-	}
 
 	ol {
 		margin-right: 10px;
