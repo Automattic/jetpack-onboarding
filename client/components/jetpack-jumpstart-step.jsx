@@ -123,6 +123,10 @@ var JetpackJumpstart = React.createClass({
 		  	transform: 'translate(-50%,-50%)',
 			width: '70%',
 			backgroundColor: '#fff'
+		},
+
+		moreLink: {
+			textAlign: 'center'
 		}
 	},
 
@@ -241,7 +245,7 @@ var JetpackJumpstart = React.createClass({
 					</div>
 				)}
 				<div className="welcome__connect">
-					<div className="welcome__jumpstart_wrapper">
+					<div style={{position: 'relative'}}>
 						{moduleOverlayBefore}
 						{moduleOverlay}
 						{moduleOverlayBody}
@@ -261,11 +265,11 @@ var JetpackJumpstart = React.createClass({
 						</ContentBox>
 						
 						{this.state.showMoreModules ? (
-							<p className="more">
+							<p style={this.styles.moreLink}>
 								<a href="#" onClick={this.handleShowFewerModules}>hide additional features</a>
 							</p>
 						) : (
-							<p className="more">
+							<p style={this.styles.moreLink}>
 								<a href="#" onClick={this.handleShowMoreModules}>show additional features</a>
 							</p>
 						)}
