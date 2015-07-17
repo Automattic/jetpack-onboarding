@@ -3,6 +3,10 @@ $very-light-gray: #f5f5f5;
 
 @import 'mixins/breakpoint';
 
+#jps-welcome-panel {
+	margin-bottom: 20px;
+}
+
 .welcome-panel {
 	overflow: visible !important; // for tooltips
 }
