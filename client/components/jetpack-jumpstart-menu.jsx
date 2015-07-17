@@ -34,7 +34,8 @@ var JetpackJumpstartMenu = React.createClass({
 
 	style: {
 		color: 'black',
-		fontSize: 12
+		fontSize: 12,
+		marginLeft: 20
 	},
 
 	render: function() {

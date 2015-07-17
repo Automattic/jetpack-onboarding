@@ -105,7 +105,7 @@ var WelcomeWidget = React.createClass({
 
   	render: function() {
   		return (
-			<Reset className="getting-started" css={styles.css}>
+			<Reset css={styles.css}>
 				{this._renderDebug()}
 				<div style={this.styles.wrapper}>
 					{this._renderSpinner()}
