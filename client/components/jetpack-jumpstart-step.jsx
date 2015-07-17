@@ -86,6 +86,43 @@ var JetpackJumpstart = React.createClass({
 			display: 'block',
 			marginTop: 5,
 			lineHeight: '150%'
+		},
+
+		overlayContent: {
+			marginTop: 10,
+			marginBottom: 10
+		},
+
+		overlayBefore: {
+			display: 'block',
+			position: 'absolute',
+			width: '100%',
+			height: '100%',
+			backgroundColor: 'rgba(0,0,0,0.2)'
+		},
+
+		overlay: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			minHeight: '100%',
+			zIndex: 700
+		},
+
+		overlayBody: {
+			textAlign: 'center',
+			position: 'absolute',
+			borderRadius: 3,
+			boxShadow: '0 0 4px rgba(0,0,0,0.2)',
+			zIndex: 800,
+			left: '50%',
+		  	top: '50%',
+		  	padding: 15,
+		  	transform: 'translate(-50%,-50%)',
+			width: '70%',
+			backgroundColor: '#fff'
 		}
 	},
 
@@ -167,18 +204,21 @@ var JetpackJumpstart = React.createClass({
 	},
 
 	render: function() {
-		var moduleOverlay, moduleOverlayBody;
+		var moduleOverlayBefore, moduleOverlay, moduleOverlayBody;
 
 
 		if ( ! this.state.jetpackConfigured && !SpinnerStore.showing() ) {
+			moduleOverlayBefore = (
+				<div style={this.styles.overlayBefore}></div>
+			);
 			moduleOverlay = (
-				<div className="welcome__jumpstart_overlay"></div>
+				<div style={this.styles.overlay}></div>
 			);
 			moduleOverlayBody = (
-				<div className="welcome__jumpstart_overlay__body">
-					<p>These modules require a WordPress.com account - it's free!</p>
+				<div style={this.styles.overlayBody}>
+					<p style={this.styles.overlayContent}>These modules require a WordPress.com account - it's free!</p>
 					<Button color="green" size="big" theme="jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</Button>
-					<p>
+					<p style={this.styles.overlayContent}>
 						<SkipButton />
 					</p>
 				</div>
@@ -202,6 +242,7 @@ var JetpackJumpstart = React.createClass({
 				)}
 				<div className="welcome__connect">
 					<div className="welcome__jumpstart_wrapper">
+						{moduleOverlayBefore}
 						{moduleOverlay}
 						{moduleOverlayBody}
 						
