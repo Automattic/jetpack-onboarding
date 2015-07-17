@@ -33,7 +33,7 @@ var WelcomeMenu = React.createClass({
 			width: '28%',
 			height: '100%',
 			background: '#fafafa',
-			border: '1px solid #eee'
+			border: '1px solid #eee',
 		},
 		title: {
 			margin: 0,
@@ -51,7 +51,13 @@ var WelcomeMenu = React.createClass({
 		menuItem: {
 			position: 'relative',
 			color: '#ccc',
-			lineHeight: 1.7
+			lineHeight: 1.7,
+			'@media (max-width: 782px)': {
+				fontSize: 'small'
+			},
+			'@media (max-width: 600px)': {
+				fontSize: 'smaller'
+			}
 		},
 		menuItemCompleted: {
 			color: '#4AB866'

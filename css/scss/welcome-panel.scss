@@ -26,21 +26,6 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-.getting-started__intro {
-	h3 {
-		margin: 0;
-		font-size: 41px;
-		text-align: center;
-
-		@include breakpoint(tablet) {
-			font-size: 30px;
-		}
-		@include breakpoint(phone) {
-			font-size: 24px;
-		}
-	}
-}
-
 .getting-started__wrapper {
 	position: relative;
 	.loading {
@@ -204,57 +189,4 @@ $very-light-gray: #f5f5f5;
 
 #welcome__design .wp-pointer-content h3:before {
 	content: '\f100';
-}
-
-// Progress list of steps
-.getting-started__steps {
-
-	ol {
-		margin-right: 10px;
-		list-style: none;
-	}
-
-	li {
-		position: relative;
-		color: #ccc;
-		line-height: 1.7;
-
-		&::before {
-			content: "\f345";
-			position: absolute;
-			top: 0px;
-			left: -16px;
-			font-family: dashicons;
-			font-size: 16px;
-		}
-
-		&.completed {
-			color: #4AB866;
-
-			&::before {
-				content: "\f147";
-			}
-		}
-
-		&.current {
-			color: #0074A2;
-		}
-
-		a {
-			color: inherit;
-			border-bottom: 1px dashed;
-		}
-	}
-
-	@include breakpoint(tablet) {
-		li {
-			font-size: small;
-		}
-	}
-
-	@include breakpoint(phablet) {
-		li {
-			font-size: smaller;
-		}
-	}
 }
