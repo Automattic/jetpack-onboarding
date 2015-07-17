@@ -4,6 +4,7 @@ var React = require('react'),
 	Tooltip = require('./tooltip'),
 	WelcomeSection = require('./welcome-section'),
 	ContentBox = require('./content-box'),
+	styles = require('../styles'),
 	Button = require('@automattic/dops-react/js/components/button');
 
 function getThemeState() {
@@ -101,8 +102,8 @@ var DesignStep = React.createClass({
 			<WelcomeSection id="welcome__design">
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Pick a design</h4>
-				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
-				<p className="step-description">Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
+				<p style={styles.content}>A "theme" controls the design of your site - colours, fonts and layout.</p>
+				<p style={styles.content}>Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
 				<p className="submit">
 					<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
 				</p>

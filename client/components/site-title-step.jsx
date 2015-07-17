@@ -2,6 +2,7 @@ var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
 	WelcomeSection = require('./welcome-section'),
+	styles = require('../styles'),
 	Button = require('@automattic/dops-react/js/components/button'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
@@ -48,8 +49,8 @@ var SiteTitleStep = React.createClass({
 
 			<WelcomeSection id="welcome__site-title">
 				<h3>Let's launch your new website</h3>
-				<h4>Title and Description</h4>
-				<p className="step-description">
+				<h4>Enter a Title and Description</h4>
+				<p style={styles.content}>
 					Make your site stand out with a catchy name.
 				</p>
 				<form onSubmit={this.handleSubmit}>

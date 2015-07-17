@@ -4,6 +4,7 @@ var React = require('react'),
 	Reset = require('@automattic/dops-react/js/components/reset'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash'),
+	styles = require('../styles'),
 	GetStarted = require('./get-started'),
 	SpinnerStore = require('../stores/spinner-store'),
 	SpinnerActions = require('../actions/spinner-actions'),
@@ -47,6 +48,14 @@ var WelcomeWidget = React.createClass({
 			left: '50%',
 			top: 100,
 			transform: 'translate(-50%,-50%)'
+		},
+		container: {
+			float: 'left',
+			width: '70%',
+			padding: '0 10px'
+		},
+		menu: {
+			marginTop: 25
 		}
 	},
 
@@ -96,16 +105,16 @@ var WelcomeWidget = React.createClass({
 
   	render: function() {
   		return (
-			<Reset className="getting-started">
+			<Reset className="getting-started" css={styles.css}>
 				{this._renderDebug()}
 				<div style={this.styles.wrapper}>
 					{this._renderSpinner()}
-					<div className="getting-started__sections">
+					<div style={this.styles.container}>
 						<Flash />
 						{this._renderSection()}
 					</div>
 
-					<WelcomeMenu clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
+					<WelcomeMenu style={this.styles.menu} clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 					<div className="clear"></div>
 				</div>
 			</Reset>
@@ -121,15 +130,15 @@ var WelcomeWidget = React.createClass({
 	},
 
 	_renderDebug: function() {
-		if ( JPS.debug ) {
-  			return (<div>
-  				<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
-  				<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
-  				<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
-  			</div>);
-  		} else {
+		// if ( JPS.debug ) {
+  // 			return (<div>
+  // 				<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
+  // 				<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
+  // 				<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
+  // 			</div>);
+  // 		} else {
   			return null;
-  		}
+  		// }
 	},
 
 	_renderSpinner: function() {

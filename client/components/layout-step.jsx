@@ -2,6 +2,7 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	Button = require('@automattic/dops-react/js/components/button'),
 	WelcomeSection = require('./welcome-section'),
+	styles = require('../styles'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
@@ -43,8 +44,8 @@ var LayoutStep = React.createClass({
 			<WelcomeSection id="welcome__layout">
 			
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
-				<h4>Select a layout</h4>
-				<p className="step-description">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
+				<h4>Select a Layout</h4>
+				<p style={styles.content}>WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Static Website

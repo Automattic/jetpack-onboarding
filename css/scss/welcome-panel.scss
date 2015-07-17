@@ -18,18 +18,11 @@ $very-light-gray: #f5f5f5;
 
 .getting-started {
 	padding-bottom: 10px;
-	margin-top: 30px;
 
 	h4 {
 		margin: 0;
 		font-size: 20px;
 	}
-}
-
-.getting-started__sections {
-	float: left;
-	width: 70%;
-	padding: 0 10px;
 }
 
 .welcome__content_box {	
@@ -43,35 +36,7 @@ $very-light-gray: #f5f5f5;
 }
 
 .welcome__section {
-	h4 {
-		margin-bottom: 10px;
-	}
-
-	h5 {
-		margin-top: 0;
-		font-size: 1em;
-		font-weight: 400;
-	}
-
-	ul {
-		margin-left: 2em;
-
-		li {
-			margin: 0;
-			list-style: disc;
-		}
-	}
-
-	input[type="text"] {
-		width: 100%;
-	}
-
-	.submit {
-		margin: 0px !important;
-		padding: 5px 5px !important;
-		background-color: $very-light-gray;
-		text-align: right;
-	}
+	
 }
 
 #welcome__stats a.skip, #welcome__traffic a.skip {

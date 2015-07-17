@@ -46,7 +46,10 @@ var WelcomeMenu = React.createClass({
 		},
 		list: {
 			margin: '13px 10px',
-			listStyle: 'none'
+			listStyle: 'none',
+			'@media (max-width: 600px)': {
+				margin: '5px 4px'
+			}
 		},
 		menuItem: {
 			marginBottom: 6,
@@ -116,7 +119,7 @@ var WelcomeMenu = React.createClass({
 		}.bind(this) );
 
 		return (
-			<div style={this.styles.wrapper}>
+			<div style={[this.styles.wrapper, this.props.style]}>
 				<h3 style={this.styles.title}>
 					<span style={{float: 'left', marginRight: 10}}>Your Progress</span>
 					<div>

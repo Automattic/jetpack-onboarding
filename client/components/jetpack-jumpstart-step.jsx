@@ -5,6 +5,7 @@ var React = require('react'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths'), 
 	ContentBox = require('./content-box'),
+	styles = require('../styles'),
 	WelcomeSection = require('./welcome-section'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	SpinnerStore = require('../stores/spinner-store'),
@@ -65,8 +66,8 @@ var JetpackJumpstart = React.createClass({
 
 	styles: {
 		jetpackLogo: {
-			float: 'left',
-			'@media (min-width: 782px)': {
+			float: 'right',
+			'@media (max-width: 782px)': {
 				float: 'none',
 				marginLeft: 0
 			}
@@ -194,8 +195,9 @@ var JetpackJumpstart = React.createClass({
 				{this.state.jetpackConfigured && (
 					<div>
 						<JetpackLogo style={this.styles.jetpackLogo}/>
-						<p style={{fontSize: 'larger'}}>Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
-						<p style={{fontSize: 'larger'}}>Check the boxes below to enable our most popular features.</p>
+						<p style={styles.content}>Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
+						<p style={styles.content}>Check the boxes below to enable our most popular features.</p>
+						<div className="clear"></div>
 					</div>
 				)}
 				<div className="welcome__connect">
@@ -212,7 +214,7 @@ var JetpackJumpstart = React.createClass({
 
 						<ContentBox>
 							<h3>Popular features
-								&nbsp;&nbsp;<Button disabled={this.state.jumpstartEnabled} color="blue" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled' : 'Enable all (recommended)'}</Button>
+								&nbsp;&nbsp;<Button disabled={this.state.jumpstartEnabled} color="blue" onClick={this.handleEnableAllModules}>{this.state.jumpstartEnabled ? 'Enabled All' : 'Enable all (recommended)'}</Button>
 							</h3>
 							{moduleDescriptions}
 						</ContentBox>
