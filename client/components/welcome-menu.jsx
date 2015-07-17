@@ -45,10 +45,11 @@ var WelcomeMenu = React.createClass({
 			textTransform: 'uppercase'
 		},
 		list: {
-			marginRight: 10,
+			margin: '13px 10px',
 			listStyle: 'none'
 		},
 		menuItem: {
+			marginBottom: 6,
 			position: 'relative',
 			color: '#ccc',
 			lineHeight: 1.7,

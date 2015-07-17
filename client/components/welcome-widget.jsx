@@ -22,6 +22,34 @@ function getSetupProgress() {
 
 // TODO: visual "saving" for this.state.saving
 var WelcomeWidget = React.createClass({
+
+	styles: {
+		wrapper: { position: 'relative' },
+		loadingOverlay: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			minHeight: '100%',
+			zIndex: 999,
+			backgroundColor: 'rgba(255,255,255,0.6)'
+		},
+		loadingMessage: {
+			position: 'absolute',
+			width: '50%',
+			minWidth: 300,
+			borderRadius: 2,
+			padding: 20,
+			border: '1px solid black',
+			backgroundColor: 'white',
+			textAlign: 'center',
+			left: '50%',
+			top: 100,
+			transform: 'translate(-50%,-50%)'
+		}
+	},
+
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
 		SpinnerStore.addChangeListener(this._onSpinnerChange);
@@ -70,7 +98,7 @@ var WelcomeWidget = React.createClass({
   		return (
 			<Reset className="getting-started">
 				{this._renderDebug()}
-				<div className="getting-started__wrapper">
+				<div style={this.styles.wrapper}>
 					{this._renderSpinner()}
 					<div className="getting-started__sections">
 						<Flash />
@@ -107,8 +135,8 @@ var WelcomeWidget = React.createClass({
 	_renderSpinner: function() {
 		if ( this.state.showSpinner ) {
   			return (
-  				<div className="loading">
-  					<div className="loading__message">
+  				<div style={this.styles.loadingOverlay}>
+  					<div style={this.styles.loadingMessage}>
   						<img src="/wp-admin/images/spinner-2x.gif" width="16px" height="16px"/>
   						&nbsp;&nbsp;{this.state.spinnerMessage}
   					</div>
