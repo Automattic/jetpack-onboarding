@@ -4,7 +4,8 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-start-constants');
+  JPSConstants = require('../constants/jetpack-start-constants'),
+  WPAjax = require('../utils/wp-ajax');
 
 var CHANGE_EVENT = 'change';
 
@@ -94,6 +95,8 @@ function currentStepSlug() {
 
 function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
+  // record analytics
+  WPAjax.post(JPS.step_actions.view, { step: stepSlug }, { quiet: true });
 }
 
 //reset everything back to defaults
