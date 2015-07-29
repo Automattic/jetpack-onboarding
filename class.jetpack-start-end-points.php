@@ -58,6 +58,11 @@ class Jetpack_Start_EndPoints {
 			);
 		}
 
+		// set the jetpack step status to "completed" if jetpack is active
+		if ( $jetpack_config['configured'] ) {
+			$step_statuses['jetpack'] = array('completed' => true);
+		}
+
 		if ( get_option( 'show_on_front' ) == 'page') {
 			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
 				$layout = 'website';
