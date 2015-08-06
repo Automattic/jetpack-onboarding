@@ -5,6 +5,14 @@ $very-light-gray: #f5f5f5;
 
 #jps-welcome-panel {
 	margin-bottom: 20px;
+	.submit {
+		border-radius: 6px;
+	}
+
+	#dopsid0 .submit {
+		padding: 10px !important;
+		margin-top: 25px !important;
+	}
 }
 
 .welcome-panel {
@@ -20,18 +28,27 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-.welcome__content_box {	
+.welcome__content_box {
+	background: white;
+	margin: 10px;
+	border: 1px solid #eee;	
+
 	h3 {
 		padding: 5px 5px 10px 10px;
 		border-bottom: 1px solid #eee;
 	}
-	background: white;
-	margin: 10px;
-	border: 1px solid #eee;
 }
 
 .welcome__section {
-	
+	h3 {
+		em {
+			font-weight: bold;
+		}
+	}
+
+	h4 {
+		border-bottom: 1px #ddd solid;
+	}
 }
 
 #welcome__stats a.skip, #welcome__traffic a.skip {
@@ -54,17 +71,20 @@ $very-light-gray: #f5f5f5;
 	}
 
 	.theme-name { padding-right: 0px; }
+
 	@include minbreakpoint(tablet) {
 		.theme {
 			width: 30%;
 		}
 	}
+
 	@include breakpoint(phablet) {
 		.theme {
 			display: block;
 			float: none;
 		}
 	}
+
 	* { box-sizing: content-box; }
 	h3 {
 		line-height: 1.4em; 
