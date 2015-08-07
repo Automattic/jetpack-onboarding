@@ -1,5 +1,6 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
+	SetupProgressStore = require('../stores/setup-progress-store'),
 	SiteActions = require('../actions/site-actions'),
 	Paths = require('../constants/jetpack-start-paths');
 
@@ -29,7 +30,9 @@ var JetpackJumpstartMenu = React.createClass({
 	handleClickConnect: function(e) {
 		e.preventDefault();
 		console.log("clicked");
-		SiteActions.configureJetpack(Paths.JETPACK_MODULES_STEP_SLUG);
+		var nextStepSlug, nextStep = SetupProgressStore.getNextPendingStep();
+		nextStepSlug = nextStep ? nextStep.slug : Paths.JETPACK_MODULES_STEP_SLUG;
+		SiteActions.configureJetpack(nextStepSlug);
 	},
 
 	style: {

@@ -77,10 +77,14 @@ function ensureValidStepSlug() {
 }
 
 function selectNextPendingStep() {
-  var pendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
+  var pendingStep = getNextPendingStep();
   if ( pendingStep !== null ) {
     select(pendingStep.slug); // also sets the window location hash
   }
+}
+
+function getNextPendingStep() {
+  return _.findWhere( _steps, { completed: false, skipped: false } );
 }
 
 function currentStepSlug() {
@@ -131,8 +135,12 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
     return getStepFromSlug( currentStepSlug() );
   },
 
+  getNextPendingStep: function() {
+    return getNextPendingStep(); // delegate
+  },
+
   getStepFromSlug: function(slug) {
-    return getStepFromSlug( slug );
+    return getStepFromSlug( slug ); // delegate
   },
 
   getProgressPercent: function() {
