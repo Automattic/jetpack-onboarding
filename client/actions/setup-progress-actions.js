@@ -36,8 +36,7 @@ var SetupProgressActions = {
 		this.completeStep(slug, meta);
 
 	    AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_NEXT,
-	      slug: slug
+	      actionType: JPSConstants.STEP_NEXT
 	    });
 	},
 
