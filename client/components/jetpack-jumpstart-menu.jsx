@@ -38,7 +38,13 @@ var JetpackJumpstartMenu = React.createClass({
 	style: {
 		color: 'black',
 		fontSize: 12,
-		marginLeft: 20
+		marginTop: 5,
+		marginLeft: 20,
+	},
+
+	primaryConnectBtn: {
+		marginTop: 10,
+		marginBottom: 20,
 	},
 
 	render: function() {
@@ -49,7 +55,7 @@ var JetpackJumpstartMenu = React.createClass({
 				) : (
 					<div>
 						Boost traffic, enhance security, and improve performance with a connection to WordPress.com<br />
-						<a className="button button-primary button-large" href="#" onClick={this.handleClickConnect}>Connect to WordPress.com</a>
+						<a className="button button-primary button-large" style={this.primaryConnectBtn} href="#" onClick={this.handleClickConnect}>Connect to WordPress.com</a>
 					</div>
 				)}
 				

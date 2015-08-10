@@ -54,7 +54,7 @@ var WelcomeMenu = React.createClass({
 		menuItem: {
 			marginBottom: 6,
 			position: 'relative',
-			color: '#ccc',
+			color: '#333',
 			lineHeight: 1.7,
 			'@media (max-width: 782px)': {
 				fontSize: 'small'
