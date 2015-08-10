@@ -32,6 +32,7 @@ module.exports = function() {
 			{
 				name: 'Enable Jetpack',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
+				neverSkip: true, // don't skip this even if it's been completed
 				welcomeView: require('./components/jetpack-jumpstart-step'),
 				menuView: require('./components/jetpack-jumpstart-menu')
 			},

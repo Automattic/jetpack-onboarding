@@ -29,6 +29,12 @@ function setSteps(steps) {
       step.static = false;
     }
 
+    // set to 'true' if you want the wizard to move to this step even if it's been completed
+    // by default completed steps are skipped
+    if ( typeof( step.neverSkip ) === 'undefined' ) {
+      step.neverSkip = false;
+    }
+
     // default value for includeInProgress
     if ( typeof( step.includeInProgress ) === 'undefined') {
       step.includeInProgress = true;
@@ -84,6 +90,15 @@ function selectNextPendingStep() {
 }
 
 function getNextPendingStep() {
+  // if the _next_ step is neverSkip, we proceed to it
+  var stepIndex;
+  if ( stepIndex = currentStepIndex() ) {
+    if ( _steps[stepIndex+1] && _steps[stepIndex+1].neverSkip === true ) {
+      return _steps[stepIndex+1];
+    }
+  }
+
+  // otherwise find the next uncompleted, unskipped step
   return _.findWhere( _steps, { completed: false, skipped: false } );
 }
 
@@ -95,6 +110,16 @@ function currentStepSlug() {
   } else {
     return null;
   }
+}
+
+function currentStepIndex() {
+  var slug = currentStepSlug();
+  for ( var i=0; i<_steps.length; i++ ) {
+    if ( _steps[i].slug === slug ) {
+      return i;
+    }
+  }
+  return false;
 }
 
 function select(stepSlug) {
