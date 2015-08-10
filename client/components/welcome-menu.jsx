@@ -1,6 +1,8 @@
 var React = require('react'),
-	WelcomeProgressBar = require('./welcome-progress-bar.jsx'),
-	SetupProgressActions = require('../actions/setup-progress-actions')
+	Radium = require('radium'),
+	ProgressBar = require('@automattic/dops-react/js/components/progress-bar'),
+	SetupProgressActions = require('../actions/setup-progress-actions'),
+	Dashicon = require('./dashicon');
 
 var stepShape = React.PropTypes.shape({
 	name: React.PropTypes.string.isRequired,
@@ -25,6 +27,59 @@ var WelcomeMenu = React.createClass({
 		};
 	},
 
+	styles: {
+		wrapper: {
+			float: 'right',
+			width: '28%',
+			height: '100%',
+			background: '#fafafa',
+			border: '1px solid #eee',
+		},
+		title: {
+			margin: 0,
+			padding: 12,
+			overflow: 'hidden',
+			background: '#444',
+			color: '#fff',
+			fontSize: 12,
+			textTransform: 'uppercase'
+		},
+		list: {
+			margin: '13px 10px',
+			listStyle: 'none',
+			'@media (max-width: 600px)': {
+				margin: '5px 4px'
+			}
+		},
+		menuItem: {
+			marginBottom: 6,
+			position: 'relative',
+			color: '#333',
+			lineHeight: 1.7,
+			'@media (max-width: 782px)': {
+				fontSize: 'small'
+			},
+			'@media (max-width: 600px)': {
+				fontSize: 'smaller'
+			}
+		},
+		menuItemCompleted: {
+			color: '#4AB866'
+		},
+		icon: {
+			fontSize: 16,
+			top: 3,
+			position: 'relative'
+		},
+		menuItemLink: {
+			color: 'inherit',
+			borderBottom: '1px dashed'
+		},
+		menuItemCurrent: {
+			color: '#0074A2'
+		}
+	},
+
 	selectStep: function(e) {
 		e.preventDefault();
 		
@@ -36,40 +91,48 @@ var WelcomeMenu = React.createClass({
 	render: function() {
 
 		var menuItems = this.props.allSteps.map(function ( step ) {
-			var title, current, status;
+			var title, current, menuView, iconName;
 
 			if ( this.props.clickable && this.props.currentStep ) {
 				current = ( this.props.currentStep.slug == step.slug );
 			}
 
 			if ( !step.static && this.props.clickable ) {
-				title = <a href="#" data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>
+				title = <a href="#" style={this.styles.menuItemLink} data-step-slug={step.slug} onClick={this.selectStep}>{step.name}</a>;
 			} else {
 				title = step.name;
 			}
 
-			status = step.completed ? 'completed' : '';
+			if ( step.menuView && this.props.clickable ) {
+				menuView = <step.menuView/>;
+			}
 			
+			iconName = step.completed ? 'yes' : 'arrow-right-alt2';
+
 			return (
-				<li key={step.slug} className={status + (current ? ' current' : '')}>{title} {step.skipped ? '(skipped)' : null}</li>
+				<li key={step.slug} style={[this.styles.menuItem, step.completed && this.styles.menuItemCompleted, current && this.styles.menuItemCurrent]}>
+					<Dashicon style={this.styles.icon} name={iconName}/>
+					{title} {step.skipped ? '(skipped)' : null}
+					{menuView}
+				</li>
 			);
 		}.bind(this) );
 
 		return (
-			<div className="getting-started__steps">
-				<h3>
-					<span>Your Progress</span>
+			<div style={[this.styles.wrapper, this.props.style]}>
+				<h3 style={this.styles.title}>
+					<span style={{float: 'left', marginRight: 10}}>Your Progress</span>
 					<div>
-						<WelcomeProgressBar progressPercent={this.props.progressPercent}/>
+						<ProgressBar style={{ float: 'left'}} progressPercent={this.props.progressPercent}/>
 					</div>
 				</h3>
 				
-				<ol>
+				<ol style={this.styles.list}>
 					{menuItems}
 				</ol>
 			</div>
-		)
+		);
 	}
 });
 
-module.exports = WelcomeMenu;
+module.exports = Radium(WelcomeMenu);

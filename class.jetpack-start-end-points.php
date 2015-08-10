@@ -27,6 +27,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
 			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
+			add_action( 'wp_ajax_jps_step_view', array( __CLASS__, 'step_view' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
 			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
@@ -57,6 +58,11 @@ class Jetpack_Start_EndPoints {
 			);
 		}
 
+		// set the jetpack step status to "completed" if jetpack is active
+		if ( $jetpack_config['configured'] ) {
+			$step_statuses['jetpack'] = array('completed' => true);
+		}
+
 		if ( get_option( 'show_on_front' ) == 'page') {
 			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
 				$layout = 'website';
@@ -76,6 +82,7 @@ class Jetpack_Start_EndPoints {
 			0, self::MAX_THEMES);
 
 		return array(
+			'base_url' => JETPACK_START_BASE_URL,
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 			'debug' => WP_DEBUG ? true : false,
 			'bloginfo' => array(
@@ -96,6 +103,7 @@ class Jetpack_Start_EndPoints {
 			),
 			'step_actions' => array(
 				'start' => 'jps_started',
+				'view' => 'jps_step_view',
 				'skip' => 'jps_step_skip',
 				'complete' => 'jps_step_complete'
 			),
@@ -295,21 +303,22 @@ class Jetpack_Start_EndPoints {
 		wp_send_json_success( 'true' );
 	}
 
+	static function step_view() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		do_action('jps_step_viewed', $_REQUEST['step']);
+		wp_send_json_success( 'true' );
+	}
+
 	static function step_skip() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', true);
-
 		do_action('jps_step_skipped', $_REQUEST['step']);
-
 		wp_send_json_success( $result );
 	}
 
 	static function step_complete() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
 		self::update_step_status($_REQUEST['step'], 'completed', true);
-		
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', false);
 
 		if ( array_key_exists('data', $_REQUEST) ) {
@@ -317,16 +326,18 @@ class Jetpack_Start_EndPoints {
 		} else {
 			$data = null;
 		}
-		do_action('jps_step_complete', $_REQUEST['step'], $data);
 
+		do_action('jps_step_complete', $_REQUEST['step'], $data);
 		wp_send_json_success( $result );
 	}
 
 	static function update_step_status($step, $field, $value) {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
+		
 		if( ! array_key_exists( $step, $step_statuses ) ) {
 			$step_statuses[$step] = array();	
 		}
+
 		$step_statuses[$step][$field] = $value;
 		update_option( self::STEP_STATUS_KEY, $step_statuses );
 		return $step_statuses;

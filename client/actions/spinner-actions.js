@@ -24,8 +24,7 @@ var SpinnerActions = {
 
 	hideAsync: function() {
 		AppDispatcher.dispatch({
-			actionType: JPSConstants.HIDE_ASYNC_SPINNER,
-			message: msg
+			actionType: JPSConstants.HIDE_ASYNC_SPINNER
 		});			
 	}
 };

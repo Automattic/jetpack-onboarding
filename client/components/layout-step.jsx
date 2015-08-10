@@ -1,13 +1,15 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
-	SiteActions = require('../actions/site-actions'),
 	SiteStore = require('../stores/site-store'),
+	Button = require('@automattic/dops-react/js/components/button'),
+	WelcomeSection = require('./welcome-section'),
+	styles = require('../styles'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteLayoutState() {
 	return {
+		site_title: SiteStore.getTitle(),
 		layout: SiteStore.getLayout()
-	}
+	};
 }
 
 var LayoutStep = React.createClass({
@@ -39,9 +41,11 @@ var LayoutStep = React.createClass({
 
 	render: function() {
 		return (
-			<div className="welcome__section" id="welcome__layout">
-				<h4>Select a layout</h4>
-				<p className="step-description">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
+			<WelcomeSection id="welcome__layout">
+			
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h4>Select a Layout</h4>
+				<p style={styles.content}>WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Static Website
@@ -59,10 +63,10 @@ var LayoutStep = React.createClass({
 					</label>
 
 					<p className="submit">
-						<input type="submit" name="save" className="button button-primary button-large" value="Next Step &rarr;"/>
+						<Button color="blue">Next Step &rarr;</Button>
 					</p>
 				</form>
-			</div>
+			</WelcomeSection>
 		);
 	}
 });

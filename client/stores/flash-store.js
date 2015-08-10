@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	EventEmitter = require('events').EventEmitter;
+	EventEmitter = require('events').EventEmitter,
 	JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
@@ -10,7 +10,7 @@ function setFlash(newMessage, newSeverity) {
 	severity = newSeverity;
 }
 
-FlashStore = _.extend({}, EventEmitter.prototype, {
+var FlashStore = _.extend({}, EventEmitter.prototype, {
 	getFlash: function() {
 		var severityString;
 

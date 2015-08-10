@@ -21,13 +21,19 @@ var DataActions = require('../actions/data-actions');
 var WPAjax = (function() {
 
 	return {
-		post: function(action, payload) {
+		post: function(action, payload, options) {
+			options = typeof options !== 'undefined' ? options : {};
 			payload = typeof payload !== 'undefined' ? payload : {};
 			var data = _.extend(payload, {action: action, nonce: JPS.nonce});
 			
 			var deferred = jQuery.Deferred();
 
-			DataActions.requestStarted();
+			// passing quiet: true allows page navigation before this request has finished.
+			// this is also handy when you're calling from within a Dispatch cycle, as it 
+			// no longer triggers an additional Dispatch (which would cause an error)
+			if ( !options.quiet ) {
+				DataActions.requestStarted();
+			}
 
 			jQuery.post( ajaxurl, data )
 				.success( function( response ) {
@@ -41,12 +47,14 @@ var WPAjax = (function() {
 					deferred.reject("Server error");
 				})
 				.always( function () {
-					DataActions.requestFinished();
+					if ( !options.quiet ) {
+						DataActions.requestFinished();
+					}
 				});	
 
 			return deferred;
 		}
-	}
+	};
 
 })();
 

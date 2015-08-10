@@ -5,10 +5,17 @@ var React = require('react'),
 function getSetupProgress() {
 	return {
 		completed: SetupProgressStore.getCurrentStep().completed
-	}
+	};
 }
 
 var SkipButton = React.createClass({
+
+	style: {
+		color: '#bbb',
+		fontSize: '90%',
+		marginLeft: 20,
+		borderBottom: '1px dotted #bbb'
+	},
 
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
@@ -36,7 +43,7 @@ var SkipButton = React.createClass({
 		if ( completed ) {
 			return null;
 		} else {
-			return (<a className="skip" href="#" onClick={this.handleSkip}>Not now</a>);
+			return (<a style={this.style} href="#" onClick={this.handleSkip}>Not now</a>);
 		}
 	}
 });

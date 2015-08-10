@@ -1,13 +1,14 @@
 var React = require('react'),
-	SkipButton = require('./skip-button.jsx'),
 	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Tooltip = require('./tooltip.jsx'),
-	ContentBox = require('./content-box.jsx');
+	Tooltip = require('./tooltip'),
+	WelcomeSection = require('./welcome-section'),
+	ContentBox = require('./content-box'),
+	styles = require('../styles'),
+	Button = require('@automattic/dops-react/js/components/button');
 
 function getThemeState() {
-	return { themes: SiteStore.getThemes() };
+	return { themes: SiteStore.getThemes(), site_title: SiteStore.getTitle() };
 }
 
 var DesignStep = React.createClass({
@@ -98,12 +99,13 @@ var DesignStep = React.createClass({
 	render: function() {
 
 		return (
-			<div className="welcome__section" id="welcome__design">
+			<WelcomeSection id="welcome__design">
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Pick a design</h4>
-				<p className="step-description">A "theme" controls the design of your site - colours, fonts and layout.</p>
-				<p className="step-description">Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
+				<p style={styles.content}>A "theme" controls the design of your site - colours, fonts and layout.</p>
+				<p style={styles.content}>Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
 				<p className="submit">
-					<input type="submit" name="save" className="button button-primary button-large" onClick={this.handleContinue} value="Next Step &rarr;"/>
+					<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
 				</p>
 				<ContentBox>
 					<h3>Installed themes</h3>
@@ -114,7 +116,7 @@ var DesignStep = React.createClass({
 				
 				<ContentBox>
 					<h3>Popular themes from WordPress.org
-					<a href="#" className="button button-primary button-large" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</a>
+					<Button color="blue" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</Button>
 					</h3>
 					<div className="theme-browser rendered">
 						{this._renderPopularThemeList()}
@@ -123,7 +125,7 @@ var DesignStep = React.createClass({
 
 				<div style={{clear: 'both'}}></div>
 				{this.state.tooltipTheme && this._renderTooltip()}
-			</div>
+			</WelcomeSection>
 		);
 	},
 

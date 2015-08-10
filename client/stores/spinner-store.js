@@ -3,7 +3,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	JPSConstants = require('../constants/jetpack-start-constants');
 
 var CHANGE_EVENT = 'change';
-var message, severity;
 
 var spinnerEnabled = false,
 	spinnerMessage = null;

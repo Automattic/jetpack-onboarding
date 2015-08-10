@@ -5,10 +5,7 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
   JPSConstants = require('../constants/jetpack-start-constants'),
-  Paths = require('../constants/jetpack-start-paths'),
-  WPAjax = require('../utils/wp-ajax'),
-  FlashActions = require('../actions/flash-actions'),
-  SpinnerActions = require('../actions/spinner-actions');
+  WPAjax = require('../utils/wp-ajax');
 
 var CHANGE_EVENT = 'change';
 
@@ -30,6 +27,12 @@ function setSteps(steps) {
 
     if ( typeof( step.static ) === 'undefined' ) {
       step.static = false;
+    }
+
+    // set to 'true' if you want the wizard to move to this step even if it's been completed
+    // by default completed steps are skipped
+    if ( typeof( step.neverSkip ) === 'undefined' ) {
+      step.neverSkip = false;
     }
 
     // default value for includeInProgress
@@ -80,10 +83,23 @@ function ensureValidStepSlug() {
 }
 
 function selectNextPendingStep() {
-  var pendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
-  if ( pendingStep != null ) {
+  var pendingStep = getNextPendingStep();
+  if ( pendingStep !== null ) {
     select(pendingStep.slug); // also sets the window location hash
   }
+}
+
+function getNextPendingStep() {
+  // if the _next_ step is neverSkip, we proceed to it
+  var stepIndex;
+  if ( stepIndex = currentStepIndex() ) {
+    if ( _steps[stepIndex+1] && _steps[stepIndex+1].neverSkip === true ) {
+      return _steps[stepIndex+1];
+    }
+  }
+
+  // otherwise find the next uncompleted, unskipped step
+  return _.findWhere( _steps, { completed: false, skipped: false } );
 }
 
 function currentStepSlug() {
@@ -96,8 +112,20 @@ function currentStepSlug() {
   }
 }
 
+function currentStepIndex() {
+  var slug = currentStepSlug();
+  for ( var i=0; i<_steps.length; i++ ) {
+    if ( _steps[i].slug === slug ) {
+      return i;
+    }
+  }
+  return false;
+}
+
 function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
+  // record analytics
+  WPAjax.post(JPS.step_actions.view, { step: stepSlug }, { quiet: true });
 }
 
 //reset everything back to defaults
@@ -116,16 +144,6 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
     setSteps(steps);
   },
 
-  areAllComplete: function() {
-    var complete = true;
-    _.each( _steps ), function( step ) {
-      if ( ! step.complete() ) {
-        complete = false;
-      }
-    }
-    return complete;
-  },
-
   getAllSteps: function() {
     return _steps;
   },
@@ -142,8 +160,12 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
     return getStepFromSlug( currentStepSlug() );
   },
 
+  getNextPendingStep: function() {
+    return getNextPendingStep(); // delegate
+  },
+
   getStepFromSlug: function(slug) {
-    return getStepFromSlug( slug );
+    return getStepFromSlug( slug ); // delegate
   },
 
   getProgressPercent: function() {
@@ -165,8 +187,7 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-  var text;
-
+  
   switch(action.actionType) {
     case JPSConstants.STEP_GET_STARTED:
       getStarted();
