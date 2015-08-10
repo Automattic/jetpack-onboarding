@@ -3,6 +3,12 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	WelcomeSection = require('./welcome-section');
 
+function getSiteState() {
+	return {
+		site_title: SiteStore.getTitle()
+	};
+}
+
 var SettingsItem = React.createClass({
 	styles: {
 		item: {
@@ -38,9 +44,26 @@ var AdvancedSettingsStep = React.createClass({
 		}
 	},
 
+  	getInitialState: function() {
+		return getSiteState();
+	},
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function() {
+    	this.setState(getSiteState());
+  	},
+
 	render: function() {
 		return (
 			<WelcomeSection>
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
 				<h4>Advanced settings</h4>
 
 				<ul style={this.styles.wrapper}>
