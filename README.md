@@ -9,9 +9,9 @@ It is designed to be extensible, so that hosting companies that choose to bundle
 
 Most of the code lives in the client, and uses [ReactJS](https://github.com/facebook/react) and Facebook's [Flux Dispatcher](https://github.com/facebook/flux) to manage the flow of data and UI updates. 
 
-This initiative is currently being led by Daniel Walmsley [@gravityrail](http://github.com/gravityrail) and Luca Sartoni [@lucasartoni](https://github.com/lucasartoni), with design by Dan Hauk [@danhauk](https://github.com/danhauk).
+This initiative is currently being led by Daniel Walmsley [@gravityrail](http://github.com/gravityrail) and Jesse Friedman [@jessefriedman](http://github.com/jessefriedman), with design by Dan Hauk [@danhauk](https://github.com/danhauk).
 
-Previous contributors who laid the foundation are Dave Martin [@growthdesigner](http://github.com/growthdesigner) and Miguel Lezama [@lezama](http://github.com/lezama).
+Previous contributors who laid the foundation are Luca Sartoni [@lucasartoni](https://github.com/lucasartoni), Dave Martin [@growthdesigner](http://github.com/growthdesigner) and Miguel Lezama [@lezama](http://github.com/lezama).
 
 Pull Requests and Issues are always welcome. :)
 
