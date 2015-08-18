@@ -27,7 +27,7 @@ var JetpackLogo = React.createClass({
 			position: 'relative',
 			width: 214,
 			marginRight: 6,
-			background: 'url('+JPS.base_url+'/../jetpack/images/jetpack-logo.png) center center no-repeat',
+			background: 'url('+JPS.jetpack.logo_url+') center center no-repeat',
 			backgroundSize: '183px auto',
 			color: '#fff',
 			fontWeight: 'normal'

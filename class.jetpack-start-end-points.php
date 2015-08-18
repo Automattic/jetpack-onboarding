@@ -44,6 +44,7 @@ class Jetpack_Start_EndPoints {
 			$jetpack_config = array(
 				'plugin_active' => true,
 				'configured' => Jetpack::is_active(),
+				'logo_url' => plugins_url('jetpack/images/jetpack-logo.png'),
 				'jumpstart_modules' => array_values(self::jumpstart_modules()),
 				'additional_modules' => array(),
 				'active_modules' => array_values(Jetpack::init()->get_active_modules())
@@ -52,6 +53,7 @@ class Jetpack_Start_EndPoints {
 			$jetpack_config = array(
 				'plugin_active' => false,
 				'configured' => false,
+				'logo_url' => '',
 				'jumpstart_modules' => array(),
 				'additional_modules' => array(),
 				'active_modules' => array()
