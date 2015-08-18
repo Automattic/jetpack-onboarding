@@ -91,8 +91,8 @@ function selectNextPendingStep() {
 
 function getNextPendingStep() {
   // if the _next_ step is neverSkip, we proceed to it
-  var stepIndex;
-  if ( stepIndex = currentStepIndex() ) {
+  var stepIndex = currentStepIndex();
+  if ( stepIndex ) {
     if ( _steps[stepIndex+1] && _steps[stepIndex+1].neverSkip === true ) {
       return _steps[stepIndex+1];
     }
