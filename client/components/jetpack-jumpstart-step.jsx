@@ -30,7 +30,8 @@ var JetpackLogo = React.createClass({
 			background: 'url('+JPS.jetpack.logo_url+') center center no-repeat',
 			backgroundSize: '183px auto',
 			color: '#fff',
-			fontWeight: 'normal'
+			fontWeight: 'normal',
+			padding: '5px 0px'
 		},
 		jetpackLogoName: {
 			textIndent: -9999,
