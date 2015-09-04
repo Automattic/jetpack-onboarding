@@ -4,6 +4,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
 	WPAjax = require('../utils/wp-ajax'),
+	SpinnerActions = require('./spinner-actions'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SiteStore = require('../stores/site-store');
 
@@ -74,15 +75,18 @@ var SetupProgressActions = {
 	},
 
 	getStarted: function() {
+		SpinnerActions.show("Loading");
 	    WPAjax.
 			post(JPS.step_actions.start).
 			fail( function(msg) {
 				FlashActions.error(msg);
+			}).
+			always( function() {
+				SpinnerActions.hide();
+				AppDispatcher.dispatch({
+			      actionType: JPSConstants.STEP_GET_STARTED
+			    });		
 			});
-
-		AppDispatcher.dispatch({
-	      actionType: JPSConstants.STEP_GET_STARTED
-	    });
 	},
 
 	setCurrentStep: function(slug) {
