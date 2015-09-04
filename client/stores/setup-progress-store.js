@@ -78,7 +78,11 @@ function getStepFromSlug( stepSlug ) {
 function ensureValidStepSlug() {
   var stepSlug = currentStepSlug();
   if ( ! ( stepSlug && getStepFromSlug( stepSlug ) ) ) {
-    selectNextPendingStep();
+
+    var pendingStep = getNextPendingStep();
+    if ( pendingStep !== null ) {
+      window.location.hash = 'welcome/steps/'+pendingStep.slug;
+    }    
   }
 }
 
