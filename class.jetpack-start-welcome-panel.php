@@ -15,6 +15,7 @@ class Jetpack_Start_WelcomePanel {
 			//reset data
 			if ( isset( $_GET['jps_reset'] ) ) {
 				delete_option( Jetpack_Start_EndPoints::STEP_STATUS_KEY );
+				delete_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
 				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
 				delete_option( Jetpack_Start_EndPoints::DISABLED_KEY );
 
@@ -71,6 +72,11 @@ class Jetpack_Start_WelcomePanel {
 	}
 
 	static function wp_welcome_panel() {
+		if ( false === get_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, false ) ) {
+			update_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, true );
+			do_action( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
+		}
+
 		echo "<div id='jps-welcome-panel'>Loading Welcome Wizard</div>";
 	}
 }

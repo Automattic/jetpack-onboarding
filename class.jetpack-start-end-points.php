@@ -2,10 +2,12 @@
 class Jetpack_Start_EndPoints { 
 	const AJAX_NONCE = 'jps-ajax';
 	const STEP_STATUS_KEY = 'jps_step_statuses';
+	const FIRSTRUN_KEY = 'jps_firstrun';
 	const STARTED_KEY = 'jps_started';
 	const DISABLED_KEY = 'jps_disabled';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
+	const VERSION = 10;
 
 	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
