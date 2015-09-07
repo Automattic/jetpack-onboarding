@@ -30,6 +30,11 @@ var GetStarted = React.createClass({
 		SetupProgressActions.getStarted();
 	},
 
+	handleNoThanks: function(e) {
+		e.preventDefault();
+		SetupProgressActions.disableJPS();	
+	},
+
 	_isIE8: function() {
 		jQuery('html').is('.ie8');
 	},
@@ -37,21 +42,24 @@ var GetStarted = React.createClass({
 	styles: {
 		wrapper: {
 			textAlign: 'center',
-			backgroundImage: 'url('+JPS.base_url+'/img/jps-welcome.png)',
+			// backgroundImage: 'url('+JPS.base_url+'/img/jps-welcome.png)',
 			backgroundRepeat: 'no-repeat',
 			backgroundPosition: 'center bottom',
 			backgroundSize: '520px auto',
-			paddingBottom: 200,
-			'@media (max-width: 782px)': {
-				backgroundImage: 'none',
-				paddingBottom: 30
-			}
+			position: 'fixed',
+		    top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			backgroundColor: '#fff',
+			paddingTop: 100,
+			zIndex: 999
 		},
 		wrapperIE8: {
 			backgroundImage: 'none'
 		},
 		subhead: {
-			margin: '0 0 30px',
+			margin: '15px 0 30px',
 			color: '#666',
 			fontSize: 18,
 			lineHeight: 1.6,
@@ -64,17 +72,20 @@ var GetStarted = React.createClass({
 				fontSize: 13
 			}
 		}
+
 	},
 
 	render: function() {
 		return (
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
-				<h3>You're almost done!</h3>
+				<h3>Welcome to your new WordPress website</h3>
 				<p style={this.styles.subhead}>
-					Take these steps to supercharge your WordPress site.
+					Would you like help launching {JPS.site_url}?
 				</p>
-				<p>
-					<Button color="green" size="big" theme="jetpack" onClick={this.handleGetStarted}>Get Started &rarr;</Button>
+				<p style={{marginTop: 30}}>
+					<Button color="green" size="big" onClick={this.handleGetStarted}>Yes</Button>
+					&nbsp;&nbsp;&nbsp;
+					<Button color="gray" size="big" onClick={this.handleNoThanks}>No thanks</Button>
 				</p>
 			</div>
 		);

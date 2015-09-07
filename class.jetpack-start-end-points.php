@@ -3,6 +3,7 @@ class Jetpack_Start_EndPoints {
 	const AJAX_NONCE = 'jps-ajax';
 	const STEP_STATUS_KEY = 'jps_step_statuses';
 	const STARTED_KEY = 'jps_started';
+	const DISABLED_KEY = 'jps_disabled';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
 
@@ -30,6 +31,7 @@ class Jetpack_Start_EndPoints {
 			add_action( 'wp_ajax_jps_step_view', array( __CLASS__, 'step_view' ) );
 			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
 			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
+			add_action( 'wp_ajax_jps_disabled', array( __CLASS__, 'disabled' ) );
 			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
 	}
@@ -65,16 +67,6 @@ class Jetpack_Start_EndPoints {
 			$step_statuses['jetpack'] = array('completed' => true);
 		}
 
-		if ( get_option( 'show_on_front' ) == 'page') {
-			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
-				$layout = 'website';
-			} else {
-				$layout = 'site-blog';
-			}
-		} else {
-			$layout = 'blog';
-		}
-
 		$themes = 
 			array_slice ( 
 				array_map( 
@@ -85,6 +77,7 @@ class Jetpack_Start_EndPoints {
 
 		return array(
 			'base_url' => JETPACK_START_BASE_URL,
+			'site_url' => site_url(),
 			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
 			'debug' => WP_DEBUG ? true : false,
 			'bloginfo' => array(
@@ -105,6 +98,7 @@ class Jetpack_Start_EndPoints {
 			),
 			'step_actions' => array(
 				'start' => 'jps_started',
+				'disable' => 'jps_disabled',
 				'view' => 'jps_step_view',
 				'skip' => 'jps_step_skip',
 				'complete' => 'jps_step_complete'
@@ -115,7 +109,7 @@ class Jetpack_Start_EndPoints {
 			'step_status' => $step_statuses,
 			'steps' => array(
 				'layout' => array(
-					'current' => $layout
+					'current' => self::get_layout()
 				),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
@@ -130,6 +124,20 @@ class Jetpack_Start_EndPoints {
 				)
 			)
 		);
+	}
+
+	static function get_layout() {
+		if ( get_option( 'show_on_front' ) == 'page') {
+			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
+				$layout = 'website';
+			} else {
+				$layout = 'site-blog';
+			}
+		} else {
+			$layout = 'blog';
+		}
+
+		return $layout;
 	}
 
 	static function default_theme_filter($theme) {
@@ -302,6 +310,13 @@ class Jetpack_Start_EndPoints {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::STARTED_KEY, true );
 		do_action('jps_started');
+		wp_send_json_success( 'true' );
+	}
+
+	static function disabled() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		update_option( self::DISABLED_KEY, true );
+		do_action('jps_disabled');
 		wp_send_json_success( 'true' );
 	}
 

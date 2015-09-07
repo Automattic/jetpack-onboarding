@@ -89,6 +89,18 @@ var SetupProgressActions = {
 			});
 	},
 
+	disableJPS: function() {
+		SpinnerActions.show("");
+		WPAjax.
+			post(JPS.step_actions.disable).
+			fail( function(msg) {
+				FlashActions.error(msg);
+			}).
+			always( function() {
+				window.location.reload();
+			});
+	},
+
 	setCurrentStep: function(slug) {
 		FlashActions.unset();
 		AppDispatcher.dispatch({

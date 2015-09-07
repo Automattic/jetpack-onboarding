@@ -16,7 +16,7 @@ class Jetpack_Start_WelcomePanel {
 			if ( isset( $_GET['jps_reset'] ) ) {
 				delete_option( Jetpack_Start_EndPoints::STEP_STATUS_KEY );
 				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
-
+				delete_option( Jetpack_Start_EndPoints::DISABLED_KEY );
 
 				delete_option( 'jetpack_blog_token' );
 				delete_option( 'jetpack_id' );
@@ -37,6 +37,10 @@ class Jetpack_Start_WelcomePanel {
 
 				wp_redirect(remove_query_arg('jps_reset'));
 				die();
+			}
+
+			if ( get_option( Jetpack_Start_EndPoints::DISABLED_KEY, false ) ) {
+				return;
 			}
 
 			//replace the usual welcome panel with our own
