@@ -59,7 +59,7 @@ var GetStarted = React.createClass({
 			backgroundImage: 'none'
 		},
 		subhead: {
-			margin: '15px 0 30px',
+			margin: '20px 0 15px',
 			color: '#666',
 			fontSize: 18,
 			lineHeight: 1.6,
@@ -71,6 +71,24 @@ var GetStarted = React.createClass({
 			'@media (max-width: 320px)': {
 				fontSize: 13
 			}
+		},
+		button: {
+			borderRadius: 6,
+			fontFamily: 'proxima-nova, \'Open Sans\', Helvetica, sans-serif',
+			fontSize: 16,
+			lineHeight: 1,
+			padding: '0.64286em 0.85714em 0.53571em'
+		},
+		green: {
+			border: '1px solid rgb(62, 108, 32)',
+			background: 'rgb(81, 141, 42)',
+			boxShadow: 'rgb(62, 108, 32) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+			color: '#fff'
+		},
+		gray: {
+			background: 'linear-gradient(rgb(255, 255, 255), rgb(249, 249, 249))',
+			boxShadow: 'rgb(150, 150, 150) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px;',
+			color: '#333'
 		}
 
 	},
@@ -78,14 +96,12 @@ var GetStarted = React.createClass({
 	render: function() {
 		return (
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
-				<h3>Welcome to your new WordPress website</h3>
-				<p style={this.styles.subhead}>
-					Would you like help launching {JPS.site_url}?
-				</p>
-				<p style={{marginTop: 30}}>
-					<Button color="green" size="big" onClick={this.handleGetStarted}>Yes</Button>
+				<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
+				<p style={this.styles.subhead}>Would you like help launching your site?</p>
+				<p>
+					<Button style={[this.styles.button, this.styles.green]} onClick={this.handleGetStarted}>Yes</Button>
 					&nbsp;&nbsp;&nbsp;
-					<Button color="gray" size="big" onClick={this.handleNoThanks}>No thanks</Button>
+					<Button style={[this.styles.button, this.styles.gray]} onClick={this.handleNoThanks}>No thanks</Button>
 				</p>
 			</div>
 		);
