@@ -1,7 +1,8 @@
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Button = require('@automattic/dops-react/js/components/button'),
+	Button = require('@automattic/dops-react/js/components/button')
+	m = require('@automattic/dops-react/js/utils/m'),
 	Radium = require('radium');
 
 function getSetupState() {
@@ -100,9 +101,9 @@ var GetStarted = React.createClass({
 				<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
 				<p style={this.styles.subhead}>Would you like help launching your site?</p>
 				<p>
-					<Button style={ Object.assign( {}, this.styles.button, this.styles.button.green ) } onClick={this.handleGetStarted}>Yes</Button>
+					<Button style={ m( this.styles.button, this.styles.button.green ) } onClick={this.handleGetStarted}>Yes</Button>
 					&nbsp;&nbsp;&nbsp;
-					<Button style={ Object.assign( {}, this.styles.button, this.styles.button.gray ) } onClick={this.handleNoThanks}>No thanks</Button>
+					<Button style={ m( this.styles.button, this.styles.button.gray ) } onClick={this.handleNoThanks}>No thanks</Button>
 				</p>
 			</div>
 		);
