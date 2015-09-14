@@ -1,7 +1,7 @@
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Button = require('@automattic/dops-react/js/components/button')
+	Button = require('@automattic/dops-react/js/components/button'),
 	m = require('@automattic/dops-react/js/utils/m'),
 	Radium = require('radium');
 
@@ -49,15 +49,30 @@ var GetStarted = React.createClass({
 			backgroundSize: '520px auto',
 			position: 'fixed',
 		    top: 0,
-			left: 0,
+			left: 160,
 			width: '100%',
 			height: '100%',
 			backgroundColor: '#fff',
 			paddingTop: 100,
-			zIndex: 999
+			zIndex: 999,
+			'@media (max-width: 960px)': {
+				left: 36
+			},
+			'@media (max-width: 782px)': {
+				left: 0
+			}
 		},
 		wrapperIE8: {
 			backgroundImage: 'none'
+		},
+		innerwrapper: {
+			margin: '0 0 0 -160px',
+			'@media (max-width: 960px)': {
+				margin: '0 0 0 -36px'
+			},
+			'@media (max-width: 782px)': {
+				margin: '0'
+			}
 		},
 		subhead: {
 			margin: '20px 0 15px',
@@ -84,7 +99,12 @@ var GetStarted = React.createClass({
 				border: '1px solid rgb(62, 108, 32)',
 				background: 'rgb(81, 141, 42)',
 				boxShadow: 'rgb(62, 108, 32) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
-				color: '#fff'
+				color: '#fff',
+				':hover': {
+					color: '#fff',
+					background: 'rgb(129, 168, 68)',
+					border: '1px solid rgb(129, 168, 68)'
+				}
 			},
 			gray: {
 				background: 'linear-gradient(rgb(255, 255, 255), rgb(249, 249, 249))',
@@ -98,13 +118,15 @@ var GetStarted = React.createClass({
 	render: function() {
 		return (
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
-				<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
-				<p style={this.styles.subhead}>Would you like help launching your site?</p>
-				<p>
-					<Button style={ m( this.styles.button, this.styles.button.green ) } onClick={this.handleGetStarted}>Yes</Button>
+				<div key="welcome-intro-innerwrapper"  style={this.styles.innerwrapper}>
+					<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
+					<p style={this.styles.subhead}>Would you like help launching your site?</p>
+					<p>
+						<Button style={ m( this.styles.button, this.styles.button.green ) } onClick={this.handleGetStarted}>Yes</Button>
 					&nbsp;&nbsp;&nbsp;
-					<Button style={ m( this.styles.button, this.styles.button.gray ) } onClick={this.handleNoThanks}>No thanks</Button>
-				</p>
+						<Button style={ m( this.styles.button, this.styles.button.gray ) } onClick={this.handleNoThanks}>No thanks</Button>
+					</p>
+				</div>
 			</div>
 		);
 	}
