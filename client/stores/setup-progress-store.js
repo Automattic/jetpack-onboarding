@@ -213,12 +213,6 @@ AppDispatcher.register(function(action) {
       SetupProgressStore.emitChange();
       break;
 
-    case JPSConstants.STEP_COMPLETE_AND_NEXT:
-      complete(action.slug);
-      selectNextPendingStep();
-      SetupProgressStore.emitChange();
-      break;
-
     case JPSConstants.RESET_DATA:
       reset();
       SetupProgressStore.emitChange();
