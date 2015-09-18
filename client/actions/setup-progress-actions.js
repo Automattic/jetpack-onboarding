@@ -36,10 +36,10 @@ var SetupProgressActions = {
 	completeAndNextStep: function(slug, meta) {
 		SpinnerActions.show("Loading");
 		this.completeStep(slug, meta).always(function() {
-			SpinnerActions.hide();
 			AppDispatcher.dispatch({
 				actionType: JPSConstants.STEP_NEXT
 			});
+			SpinnerActions.hide();
 		});
 	},
 
@@ -67,18 +67,26 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getCurrentStep();
 
 		if (!step.skipped) {
+			SpinnerActions.show("Loading");
 			WPAjax.
 			post(JPS.step_actions.skip, {
 				step: step.slug
 			}).
 			fail(function(msg) {
 				FlashActions.error(msg);
+			}).always(function() {
+				SpinnerActions.hide();
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.STEP_SKIP
+				});	
 			});
+		} else {
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_SKIP
+			});	
 		}
 
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.STEP_SKIP
-		});
+		
 	},
 
 	getStarted: function() {

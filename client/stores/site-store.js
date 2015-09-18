@@ -116,7 +116,7 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getPopularThemes: function() {
-    return WPAjax.post(JPS.site_actions.get_popular_themes);
+    return WPAjax.post(JPS.site_actions.get_popular_themes, {}, {quiet: true});
   },
 
   getJetpackJumpstartEnabled: function() {

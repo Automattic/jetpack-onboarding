@@ -94,23 +94,25 @@ var GetStarted = React.createClass({
 			fontSize: 16,
 			lineHeight: 1,
 			padding: '0.64286em 0.85714em 0.53571em',
+		},
 
-			green: {
-				border: '1px solid rgb(62, 108, 32)',
-				background: 'rgb(81, 141, 42)',
-				boxShadow: 'rgb(62, 108, 32) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+		greenButton: {
+			borderWidth: '1px',
+			borderStyle: 'solid',
+			borderColor: 'rgb(62, 108, 32)',
+			background: 'rgb(81, 141, 42)',
+			boxShadow: 'rgb(62, 108, 32) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+			color: '#fff',
+			':hover': {
 				color: '#fff',
-				':hover': {
-					color: '#fff',
-					background: 'rgb(129, 168, 68)',
-					border: '1px solid rgb(129, 168, 68)'
-				}
-			},
-			gray: {
-				background: 'linear-gradient(rgb(255, 255, 255), rgb(249, 249, 249))',
-				boxShadow: 'rgb(150, 150, 150) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px;',
-				color: '#333'
+				background: 'rgb(129, 168, 68)',
+				borderColor: 'rgb(129, 168, 68)',
 			}
+		},
+		grayButton: {
+			background: 'linear-gradient(rgb(255, 255, 255), rgb(249, 249, 249))',
+			boxShadow: 'rgb(150, 150, 150) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+			color: '#333'
 		}
 
 	},
@@ -122,9 +124,9 @@ var GetStarted = React.createClass({
 					<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
 					<p style={this.styles.subhead}>Would you like help launching your site?</p>
 					<p>
-						<Button style={ m( this.styles.button, this.styles.button.green ) } onClick={this.handleGetStarted}>Yes</Button>
+						<Button style={ m( this.styles.button, this.styles.greenButton ) } onClick={this.handleGetStarted}>Yes</Button>
 					&nbsp;&nbsp;&nbsp;
-						<Button style={ m( this.styles.button, this.styles.button.gray ) } onClick={this.handleNoThanks}>No thanks</Button>
+						<Button style={ m( this.styles.button, this.styles.grayButton ) } onClick={this.handleNoThanks}>No thanks</Button>
 					</p>
 				</div>
 			</div>
