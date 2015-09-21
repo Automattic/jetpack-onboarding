@@ -2,6 +2,7 @@ var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Button = require('@automattic/dops-react/js/components/button'),
+	m = require('@automattic/dops-react/js/utils/m'),
 	Radium = require('radium');
 
 function getSetupState() {
@@ -30,6 +31,11 @@ var GetStarted = React.createClass({
 		SetupProgressActions.getStarted();
 	},
 
+	handleNoThanks: function(e) {
+		e.preventDefault();
+		SetupProgressActions.disableJPS();	
+	},
+
 	_isIE8: function() {
 		jQuery('html').is('.ie8');
 	},
@@ -37,21 +43,39 @@ var GetStarted = React.createClass({
 	styles: {
 		wrapper: {
 			textAlign: 'center',
-			backgroundImage: 'url('+JPS.base_url+'/img/jps-welcome.png)',
+			// backgroundImage: 'url('+JPS.base_url+'/img/jps-welcome.png)',
 			backgroundRepeat: 'no-repeat',
 			backgroundPosition: 'center bottom',
 			backgroundSize: '520px auto',
-			paddingBottom: 200,
+			position: 'fixed',
+		    top: 0,
+			left: 160,
+			width: '100%',
+			height: '100%',
+			backgroundColor: '#fff',
+			paddingTop: 100,
+			zIndex: 999,
+			'@media (max-width: 960px)': {
+				left: 36
+			},
 			'@media (max-width: 782px)': {
-				backgroundImage: 'none',
-				paddingBottom: 30
+				left: 0
 			}
 		},
 		wrapperIE8: {
 			backgroundImage: 'none'
 		},
+		innerwrapper: {
+			margin: '0 0 0 -160px',
+			'@media (max-width: 960px)': {
+				margin: '0 0 0 -36px'
+			},
+			'@media (max-width: 782px)': {
+				margin: '0'
+			}
+		},
 		subhead: {
-			margin: '0 0 30px',
+			margin: '20px 0 15px',
 			color: '#666',
 			fontSize: 18,
 			lineHeight: 1.6,
@@ -63,19 +87,48 @@ var GetStarted = React.createClass({
 			'@media (max-width: 320px)': {
 				fontSize: 13
 			}
+		},
+		button: {
+			borderRadius: 6,
+			fontFamily: 'proxima-nova, \'Open Sans\', Helvetica, sans-serif',
+			fontSize: 16,
+			lineHeight: 1,
+			padding: '0.64286em 0.85714em 0.53571em',
+		},
+
+		greenButton: {
+			borderWidth: '1px',
+			borderStyle: 'solid',
+			borderColor: 'rgb(62, 108, 32)',
+			background: 'rgb(81, 141, 42)',
+			boxShadow: 'rgb(62, 108, 32) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+			color: '#fff',
+			':hover': {
+				color: '#fff',
+				background: 'rgb(129, 168, 68)',
+				borderColor: 'rgb(129, 168, 68)',
+			}
+		},
+		grayButton: {
+			background: 'linear-gradient(rgb(255, 255, 255), rgb(249, 249, 249))',
+			boxShadow: 'rgb(150, 150, 150) 0px 3px 0px, rgba(0, 0, 0, 0.4) 0px 4px 3px',
+			color: '#333'
 		}
+
 	},
 
 	render: function() {
 		return (
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
-				<h3>You're almost done!</h3>
-				<p style={this.styles.subhead}>
-					Take these steps to supercharge your WordPress site.
-				</p>
-				<p>
-					<Button color="green" size="big" theme="jetpack" onClick={this.handleGetStarted}>Get Started &rarr;</Button>
-				</p>
+				<div key="welcome-intro-innerwrapper"  style={this.styles.innerwrapper}>
+					<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
+					<p style={this.styles.subhead}>Would you like help launching your site?</p>
+					<p>
+						<Button style={ m( this.styles.button, this.styles.greenButton ) } onClick={this.handleGetStarted}>Yes</Button>
+					&nbsp;&nbsp;&nbsp;
+						<Button style={ m( this.styles.button, this.styles.grayButton ) } onClick={this.handleNoThanks}>No thanks</Button>
+					</p>
+				</div>
 			</div>
 		);
 	}

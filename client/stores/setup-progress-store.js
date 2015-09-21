@@ -47,7 +47,7 @@ function setSteps(steps) {
   ensureValidStepSlug(); 
 }
 
-function getStarted() {
+function setStarted() {
   _started = true;
   selectNextPendingStep();
 }
@@ -194,7 +194,7 @@ AppDispatcher.register(function(action) {
   
   switch(action.actionType) {
     case JPSConstants.STEP_GET_STARTED:
-      getStarted();
+      setStarted();
       SetupProgressStore.emitChange();
       break;
 
@@ -210,12 +210,6 @@ AppDispatcher.register(function(action) {
 
     case JPSConstants.STEP_COMPLETE:
       complete(action.slug);
-      SetupProgressStore.emitChange();
-      break;
-
-    case JPSConstants.STEP_COMPLETE_AND_NEXT:
-      complete(action.slug);
-      selectNextPendingStep();
       SetupProgressStore.emitChange();
       break;
 

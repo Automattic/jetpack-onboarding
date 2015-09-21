@@ -15,8 +15,9 @@ class Jetpack_Start_WelcomePanel {
 			//reset data
 			if ( isset( $_GET['jps_reset'] ) ) {
 				delete_option( Jetpack_Start_EndPoints::STEP_STATUS_KEY );
+				delete_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
 				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
-
+				delete_option( Jetpack_Start_EndPoints::DISABLED_KEY );
 
 				delete_option( 'jetpack_blog_token' );
 				delete_option( 'jetpack_id' );
@@ -37,6 +38,10 @@ class Jetpack_Start_WelcomePanel {
 
 				wp_redirect(remove_query_arg('jps_reset'));
 				die();
+			}
+
+			if ( get_option( Jetpack_Start_EndPoints::DISABLED_KEY, false ) ) {
+				return;
 			}
 
 			//replace the usual welcome panel with our own
@@ -67,6 +72,11 @@ class Jetpack_Start_WelcomePanel {
 	}
 
 	static function wp_welcome_panel() {
+		if ( false === get_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, false ) ) {
+			update_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, true );
+			do_action( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
+		}
+
 		echo "<div id='jps-welcome-panel'>Loading Welcome Wizard</div>";
 	}
 }
