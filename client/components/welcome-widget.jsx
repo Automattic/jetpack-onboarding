@@ -146,7 +146,7 @@ var WelcomeWidget = React.createClass({
   			return (
   				<div style={this.styles.loadingOverlay}>
   					<div style={this.styles.loadingMessage}>
-  						<img src="/wp-admin/images/spinner-2x.gif" width="16px" height="16px"/>
+  						<img src={JPS.base_url+"/img/spinner-2x.gif"} width="16px" height="16px"/>
   						&nbsp;&nbsp;{this.state.spinnerMessage}
   					</div>
   				</div>
