@@ -144,6 +144,18 @@ var SetupProgressActions = {
 		}.bind(this));
 	},
 
+	createContactPage: function(layout) {
+		SiteActions.setLayout(layout).done(function() {
+			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
+		}.bind(this));
+	},
+
+	submitContactPageStep: function(layout) {
+		SiteActions.setLayout(layout).done(function() {
+			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
+		}.bind(this));
+	},
+
 	submitJetpackJumpstart: function() {
 		SiteActions.enableJumpstart().done(function() {
 			this.completeStep(Paths.JETPACK_MODULES_STEP_SLUG);

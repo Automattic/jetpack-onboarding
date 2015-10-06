@@ -103,6 +103,11 @@ var SiteActions = {
 	    return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
+	createContactPage: function( contactPage ) {
+		//This is where you need to write ajax code to handle the Contact Us page creation
+		return contactPage; // XXX HACK
+	},
+
 	configureJetpack: function(return_to_step) {
 		SpinnerActions.show("Connecting to WordPress.com");
 		return WPAjax.
