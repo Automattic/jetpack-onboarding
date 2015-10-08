@@ -8,7 +8,7 @@ class Jetpack_Start_EndPoints {
 	const CONTACTPAGE_ID_KEY = 'jps_contactpage_id';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
-	const VERSION = 10;
+	const VERSION = 11;
 
 	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
