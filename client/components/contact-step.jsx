@@ -41,7 +41,7 @@ var ContactPageStep = React.createClass({
 	},
 
 	render: function() {
-		if (false === this.state.contactPageURL){
+		if ( ! this.state.contactPageURL){
 			return(
 				<WelcomeSection id="welcome__layout">
 					<h3>Let's launch <em>{this.state.site_title}</em></h3>

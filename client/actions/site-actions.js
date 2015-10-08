@@ -40,6 +40,13 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
+	setContactPageId: function(contactPageID) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_CONTACT_PAGE_ID,
+			contactPageID: contactPageID
+		});
+	},
+
 	_installTheme: function ( theme ) {
 		if ( ! theme.installed ) {
 			SpinnerActions.show("Installing '"+theme.name+"'");

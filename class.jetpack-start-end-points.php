@@ -44,8 +44,12 @@ class Jetpack_Start_EndPoints {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
 		$started = get_option( self::STARTED_KEY, false);
 		$contact_page_id = get_option( self::CONTACTPAGE_ID, false );
-		$contact_page = get_post($contact_page_id);
-		$contact_page_URL = $contact_page->guid;
+		if( ! $contact_page_id ){
+			$contact_page_URL = false;
+		} else {
+			$contact_page = get_post($contact_page_id);
+			$contact_page_URL = $contact_page->guid;
+		}
 
 		$jetpack_config = array();
 
