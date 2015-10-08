@@ -15,6 +15,12 @@ module.exports = {
 		marginRight: '25px'
 	},
 
+	'screenshot': {
+		float: 'right',
+		width: 300,
+		border: '1px solid #ccc'
+	},
+
 	css: {
 		h4: {
 			marginBottom: 10,

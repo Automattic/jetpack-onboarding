@@ -395,12 +395,15 @@ class Jetpack_Start_EndPoints {
 		$jps_contact_us_page = array(
 			'post_title'    => 'Contact Us',
 			'post_content'  => 'Hi There,
-				We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
+We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
 
-				Albert Einstein Museum<br> 123 Main St,<br> Warwick, RI 02889
-				718.555.0062
+A Great Company Name
+123 Main St,
+Warwick, RI 02889
+718.555.0062
 
-				[contact-form][contact-field label=\'Name\' type=\'name\' required=\'1\'/][contact-field label=\'Email\' type=\'email\' required=\'1\'/][contact-field label=\'Comment\' type=\'textarea\' required=\'1\'/][/contact-form]',
+<!-- The form below requires a jetpack connection to work-->
+[contact-form][contact-field label=\'Name\' type=\'name\' required=\'1\'/][contact-field label=\'Email\' type=\'email\' required=\'1\'/][contact-field label=\'Comment\' type=\'textarea\' required=\'1\'/][/contact-form]',
 			'post_status'   => 'publish',
 			'post_type'     =>  'page'
 		);

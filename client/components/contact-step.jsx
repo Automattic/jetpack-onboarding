@@ -8,7 +8,8 @@ var React = require('react'),
 function getSiteContactState() {
 	return {
 		site_title: SiteStore.getTitle(),
-		contactPageURL: SiteStore.getContactPageURL()
+		contactPageURL: SiteStore.getContactPageURL(),
+		contactPageScreenshot : JPS.base_url + "/img/contact-us-screenshot.png"
 	};
 }
 
@@ -52,7 +53,8 @@ var ContactPageStep = React.createClass({
 					<h3>Let's launch <em>{this.state.site_title}</em></h3>
 					<h4>Help visitors get in touch, great for businesses, blogs and personal sites</h4>
 
-						<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
+					<img style={styles.screenshot} src={this.state.contactPageScreenshot} />
+					<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
 						<br/>
 						<small>(requires a free Jetpack connection)</small>
 					</p>
