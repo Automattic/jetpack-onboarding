@@ -119,6 +119,15 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
+	skipContactPageBuild: function() {
+		// FlashActions.notice( "Build the contact us page" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE
+		});
+
+		return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
 	configureJetpack: function(return_to_step) {
 		SpinnerActions.show("Connecting to WordPress.com");
 		return WPAjax.

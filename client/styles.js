@@ -10,6 +10,11 @@ module.exports = {
   		margin: '1em 0'
 	},
 
+	'inline': {
+		display: 'inline',
+		marginRight: '25px'
+	},
+
 	css: {
 		h4: {
 			marginBottom: 10,

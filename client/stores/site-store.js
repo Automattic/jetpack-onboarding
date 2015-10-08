@@ -16,7 +16,7 @@ function setTitle(newTitle) {
 }
 
 function setDescription(newDescription) {
-  JPS.bloginfo.description = newDescription; 
+	JPS.bloginfo.description = newDescription;
 }
 
 function setActiveTheme(activeThemeId) {
@@ -75,6 +75,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getDescription: function() {
     return JPS.bloginfo.description;
+  },
+
+  getContactPageURL: function() {
+    return JPS.contact_page_url;
   },
 
   getThemes: function() {

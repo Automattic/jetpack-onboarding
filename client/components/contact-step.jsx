@@ -7,7 +7,8 @@ var React = require('react'),
 
 function getSiteContactState() {
 	return {
-		site_title: SiteStore.getTitle()
+		site_title: SiteStore.getTitle(),
+		contactPageURL: SiteStore.getContactPageURL()
 	};
 }
 
@@ -29,35 +30,49 @@ var ContactPageStep = React.createClass({
 		return getSiteContactState();
 	},
 
-	handleCreateContactPage: function( e ) {
-		this.setState({ contactPage: jQuery(e.currentTarget).val() });
+	handleBuildContact: function( e ) {
+		e.preventDefault();
+		SetupProgressActions.createContactPage();
 	},
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		SetupProgressActions.createContactPage(this.state.contactPage);
+		SetupProgressActions.skipContactPageBuild();
 	},
 
 	render: function() {
-		return (
-			<WelcomeSection id="welcome__layout">
-			
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
-				<h4>Help visitors get in touch, great for buisnesses, blogs and personal sites</h4>
-				<p style={styles.content}>Jetpack site customization tools <small>(requires a free Jetpack connection)</small></p>
+		if (false === this.state.contactPageURL){
+			return(
+				<WelcomeSection id="welcome__layout">
+					<h3>Let's launch <em>{this.state.site_title}</em></h3>
+					<h4>Help visitors get in touch, great for buisnesses, blogs and personal sites</h4>
 
-				<form onSubmit={this.handleSubmit}>
-					<label>
-						<input type="checkbox" name="contact_page" checked="checked" onChange={this.handleCreateContactPage}/> Build a starter "Contact Us" page
-					</label>
-					<br/>
-
-					<p className="submit">
-						<Button color="blue">Next Step &rarr;</Button>
+						<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
+						<br/>
+						<small>(requires a free Jetpack connection)</small>
 					</p>
-				</form>
-			</WelcomeSection>
-		);
+
+					<form style={styles.inline} onSubmit={this.handleBuildContact}>
+						<Button color="green">Yes &rarr;</Button>
+						</form>
+						<form style={styles.inline} onSubmit={this.handleSubmit}>
+						<Button>No Thanks &rarr;</Button>
+					</form>
+				</WelcomeSection>
+			);
+		} else {
+			return(
+				<WelcomeSection id="welcome__layout">
+
+					<h3>Let's launch <em>{this.state.site_title}</em></h3>
+					<h4>Help visitors get in touch, great for buisnesses, blogs and personal sites</h4>
+					<p style={styles.content}>View your starter <a href={this.state.contactPageURL} target="_blank">Contact Us</a> page.
+						<br/>
+						<small>(The form requires a free Jetpack connection)</small>
+					</p>
+				</WelcomeSection>
+			);
+		}
 	}
 });
 
