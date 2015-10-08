@@ -145,9 +145,18 @@ var SetupProgressActions = {
 	},
 
 	createContactPage: function(contactPage) {
-		SiteActions.createContactUsPage(contactPage).done(function() {
-			this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
-		}.bind(this));
+		SpinnerActions.show("Creating Page");
+		return SiteActions.createContactUsPage(contactPage).
+			done( function() {
+				this.completeStep(Paths.CONTACT_PAGE_STEP_SLUG);
+			}.bind(this)).
+			always( function() {
+				SpinnerActions.hide();
+			});
+
+		// done(function() {
+		// 	this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
+		// }.bind(this));
 	},
 
 	skipContactPageBuild: function() {

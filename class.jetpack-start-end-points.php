@@ -5,7 +5,7 @@ class Jetpack_Start_EndPoints {
 	const FIRSTRUN_KEY = 'jps_firstrun';
 	const STARTED_KEY = 'jps_started';
 	const DISABLED_KEY = 'jps_disabled';
-	const CONTACTPAGE_ID = 'jps_contactpage_id';
+	const CONTACTPAGE_ID_KEY = 'jps_contactpage_id';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
 	const VERSION = 10;
@@ -43,9 +43,13 @@ class Jetpack_Start_EndPoints {
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
 		$started = get_option( self::STARTED_KEY, false);
-		$contact_page_id = get_option( self::CONTACTPAGE_ID, false );
-		$contact_page = get_post($contact_page_id);
-		$contact_page_URL = $contact_page->guid;
+		$contact_page_id = get_option( self::CONTACTPAGE_ID_KEY, false );
+
+		if ( $contact_page_id ) {
+			$contact_page_info = self::contact_page_to_json( $contact_page_id );
+		} else {
+			$contact_page_info = null;
+		}
 
 		$jetpack_config = array();
 
@@ -119,6 +123,7 @@ class Jetpack_Start_EndPoints {
 				'layout' => array(
 					'current' => self::get_layout()
 				),
+				'contact_page' => $contact_page_info,
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
@@ -131,7 +136,6 @@ class Jetpack_Start_EndPoints {
 					'manage_pages_url' => admin_url( 'edit.php?post_type=page' )
 				)
 			),
-			'contact_page_url' => $contact_page_URL,
 		);
 	}
 
@@ -388,28 +392,38 @@ class Jetpack_Start_EndPoints {
 	static function build_contact_page() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
-			$jps_contact_us_page = array(
-				'post_title'    => 'Contact Us',
-				'post_content'  => 'Hi There,
-					We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
+		$jps_contact_us_page = array(
+			'post_title'    => 'Contact Us',
+			'post_content'  => 'Hi There,
+				We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
 
-					Albert Einstein Museum<br> 123 Main St,<br> Warwick, RI 02889
-					718.555.0062
+				Albert Einstein Museum<br> 123 Main St,<br> Warwick, RI 02889
+				718.555.0062
 
-					[contact-form][contact-field label=\'Name\' type=\'name\' required=\'1\'/][contact-field label=\'Email\' type=\'email\' required=\'1\'/][contact-field label=\'Comment\' type=\'textarea\' required=\'1\'/][/contact-form]',
-				'post_status'   => 'publish',
-				'post_type'     =>  'page'
-			);
+				[contact-form][contact-field label=\'Name\' type=\'name\' required=\'1\'/][contact-field label=\'Email\' type=\'email\' required=\'1\'/][contact-field label=\'Comment\' type=\'textarea\' required=\'1\'/][/contact-form]',
+			'post_status'   => 'publish',
+			'post_type'     =>  'page'
+		);
 
-			// Insert the page into the database
-			$page_id = wp_insert_post( $jps_contact_us_page );
+		// Insert the page into the database
+		$page_id = wp_insert_post( $jps_contact_us_page );
 
-			if ( 0 !== $page_id ) {
-				update_option( 'jps_contactpage_id', $page_id );
-				wp_send_json_success( $page_id );
-			} else {
-				wp_send_json_error( $page_id );
+		if ( 0 !== $page_id ) {
+			update_option( self::CONTACTPAGE_ID_KEY, $page_id );
+			wp_send_json_success( self::contact_page_to_json( $page_id ) );
+		} else {
+			wp_send_json_error( $page_id );
 		}
+	}
+
+	static function contact_page_to_json( $page_id ) {
+		$contact_page = get_post($page_id);
+
+		return array(
+			'url' => $contact_page->guid,
+			'post_title' => $contact_page->post_title,
+			'post_content' => $contact_page->post_content
+		);
 	}
 
 	static function set_layout() {

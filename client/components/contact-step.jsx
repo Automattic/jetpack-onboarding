@@ -40,24 +40,26 @@ var ContactPageStep = React.createClass({
 		SetupProgressActions.skipContactPageBuild();
 	},
 
+	handleContinue: function( e ) {
+		e.preventDefault();
+		SetupProgressActions.selectNextStep();
+	},
+
 	render: function() {
-		if (false === this.state.contactPageURL){
+		console.log(this.state.contactPageURL);
+		if (!this.state.contactPageURL){
 			return(
 				<WelcomeSection id="welcome__layout">
 					<h3>Let's launch <em>{this.state.site_title}</em></h3>
-					<h4>Help visitors get in touch, great for buisnesses, blogs and personal sites</h4>
+					<h4>Help visitors get in touch, great for businesses, blogs and personal sites</h4>
 
 						<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
 						<br/>
 						<small>(requires a free Jetpack connection)</small>
 					</p>
 
-					<form style={styles.inline} onSubmit={this.handleBuildContact}>
-						<Button color="green">Yes &rarr;</Button>
-						</form>
-						<form style={styles.inline} onSubmit={this.handleSubmit}>
-						<Button>No Thanks &rarr;</Button>
-					</form>
+					<Button color="green" style={{ marginRight: 25 }} onClick={this.handleBuildContact}>Yes &rarr;</Button>
+					<Button onClick={this.handleSubmit}>No Thanks &rarr;</Button>
 				</WelcomeSection>
 			);
 		} else {
@@ -69,6 +71,9 @@ var ContactPageStep = React.createClass({
 					<p style={styles.content}>View your starter <a href={this.state.contactPageURL} target="_blank">Contact Us</a> page.
 						<br/>
 						<small>(The form requires a free Jetpack connection)</small>
+						<p className="submit">
+							<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
+						</p>
 					</p>
 				</WelcomeSection>
 			);

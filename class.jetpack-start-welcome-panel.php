@@ -18,6 +18,7 @@ class Jetpack_Start_WelcomePanel {
 				delete_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
 				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
 				delete_option( Jetpack_Start_EndPoints::DISABLED_KEY );
+				delete_option( Jetpack_Start_EndPoints::CONTACTPAGE_ID_KEY );
 
 				delete_option( 'jetpack_blog_token' );
 				delete_option( 'jetpack_id' );

@@ -105,18 +105,17 @@ var SiteActions = {
 
 	createContactUsPage: function( contactPage ) {
 
-		WPAjax.
+		return WPAjax.
 			post( JPS.site_actions.build_contact_page, { buildContactPage: contactPage } ).
-			fail( function ( msg ) {
+			done( function( page_info ) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE,
+					data: page_info
+				});		
+			}).
+			fail( function( msg ) {
 				FlashActions.error("Error creating contact us page: "+msg);
 			});
-
-		// FlashActions.notice( "Build the contact us page" );
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE
-		});
-
-		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	skipContactPageBuild: function() {
