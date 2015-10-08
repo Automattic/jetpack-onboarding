@@ -122,7 +122,7 @@ var GetStarted = React.createClass({
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
 				<div key="welcome-intro-innerwrapper"  style={this.styles.innerwrapper}>
 					<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
-					<p style={this.styles.subhead}>Would you like help launching your site?</p>
+					<p style={this.styles.subhead}>Would you like help designing your site?</p>
 					<p>
 						<Button style={ m( this.styles.button, this.styles.greenButton ) } onClick={this.handleGetStarted}>Yes</Button>
 					&nbsp;&nbsp;&nbsp;
