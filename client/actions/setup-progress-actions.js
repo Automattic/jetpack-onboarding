@@ -144,15 +144,9 @@ var SetupProgressActions = {
 		}.bind(this));
 	},
 
-	createContactPage: function(layout) {
-		SiteActions.setLayout(layout).done(function() {
-			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
-		}.bind(this));
-	},
-
-	submitContactPageStep: function(layout) {
-		SiteActions.setLayout(layout).done(function() {
-			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
+	createContactPage: function(contactPage) {
+		SiteActions.createContactUsPage(contactPage).done(function() {
+			this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
 		}.bind(this));
 	},
 

@@ -22,6 +22,7 @@ class Jetpack_Start_EndPoints {
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
+			add_action( 'wp_ajax_jps_build_contact_page', array( __CLASS__, 'build_contact_page' ) );
 			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
 			add_action( 'wp_ajax_jps_install_theme', array( __CLASS__, 'install_theme' ) );
 			add_action( 'wp_ajax_jps_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
@@ -367,7 +368,7 @@ class Jetpack_Start_EndPoints {
 
 		$title = esc_html( $_REQUEST['title'] );
 		$description = esc_html( $_REQUEST['description'] );
-		
+
 		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
 		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
 		
@@ -375,6 +376,32 @@ class Jetpack_Start_EndPoints {
 			wp_send_json_success( $title );
 		} else {
 			wp_send_json_error();
+		}
+	}
+
+	static function build_contact_page() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+
+		$jps_contact_us_page = array(
+			'post_title'    => 'Contact Us',
+			'post_content'  => 'Hi There,
+					We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
+
+					Albert Einstein Museum<br> 123 Main St,<br> Warwick, RI 02889
+					718.555.0062
+
+					[contact-form][contact-field label=\'Name\' type=\'name\' required=\'1\'/][contact-field label=\'Email\' type=\'email\' required=\'1\'/][contact-field label=\'Comment\' type=\'textarea\' required=\'1\'/][/contact-form]',
+			'post_status'   => 'publish',
+			'post_type'     =>  'page'
+		);
+
+		// Insert the page into the database
+		$page_id = wp_insert_post( $jps_contact_us_page );
+
+		if ( 0 !== $page_id ) {
+			wp_send_json_success( $page_id );
+		} else {
+			wp_send_json_error( $page_id );
 		}
 	}
 

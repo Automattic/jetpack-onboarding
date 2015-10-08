@@ -5,7 +5,7 @@ var React = require('react'),
 	styles = require('../styles'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
-function getSiteLayoutState() {
+function getSiteContactState() {
 	return {
 		site_title: SiteStore.getTitle()
 	};
@@ -22,20 +22,20 @@ var ContactPageStep = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSiteLayoutState());
-  	},
-
-	getInitialState: function() {
-		return getSiteLayoutState();
+		this.setState(getSiteContactState());
 	},
 
-	handleSetLayout: function( e ) {
-		this.setState({ layout: jQuery(e.currentTarget).val() });
+	getInitialState: function() {
+		return getSiteContactState();
+	},
+
+	handleCreateContactPage: function( e ) {
+		this.setState({ contactPage: jQuery(e.currentTarget).val() });
 	},
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
-		SetupProgressActions.submitLayoutStep(this.state.layout);
+		SetupProgressActions.createContactPage(this.state.contactPage);
 	},
 
 	render: function() {
@@ -48,7 +48,7 @@ var ContactPageStep = React.createClass({
 
 				<form onSubmit={this.handleSubmit}>
 					<label>
-						<input type="checkbox" name="contact_page" checked="checked" onChange={this.handleSetLayout}/> Build a starter "Contact Us" page
+						<input type="checkbox" name="contact_page" checked="checked" onChange={this.handleCreateContactPage}/> Build a starter "Contact Us" page
 					</label>
 					<br/>
 

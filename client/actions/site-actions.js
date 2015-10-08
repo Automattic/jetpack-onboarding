@@ -103,9 +103,20 @@ var SiteActions = {
 	    return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
-	createContactPage: function( contactPage ) {
-		//This is where you need to write ajax code to handle the Contact Us page creation
-		return contactPage; // XXX HACK
+	createContactUsPage: function( contactPage ) {
+
+		WPAjax.
+			post( JPS.site_actions.build_contact_page, { buildContactPage: contactPage } ).
+			fail( function ( msg ) {
+				FlashActions.error("Error creating contact us page: "+msg);
+			});
+
+		// FlashActions.notice( "Build the contact us page" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE
+		});
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	configureJetpack: function(return_to_step) {
