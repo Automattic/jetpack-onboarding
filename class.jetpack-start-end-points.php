@@ -410,6 +410,7 @@ class Jetpack_Start_EndPoints {
 
 		if ( 0 !== $page_id ) {
 			update_option( self::CONTACTPAGE_ID_KEY, $page_id );
+			do_action('jps_contact_page_built');
 			wp_send_json_success( self::contact_page_to_json( $page_id ) );
 		} else {
 			wp_send_json_error( $page_id );
