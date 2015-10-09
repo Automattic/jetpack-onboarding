@@ -59,7 +59,7 @@ var ContactPageStep = React.createClass({
 						<small>(requires a free Jetpack connection)</small>
 					</p>
 
-					<Button color="green" style={{ marginRight: 25 }} onClick={this.handleBuildContact}>Yes</Button>
+					<Button color="green" style={{ marginRight: 15 }} onClick={this.handleBuildContact}>Yes</Button>
 					<Button onClick={this.handleSubmit}>No Thanks</Button>
 				</WelcomeSection>
 			);
