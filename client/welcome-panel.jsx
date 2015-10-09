@@ -24,11 +24,16 @@ module.exports = function() {
 				slug: Paths.LAYOUT_STEP_SLUG,
 				welcomeView: require('./components/layout-step')
 			},
-			{ 
-				name: "Pick a design", 
-				slug: Paths.DESIGN_STEP_SLUG,
-				welcomeView: require('./components/design-step'), 
-			},
+		    {
+			    name: "Contact Info",
+			    slug: Paths.CONTACT_PAGE_STEP_SLUG,
+			    welcomeView: require('./components/contact-step')
+		    },
+		    {
+			    name: "Pick a design",
+			    slug: Paths.DESIGN_STEP_SLUG,
+			    welcomeView: require('./components/design-step')
+		    },
 			{
 				name: 'Enable Jetpack',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,

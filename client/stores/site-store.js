@@ -16,7 +16,7 @@ function setTitle(newTitle) {
 }
 
 function setDescription(newDescription) {
-  JPS.bloginfo.description = newDescription; 
+	JPS.bloginfo.description = newDescription;
 }
 
 function setActiveTheme(activeThemeId) {
@@ -67,6 +67,10 @@ function setJetpackJumpstartActivated() {
   });
 }
 
+function setContactUsPage( pageInfo ) {
+  JPS.steps.contact_page = pageInfo;
+}
+
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
@@ -75,6 +79,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getDescription: function() {
     return JPS.bloginfo.description;
+  },
+
+  getContactPageURL: function() {
+    return JPS.steps.contact_page && JPS.steps.contact_page.url;
   },
 
   getThemes: function() {
@@ -199,6 +207,11 @@ AppDispatcher.register(function(action) {
       setLayout(action.layout);
       SiteStore.emitChange();
       break;
+
+    case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
+      setContactUsPage(action.data);
+      SiteStore.emitChange();
+      break;      
 
     default:
       // no op

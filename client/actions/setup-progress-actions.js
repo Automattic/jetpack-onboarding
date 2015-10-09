@@ -144,6 +144,25 @@ var SetupProgressActions = {
 		}.bind(this));
 	},
 
+	createContactPage: function(contactPage) {
+		SpinnerActions.show("Creating Page");
+		return SiteActions.createContactUsPage(contactPage).
+			done( function() {
+				this.completeStep(Paths.CONTACT_PAGE_STEP_SLUG);
+			}.bind(this)).
+			always( function() {
+				SpinnerActions.hide();
+			});
+
+		// done(function() {
+		// 	this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
+		// }.bind(this));
+	},
+
+	skipContactPageBuild: function() {
+		this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
+	},
+
 	submitJetpackJumpstart: function() {
 		SiteActions.enableJumpstart().done(function() {
 			this.completeStep(Paths.JETPACK_MODULES_STEP_SLUG);

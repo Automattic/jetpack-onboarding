@@ -40,6 +40,13 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
+	setContactPageId: function(contactPageID) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_CONTACT_PAGE_ID,
+			contactPageID: contactPageID
+		});
+	},
+
 	_installTheme: function ( theme ) {
 		if ( ! theme.installed ) {
 			SpinnerActions.show("Installing '"+theme.name+"'");
@@ -101,6 +108,30 @@ var SiteActions = {
 	    });
 
 	    return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
+	createContactUsPage: function( contactPage ) {
+
+		return WPAjax.
+			post( JPS.site_actions.build_contact_page, { buildContactPage: contactPage } ).
+			done( function( page_info ) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE,
+					data: page_info
+				});		
+			}).
+			fail( function( msg ) {
+				FlashActions.error("Error creating contact us page: "+msg);
+			});
+	},
+
+	skipContactPageBuild: function() {
+		// FlashActions.notice( "Build the contact us page" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE
+		});
+
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	configureJetpack: function(return_to_step) {
