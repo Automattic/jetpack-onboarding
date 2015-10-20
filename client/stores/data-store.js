@@ -8,20 +8,6 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 
 var _currentSaves = 0, jpoTimeout, CHANGE_EVENT = 'change';
 
-jQuery(window).on('beforeunload', function() {
-	if(DataStore.isSaving()) {
-		jpoTimeout = setTimeout(function() {
-	        // alert('You stayed');
-	        // noop
-	    }, 1000);
-	    return "Your site changes are still saving.";
-	}
-});
-
-jQuery(window).on('unload', function() {
-	clearTimeout(jpoTimeout);
-});
-
 function incrementSaveCounter() {
 	_currentSaves = _currentSaves + 1;
 }
@@ -46,6 +32,20 @@ var DataStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function() {
 	    this.emit(CHANGE_EVENT);
 	},
+});
+
+jQuery(window).on('beforeunload', function() {
+	if(DataStore.isSaving()) {
+		jpoTimeout = setTimeout(function() {
+	        // alert('You stayed');
+	        // noop
+	    }, 1000);
+	    return "Your site changes are still saving.";
+	}
+});
+
+jQuery(window).on('unload', function() {
+	clearTimeout(jpoTimeout);
 });
 
 AppDispatcher.register(function(action) {

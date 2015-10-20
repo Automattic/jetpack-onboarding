@@ -1,5 +1,5 @@
 var React = require('react'),
-	Button = require('@automattic/dops-react/js/components/button'),
+	Button = require('@automattic/dops-components/client/components/button'),
 	SiteStore = require('../stores/site-store'),
 	WelcomeSection = require('./welcome-section');
 
@@ -75,7 +75,7 @@ var AdvancedSettingsStep = React.createClass({
 						<Button color="blue" href={JPS.steps.advanced_settings.themes_url}>Browse and add themes</Button>
 					</SettingsItem>
 
-					{(SiteStore.getLayout() == 'blog' || SiteStore.getLayout() == 'site-blog') && (
+					{(SiteStore.getLayout() === 'blog' || SiteStore.getLayout() === 'site-blog') && (
 						<SettingsItem title="Create your first blog post">
 							An epic essay or just "Hello World!"
 							<br />

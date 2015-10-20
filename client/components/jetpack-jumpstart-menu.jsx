@@ -1,7 +1,8 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
-	Paths = require('../constants/jetpack-onboarding-paths');
+	Paths = require('../constants/jetpack-onboarding-paths'),
+	Button = require('@automattic/dops-components/client/components/button');
 
 function getJetpackProgress() {
 	return { 
@@ -51,7 +52,7 @@ var JetpackJumpstartMenu = React.createClass({
 				) : (
 					<div>
 						Boost traffic, enhance security, and improve performance with a connection to WordPress.com<br />
-						<a className="button button-primary button-large" style={this.primaryConnectBtn} href="#" onClick={this.handleClickConnect}>Connect to WordPress.com</a>
+						<Button style={this.primaryConnectBtn} onClick={this.handleClickConnect}>Connect to WordPress.com</Button>
 					</div>
 				)}
 				

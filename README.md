@@ -87,9 +87,10 @@ add_action( 'init',  array('JetpackOnboardingTracking', 'track_jpo_usage') );
 
 ```bash
 cd /path/to/jetpack-onboarding
-npm install -g grunt grunt-cli # if you don't have grunt
-npm install                    # install local dependencies
-grunt                          # by default, this watches your JS and SCSS files for changes and automatically rebuilds the client app
+npm install -g gulp # if you don't have it
+npm install         # install local dependencies
+gulp sass           # build the stylesheets
+gulp webpack:build  # build the javascript
 ```
 
 Directory structure:

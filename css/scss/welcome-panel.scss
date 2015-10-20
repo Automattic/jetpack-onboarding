@@ -3,7 +3,9 @@ $very-light-gray: #f5f5f5;
 
 @import 'mixins/breakpoint';
 
-#jps-welcome-panel {
+#jpo-welcome-panel {
+	*, *:before, *:after { box-sizing: border-box; }
+
 	margin-bottom: 20px;
 	.submit {
 		border-radius: 6px;

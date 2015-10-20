@@ -3,7 +3,7 @@ var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	WelcomeSection = require('./welcome-section'),
 	styles = require('../styles'),
-	Button = require('@automattic/dops-react/js/components/button'),
+	Button = require('@automattic/dops-components/client/components/button'),
 	SetupProgressActions = require('../actions/setup-progress-actions');
 
 function getSiteTitleState() {

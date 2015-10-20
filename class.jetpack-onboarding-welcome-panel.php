@@ -58,16 +58,17 @@ class Jetpack_Onboarding_WelcomePanel {
 			wp_register_script( 'react', plugins_url( 'js/react-0.13.3.min.js', __FILE__ ), array());
 			wp_enqueue_script( 'react' );
 
-			wp_register_script( 'ie-shims', plugins_url( 'js/ie-shims.js', __FILE__ ), array( 'react' ));
+			wp_register_script( 'ie-shims', plugins_url( 'dist/ie-shims.js', __FILE__ ), array( 'react' ));
 			$wp_scripts->add_data( 'ie-shims', 'conditional', 'lt IE 9' );
 			
 			//Core JS app
-			wp_register_script( 'jetpack-onboarding', plugins_url( 'js/jetpack-onboarding.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims', 'react' ) );
+			wp_register_script( 'jetpack-onboarding', plugins_url( 'dist/jetpack-onboarding.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims', 'react' ) );
 			wp_localize_script( 'jetpack-onboarding', 'JPS', $jpo_vars );
 			wp_enqueue_script( 'jetpack-onboarding' );
 
 			// CSS
-			wp_enqueue_style( 'jetpack-onboarding', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
+			wp_enqueue_style( 'jetpack-onboarding-components', plugins_url( 'dist/jetpack-onboarding.css', __FILE__ ), array( 'wp-admin' ) );
+			wp_enqueue_style( 'jetpack-onboarding-panel', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
 			wp_enqueue_style( 'ie8' );
 		}
 	}

@@ -1,7 +1,7 @@
 var React = require('react'),
 	WelcomeMenu = require('./welcome-menu'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
-	Reset = require('@automattic/dops-react/js/components/reset'),
+	// Reset = require('@automattic/dops-components/client/components/reset'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Flash = require('./flash'),
 	styles = require('../styles'),
@@ -105,7 +105,7 @@ var WelcomeWidget = React.createClass({
 
   	render: function() {
   		return (
-			<Reset css={styles.css}>
+			<div>
 				{this._renderDebug()}
 				<div style={this.styles.wrapper}>
 					{this._renderSpinner()}
@@ -117,7 +117,7 @@ var WelcomeWidget = React.createClass({
 					<WelcomeMenu style={this.styles.menu} clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 					<div className="clear"></div>
 				</div>
-			</Reset>
+			</div>
 		);
 	},
 

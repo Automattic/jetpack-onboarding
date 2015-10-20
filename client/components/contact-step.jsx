@@ -1,6 +1,6 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
-	Button = require('@automattic/dops-react/js/components/button'),
+	Button = require('@automattic/dops-components/client/components/button'),
 	WelcomeSection = require('./welcome-section'),
 	styles = require('../styles'),
 	SetupProgressActions = require('../actions/setup-progress-actions');

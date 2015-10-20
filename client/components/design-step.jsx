@@ -5,7 +5,7 @@ var React = require('react'),
 	WelcomeSection = require('./welcome-section'),
 	ContentBox = require('./content-box'),
 	styles = require('../styles'),
-	Button = require('@automattic/dops-react/js/components/button');
+	Button = require('@automattic/dops-components/client/components/button');
 
 function getThemeState() {
 	return { themes: SiteStore.getThemes(), site_title: SiteStore.getTitle() };

@@ -9,7 +9,7 @@ var React = require('react'),
 	WelcomeSection = require('./welcome-section'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	SpinnerStore = require('../stores/spinner-store'),
-	Button = require('@automattic/dops-react/js/components/button');
+	Button = require('@automattic/dops-components/client/components/button');
 
 
 var JetpackLogo = React.createClass({

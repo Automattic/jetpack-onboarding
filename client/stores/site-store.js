@@ -21,7 +21,7 @@ function setDescription(newDescription) {
 
 function setActiveTheme(activeThemeId) {
   JPS.themes.forEach( function( theme ) {
-    if ( theme.id == activeThemeId ) {
+    if ( theme.id === activeThemeId ) {
       theme.active = true;
     } else {
       theme.active = false;
@@ -49,7 +49,7 @@ function setJetpackModuleDectivated(slug) {
 
 function setJetpackAdditionalModules(modules) {
   JPS.jetpack.additional_modules = _.filter(modules, function(module) {
-    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function(mod){return mod.slug;}), module.slug) == -1;
+    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function(mod){return mod.slug;}), module.slug) === -1;
   });
 }
 

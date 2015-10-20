@@ -1,8 +1,8 @@
 var React = require('react'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Button = require('@automattic/dops-react/js/components/button'),
-	m = require('@automattic/dops-react/js/utils/m'),
+	Button = require('@automattic/dops-components/client/components/button'),
+	m = require('@automattic/dops-components/client/utils/m'),
 	Radium = require('radium');
 
 function getSetupState() {

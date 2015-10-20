@@ -1,6 +1,6 @@
 var React = require('react'),
 	Radium = require('radium'),
-	ProgressBar = require('@automattic/dops-react/js/components/progress-bar'),
+	ProgressBar = require('@automattic/dops-components/client/components/progress-bar'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
 	Dashicon = require('./dashicon');
 
@@ -94,7 +94,7 @@ var WelcomeMenu = React.createClass({
 			var title, current, menuView, iconName;
 
 			if ( this.props.clickable && this.props.currentStep ) {
-				current = ( this.props.currentStep.slug == step.slug );
+				current = ( this.props.currentStep.slug === step.slug );
 			}
 
 			if ( !step.static && this.props.clickable ) {
