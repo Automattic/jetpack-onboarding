@@ -1,6 +1,6 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	JPSConstants = require('../constants/jetpack-start-constants'),
-	Paths = require('../constants/jetpack-start-paths'),
+	JPSConstants = require('../constants/jetpack-onboarding-constants'),
+	Paths = require('../constants/jetpack-onboarding-paths'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
 	WPAjax = require('../utils/wp-ajax'),

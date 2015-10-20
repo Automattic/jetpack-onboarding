@@ -1,7 +1,7 @@
 var React = require('react'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
-	Paths = require('../constants/jetpack-start-paths');
+	Paths = require('../constants/jetpack-onboarding-paths');
 
 function getJetpackProgress() {
 	return { 

@@ -43,7 +43,7 @@ var GetStarted = React.createClass({
 	styles: {
 		wrapper: {
 			textAlign: 'center',
-			// backgroundImage: 'url('+JPS.base_url+'/img/jps-welcome.png)',
+			// backgroundImage: 'url('+JPS.base_url+'/img/jpo-welcome.png)',
 			backgroundRepeat: 'no-repeat',
 			backgroundPosition: 'center bottom',
 			backgroundSize: '520px auto',

@@ -1,6 +1,6 @@
 var React = require('react'),
     WelcomeWidget = require('./components/welcome-widget'),
-    Paths = require('./constants/jetpack-start-paths'),
+    Paths = require('./constants/jetpack-onboarding-paths'),
     SetupProgressStore = require('./stores/setup-progress-store');
 
 module.exports = function() {
@@ -50,7 +50,7 @@ module.exports = function() {
 		]);
 
         React.render(
-          React.createElement(WelcomeWidget, {}), document.getElementById('jps-welcome-panel')
+          React.createElement(WelcomeWidget, {}), document.getElementById('jpo-welcome-panel')
         );
     });
 };

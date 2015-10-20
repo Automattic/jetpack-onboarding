@@ -91,8 +91,8 @@ module.exports = function(grunt) {
 				// ]
 			},
 			app: {
-				src:        'client/jetpack-start.js',
-				dest:       'js/jetpack-start.js'
+				src:        'client/jetpack-onboarding.js',
+				dest:       'js/jetpack-onboarding.js'
 			},
 			shims: {
 				src: 		'client/ie-shims.js',

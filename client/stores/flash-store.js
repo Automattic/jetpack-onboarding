@@ -1,6 +1,6 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter,
-	JPSConstants = require('../constants/jetpack-start-constants');
+	JPSConstants = require('../constants/jetpack-onboarding-constants');
 
 var CHANGE_EVENT = 'change';
 var message, severity;

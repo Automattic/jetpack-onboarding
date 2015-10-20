@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	JPSConstants = require('../constants/jetpack-start-constants');
+	JPSConstants = require('../constants/jetpack-onboarding-constants');
 
 var FlashActions = {
 	notice: function(msg) {

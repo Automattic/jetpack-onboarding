@@ -1,6 +1,6 @@
 <?php
 
-class Jetpack_Start_WelcomePanel {
+class Jetpack_Onboarding_WelcomePanel {
 
 	const CHANGE_TITLE_KEY = 'change-title';
 
@@ -13,12 +13,12 @@ class Jetpack_Start_WelcomePanel {
 		if( $screen->base == 'dashboard' ) {
 
 			//reset data
-			if ( isset( $_GET['jps_reset'] ) ) {
-				delete_option( Jetpack_Start_EndPoints::STEP_STATUS_KEY );
-				delete_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
-				delete_option( Jetpack_Start_EndPoints::STARTED_KEY );
-				delete_option( Jetpack_Start_EndPoints::DISABLED_KEY );
-				delete_option( Jetpack_Start_EndPoints::CONTACTPAGE_ID_KEY );
+			if ( isset( $_GET['jpo_reset'] ) ) {
+				delete_option( Jetpack_Onboarding_EndPoints::STEP_STATUS_KEY );
+				delete_option( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY );
+				delete_option( Jetpack_Onboarding_EndPoints::STARTED_KEY );
+				delete_option( Jetpack_Onboarding_EndPoints::DISABLED_KEY );
+				delete_option( Jetpack_Onboarding_EndPoints::CONTACTPAGE_ID_KEY );
 
 				delete_option( 'jetpack_blog_token' );
 				delete_option( 'jetpack_id' );
@@ -37,11 +37,11 @@ class Jetpack_Start_WelcomePanel {
 				delete_option( 'jetpack_auto_installed' );
 				delete_transient( 'jetpack_register'    );
 
-				wp_redirect(remove_query_arg('jps_reset'));
+				wp_redirect(remove_query_arg('jpo_reset'));
 				die();
 			}
 
-			if ( get_option( Jetpack_Start_EndPoints::DISABLED_KEY, false ) ) {
+			if ( get_option( Jetpack_Onboarding_EndPoints::DISABLED_KEY, false ) ) {
 				return;
 			}
 
@@ -50,7 +50,7 @@ class Jetpack_Start_WelcomePanel {
 			add_action( 'welcome_panel', array( __CLASS__, 'wp_welcome_panel' ) );
 
 			// vars to inject into javascript
-			$jps_vars = Jetpack_Start_EndPoints::js_vars();
+			$jpo_vars = Jetpack_Onboarding_EndPoints::js_vars();
 
 			//IE-only shims
 			global $wp_scripts;
@@ -62,23 +62,23 @@ class Jetpack_Start_WelcomePanel {
 			$wp_scripts->add_data( 'ie-shims', 'conditional', 'lt IE 9' );
 			
 			//Core JS app
-			wp_register_script( 'jetpack-start', plugins_url( 'js/jetpack-start.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims', 'react' ) );
-			wp_localize_script( 'jetpack-start', 'JPS', $jps_vars );
-			wp_enqueue_script( 'jetpack-start' );
+			wp_register_script( 'jetpack-onboarding', plugins_url( 'js/jetpack-onboarding.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims', 'react' ) );
+			wp_localize_script( 'jetpack-onboarding', 'JPS', $jpo_vars );
+			wp_enqueue_script( 'jetpack-onboarding' );
 
 			// CSS
-			wp_enqueue_style( 'jetpack-start', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
+			wp_enqueue_style( 'jetpack-onboarding', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
 			wp_enqueue_style( 'ie8' );
 		}
 	}
 
 	static function wp_welcome_panel() {
-		if ( false === get_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, false ) ) {
-			update_option( Jetpack_Start_EndPoints::FIRSTRUN_KEY, true );
-			do_action( Jetpack_Start_EndPoints::FIRSTRUN_KEY );
+		if ( false === get_option( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY, false ) ) {
+			update_option( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY, true );
+			do_action( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY );
 		}
 
-		echo "<div id='jps-welcome-panel'>Loading Welcome Wizard</div>";
+		echo "<div id='jpo-welcome-panel'>Loading Welcome Wizard</div>";
 	}
 }
 

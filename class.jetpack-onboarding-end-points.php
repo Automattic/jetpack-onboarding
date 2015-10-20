@@ -1,11 +1,11 @@
 <?php
-class Jetpack_Start_EndPoints { 
-	const AJAX_NONCE = 'jps-ajax';
-	const STEP_STATUS_KEY = 'jps_step_statuses';
-	const FIRSTRUN_KEY = 'jps_firstrun';
-	const STARTED_KEY = 'jps_started';
-	const DISABLED_KEY = 'jps_disabled';
-	const CONTACTPAGE_ID_KEY = 'jps_contactpage_id';
+class Jetpack_Onboarding_EndPoints { 
+	const AJAX_NONCE = 'jpo-ajax';
+	const STEP_STATUS_KEY = 'jpo_step_statuses';
+	const FIRSTRUN_KEY = 'jpo_firstrun';
+	const STARTED_KEY = 'jpo_started';
+	const DISABLED_KEY = 'jpo_disabled';
+	const CONTACTPAGE_ID_KEY = 'jpo_contactpage_id';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
 	const VERSION = 11;
@@ -21,22 +21,22 @@ class Jetpack_Start_EndPoints {
 
 	static function init_ajax() {
 		if ( is_admin() ) {
-			add_action( 'wp_ajax_jps_set_title', array( __CLASS__, 'set_title' ) );
-			add_action( 'wp_ajax_jps_set_layout', array( __CLASS__, 'set_layout' ) );
-			add_action( 'wp_ajax_jps_build_contact_page', array( __CLASS__, 'build_contact_page' ) );
-			add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
-			add_action( 'wp_ajax_jps_install_theme', array( __CLASS__, 'install_theme' ) );
-			add_action( 'wp_ajax_jps_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
-			add_action( 'wp_ajax_jps_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
-			add_action( 'wp_ajax_jps_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
-			add_action( 'wp_ajax_jps_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
-			add_action( 'wp_ajax_jps_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
-			add_action( 'wp_ajax_jps_step_skip', array( __CLASS__, 'step_skip' ) );
-			add_action( 'wp_ajax_jps_step_view', array( __CLASS__, 'step_view' ) );
-			add_action( 'wp_ajax_jps_step_complete', array( __CLASS__, 'step_complete' ) );
-			add_action( 'wp_ajax_jps_started', array( __CLASS__, 'started' ) );
-			add_action( 'wp_ajax_jps_disabled', array( __CLASS__, 'disabled' ) );
-			add_action( 'wp_ajax_jps_reset_data', array( __CLASS__, 'reset_data' ) );
+			add_action( 'wp_ajax_jpo_set_title', array( __CLASS__, 'set_title' ) );
+			add_action( 'wp_ajax_jpo_set_layout', array( __CLASS__, 'set_layout' ) );
+			add_action( 'wp_ajax_jpo_build_contact_page', array( __CLASS__, 'build_contact_page' ) );
+			add_action( 'wp_ajax_jpo_set_theme', array( __CLASS__, 'set_theme' ) );
+			add_action( 'wp_ajax_jpo_install_theme', array( __CLASS__, 'install_theme' ) );
+			add_action( 'wp_ajax_jpo_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
+			add_action( 'wp_ajax_jpo_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
+			add_action( 'wp_ajax_jpo_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
+			add_action( 'wp_ajax_jpo_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
+			add_action( 'wp_ajax_jpo_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
+			add_action( 'wp_ajax_jpo_step_skip', array( __CLASS__, 'step_skip' ) );
+			add_action( 'wp_ajax_jpo_step_view', array( __CLASS__, 'step_view' ) );
+			add_action( 'wp_ajax_jpo_step_complete', array( __CLASS__, 'step_complete' ) );
+			add_action( 'wp_ajax_jpo_started', array( __CLASS__, 'started' ) );
+			add_action( 'wp_ajax_jpo_disabled', array( __CLASS__, 'disabled' ) );
+			add_action( 'wp_ajax_jpo_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
 	}
 
@@ -87,33 +87,33 @@ class Jetpack_Start_EndPoints {
 			0, self::MAX_THEMES);
 
 		return array(
-			'base_url' => JETPACK_START_BASE_URL,
+			'base_url' => JETPACK_ONBOARDING_BASE_URL,
 			'site_url' => site_url(),
-			'nonce' => wp_create_nonce( Jetpack_Start_EndPoints::AJAX_NONCE ),
+			'nonce' => wp_create_nonce( Jetpack_Onboarding_EndPoints::AJAX_NONCE ),
 			'debug' => WP_DEBUG ? true : false,
 			'bloginfo' => array(
 				'name' => wp_kses_decode_entities(stripslashes(get_bloginfo('name'))),
 				'description' => wp_kses_decode_entities(stripslashes(get_bloginfo('description')))
 			),
 			'site_actions' => array(
-				'set_title' => 'jps_set_title',
-				'set_layout' => 'jps_set_layout',
-				'set_theme' => 'jps_set_theme',
-				'install_theme' => 'jps_install_theme',
-				'get_popular_themes' => 'jps_get_popular_themes',
-				'configure_jetpack' => 'jps_configure_jetpack',
-				'activate_jetpack_modules' => 'jps_activate_jetpack_modules',
-				'deactivate_jetpack_modules' => 'jps_deactivate_jetpack_modules',
-				'list_jetpack_modules' => 'jps_list_jetpack_modules',
-				'reset_data' => 'jps_reset_data',
-				'build_contact_page' => 'jps_build_contact_page'
+				'set_title' => 'jpo_set_title',
+				'set_layout' => 'jpo_set_layout',
+				'set_theme' => 'jpo_set_theme',
+				'install_theme' => 'jpo_install_theme',
+				'get_popular_themes' => 'jpo_get_popular_themes',
+				'configure_jetpack' => 'jpo_configure_jetpack',
+				'activate_jetpack_modules' => 'jpo_activate_jetpack_modules',
+				'deactivate_jetpack_modules' => 'jpo_deactivate_jetpack_modules',
+				'list_jetpack_modules' => 'jpo_list_jetpack_modules',
+				'reset_data' => 'jpo_reset_data',
+				'build_contact_page' => 'jpo_build_contact_page'
 			),
 			'step_actions' => array(
-				'start' => 'jps_started',
-				'disable' => 'jps_disabled',
-				'view' => 'jps_step_view',
-				'skip' => 'jps_step_skip',
-				'complete' => 'jps_step_complete'
+				'start' => 'jpo_started',
+				'disable' => 'jpo_disabled',
+				'view' => 'jpo_step_view',
+				'skip' => 'jpo_step_skip',
+				'complete' => 'jpo_step_complete'
 			),
 			'jetpack' => $jetpack_config,
 			'themes' => $themes,
@@ -162,7 +162,7 @@ class Jetpack_Start_EndPoints {
 	}
 
 	static function get_popular_themes() {
-		// add_action( 'wp_ajax_jps_set_theme', array( __CLASS__, 'set_theme' ) );
+		// add_action( 'wp_ajax_jpo_set_theme', array( __CLASS__, 'set_theme' ) );
 		global $theme_field_defaults;
 		$args = array(
 			'browse' => 'popular',
@@ -322,27 +322,27 @@ class Jetpack_Start_EndPoints {
 	static function started() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::STARTED_KEY, true );
-		do_action('jps_started');
+		do_action('jpo_started');
 		wp_send_json_success( 'true' );
 	}
 
 	static function disabled() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::DISABLED_KEY, true );
-		do_action('jps_disabled');
+		do_action('jpo_disabled');
 		wp_send_json_success( 'true' );
 	}
 
 	static function step_view() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		do_action('jps_step_viewed', $_REQUEST['step']);
+		do_action('jpo_step_viewed', $_REQUEST['step']);
 		wp_send_json_success( 'true' );
 	}
 
 	static function step_skip() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		$result = self::update_step_status($_REQUEST['step'], 'skipped', true);
-		do_action('jps_step_skipped', $_REQUEST['step']);
+		do_action('jpo_step_skipped', $_REQUEST['step']);
 		wp_send_json_success( $result );
 	}
 
@@ -357,7 +357,7 @@ class Jetpack_Start_EndPoints {
 			$data = null;
 		}
 
-		do_action('jps_step_complete', $_REQUEST['step'], $data);
+		do_action('jpo_step_complete', $_REQUEST['step'], $data);
 		wp_send_json_success( $result );
 	}
 
@@ -392,7 +392,7 @@ class Jetpack_Start_EndPoints {
 	static function build_contact_page() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
-		$jps_contact_us_page = array(
+		$jpo_contact_us_page = array(
 			'post_title'    => 'Contact Us',
 			'post_content'  => 'Hi There,
 We are looking forward to hearing from you. Please feel free to get in touch via the form below, we will get back to you as soon as possible.
@@ -409,11 +409,11 @@ Warwick, RI 02889
 		);
 
 		// Insert the page into the database
-		$page_id = wp_insert_post( $jps_contact_us_page );
+		$page_id = wp_insert_post( $jpo_contact_us_page );
 
 		if ( 0 !== $page_id ) {
 			update_option( self::CONTACTPAGE_ID_KEY, $page_id );
-			do_action('jps_contact_page_built');
+			do_action('jpo_contact_page_built');
 			wp_send_json_success( self::contact_page_to_json( $page_id ) );
 		} else {
 			wp_send_json_error( $page_id );

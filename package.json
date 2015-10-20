@@ -1,5 +1,5 @@
 {
-  "name": "jetpack-start",
+  "name": "jetpack-onboarding",
   "version": "0.1.0",
   "devDependencies": {
     "@automattic/dops-react": "git+https://github.com/Automattic/dops-react.git",
@@ -33,9 +33,6 @@
     "transform": [
       "browserify-shim"
     ]
-  },
-  "browser": {
-    "backbone-react": "./vendor/backbone-react-component-min.js"
   },
   "envify": {
     "NODE_ENV": "production"

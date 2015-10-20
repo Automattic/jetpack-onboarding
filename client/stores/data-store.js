@@ -1,16 +1,16 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	EventEmitter = require('events').EventEmitter,
-	JPSConstants = require('../constants/jetpack-start-constants');
+	JPSConstants = require('../constants/jetpack-onboarding-constants');
 
 /*
  * This is a refcounted save monitor which warns if you try to leave the page while the data is still saving
  */
 
-var _currentSaves = 0, jpsTimeout, CHANGE_EVENT = 'change';
+var _currentSaves = 0, jpoTimeout, CHANGE_EVENT = 'change';
 
 jQuery(window).on('beforeunload', function() {
 	if(DataStore.isSaving()) {
-		jpsTimeout = setTimeout(function() {
+		jpoTimeout = setTimeout(function() {
 	        // alert('You stayed');
 	        // noop
 	    }, 1000);
@@ -19,7 +19,7 @@ jQuery(window).on('beforeunload', function() {
 });
 
 jQuery(window).on('unload', function() {
-	clearTimeout(jpsTimeout);
+	clearTimeout(jpoTimeout);
 });
 
 function incrementSaveCounter() {

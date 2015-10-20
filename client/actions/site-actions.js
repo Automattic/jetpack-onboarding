@@ -1,5 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
-	JPSConstants = require('../constants/jetpack-start-constants'),
+	JPSConstants = require('../constants/jetpack-onboarding-constants'),
 	SiteStore = require('../stores/site-store'),
 	FlashActions = require('./flash-actions.js'),
 	SpinnerActions = require('./spinner-actions.js'),
