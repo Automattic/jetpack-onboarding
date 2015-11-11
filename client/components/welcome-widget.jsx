@@ -1,5 +1,4 @@
 var React = require('react'),
-	WelcomeMenu = require('./welcome-menu'),
 	SetupProgressStore = require('../stores/setup-progress-store'),
 	// Reset = require('@automattic/dops-components/client/components/reset'),
 	SetupProgressActions = require('../actions/setup-progress-actions'),
@@ -114,7 +113,6 @@ var WelcomeWidget = React.createClass({
 						{this._renderSection()}
 					</div>
 
-					<WelcomeMenu style={this.styles.menu} clickable={!this.state.newUser} currentStep={this.state.currentStep} allSteps={this.state.allSteps} progressPercent={this.state.progressPercent}/>
 					<div className="clear"></div>
 				</div>
 			</div>
