@@ -47,38 +47,45 @@ var ContactPageStep = React.createClass({
 	},
 
 	render: function() {
-		if ( ! this.state.contactPageURL ) {
-			return(
-				<WelcomeSection id="welcome__layout">
-					<h3>Let's launch <em>{this.state.site_title}</em></h3>
-					<h4>Help visitors get in touch, great for businesses, blogs and personal sites</h4>
+		return(
+			<WelcomeSection id="welcome__layout">
+				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h4>Help visitors get in touch, great for businesses, blogs and personal sites</h4>
 
-					<img style={styles.screenshot} src={this.state.contactPageScreenshot} />
-					<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
-						<br/>
-						<small>(requires a free Jetpack connection)</small>
-					</p>
+				{ this.state.contactPageURL ? 
+					(this._renderWithContactPage()) : 
+					(this._renderWithoutContactPage())
+				}
+			</WelcomeSection>
+		);
+	},
 
-					<Button color="green" style={{ marginRight: 15 }} onClick={this.handleBuildContact}>Yes</Button>
-					<Button onClick={this.handleSubmit}>No Thanks</Button>
-				</WelcomeSection>
-			);
-		} else {
-			return(
-				<WelcomeSection id="welcome__layout">
+	_renderWithContactPage: function() {
+		return (
+			<div>
+				View your starter <a href={this.state.contactPageURL} target="_blank">Contact Us</a> page.
+				<br/>
+				<small>(The form requires a free Jetpack connection)</small>
+				<p className="submit">
+					<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
+				</p>
+			</div>
+		);
+	},
 
-					<h3>Let's launch <em>{this.state.site_title}</em></h3>
-					<h4>Help visitors get in touch, great for buisnesses, blogs and personal sites</h4>
-					<p style={styles.content}>View your starter <a href={this.state.contactPageURL} target="_blank">Contact Us</a> page.
-						<br/>
-						<small>(The form requires a free Jetpack connection)</small>
-						<p className="submit">
-							<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
-						</p>
-					</p>
-				</WelcomeSection>
-			);
-		}
+	_renderWithoutContactPage: function() {
+		return (
+			<div>
+				<img style={styles.screenshot} src={this.state.contactPageScreenshot} />
+				<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
+					<br/>
+					<small>(requires a free Jetpack connection)</small>
+				</p>
+
+				<Button color="green" style={{ marginRight: 15 }} onClick={this.handleBuildContact}>Yes</Button>
+				<Button onClick={this.handleSubmit}>No Thanks</Button>
+			</div>
+		);
 	}
 });
 

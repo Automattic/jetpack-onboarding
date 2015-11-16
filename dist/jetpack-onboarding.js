@@ -24120,101 +24120,90 @@
 		},
 	
 		render: function render() {
-			if (!this.state.contactPageURL) {
-				return React.createElement(
-					WelcomeSection,
-					{ id: 'welcome__layout' },
+			return React.createElement(
+				WelcomeSection,
+				{ id: 'welcome__layout' },
+				React.createElement(
+					'h3',
+					null,
+					'Let\'s launch ',
 					React.createElement(
-						'h3',
+						'em',
 						null,
-						'Let\'s launch ',
-						React.createElement(
-							'em',
-							null,
-							this.state.site_title
-						)
-					),
-					React.createElement(
-						'h4',
-						null,
-						'Help visitors get in touch, great for businesses, blogs and personal sites'
-					),
-					React.createElement('img', { style: styles.screenshot, src: this.state.contactPageScreenshot }),
-					React.createElement(
-						'p',
-						{ style: styles.content },
-						'Build a ',
-						React.createElement(
-							'em',
-							null,
-							'starter'
-						),
-						' "Contact Us" page?',
-						React.createElement('br', null),
-						React.createElement(
-							'small',
-							null,
-							'(requires a free Jetpack connection)'
-						)
-					),
+						this.state.site_title
+					)
+				),
+				React.createElement(
+					'h4',
+					null,
+					'Help visitors get in touch, great for businesses, blogs and personal sites'
+				),
+				this.state.contactPageURL ? this._renderWithContactPage() : this._renderWithoutContactPage()
+			);
+		},
+	
+		_renderWithContactPage: function _renderWithContactPage() {
+			return React.createElement(
+				'div',
+				null,
+				'View your starter ',
+				React.createElement(
+					'a',
+					{ href: this.state.contactPageURL, target: '_blank' },
+					'Contact Us'
+				),
+				' page.',
+				React.createElement('br', null),
+				React.createElement(
+					'small',
+					null,
+					'(The form requires a free Jetpack connection)'
+				),
+				React.createElement(
+					'p',
+					{ className: 'submit' },
 					React.createElement(
 						Button,
-						{ color: 'green', style: { marginRight: 15 }, onClick: this.handleBuildContact },
-						'Yes'
-					),
-					React.createElement(
-						Button,
-						{ onClick: this.handleSubmit },
-						'No Thanks'
+						{ color: 'blue', onClick: this.handleContinue },
+						'Next Step →'
 					)
-				);
-			} else {
-				return React.createElement(
-					WelcomeSection,
-					{ id: 'welcome__layout' },
+				)
+			);
+		},
+	
+		_renderWithoutContactPage: function _renderWithoutContactPage() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement('img', { style: styles.screenshot, src: this.state.contactPageScreenshot }),
+				React.createElement(
+					'p',
+					{ style: styles.content },
+					'Build a ',
 					React.createElement(
-						'h3',
+						'em',
 						null,
-						'Let\'s launch ',
-						React.createElement(
-							'em',
-							null,
-							this.state.site_title
-						)
+						'starter'
 					),
+					' "Contact Us" page?',
+					React.createElement('br', null),
 					React.createElement(
-						'h4',
+						'small',
 						null,
-						'Help visitors get in touch, great for buisnesses, blogs and personal sites'
-					),
-					React.createElement(
-						'p',
-						{ style: styles.content },
-						'View your starter ',
-						React.createElement(
-							'a',
-							{ href: this.state.contactPageURL, target: '_blank' },
-							'Contact Us'
-						),
-						' page.',
-						React.createElement('br', null),
-						React.createElement(
-							'small',
-							null,
-							'(The form requires a free Jetpack connection)'
-						),
-						React.createElement(
-							'p',
-							{ className: 'submit' },
-							React.createElement(
-								Button,
-								{ color: 'blue', onClick: this.handleContinue },
-								'Next Step →'
-							)
-						)
+						'(requires a free Jetpack connection)'
 					)
-				);
-			}
+				),
+				React.createElement(
+					Button,
+					{ color: 'green', style: { marginRight: 15 }, onClick: this.handleBuildContact },
+					'Yes'
+				),
+				React.createElement(
+					Button,
+					{ onClick: this.handleSubmit },
+					'No Thanks'
+				)
+			);
 		}
 	});
 	
