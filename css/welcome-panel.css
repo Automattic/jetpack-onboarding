@@ -37,6 +37,9 @@
     margin: 0;
     font-size: 20px; }
 
+#welcome__site-title input {
+  width: 100%; }
+
 .welcome__content_box {
   background: white;
   margin: 10px;
