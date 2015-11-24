@@ -54,7 +54,8 @@
 .welcome__section h4 {
   border-bottom: 1px #ddd solid; }
 
-#welcome__stats a.skip, #welcome__traffic a.skip {
+#welcome__stats a.skip,
+#welcome__traffic a.skip {
   margin-left: 0; }
 
 .welcome__helper {
@@ -70,15 +71,12 @@
     border: 1px solid #3592b6; }
   #welcome__design .theme-browser .theme-name {
     padding-right: 0px; }
-  @media (min-width: 782px) {
-    #welcome__design .theme-browser .theme {
-      width: 30%; } }
-  @media (max-width: 600px) {
-    #welcome__design .theme-browser .theme {
-      display: block;
-      float: none; } }
-  #welcome__design .theme-browser * {
-    box-sizing: content-box; }
+  #welcome__design .theme-browser .theme {
+    display: block;
+    float: none; }
+    @media (min-width: 661px) {
+      #welcome__design .theme-browser .theme {
+        width: 30%; } }
   #welcome__design .theme-browser h3 {
     line-height: 1.4em;
     text-align: left !important; }

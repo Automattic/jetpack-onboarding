@@ -26,10 +26,10 @@ var SkipButton = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSetupProgress());
-  	},
+		this.setState(getSetupProgress());
+	},
 
-  	getInitialState: function() {
+	getInitialState: function() {
 		return getSetupProgress();
 	},
 

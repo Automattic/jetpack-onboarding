@@ -13,7 +13,7 @@ var stepShape = React.PropTypes.shape({
  * The menu which allows the user to switch steps
  **/
 var WelcomeMenu = React.createClass({
-	
+
 	propTypes: {
 		currentStep: stepShape.isRequired,
 		clickable: React.PropTypes.bool,
@@ -82,7 +82,7 @@ var WelcomeMenu = React.createClass({
 
 	selectStep: function(e) {
 		e.preventDefault();
-		
+
 		var slug = jQuery(e.currentTarget).data('step-slug');
 
 		SetupProgressActions.setCurrentStep(slug);
@@ -106,7 +106,7 @@ var WelcomeMenu = React.createClass({
 			if ( step.menuView && this.props.clickable ) {
 				menuView = <step.menuView/>;
 			}
-			
+
 			iconName = step.completed ? 'yes' : 'arrow-right-alt2';
 
 			return (
@@ -126,7 +126,7 @@ var WelcomeMenu = React.createClass({
 						<ProgressBar style={{ float: 'left'}} progressPercent={this.props.progressPercent}/>
 					</div>
 				</h3>
-				
+
 				<ol style={this.styles.list}>
 					{menuItems}
 				</ol>

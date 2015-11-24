@@ -24,8 +24,8 @@ var SiteTitleStep = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSiteTitleState());
-  	},
+		this.setState(getSiteTitleState());
+	},
 
 	getInitialState: function() {
 		return getSiteTitleState();
@@ -48,7 +48,7 @@ var SiteTitleStep = React.createClass({
 		return (
 
 			<WelcomeSection id="welcome__site-title">
-				<h3>Let's launch your new website</h3>
+				<h3>Let&apos;s launch your new website</h3>
 				<h4>Enter a Title and Description</h4>
 				<p style={styles.content}>
 					Make your site stand out with a catchy name.
@@ -59,18 +59,16 @@ var SiteTitleStep = React.createClass({
 							<tr>
 								<th><label htmlFor="site_title">Site Title</label></th>
 								<td>
-									<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title}
-					       placeholder="Site Title (this can be changed later)" required/>
-					       			<p className="description">The name of your site. This title appears at the top of pages and in search results.</p>
-					       		</td>
-					      	</tr>
-					      	<tr>
+									<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={this.handleChangeTitle} value={this.state.title} placeholder="Site Title (this can be changed later)" required />
+									<p className="description">The name of your site. This title appears at the top of pages and in search results.</p>
+								</td>
+							</tr>
+							<tr>
 								<th><label htmlFor="site_description">Site Description</label></th>
 								<td>
-									<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description}
-					       placeholder="Site Description" required/>
-					       			<p className="description">A motto or tagline. This appears below the title on your site, and next to the title in search results. Try to be brief and descriptive, e.g. "Your online bait and tackle store"</p>
-					       		</td>
+									<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={this.handleChangeDescription} value={this.state.description} placeholder="Site Description" required />
+									<p className="description">A motto or tagline. This appears below the title on your site, and next to the title in search results. Try to be brief and descriptive, e.g. "Your online bait and tackle store"</p>
+								</td>
 							</tr>
 						</tbody>
 					</table>

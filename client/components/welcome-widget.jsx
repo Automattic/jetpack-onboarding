@@ -10,13 +10,13 @@ var React = require('react'),
 	DataStore = require('../stores/data-store');
 
 function getSetupProgress() {
-	return { 
-		newUser: SetupProgressStore.isNewUser(), 
-		showSpinner: SpinnerStore.showing(), 
-		spinnerMessage: SpinnerStore.getMessage(), 
-		currentStep: SetupProgressStore.getCurrentStep(), 
-		allSteps: SetupProgressStore.getAllSteps(), 
-		progressPercent: SetupProgressStore.getProgressPercent() 
+	return {
+		newUser: SetupProgressStore.isNewUser(),
+		showSpinner: SpinnerStore.showing(),
+		spinnerMessage: SpinnerStore.getMessage(),
+		currentStep: SetupProgressStore.getCurrentStep(),
+		allSteps: SetupProgressStore.getAllSteps(),
+		progressPercent: SetupProgressStore.getProgressPercent()
 	};
 }
 
@@ -71,16 +71,16 @@ var WelcomeWidget = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSetupProgress());
-  	},
+		this.setState(getSetupProgress());
+	},
 
-  	_onSpinnerChange: function() {
-  		this.setState({ showSpinner: SpinnerStore.showing(), spinnerMessage: SpinnerStore.getMessage() });
-  	},
+	_onSpinnerChange: function() {
+		this.setState({ showSpinner: SpinnerStore.showing(), spinnerMessage: SpinnerStore.getMessage() });
+	},
 
-  	_onDataChange: function() {
-  		this.setState({ saving: DataStore.isSaving() });
-  	},
+	_onDataChange: function() {
+		this.setState({ saving: DataStore.isSaving() });
+	},
 
 	getInitialState: function() {
 		return getSetupProgress();
@@ -100,10 +100,10 @@ var WelcomeWidget = React.createClass({
 		e.preventDefault();
 		SpinnerActions.hide();
 	},
-	
 
-  	render: function() {
-  		return (
+
+	render: function() {
+		return (
 			<div>
 				{this._renderDebug()}
 				<div style={this.styles.wrapper}>
@@ -121,46 +121,48 @@ var WelcomeWidget = React.createClass({
 
 	_renderSection: function() {
 		if ( this.state.newUser ) {
-  			return (<GetStarted />);
-  		} else {
-  			return this._renderCurrentView();
-  		}
+			return (<GetStarted />);
+		} else {
+			return this._renderCurrentView();
+		}
 	},
 
 	_renderDebug: function() {
-		// if ( JPS.debug ) {
-  // 			return (<div>
-  // 				<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
-  // 				<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
-  // 				<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
-  // 			</div>);
-  // 		} else {
-  			return null;
-  		// }
+		// <a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
+		// <a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
+		if ( JPS.debug ) {
+			return (
+				<div>
+					<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
+				</div>
+			);
+		} else {
+			return null;
+		}
 	},
 
 	_renderSpinner: function() {
 		if ( this.state.showSpinner ) {
-  			return (
-  				<div style={this.styles.loadingOverlay}>
-  					<div style={this.styles.loadingMessage}>
-  						<img src={JPS.base_url+"/img/spinner-2x.gif"} width="16px" height="16px"/>
-  						&nbsp;&nbsp;{this.state.spinnerMessage}
-  					</div>
-  				</div>
-  			);
+			return (
+				<div style={this.styles.loadingOverlay}>
+					<div style={this.styles.loadingMessage}>
+						<img src={JPS.base_url+"/img/spinner-2x.gif"} width="16px" height="16px"/>
+						&nbsp;&nbsp;{this.state.spinnerMessage}
+					</div>
+				</div>
+			);
 
-  		} else {
-  			return null;
-  		}
+		} else {
+			return null;
+		}
 	},
 
 	_renderCurrentView: function() {
 		if ( this.state.currentStep ) {
-  			return (<this.state.currentStep.welcomeView />);
-  		} else {
-  			return (<h3>Nothing</h3>);
-  		}
+			return (<this.state.currentStep.welcomeView />);
+		} else {
+			return (<h3>Nothing</h3>);
+		}
 	},
 
 });

@@ -16,7 +16,7 @@ function onBuild( done ) {
 
 		gutil.log( 'Building JS…', stats.toString( {
 			colors: true
-		} ), "\nJS finished at ", Date.now() );
+		} ), "\nJS finished at", Date.now() );
 
 		if ( done ) {
 			done();

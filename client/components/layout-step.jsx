@@ -23,8 +23,8 @@ var LayoutStep = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSiteLayoutState());
-  	},
+		this.setState(getSiteLayoutState());
+	},
 
 	getInitialState: function() {
 		return getSiteLayoutState();
@@ -42,8 +42,8 @@ var LayoutStep = React.createClass({
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__layout">
-			
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+
+				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
 				<h4>Select a Layout</h4>
 				<p style={styles.content}>WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
 				<form onSubmit={this.handleSubmit}>

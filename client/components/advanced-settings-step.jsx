@@ -30,7 +30,7 @@ var SettingsItem = React.createClass({
 		return (
 			<li style={this.styles.item}>
 				<h5 style={this.styles.heading}>{this.props.title}</h5>
-				{this.props.children}				
+				{this.props.children}
 			</li>
 		);
 	}
@@ -44,7 +44,7 @@ var AdvancedSettingsStep = React.createClass({
 		}
 	},
 
-  	getInitialState: function() {
+	getInitialState: function() {
 		return getSiteState();
 	},
 
@@ -57,13 +57,13 @@ var AdvancedSettingsStep = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSiteState());
-  	},
+		this.setState(getSiteState());
+	},
 
 	render: function() {
 		return (
 			<WelcomeSection>
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
 				<h4>Advanced settings</h4>
 
 				<ul style={this.styles.wrapper}>
@@ -98,7 +98,7 @@ var AdvancedSettingsStep = React.createClass({
 						&nbsp;&nbsp;
 						{SiteStore.getJetpackConfigured() && (
 							<Button color="blue" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</Button>
-						)} 
+						)}
 					</SettingsItem>
 					<SettingsItem title="Learn more">
 						<a href="https://codex.wordpress.org/First_Steps_With_WordPress">First Steps with WordPress</a> - an online guide from the creators of WordPress

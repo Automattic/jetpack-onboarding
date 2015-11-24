@@ -19,8 +19,8 @@ var GetStarted = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getSetupState());
-  	},
+		this.setState(getSetupState());
+	},
 
 	getInitialState: function() {
 		return getSetupState();
@@ -33,7 +33,7 @@ var GetStarted = React.createClass({
 
 	handleNoThanks: function(e) {
 		e.preventDefault();
-		SetupProgressActions.disableJPS();	
+		SetupProgressActions.disableJPS();
 	},
 
 	_isIE8: function() {
@@ -48,7 +48,7 @@ var GetStarted = React.createClass({
 			backgroundPosition: 'center bottom',
 			backgroundSize: '520px auto',
 			position: 'fixed',
-		    top: 0,
+			top: 0,
 			left: 160,
 			width: '100%',
 			height: '100%',
@@ -120,7 +120,7 @@ var GetStarted = React.createClass({
 	render: function() {
 		return (
 			<div key="welcome-intro" style={[this.styles.wrapper, this._isIE8() && this.styles.wrapperIE8]}>
-				<div key="welcome-intro-innerwrapper"  style={this.styles.innerwrapper}>
+				<div key="welcome-intro-innerwrapper" style={this.styles.innerwrapper}>
 					<h3 style={{fontSize: 30, marginTop: 30}}>Welcome to WordPress</h3>
 					<p style={this.styles.subhead}>Would you like help designing your site?</p>
 					<p>

@@ -5,7 +5,7 @@ var React = require('react'),
 	Button = require('@automattic/dops-components/client/components/button');
 
 function getJetpackProgress() {
-	return { 
+	return {
 		jetpackConfigured: SiteStore.getJetpackConfigured()
 	};
 }
@@ -20,10 +20,10 @@ var JetpackJumpstartMenu = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getJetpackProgress());
-  	},
+		this.setState(getJetpackProgress());
+	},
 
-  	getInitialState: function() {
+	getInitialState: function() {
 		return getJetpackProgress();
 	},
 
@@ -55,7 +55,6 @@ var JetpackJumpstartMenu = React.createClass({
 						<Button style={this.primaryConnectBtn} onClick={this.handleClickConnect}>Connect to WordPress.com</Button>
 					</div>
 				)}
-				
 			</div>
 		);
 	}

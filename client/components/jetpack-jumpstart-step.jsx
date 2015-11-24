@@ -3,7 +3,7 @@ var React = require('react'),
 	SkipButton = require('./skip-button'),
 	SiteStore = require('../stores/site-store'),
 	SiteActions = require('../actions/site-actions'),
-	Paths = require('../constants/jetpack-onboarding-paths'), 
+	Paths = require('../constants/jetpack-onboarding-paths'),
 	ContentBox = require('./content-box'),
 	styles = require('../styles'),
 	WelcomeSection = require('./welcome-section'),
@@ -59,7 +59,7 @@ function getJetpackState() {
 		site_title: SiteStore.getTitle(),
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
 		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
-		modulesEnabled: SiteStore.getActiveModuleSlugs()	
+		modulesEnabled: SiteStore.getActiveModuleSlugs()
 	};
 }
 
@@ -119,9 +119,9 @@ var JetpackJumpstart = React.createClass({
 			boxShadow: '0 0 4px rgba(0,0,0,0.2)',
 			zIndex: 800,
 			left: '50%',
-		  	top: '50%',
-		  	padding: 15,
-		  	transform: 'translate(-50%,-50%)',
+			top: '50%',
+			padding: 15,
+			transform: 'translate(-50%,-50%)',
 			width: '70%',
 			backgroundColor: '#fff'
 		},
@@ -140,8 +140,8 @@ var JetpackJumpstart = React.createClass({
 	},
 
 	_onChange: function() {
-    	this.setState(getJetpackState());
-  	},
+		this.setState(getJetpackState());
+	},
 
 	getInitialState: function() {
 		var state = getJetpackState();
@@ -179,7 +179,7 @@ var JetpackJumpstart = React.createClass({
 
 	handleShowMoreModules: function (e) {
 		e.preventDefault();
-		
+
 		SiteActions.loadAllJetpackModules().done(function() {
 			this.setState({showMoreModules: true});
 		}.bind(this));
@@ -193,7 +193,7 @@ var JetpackJumpstart = React.createClass({
 	_renderModule: function(module) {
 		var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
 		var moduleId = 'jp-module-'+module.slug;
-		
+
 		return (
 			<div key={'modules-'+module.slug} style={this.styles.jumpstartModule}>
 				<input id={moduleId} type="checkbox" checked={isActive} data-module-slug={module.slug} onChange={this.handleChangeModuleStatus}/>
@@ -221,7 +221,7 @@ var JetpackJumpstart = React.createClass({
 			);
 			moduleOverlayBody = (
 				<div style={this.styles.overlayBody}>
-					<p style={this.styles.overlayContent}>These modules require a WordPress.com account - it's free!</p>
+					<p style={this.styles.overlayContent}>These modules require a WordPress.com account - it&apos;s free!</p>
 					<Button color="green" size="big" theme="jetpack" onClick={this.handleJetpackConnect}>Connect to WordPress.com</Button>
 					<p style={this.styles.overlayContent}>
 						<SkipButton />
@@ -235,12 +235,12 @@ var JetpackJumpstart = React.createClass({
 
 		return (
 			<WelcomeSection>
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
 				<h4>Enable Jetpack features</h4>
 				{this.state.jetpackConfigured && (
 					<div>
 						<JetpackLogo style={this.styles.jetpackLogo}/>
-						<p style={styles.content}>Congratulations! You've enabled Jetpack and unlocked dozens of powerful features.</p>
+						<p style={styles.content}>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
 						<p style={styles.content}>Check the boxes below to enable our most popular features.</p>
 						<div className="clear"></div>
 					</div>
@@ -250,7 +250,7 @@ var JetpackJumpstart = React.createClass({
 						{moduleOverlayBefore}
 						{moduleOverlay}
 						{moduleOverlayBody}
-						
+
 						{this.state.jetpackConfigured && (
 							<div className="submit">
 								<Button style={{float: 'right'}} color="blue" onClick={this.handleNext}>Next Step &rarr;</Button>
@@ -264,7 +264,7 @@ var JetpackJumpstart = React.createClass({
 							</h3>
 							{moduleDescriptions}
 						</ContentBox>
-						
+
 						{this.state.showMoreModules ? (
 							<p style={this.styles.moreLink}>
 								<a href="#" onClick={this.handleShowFewerModules}>hide additional features</a>

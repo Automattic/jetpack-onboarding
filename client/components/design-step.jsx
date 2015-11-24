@@ -34,7 +34,7 @@ var DesignStep = React.createClass({
 
 	handleActivateTheme: function ( e ) {
 		e.preventDefault();
-		
+
 		this.setState({tooltipTheme: null, tooltipPosition: null});
 
 		var $el = jQuery(e.currentTarget),
@@ -70,7 +70,7 @@ var DesignStep = React.createClass({
 			offset = $el.position(),
 			width = $el.outerWidth(),
 			height = $el.outerHeight();
-		
+
 		//describes a position in the middle of the right side
 		var position = {
 			top: offset.top + (height/2),
@@ -87,7 +87,7 @@ var DesignStep = React.createClass({
 
 	handleGetPopularThemes: function ( e ) {
 		e.preventDefault();
-		this._loadPopularThemes();		
+		this._loadPopularThemes();
 	},
 
 	_loadPopularThemes: function() {
@@ -100,10 +100,10 @@ var DesignStep = React.createClass({
 
 		return (
 			<WelcomeSection id="welcome__design">
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
 				<h4>Pick a design</h4>
 				<p style={styles.content}>A "theme" controls the design of your site - colours, fonts and layout.</p>
-				<p style={styles.content}>Click any theme below to choose it for your site. And don't worry - you can easily change this later.</p>
+				<p style={styles.content}>Click any theme below to choose it for your site. And don&apos;t worry - you can easily change this later.</p>
 				<p className="submit">
 					<Button color="blue" onClick={this.handleContinue}>Next Step &rarr;</Button>
 				</p>
@@ -113,7 +113,7 @@ var DesignStep = React.createClass({
 						{this._renderThemeList()}
 					</div>
 				</ContentBox>
-				
+
 				<ContentBox>
 					<h3>Popular themes from WordPress.org
 					<Button color="blue" style={{float: 'right'}} onClick={this.handleGetPopularThemes}>Load more themes</Button>
@@ -133,9 +133,9 @@ var DesignStep = React.createClass({
 		var theme = this.state.tooltipTheme, position = this.state.tooltipPosition;
 		return (
 			<Tooltip
-				left={position.left} 
-				top={position.top} 
-				width={320} 
+				left={position.left}
+				top={position.top}
+				width={320}
 				title={theme.name}>
 				<p>By {theme.author}</p>
 				<p dangerouslySetInnerHTML={{__html: _.unescape(theme.description)}}></p>
@@ -145,12 +145,12 @@ var DesignStep = React.createClass({
 
 	_renderTheme: function(theme) {
 		return (
-			<div key={theme.id} 
-				className={'theme' + (theme.active ? ' active' : '')} 
-				data-theme-id={theme.id} 
-				onClick={this.handleActivateTheme} 
-				onMouseEnter={this.handleShowTooltip} 
-				onMouseLeave={this.handleHideTooltip} 
+			<div key={theme.id}
+				className={'theme' + (theme.active ? ' active' : '')}
+				data-theme-id={theme.id}
+				onClick={this.handleActivateTheme}
+				onMouseEnter={this.handleShowTooltip}
+				onMouseLeave={this.handleHideTooltip}
 				aria-describedby={theme.id+'-action '+theme.id+'-name'}>
 
 				{theme.screenshot ? (

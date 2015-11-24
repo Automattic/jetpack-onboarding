@@ -49,11 +49,11 @@ var ContactPageStep = React.createClass({
 	render: function() {
 		return(
 			<WelcomeSection id="welcome__layout">
-				<h3>Let's launch <em>{this.state.site_title}</em></h3>
+				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
 				<h4>Help visitors get in touch, great for businesses, blogs and personal sites</h4>
 
-				{ this.state.contactPageURL ? 
-					(this._renderWithContactPage()) : 
+				{ this.state.contactPageURL ?
+					(this._renderWithContactPage()) :
 					(this._renderWithoutContactPage())
 				}
 			</WelcomeSection>
