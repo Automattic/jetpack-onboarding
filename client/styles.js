@@ -7,7 +7,7 @@ module.exports = {
 		fontSize: 'larger',
 		color: '#777',
 		lineHeight: 1.5,
-  		margin: '1em 0'
+		margin: '1em 0'
 	},
 
 	'screenshot': {
