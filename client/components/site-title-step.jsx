@@ -74,7 +74,7 @@ var SiteTitleStep = React.createClass({
 					</table>
 
 					<p className="submit">
-						<Button color="blue">Next Step &rarr;</Button>
+						<Button color="blue" type="submit">Next Step &rarr;</Button>
 					</p>
 				</form>
 			</WelcomeSection>
