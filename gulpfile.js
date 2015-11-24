@@ -1,89 +1,85 @@
 process.env.UV_THREADPOOL_SIZE = 100; // fix a bug in libsass
 
-var gulp = require('gulp'),
-	path = require('path'),
-	gutil = require('gulp-util'),
-	sftp = require('gulp-sftp'),
-	merge = require('merge-stream'),
-	sass = require('gulp-sass'),
-	babel = require('gulp-babel'),
-	autoprefixer = require('gulp-autoprefixer'),
-	open = require('gulp-open'),
-	sourcemaps = require('gulp-sourcemaps'),
-	webpack = require("webpack"),
-	assign = require('lodash/object/assign'),
-	po2json = require('gulp-po2json'),
-	browserStack = require('gulp-browserstack'),
-	gls = require('gulp-live-server'),
-	WebpackDevServer = require("webpack-dev-server");
+var gulp = require('gulp');
+var path = require('path');
+var gutil = require('gulp-util');
+var webpack = require('webpack');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
 
-var DEV_SERVER_PORT = 8085;
+function onBuild( done ) {
+	return function( err, stats ) {
+		if ( err ) {
+			throw new gutil.PluginError( 'webpack', err );
+		}
 
-// By default run a server for development
-gulp.task("default", ["dev-server"]);
+		gutil.log( 'Building JS…', stats.toString( {
+			colors: true
+		} ), "\nJS finished at ", Date.now() );
 
-// Production build
-gulp.task("build", ["webpack:build"]);
+		if ( done ) {
+			done();
+		}
+	};
+}
 
-// Production build
-gulp.task("webpack:build", function(callback) {
-	// modify some webpack config options
+function getWebpackConfig() {
+	// clone and extend webpackConfig
+	var config = Object.create( require( './webpack.config.js' ) );
+	config.devtool = "sourcemap";
+	config.debug = true;
+
+	return config;
+}
+
+function doSass() {
+	if ( arguments.length ) {
+		console.log('Sass file ' + arguments[0].path + ' changed.');
+	}
+	var start = new Date();
+	console.log('Building CSS bundle');
+	gulp.src( './css/scss/*.scss' )
+		.pipe( sass().on( 'error', sass.logError ) )
+		.pipe( autoprefixer() )
+		.pipe( sourcemaps.write( '.' ) )
+		.pipe( gulp.dest( './css' ) )
+		.on( 'end', function() {
+			console.log( 'CSS finished.' );
+		} );
+};
+
+gulp.task( 'sass:build', function() {
+	doSass();
+} );
+
+gulp.task( 'sass:watch', function() {
+	doSass();
+	gulp.watch( [ './css/**/*.scss' ], doSass );
+} );
+
+gulp.task( 'react:build', function( done ) {
 	process.env.NODE_ENV = "production";
-	var buildConfig = Object.create(require('./webpack.config.js'));
-	buildConfig.plugins = buildConfig.plugins.concat(
+
+	var config = getWebpackConfig();
+	config.plugins = config.plugins.concat(
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin()
 	);
 
-	buildConfig.devtool = 'source-map';
+	config.devtool = 'source-map';
+	config.debug = false;
 
-	// run webpack
-	webpack(buildConfig, function(err, stats) {
-		if(err) throw new gutil.PluginError("webpack:build", err);
-		gutil.log("[webpack:build]", stats.toString({
-			colors: true
-		}));
-		callback();
-	});
-});
+	webpack( config ).run( onBuild( done ) );
+} );
 
-gulp.task("webpack:build-dev", function(callback) {
+gulp.task( 'react:watch', function() {
 	process.env.NODE_ENV = "production";
 
-	var devAccountConfig = Object.create(require('./webpack.config.js'));
-	devAccountConfig.devtool = "source-map";
-	devAccountConfig.debug = true;
+	var config = getWebpackConfig();
 
-	// create a single instance of the compiler to allow caching
-	var devCompiler = webpack(devAccountConfig);
+	webpack( config ).watch( 100, onBuild() );
+} );
 
-	devCompiler.run(function(err, stats) {
-		if(err) throw new gutil.PluginError("webpack", err);
-		gutil.log("[webpack:build-dev]", stats.toString({
-			colors: true
-		}));
-		callback();
-	});
-});
-
-// compile legacy sass stylesheets
-gulp.task('sass', function() {
-	gulp.src('./css/scss/*.scss')
-		.pipe(sourcemaps.init())
-		// .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-		.pipe(sass().on('error', sass.logError))
-		.pipe(autoprefixer())
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('./css'));
-});
-
-// gulp.task("dev-server", function(callback) {
-// 	var serverScript = path.resolve(__dirname, 'server/app.js');
-
-// 	var server = gls(serverScript, {}, false);
-
-// 	server.start().then(function(result) {
-//         console.log('Server exited with result:', result);
-//         process.exit(result.code);
-//     });
-// });
+gulp.task( 'default', ['react:build', 'sass:build'] );
+gulp.task( 'watch',   ['react:watch', 'sass:watch'] );
