@@ -38,6 +38,8 @@
     font-size: 20px; }
 
 #welcome__site-title input {
+  height: 35px;
+  margin-bottom: 10px;
   width: 100%; }
 
 .welcome__content_box {
@@ -48,11 +50,12 @@
     padding: 5px 5px 10px 10px;
     border-bottom: 1px solid #eee; }
 
-.welcome__section h3 em {
-  font-weight: bold; }
-
-.welcome__section h4 {
-  border-bottom: 1px #ddd solid; }
+.welcome__section {
+  /*h4 {
+		border-bottom: 1px #ddd solid;
+	}*/ }
+  .welcome__section h3 em {
+    font-weight: bold; }
 
 #welcome__stats a.skip, #welcome__traffic a.skip {
   margin-left: 0; }

@@ -56,6 +56,8 @@ $very-light-gray: #f5f5f5;
 #welcome__site-title {
 
 	input{
+        height: 35px;
+        margin-bottom: 10px;
 		width: 100%;
 	}
 }
@@ -78,9 +80,9 @@ $very-light-gray: #f5f5f5;
 		}
 	}
 
-	h4 {
+	/*h4 {
 		border-bottom: 1px #ddd solid;
-	}
+	}*/
 }
 
 #welcome__stats a.skip, #welcome__traffic a.skip {
