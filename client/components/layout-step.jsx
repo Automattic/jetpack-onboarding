@@ -44,26 +44,12 @@ var LayoutStep = React.createClass({
 			<WelcomeSection id="welcome__layout">
 			
 				<h3>Let's launch <em>{this.state.site_title}</em></h3>
-				<h4>Select a Layout</h4>
-				<p style={styles.content}>WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
+				<h4>Are you going to update your site with news or blog posts?</h4>
 				<form onSubmit={this.handleSubmit}>
-					<label>
-						<input type="radio" name="site_layout" value="website" checked={this.state.layout === 'website'} onChange={this.handleSetLayout}/> Static Website
-						<p className="description">A web site with a hierarchy of pages</p>
-					</label>
-					<br/>
-					<label>
-						<input type="radio" name="site_layout" value="site-blog" checked={this.state.layout === 'site-blog'} onChange={this.handleSetLayout}/> Static Website with a blog
-						<p className="description">A web site with pages that also has a blog or news section</p>
-					</label>
-					<br/>
-					<label>
-						<input type="radio" name="site_layout" value="blog" checked={this.state.layout === 'blog'} onChange={this.handleSetLayout}/> Just a blog
-						<p className="description">A web site that will constantly show new content (articles, photos, videos, etc.)</p>
-					</label>
 
 					<p className="submit">
-						<Button color="blue">Next Step &rarr;</Button>
+						<Button>Nope</Button>
+						<Button color="green">Yes</Button>
 					</p>
 				</form>
 			</WelcomeSection>

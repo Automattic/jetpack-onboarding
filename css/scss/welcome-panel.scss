@@ -20,6 +20,17 @@ $very-light-gray: #f5f5f5;
     padding: 100px;
     z-index: 999;
 
+    form {
+        p {
+            text-align: center;
+
+            button {
+                min-width: 70px;
+                margin: 0 10px;
+            }
+        }
+    }
+
     @media (max-width: 960px) {
         left: 36px;
     }
@@ -53,36 +64,38 @@ $very-light-gray: #f5f5f5;
 	}
 }
 
-#welcome__site-title {
-
-	input{
-        height: 35px;
-        margin-bottom: 10px;
-		width: 100%;
-	}
+input{
+    height: 35px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 .welcome__content_box {
 	background: white;
 	margin: 10px;
-	border: 1px solid #eee;	
+	border: 1px solid #eee;
 
-	h3 {
-		padding: 5px 5px 10px 10px;
+    h3 {
+        padding: 5px 5px 10px 10px;
 		border-bottom: 1px solid #eee;
 	}
 }
 
 .welcome__section {
-	h3 {
+    h4, h3 {
+        text-align: center;
+    }
+
+    h3 {
 		em {
 			font-weight: bold;
 		}
 	}
 
-	/*h4 {
-		border-bottom: 1px #ddd solid;
-	}*/
+	h4 {
+		/*border-bottom: 1px #ddd solid;*/
+        font-size: 20px;
+	}
 }
 
 #welcome__stats a.skip, #welcome__traffic a.skip {
