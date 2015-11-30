@@ -20,19 +20,19 @@ module.exports = function() {
 				welcomeView: require('./components/steps/site-title')
 			},
 			{
-				name: 'Pick a layout',
-				slug: Paths.LAYOUT_STEP_SLUG,
+				name: 'Is this a blog?',
+				slug: Paths.IS_BLOG_STEP_SLUG,
 				welcomeView: require('./components/steps/layout')
+			},
+			{
+				name: 'Set your homepage',
+				slug: Paths.HOMEPAGE_STEP_SLUG,
+				welcomeView: require('./components/steps/homepage')
 			},
 			{
 				name: "Contact Info",
 				slug: Paths.CONTACT_PAGE_STEP_SLUG,
 				welcomeView: require('./components/steps/contact')
-			},
-			{
-				name: "Pick a design",
-				slug: Paths.DESIGN_STEP_SLUG,
-				welcomeView: require('./components/steps/design')
 			},
 			{
 				name: 'Enable Jetpack',
@@ -41,9 +41,9 @@ module.exports = function() {
 				welcomeView: require('./components/steps/jetpack-jumpstart'),
 			},
 			{
-				name: "Advanced settings",
-				slug: Paths.ADVANCED_STEP_SLUG,
-				welcomeView: require('./components/steps/advanced-settings'),
+				name: "Review settings",
+				slug: Paths.REVIEW_STEP_SLUG,
+				welcomeView: require('./components/steps/review'),
 				includeInProgress: false
 			}
 		] );
