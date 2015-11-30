@@ -138,16 +138,18 @@ var SetupProgressActions = {
 		}.bind(this));
 	},
 
-	submitLayoutStep: function(layout) {
-		SiteActions.setLayout(layout).done(function() {
-			this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
-		}.bind(this));
+	submitLayoutStep: function( layout ) {
+		SiteActions.setLayout( layout ).done( function() {
+			var step = SetupProgressStore.getStepFromSlug( Paths.IS_BLOG_STEP_SLUG );
+			if ( ! step.completed ) {
+				this.completeStep( Paths.IS_BLOG_STEP_SLUG );
+			}
+			this.completeAndNextStep( Paths.HOMEPAGE_STEP_SLUG );
+		}.bind( this ) );
 	},
 
-	submitHomepageStep: function(layout) {
-		SiteActions.setLayout(layout).done(function() {
-			this.completeAndNextStep(Paths.HOMEPAGE_STEP_SLUG);
-		}.bind(this));
+	confirmHomepageStep: function( layout ) {
+		this.completeAndNextStep( Paths.IS_BLOG_STEP_SLUG );
 	},
 
 	createContactPage: function(contactPage) {

@@ -4,18 +4,14 @@ $very-light-gray: #f5f5f5;
 @import 'mixins/breakpoint';
 @import 'mixins/clearfix';
 
+.welcome__container {
+	@import 'mixins/calypso-forms';
+}
+
 @import 'typography';
 @import 'container';
+
+// Step-specific style
 @import 'get-started';
-
-#welcome__site-title {
-	input {
-		width: 100%;
-	}
-}
-
-.welcome__contact--screenshot {
-	float: right;
-	width: 300px;
-	border: 1px solid #ccc;
-}
+@import 'site-title';
+@import 'contact';

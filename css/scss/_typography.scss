@@ -1,6 +1,11 @@
 .welcome__container {
+	text-align: center;
+
 	h1 {
+		font-size: 32px;
 		font-weight: bold;
+		padding-right: 0;
+		margin-bottom: 30px;
 	}
 
 	h4 {
@@ -22,6 +27,10 @@
 
 	input[type="text"] {
 		width: 100%;
+		box-shadow: none;
+		background: #fff;
+		border: 1px solid #d5d5d5;
+		padding: 8px 10px;
 	}
 
 	.submit {
@@ -32,9 +41,9 @@
 	}
 
 	.welcome__callout {
-		font-size: larger;
-		color: #777;
-		line-height: 1.5;
 		margin: 1em 0;
+		color: #777;
+		font-size: 18px;
+		line-height: 1.5;
 	}
 }

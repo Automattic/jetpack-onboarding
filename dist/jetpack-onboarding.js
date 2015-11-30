@@ -21126,14 +21126,16 @@
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
 			SiteActions.setLayout(layout).done((function () {
-				this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
+				var step = SetupProgressStore.getStepFromSlug(Paths.IS_BLOG_STEP_SLUG);
+				if (!step.completed) {
+					this.completeStep(Paths.IS_BLOG_STEP_SLUG);
+				}
+				this.completeAndNextStep(Paths.HOMEPAGE_STEP_SLUG);
 			}).bind(this));
 		},
 	
-		submitHomepageStep: function submitHomepageStep(layout) {
-			SiteActions.setLayout(layout).done((function () {
-				this.completeAndNextStep(Paths.HOMEPAGE_STEP_SLUG);
-			}).bind(this));
+		confirmHomepageStep: function confirmHomepageStep(layout) {
+			this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
 		},
 	
 		createContactPage: function createContactPage(contactPage) {
@@ -23177,78 +23179,39 @@
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
-				{ id: 'welcome__site-title', className: 'welcome__site-title' },
+				{ id: 'welcome__site-title' },
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch your new website'
 				),
 				React.createElement(
-					'h4',
-					null,
-					'Enter a Title and Description'
-				),
-				React.createElement(
 					'p',
 					{ className: 'welcome__callout welcome__site-title--callout' },
-					'Make your site stand out with a catchy name.'
+					'Name and describe your website'
 				),
 				React.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit, className: 'welcome__site-title--form' },
 					React.createElement(
-						'table',
-						{ className: 'form-table' },
+						'p',
+						null,
 						React.createElement(
-							'tbody',
-							null,
-							React.createElement(
-								'tr',
-								null,
-								React.createElement(
-									'th',
-									null,
-									React.createElement(
-										'label',
-										{ htmlFor: 'site_title' },
-										'Site Title'
-									)
-								),
-								React.createElement(
-									'td',
-									null,
-									React.createElement('input', { type: 'text', name: 'site_title', id: 'site-title', autoComplete: 'off', onChange: this.handleChangeTitle, value: this.state.title, placeholder: 'Site Title (this can be changed later)', required: true }),
-									React.createElement(
-										'p',
-										{ className: 'description' },
-										'The name of your site. This title appears at the top of pages and in search results.'
-									)
-								)
-							),
-							React.createElement(
-								'tr',
-								null,
-								React.createElement(
-									'th',
-									null,
-									React.createElement(
-										'label',
-										{ htmlFor: 'site_description' },
-										'Site Description'
-									)
-								),
-								React.createElement(
-									'td',
-									null,
-									React.createElement('input', { type: 'text', name: 'site_description', id: 'site-description', autoComplete: 'off', onChange: this.handleChangeDescription, value: this.state.description, placeholder: 'Site Description', required: true }),
-									React.createElement(
-										'p',
-										{ className: 'description' },
-										'A motto or tagline. This appears below the title on your site, and next to the title in search results. Try to be brief and descriptive, e.g. "Your online bait and tackle store"'
-									)
-								)
-							)
-						)
+							'label',
+							{ className: 'screen-reader-text', htmlFor: 'site_title' },
+							'Site Title'
+						),
+						React.createElement('input', { type: 'text', name: 'site_title', id: 'site-title', autoComplete: 'off', onChange: this.handleChangeTitle, value: this.state.title, placeholder: 'Site Title (this can be changed later)', required: true })
+					),
+					React.createElement(
+						'p',
+						null,
+						React.createElement(
+							'label',
+							{ className: 'screen-reader-text', htmlFor: 'site_description' },
+							'Site Description'
+						),
+						React.createElement('input', { type: 'text', name: 'site_description', id: 'site-description', autoComplete: 'off', onChange: this.handleChangeDescription, value: this.state.description, placeholder: 'Site Description', required: true })
 					),
 					React.createElement(
 						'p',
@@ -23332,13 +23295,12 @@
 			return getSiteLayoutState();
 		},
 	
-		handleSetLayout: function handleSetLayout(e) {
-			this.setState({ layout: jQuery(e.currentTarget).val() });
+		handleIsBlog: function handleIsBlog() {
+			SetupProgressActions.confirmHomepageStep();
 		},
 	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitLayoutStep(this.state.layout);
+		handleNotBlog: function handleNotBlog() {
+			SetupProgressActions.submitLayoutStep('website');
 		},
 	
 		render: function render() {
@@ -23346,7 +23308,7 @@
 				WelcomeSection,
 				{ id: 'welcome__layout' },
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch ',
 					React.createElement(
@@ -23356,61 +23318,22 @@
 					)
 				),
 				React.createElement(
-					'h4',
-					null,
-					'Select a Layout'
+					'p',
+					{ className: 'welcome__callout welcome__layout--callout' },
+					'Are you going to update your site with news or blog posts?'
 				),
 				React.createElement(
 					'p',
-					{ className: 'welcome__callout welcome__layout--callout' },
-					'WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.'
-				),
-				React.createElement(
-					'form',
-					{ onSubmit: this.handleSubmit },
+					null,
 					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'website', checked: this.state.layout === 'website', onChange: this.handleSetLayout }),
-						' Static Website',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site with a hierarchy of pages'
-						)
-					),
-					React.createElement('br', null),
-					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'site-blog', checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout }),
-						' Static Website with a blog',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site with pages that also has a blog or news section'
-						)
-					),
-					React.createElement('br', null),
-					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'blog', checked: this.state.layout === 'blog', onChange: this.handleSetLayout }),
-						' Just a blog',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site that will constantly show new content (articles, photos, videos, etc.)'
-						)
+						Button,
+						{ onClick: this.handleIsBlog, primary: true },
+						'Yes'
 					),
 					React.createElement(
-						'p',
-						{ className: 'welcome__submit' },
-						React.createElement(
-							Button,
-							{ primary: true, type: 'submit' },
-							'Next Step →'
-						)
+						Button,
+						{ onClick: this.handleNotBlog },
+						'Nope'
 					)
 				)
 			);
@@ -23558,9 +23481,9 @@
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
-				{ id: 'welcome__contact', className: 'welcome__contact' },
+				{ id: 'welcome__contact' },
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch ',
 					React.createElement(
@@ -23568,11 +23491,6 @@
 						null,
 						this.state.site_title
 					)
-				),
-				React.createElement(
-					'h4',
-					null,
-					'Help visitors get in touch, great for businesses, blogs and personal sites'
 				),
 				this.state.contactPageURL ? this._renderWithContactPage() : this._renderWithoutContactPage()
 			);
@@ -23582,18 +23500,16 @@
 			return React.createElement(
 				'div',
 				null,
-				'View your starter ',
 				React.createElement(
-					'a',
-					{ href: this.state.contactPageURL, target: '_blank' },
-					'Contact Us'
-				),
-				' page.',
-				React.createElement('br', null),
-				React.createElement(
-					'small',
-					null,
-					'(The form requires a free Jetpack connection)'
+					'p',
+					{ className: 'welcome__callout welcome__contact--callout' },
+					'View your starter ',
+					React.createElement(
+						'a',
+						{ href: this.state.contactPageURL, target: '_blank' },
+						'Contact Us'
+					),
+					' page.'
 				),
 				React.createElement(
 					'p',
@@ -23610,34 +23526,40 @@
 		_renderWithoutContactPage: function _renderWithoutContactPage() {
 			return React.createElement(
 				'div',
-				null,
-				React.createElement('img', { className: 'welcome__contact--screenshot', src: this.state.contactPageScreenshot }),
+				{ className: 'welcome__contact-cols' },
 				React.createElement(
-					'p',
-					null,
-					'Build a ',
+					'div',
+					{ className: 'welcome__contact-col' },
 					React.createElement(
-						'em',
-						null,
-						'starter'
+						'p',
+						{ className: 'welcome__callout welcome__contact--callout' },
+						'Build a ',
+						React.createElement(
+							'em',
+							null,
+							'starter'
+						),
+						' "Contact Us" page?'
 					),
-					' "Contact Us" page?',
-					React.createElement('br', null),
 					React.createElement(
-						'small',
-						null,
-						'(requires a free Jetpack connection)'
+						'p',
+						{ className: 'welcome__submit' },
+						React.createElement(
+							Button,
+							{ primary: true, onClick: this.handleBuildContact },
+							'Yes'
+						),
+						React.createElement(
+							Button,
+							{ onClick: this.handleSubmit },
+							'No Thanks'
+						)
 					)
 				),
 				React.createElement(
-					Button,
-					{ primary: true, onClick: this.handleBuildContact },
-					'Yes'
-				),
-				React.createElement(
-					Button,
-					{ onClick: this.handleSubmit },
-					'No Thanks'
+					'div',
+					{ className: 'welcome__contact-col welcome__contact--screenshot' },
+					React.createElement('img', { src: this.state.contactPageScreenshot })
 				)
 			);
 		}

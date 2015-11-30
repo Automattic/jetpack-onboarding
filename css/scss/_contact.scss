@@ -1,0 +1,22 @@
+
+.welcome__contact-cols {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+}
+
+.welcome__contact-col {
+	flex: 1;
+}
+
+.welcome__contact--screenshot {
+	flex: 1;
+
+	img {
+		border: 1px solid #ccc;
+	}
+}
+
+.welcome__container .welcome__contact--callout {
+	margin-bottom: 50px;
+}
