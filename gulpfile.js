@@ -39,7 +39,7 @@ function doSass() {
 	}
 	var start = new Date();
 	console.log('Building CSS bundle');
-	gulp.src( './css/scss/*.scss' )
+	gulp.src( './css/scss/welcome-panel.scss' )
 		.pipe( sass().on( 'error', sass.logError ) )
 		.pipe( autoprefixer() )
 		.pipe( sourcemaps.write( '.' ) )

@@ -85,20 +85,20 @@
 			}, {
 				name: 'Set your homepage',
 				slug: Paths.HOMEPAGE_STEP_SLUG,
-				welcomeView: __webpack_require__(230)
+				welcomeView: __webpack_require__(209)
 			}, {
 				name: "Contact Info",
 				slug: Paths.CONTACT_PAGE_STEP_SLUG,
-				welcomeView: __webpack_require__(209)
+				welcomeView: __webpack_require__(210)
 			}, {
 				name: 'Enable Jetpack',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				neverSkip: true, // don't skip this even if it's been completed
-				welcomeView: __webpack_require__(212)
+				welcomeView: __webpack_require__(211)
 			}, {
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
-				welcomeView: __webpack_require__(231),
+				welcomeView: __webpack_require__(229),
 				includeInProgress: false
 			}]);
 	
@@ -22027,7 +22027,7 @@
 					'div',
 					{ className: 'welcome__get-started--wrapper' },
 					React.createElement(
-						'h3',
+						'h1',
 						null,
 						'Welcome to WordPress'
 					),
@@ -22041,7 +22041,7 @@
 						null,
 						React.createElement(
 							Button,
-							{ onClick: this.handleGetStarted },
+							{ onClick: this.handleGetStarted, primary: true },
 							'Yes'
 						),
 						React.createElement(
@@ -23119,7 +23119,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"button":"_3KHDMvFXbIlUHCr6xNAUgc","is-compact":"_1h9Gx2Ot_p7RfFCDedUTUa","gridicon":"_24gROvQkdW_XdHwhlkDfvk","hidden":"_2cNBg3RpMU_13Mcsg31Nii","is-primary":"CKVZIwvCYrB7Og65aZK2W","is-scary":"_1Goc7VL-Kqhpf9QLOpvMD3","is-dangerous":"_2BK_mU5b50QTOMmctRgr8Y","is-destructive":"_2P1BZEzpOVni1B1KVPctfn","noticon":"_2ZeZ_McW8Nyi3Ope7kh8n6"};
+	module.exports = {"button":"_2hYv2do8HV0VkjDUmR38JN","is-compact":"_38T-62coNKh4SdCBHu38ll","gridicon":"_5ySL4Y8q4ILp3cOCANR8-","hidden":"_2V8mraeiYNYyl2rp__2sIM","is-primary":"_2Iv9aRNZENrHCN9nwfA74j","is-scary":"h3Og3URfrNB1KXcO8Y6N8","is-dangerous":"_2W3P9tn-oQkEPcoqlQYCVt","is-destructive":"_1s_LBF19rmbD-SXS53yWNc","noticon":"_1ltcKruhjJfg35XliwrHaH"};
 
 /***/ },
 /* 205 */,
@@ -23431,6 +23431,88 @@
 	    WelcomeSection = __webpack_require__(207),
 	    SetupProgressActions = __webpack_require__(166);
 	
+	function getSiteLayoutState() {
+		return {
+			site_title: SiteStore.getTitle(),
+			layout: SiteStore.getLayout()
+		};
+	}
+	
+	var HomepageStep = React.createClass({
+		displayName: 'HomepageStep',
+	
+		componentDidMount: function componentDidMount() {
+			SiteStore.addChangeListener(this._onChange);
+		},
+	
+		componentWillUnmount: function componentWillUnmount() {
+			SiteStore.removeChangeListener(this._onChange);
+		},
+	
+		_onChange: function _onChange() {
+			this.setState(getSiteLayoutState());
+		},
+	
+		getInitialState: function getInitialState() {
+			return getSiteLayoutState();
+		},
+	
+		handleSetLayout: function handleSetLayout(e) {
+			this.setState({ layout: jQuery(e.currentTarget).val() });
+		},
+	
+		handleSubmit: function handleSubmit(e) {
+			e.preventDefault();
+			SetupProgressActions.submitLayoutStep(this.state.layout);
+		},
+	
+		render: function render() {
+			return React.createElement(
+				WelcomeSection,
+				{ id: 'welcome__homepage' },
+				React.createElement(
+					'h3',
+					null,
+					'Let\'s launch ',
+					React.createElement(
+						'em',
+						null,
+						this.state.site_title
+					)
+				),
+				React.createElement(
+					'h4',
+					null,
+					'Select a Layout'
+				),
+				React.createElement(
+					'p',
+					{ className: 'welcome__callout welcome__homepage--callout' },
+					'WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.'
+				),
+				React.createElement(
+					'form',
+					{ onSubmit: this.handleSubmit },
+					'Am I a static or blog page?'
+				)
+			);
+		}
+	});
+	
+	module.exports = HomepageStep;
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4),
+	    SiteStore = __webpack_require__(170),
+	    Button = __webpack_require__(177),
+	    WelcomeSection = __webpack_require__(207),
+	    SetupProgressActions = __webpack_require__(166);
+	
 	function getSiteContactState() {
 		return {
 			site_title: SiteStore.getTitle(),
@@ -23564,41 +23646,18 @@
 	module.exports = ContactPageStep;
 
 /***/ },
-/* 210 */,
 /* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(4);
-	
-	var ContentBox = React.createClass({
-		displayName: "ContentBox",
-	
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "welcome__content-box clear" },
-				this.props.children
-			);
-		}
-	});
-	
-	module.exports = ContentBox;
-
-/***/ },
-/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(4),
-	    Radium = __webpack_require__(213),
-	    SkipButton = __webpack_require__(228),
+	    Radium = __webpack_require__(212),
+	    SkipButton = __webpack_require__(227),
 	    SiteStore = __webpack_require__(170),
 	    SiteActions = __webpack_require__(169),
 	    Paths = __webpack_require__(167),
-	    ContentBox = __webpack_require__(211),
+	    ContentBox = __webpack_require__(228),
 	    WelcomeSection = __webpack_require__(207),
 	    SetupProgressActions = __webpack_require__(166),
 	    SpinnerStore = __webpack_require__(172),
@@ -23960,24 +24019,24 @@
 	module.exports = Radium(JetpackJumpstart);
 
 /***/ },
-/* 213 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Enhancer = __webpack_require__(214);
+	var Enhancer = __webpack_require__(213);
 	
 	module.exports = function (ComposedComponent) {
 	  return Enhancer(ComposedComponent);
 	};
-	module.exports.Style = __webpack_require__(224);
-	module.exports.PrintStyleSheet = __webpack_require__(226);
-	module.exports.getState = __webpack_require__(217);
-	module.exports.keyframes = __webpack_require__(227);
-	module.exports.Config = __webpack_require__(222);
+	module.exports.Style = __webpack_require__(223);
+	module.exports.PrintStyleSheet = __webpack_require__(225);
+	module.exports.getState = __webpack_require__(216);
+	module.exports.keyframes = __webpack_require__(226);
+	module.exports.Config = __webpack_require__(221);
 
 /***/ },
-/* 214 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23990,8 +24049,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var resolveStyles = __webpack_require__(215);
-	var printStyles = __webpack_require__(223);
+	var resolveStyles = __webpack_require__(214);
+	var printStyles = __webpack_require__(222);
 	
 	var enhanceWithRadium = function enhanceWithRadium(ComposedComponent) {
 	  var RadiumEnhancer = (function (_ComposedComponent) {
@@ -24062,20 +24121,20 @@
 	module.exports = enhanceWithRadium;
 
 /***/ },
-/* 215 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var MouseUpListener = __webpack_require__(216);
-	var getState = __webpack_require__(217);
-	var getStateKey = __webpack_require__(218);
-	var Prefixer = __webpack_require__(219);
-	var Config = __webpack_require__(222);
+	var MouseUpListener = __webpack_require__(215);
+	var getState = __webpack_require__(216);
+	var getStateKey = __webpack_require__(217);
+	var Prefixer = __webpack_require__(218);
+	var Config = __webpack_require__(221);
 	
-	var ExecutionEnvironment = __webpack_require__(220);
+	var ExecutionEnvironment = __webpack_require__(219);
 	var React = __webpack_require__(4);
 	
 	// babel-eslint 3.1.7 fails here for some reason, error:
@@ -24436,7 +24495,7 @@
 	module.exports = resolveStyles;
 
 /***/ },
-/* 216 */
+/* 215 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24478,12 +24537,12 @@
 	};
 
 /***/ },
-/* 217 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var getStateKey = __webpack_require__(218);
+	var getStateKey = __webpack_require__(217);
 	
 	var VALID_KEYS = [':active', ':focus', ':hover'];
 	
@@ -24500,7 +24559,7 @@
 	module.exports = getState;
 
 /***/ },
-/* 218 */
+/* 217 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24512,7 +24571,7 @@
 	module.exports = getStateKey;
 
 /***/ },
-/* 219 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24524,8 +24583,8 @@
 	
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(220);
-	var arrayFind = __webpack_require__(221);
+	var ExecutionEnvironment = __webpack_require__(219);
+	var arrayFind = __webpack_require__(220);
 	
 	var VENDOR_PREFIX_REGEX = /-(moz|webkit|ms|o)-/;
 	
@@ -24930,7 +24989,7 @@
 	};
 
 /***/ },
-/* 220 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -24975,7 +25034,7 @@
 
 
 /***/ },
-/* 221 */
+/* 220 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25004,12 +25063,12 @@
 
 
 /***/ },
-/* 222 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var ExecutionEnvironment = __webpack_require__(220);
+	var ExecutionEnvironment = __webpack_require__(219);
 	
 	var _matchMediaFunction = ExecutionEnvironment.canUseDOM && window && window.matchMedia && function (mediaQueryString) {
 	  return window.matchMedia(mediaQueryString);
@@ -25030,7 +25089,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 222 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -25106,13 +25165,13 @@
 	};
 
 /***/ },
-/* 224 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createMarkupForStyles = __webpack_require__(225);
-	var Prefixer = __webpack_require__(219);
+	var createMarkupForStyles = __webpack_require__(224);
+	var Prefixer = __webpack_require__(218);
 	
 	var React = __webpack_require__(4);
 	
@@ -25197,7 +25256,7 @@
 	module.exports = Style;
 
 /***/ },
-/* 225 */
+/* 224 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25212,15 +25271,15 @@
 	module.exports = createMarkupForStyles;
 
 /***/ },
-/* 226 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(4);
 	
-	var Style = __webpack_require__(224);
-	var printStyles = __webpack_require__(223);
+	var Style = __webpack_require__(223);
+	var printStyles = __webpack_require__(222);
 	
 	var PrintStyle = React.createClass({
 	  displayName: 'PrintStyle',
@@ -25259,15 +25318,15 @@
 	module.exports = PrintStyle;
 
 /***/ },
-/* 227 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createMarkupForStyles = __webpack_require__(225);
-	var Prefixer = __webpack_require__(219);
+	var createMarkupForStyles = __webpack_require__(224);
+	var Prefixer = __webpack_require__(218);
 	
-	var ExecutionEnvironment = __webpack_require__(220);
+	var ExecutionEnvironment = __webpack_require__(219);
 	
 	var isAnimationSupported = ExecutionEnvironment.canUseDOM && Prefixer.getPrefixedPropertyName('animation') !== false;
 	
@@ -25316,7 +25375,7 @@
 	module.exports = keyframes;
 
 /***/ },
-/* 228 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25379,90 +25438,29 @@
 	module.exports = SkipButton;
 
 /***/ },
-/* 229 */,
-/* 230 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
-	var React = __webpack_require__(4),
-	    SiteStore = __webpack_require__(170),
-	    Button = __webpack_require__(177),
-	    WelcomeSection = __webpack_require__(207),
-	    SetupProgressActions = __webpack_require__(166);
+	var React = __webpack_require__(4);
 	
-	function getSiteLayoutState() {
-		return {
-			site_title: SiteStore.getTitle(),
-			layout: SiteStore.getLayout()
-		};
-	}
-	
-	var HomepageStep = React.createClass({
-		displayName: 'HomepageStep',
-	
-		componentDidMount: function componentDidMount() {
-			SiteStore.addChangeListener(this._onChange);
-		},
-	
-		componentWillUnmount: function componentWillUnmount() {
-			SiteStore.removeChangeListener(this._onChange);
-		},
-	
-		_onChange: function _onChange() {
-			this.setState(getSiteLayoutState());
-		},
-	
-		getInitialState: function getInitialState() {
-			return getSiteLayoutState();
-		},
-	
-		handleSetLayout: function handleSetLayout(e) {
-			this.setState({ layout: jQuery(e.currentTarget).val() });
-		},
-	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitLayoutStep(this.state.layout);
-		},
+	var ContentBox = React.createClass({
+		displayName: "ContentBox",
 	
 		render: function render() {
 			return React.createElement(
-				WelcomeSection,
-				{ id: 'welcome__homepage' },
-				React.createElement(
-					'h3',
-					null,
-					'Let\'s launch ',
-					React.createElement(
-						'em',
-						null,
-						this.state.site_title
-					)
-				),
-				React.createElement(
-					'h4',
-					null,
-					'Select a Layout'
-				),
-				React.createElement(
-					'p',
-					{ className: 'welcome__callout welcome__homepage--callout' },
-					'WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.'
-				),
-				React.createElement(
-					'form',
-					{ onSubmit: this.handleSubmit },
-					'Am I a static or blog page?'
-				)
+				"div",
+				{ className: "welcome__content-box clear" },
+				this.props.children
 			);
 		}
 	});
 	
-	module.exports = HomepageStep;
+	module.exports = ContentBox;
 
 /***/ },
-/* 231 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -1,7 +1,34 @@
+.welcome__container h1 {
+  font-weight: bold; }
+
+.welcome__container h4 {
+  margin-bottom: 10px;
+  border-bottom: 1px #ddd solid; }
+
+.welcome__container h5 {
+  margin-top: 0;
+  font-size: 1em;
+  font-weight: 400; }
+
+.welcome__container input,
+.welcome__container select {
+  margin: 1;
+  padding: 3px 5px; }
+
+.welcome__container input[type="text"] {
+  width: 100%; }
+
+.welcome__container .submit {
+  background-color: #EEE;
+  text-align: right; }
+
+.welcome__container .welcome__callout {
+  font-size: larger;
+  color: #777;
+  line-height: 1.5;
+  margin: 1em 0; }
+
 #jpo-welcome-panel {
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  -webkit-background-size: 520px auto;
   position: fixed;
   top: 0;
   left: 160px;
@@ -21,6 +48,8 @@
   @media (max-width: 782px) {
     #jpo-welcome-panel {
       left: 0px; } }
+  #jpo-welcome-panel button + button {
+    margin-left: 20px; }
 
 .welcome__wrapper {
   position: relative; }
@@ -66,9 +95,9 @@
 .welcome__get-started--intro {
   position: fixed;
   top: 0;
-  left: 160;
+  left: 160px;
   z-index: 999;
-  padding-top: 100;
+  padding-top: 100px;
   width: 100%;
   height: 100%;
   background-color: #fff;

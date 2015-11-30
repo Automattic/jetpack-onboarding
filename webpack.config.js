@@ -6,7 +6,7 @@ var webpack = require("webpack"),
 
 var IS_HOT_UPDATE = (process.env.NODE_ENV !== 'production');
 
-var styleDefaults = 'css?sourceMap!autoprefixer!sass?sourceMap';
+var styleDefaults = 'css?sourceMap!autoprefixer!sass?sourceMap!custom-colors';
 
 var cssLoader = IS_HOT_UPDATE ?
 					'style!css?sourceMap!autoprefixer!' :
@@ -56,6 +56,12 @@ module.exports = {
 		},
 		root: [ path.resolve( __dirname, 'client' ), fs.realpathSync( path.join(__dirname, 'node_modules/@automattic/dops-components/client') ) ]
 	},
+	resolveLoader: {
+		root: path.join( __dirname, "node_modules" ),
+		alias: {
+			'custom-colors': '@automattic/custom-colors-loader'
+		}
+	},
 	node: {
 		fs: "empty"
 	},
@@ -91,6 +97,9 @@ module.exports = {
 				loader: require.resolve('url-loader')+"?limit=20000&mimetype=image/svg+xml"
 			}
 		]
+	},
+	customColorsLoader: {
+		'file': path.join( __dirname, './css/scss/color-overrides.scss' )
 	},
 	eslint: {
 		configFile: path.join(__dirname, '.eslintrc'),

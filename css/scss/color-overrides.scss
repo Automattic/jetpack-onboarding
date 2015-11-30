@@ -1,0 +1,20 @@
+
+// Grays
+$gray:        #999;
+
+$gray-light:  lighten( $gray, 33% );
+$gray-dark:   darken( $gray, 38% );
+
+$white:       #fff;
+
+// Calypso Blues -> Jetpack Greens (yes, blue variables are green now…)
+$blue-light:      #c2daaa;
+$blue-medium:     lighten( #639b34, 5% );
+$blue-dark:       #234705;
+
+$blue-wordpress:  mix( #72af3a, $blue-dark, 70% );
+
+// Alerts
+$alert-yellow:           #f0b849;
+$alert-red:              #d94f4f;
+$alert-green:            #4ab866;
