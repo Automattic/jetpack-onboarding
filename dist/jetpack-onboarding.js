@@ -23625,57 +23625,6 @@
 	    SpinnerStore = __webpack_require__(172),
 	    Button = __webpack_require__(177);
 	
-	var JetpackLogo = React.createClass({
-		displayName: 'JetpackLogo',
-	
-		styles: {
-			jetpackLogoWrapper: {
-				display: 'block',
-				textAlign: 'center',
-				height: 70,
-				color: 'white',
-				marginLeft: 5,
-				backgroundColor: '#81a844'
-			},
-			jetpackLogo: {
-				display: 'inline-block',
-				position: 'relative',
-				width: 214,
-				marginRight: 6,
-				background: 'url(' + JPS.jetpack.logo_url + ') center center no-repeat',
-				backgroundSize: '183px auto',
-				color: '#fff',
-				fontWeight: 'normal',
-				padding: '5px 0px'
-			},
-			jetpackLogoName: {
-				textIndent: -9999,
-				visibility: 'hidden'
-			}
-	
-		},
-	
-		render: function render() {
-			return React.createElement(
-				'span',
-				{ style: [this.styles.jetpackLogoWrapper, this.props.style] },
-				'Powered by',
-				React.createElement('br', null),
-				React.createElement(
-					'a',
-					{ href: '/wp-admin/admin.php?page=jetpack', title: 'Jetpack', style: this.styles.jetpackLogo },
-					React.createElement(
-						'span',
-						{ style: this.styles.jetpackLogoName },
-						'Jetpack'
-					)
-				)
-			);
-		}
-	});
-	
-	JetpackLogo = Radium(JetpackLogo);
-	
 	function getJetpackState() {
 		return {
 			site_title: SiteStore.getTitle(),
@@ -23687,72 +23636,6 @@
 	
 	var JetpackJumpstart = React.createClass({
 		displayName: 'JetpackJumpstart',
-	
-		styles: {
-			jetpackLogo: {
-				float: 'right',
-				'@media (max-width: 782px)': {
-					float: 'none',
-					marginLeft: 0
-				}
-			},
-			jumpstartModule: {
-				float: 'left',
-				position: 'relative',
-				height: 160,
-				padding: 10,
-				'@media (min-width: 782px)': {
-					width: '33%'
-				}
-			},
-	
-			jumpstartModuleDesc: {
-				display: 'block',
-				marginTop: 5,
-				lineHeight: '150%'
-			},
-	
-			overlayContent: {
-				marginTop: 10,
-				marginBottom: 10
-			},
-	
-			overlayBefore: {
-				display: 'block',
-				position: 'absolute',
-				width: '100%',
-				height: '100%',
-				backgroundColor: 'rgba(0,0,0,0.2)'
-			},
-	
-			overlay: {
-				position: 'absolute',
-				top: 0,
-				left: 0,
-				width: '100%',
-				height: '100%',
-				minHeight: '100%',
-				zIndex: 700
-			},
-	
-			overlayBody: {
-				textAlign: 'center',
-				position: 'absolute',
-				borderRadius: 3,
-				boxShadow: '0 0 4px rgba(0,0,0,0.2)',
-				zIndex: 800,
-				left: '50%',
-				top: '50%',
-				padding: 15,
-				transform: 'translate(-50%,-50%)',
-				width: '70%',
-				backgroundColor: '#fff'
-			},
-	
-			moreLink: {
-				textAlign: 'center'
-			}
-		},
 	
 		componentDidMount: function componentDidMount() {
 			SiteStore.addChangeListener(this._onChange);
@@ -23778,110 +23661,18 @@
 			SiteActions.configureJetpack(Paths.JETPACK_MODULES_STEP_SLUG);
 		},
 	
-		handleChangeModuleStatus: function handleChangeModuleStatus(e) {
-			var $target = jQuery(e.currentTarget),
-			    module_slug = $target.data('module-slug');
-	
-			if (SiteStore.isJetpackModuleEnabled(module_slug)) {
-				SiteActions.deactivateJetpackModule(module_slug);
-			} else {
-				SiteActions.activateJetpackModule(module_slug);
-			}
-		},
-	
-		handleEnableAllModules: function handleEnableAllModules(e) {
-			e.preventDefault();
-			SiteActions.enableJumpstart();
-		},
-	
 		handleNext: function handleNext(e) {
 			e.preventDefault();
 	
 			SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
 		},
 	
-		handleShowMoreModules: function handleShowMoreModules(e) {
-			e.preventDefault();
-	
-			SiteActions.loadAllJetpackModules().done((function () {
-				this.setState({ showMoreModules: true });
-			}).bind(this));
-		},
-	
-		handleShowFewerModules: function handleShowFewerModules(e) {
-			e.preventDefault();
-			this.setState({ showMoreModules: false });
-		},
-	
-		_renderModule: function _renderModule(module) {
-			var isActive = SiteStore.isJetpackModuleEnabled(module.slug);
-			var moduleId = 'jp-module-' + module.slug;
-	
-			return React.createElement(
-				'div',
-				{ key: 'modules-' + module.slug, style: this.styles.jumpstartModule },
-				React.createElement('input', { id: moduleId, type: 'checkbox', checked: isActive, 'data-module-slug': module.slug, onChange: this.handleChangeModuleStatus }),
-				React.createElement(
-					'label',
-					{ htmlFor: moduleId },
-					React.createElement(
-						'strong',
-						null,
-						module.name
-					)
-				),
-				React.createElement(
-					'div',
-					{ style: this.styles.jumpstartModuleDesc },
-					React.createElement('div', { dangerouslySetInnerHTML: { __html: module.description } }),
-					isActive && module.configure_url && React.createElement(
-						'div',
-						null,
-						React.createElement(
-							'a',
-							{ target: '_configure', href: module.configure_url },
-							'configure'
-						)
-					)
-				)
-			);
-		},
-	
 		render: function render() {
-			var moduleOverlayBefore, moduleOverlay, moduleOverlayBody;
-	
-			if (!this.state.jetpackConfigured && !SpinnerStore.showing()) {
-				moduleOverlayBefore = React.createElement('div', { style: this.styles.overlayBefore });
-				moduleOverlay = React.createElement('div', { style: this.styles.overlay });
-				moduleOverlayBody = React.createElement(
-					'div',
-					{ style: this.styles.overlayBody },
-					React.createElement(
-						'p',
-						{ style: this.styles.overlayContent },
-						'These modules require a WordPress.com account - it\'s free!'
-					),
-					React.createElement(
-						Button,
-						{ color: 'green', size: 'big', theme: 'jetpack', onClick: this.handleJetpackConnect },
-						'Connect to WordPress.com'
-					),
-					React.createElement(
-						'p',
-						{ style: this.styles.overlayContent },
-						React.createElement(SkipButton, null)
-					)
-				);
-			}
-	
-			var moduleDescriptions = SiteStore.getJumpstartModules().map(this._renderModule);
-			var moreModuleDescriptions = SiteStore.getJetpackAdditionalModules().map(this._renderModule);
-	
 			return React.createElement(
 				WelcomeSection,
-				null,
+				{ id: 'welcome__jetpack' },
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch ',
 					React.createElement(
@@ -23891,87 +23682,52 @@
 					)
 				),
 				React.createElement(
-					'h4',
-					null,
-					'Enable Jetpack features'
+					'p',
+					{ className: 'welcome__callout welcome__jetpack--callout' },
+					'Connect your Jetpack profile to improve security, track stats, and grow traffic'
 				),
-				this.state.jetpackConfigured && React.createElement(
+				this.state.jetpackConfigured ? React.createElement(
 					'div',
 					null,
-					React.createElement(JetpackLogo, { style: this.styles.jetpackLogo }),
 					React.createElement(
 						'p',
-						{ style: styles.content },
+						null,
 						'Congratulations! You\'ve enabled Jetpack and unlocked dozens of powerful features.'
 					),
 					React.createElement(
 						'p',
-						{ style: styles.content },
-						'Check the boxes below to enable our most popular features.'
-					),
-					React.createElement('div', { className: 'clear' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'welcome__connect' },
-					React.createElement(
-						'div',
-						{ style: { position: 'relative' } },
-						moduleOverlayBefore,
-						moduleOverlay,
-						moduleOverlayBody,
-						this.state.jetpackConfigured && React.createElement(
-							'div',
-							{ className: 'submit' },
-							React.createElement(
-								Button,
-								{ style: { float: 'right' }, color: 'blue', onClick: this.handleNext },
-								'Next Step →'
-							),
-							React.createElement('div', { className: 'clear' })
-						),
+						null,
 						React.createElement(
-							ContentBox,
-							null,
-							React.createElement(
-								'h3',
-								null,
-								'Popular features   ',
-								React.createElement(
-									Button,
-									{ disabled: this.state.jumpstartEnabled, color: 'blue', onClick: this.handleEnableAllModules },
-									this.state.jumpstartEnabled ? 'Enabled All' : 'Enable all (recommended)'
-								)
-							),
-							moduleDescriptions
-						),
-						this.state.showMoreModules ? React.createElement(
-							'p',
-							{ style: this.styles.moreLink },
-							React.createElement(
-								'a',
-								{ href: '#', onClick: this.handleShowFewerModules },
-								'hide additional features'
-							)
-						) : React.createElement(
-							'p',
-							{ style: this.styles.moreLink },
-							React.createElement(
-								'a',
-								{ href: '#', onClick: this.handleShowMoreModules },
-								'show additional features'
-							)
-						),
-						this.state.showMoreModules && React.createElement(
-							ContentBox,
-							null,
-							React.createElement(
-								'h3',
-								null,
-								'Additional modules'
-							),
-							moreModuleDescriptions
+							'a',
+							{ href: '#' },
+							'Check out the settings page…'
 						)
+					),
+					React.createElement(
+						'p',
+						null,
+						React.createElement(
+							Button,
+							{ style: { float: 'right' }, color: 'blue', onClick: this.handleNext },
+							'Next Step →'
+						)
+					)
+				) : React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'p',
+						null,
+						React.createElement(
+							Button,
+							{ onClick: this.handleJetpackConnect, primary: true },
+							'Connect to WordPress.com'
+						)
+					),
+					React.createElement(
+						'p',
+						null,
+						React.createElement(SkipButton, null)
 					)
 				)
 			);
@@ -25438,47 +25194,8 @@
 		};
 	}
 	
-	var SettingsItem = React.createClass({
-		displayName: 'SettingsItem',
-	
-		styles: {
-			item: {
-				padding: '1em',
-				marginBottom: '1em',
-				listStyle: 'none',
-				background: '#f5f5f5',
-				border: '1px solid #ddd'
-			},
-	
-			heading: {
-				margin: 0,
-				fontSize: '1.2em',
-				fontWeight: 800
-			}
-		},
-	
-		render: function render() {
-			return React.createElement(
-				'li',
-				{ style: this.styles.item },
-				React.createElement(
-					'h5',
-					{ style: this.styles.heading },
-					this.props.title
-				),
-				this.props.children
-			);
-		}
-	});
-	
 	var AdvancedSettingsStep = React.createClass({
 		displayName: 'AdvancedSettingsStep',
-	
-		styles: {
-			wrapper: {
-				marginLeft: 0
-			}
-		},
 	
 		getInitialState: function getInitialState() {
 			return getSiteState();
@@ -25501,7 +25218,7 @@
 				WelcomeSection,
 				null,
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch ',
 					React.createElement(

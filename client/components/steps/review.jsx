@@ -9,40 +9,7 @@ function getSiteState() {
 	};
 }
 
-var SettingsItem = React.createClass({
-	styles: {
-		item: {
-			padding: '1em',
-			marginBottom: '1em',
-			listStyle: 'none',
-			background: '#f5f5f5',
-			border: '1px solid #ddd'
-		},
-
-		heading: {
-			margin: 0,
-			fontSize: '1.2em',
-			fontWeight: 800
-		}
-	},
-
-	render: function() {
-		return (
-			<li style={this.styles.item}>
-				<h5 style={this.styles.heading}>{this.props.title}</h5>
-				{this.props.children}
-			</li>
-		);
-	}
-});
-
 var AdvancedSettingsStep = React.createClass({
-
-	styles: {
-		wrapper: {
-			marginLeft: 0
-		}
-	},
 
 	getInitialState: function() {
 		return getSiteState();
@@ -63,7 +30,7 @@ var AdvancedSettingsStep = React.createClass({
 	render: function() {
 		return (
 			<WelcomeSection>
-				<h3>Let&apos;s launch <em>{this.state.site_title}</em></h3>
+				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
 				<h4>Advanced settings</h4>
 
 				<ul style={this.styles.wrapper}>
