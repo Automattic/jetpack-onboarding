@@ -1,3 +1,3 @@
-var WelcomePanel = require('./welcome-panel');
+var WelcomePanel = require( './welcome-panel' );
 
 WelcomePanel();

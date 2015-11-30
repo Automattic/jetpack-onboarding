@@ -50,7 +50,9 @@ module.exports = {
 	resolve: {
 		extensions: ["", ".js", ".jsx"],
 		alias: {
-			"react": path.join(__dirname, "/node_modules/react")
+			"react": path.join(__dirname, "/node_modules/react"),
+			"stores": path.join(__dirname, "/client/stores"),
+			"actions": path.join(__dirname, "/client/actions"),
 		},
 		root: [ path.resolve( __dirname, 'client' ), fs.realpathSync( path.join(__dirname, 'node_modules/@automattic/dops-components/client') ) ]
 	},

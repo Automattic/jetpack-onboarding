@@ -1,14 +1,13 @@
 var React = require('react'),
 	Radium = require('radium'),
-	SkipButton = require('./skip-button'),
-	SiteStore = require('../stores/site-store'),
-	SiteActions = require('../actions/site-actions'),
-	Paths = require('../constants/jetpack-onboarding-paths'),
-	ContentBox = require('./content-box'),
-	styles = require('../styles'),
-	WelcomeSection = require('./welcome-section'),
-	SetupProgressActions = require('../actions/setup-progress-actions'),
-	SpinnerStore = require('../stores/spinner-store'),
+	SkipButton = require('../skip-button'),
+	SiteStore = require('stores/site-store'),
+	SiteActions = require('actions/site-actions'),
+	Paths = require('../../constants/jetpack-onboarding-paths'),
+	ContentBox = require('../page/section'),
+	WelcomeSection = require('../page/container'),
+	SetupProgressActions = require('actions/setup-progress-actions'),
+	SpinnerStore = require('stores/spinner-store'),
 	Button = require('@automattic/dops-components/client/components/button');
 
 

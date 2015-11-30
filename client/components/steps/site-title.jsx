@@ -1,10 +1,9 @@
 var React = require('react'),
-	SiteActions = require('../actions/site-actions'),
-	SiteStore = require('../stores/site-store'),
-	WelcomeSection = require('./welcome-section'),
-	styles = require('../styles'),
+	SiteActions = require('actions/site-actions'),
+	SiteStore = require('stores/site-store'),
+	WelcomeSection = require('../page/container'),
 	Button = require('@automattic/dops-components/client/components/button'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressActions = require('actions/setup-progress-actions');
 
 function getSiteTitleState() {
 	return {

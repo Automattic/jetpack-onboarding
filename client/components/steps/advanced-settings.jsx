@@ -1,7 +1,7 @@
 var React = require('react'),
 	Button = require('@automattic/dops-components/client/components/button'),
-	SiteStore = require('../stores/site-store'),
-	WelcomeSection = require('./welcome-section');
+	SiteStore = require('stores/site-store'),
+	WelcomeSection = require('../page/container');
 
 function getSiteState() {
 	return {

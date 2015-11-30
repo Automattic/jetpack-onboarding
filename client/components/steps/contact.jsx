@@ -1,9 +1,8 @@
 var React = require('react'),
-	SiteStore = require('../stores/site-store'),
+	SiteStore = require('stores/site-store'),
 	Button = require('@automattic/dops-components/client/components/button'),
-	WelcomeSection = require('./welcome-section'),
-	styles = require('../styles'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	WelcomeSection = require('../page/container'),
+	SetupProgressActions = require('actions/setup-progress-actions');
 
 function getSiteContactState() {
 	return {
@@ -76,13 +75,12 @@ var ContactPageStep = React.createClass({
 	_renderWithoutContactPage: function() {
 		return (
 			<div>
-				<img style={styles.screenshot} src={this.state.contactPageScreenshot} />
-				<p style={styles.content}>Build a <em>starter</em> "Contact Us" page?
-					<br/>
+				<img className="welcome__contact--screenshot" src={ this.state.contactPageScreenshot } />
+				<p>Build a <em>starter</em> "Contact Us" page?<br/>
 					<small>(requires a free Jetpack connection)</small>
 				</p>
 
-				<Button color="green" style={{ marginRight: 15 }} onClick={this.handleBuildContact}>Yes</Button>
+				<Button color="green" onClick={this.handleBuildContact}>Yes</Button>
 				<Button onClick={this.handleSubmit}>No Thanks</Button>
 			</div>
 		);

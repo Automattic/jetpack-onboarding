@@ -1,6 +1,6 @@
 var React = require('react'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	SetupProgressStore = require('stores/setup-progress-store'),
+	SetupProgressActions = require('actions/setup-progress-actions');
 
 function getSetupProgress() {
 	return {

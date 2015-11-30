@@ -1,10 +1,8 @@
 var React = require('react'),
-	SiteStore = require('../stores/site-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Tooltip = require('./tooltip'),
-	WelcomeSection = require('./welcome-section'),
-	ContentBox = require('./content-box'),
-	styles = require('../styles'),
+	SiteStore = require('stores/site-store'),
+	SetupProgressActions = require('actions/setup-progress-actions'),
+	WelcomeSection = require('../page/container'),
+	ContentBox = require('../page/section'),
 	Button = require('@automattic/dops-components/client/components/button');
 
 function getThemeState() {

@@ -1,9 +1,8 @@
 var React = require('react'),
-	SiteStore = require('../stores/site-store'),
+	SiteStore = require('stores/site-store'),
 	Button = require('@automattic/dops-components/client/components/button'),
-	WelcomeSection = require('./welcome-section'),
-	styles = require('../styles'),
-	SetupProgressActions = require('../actions/setup-progress-actions');
+	WelcomeSection = require('../page/container'),
+	SetupProgressActions = require('actions/setup-progress-actions');
 
 function getSiteLayoutState() {
 	return {

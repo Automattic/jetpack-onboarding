@@ -16,7 +16,7 @@
  * 
  **/
 
-var DataActions = require('../actions/data-actions');
+var DataActions = require('actions/data-actions');
 
 var WPAjax = (function() {
 

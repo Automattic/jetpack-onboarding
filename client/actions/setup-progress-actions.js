@@ -5,8 +5,8 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	SiteActions = require('./site-actions'),
 	WPAjax = require('../utils/wp-ajax'),
 	SpinnerActions = require('./spinner-actions'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
-	SiteStore = require('../stores/site-store');
+	SetupProgressStore = require('stores/setup-progress-store'),
+	SiteStore = require('stores/site-store');
 
 var SetupProgressActions = {
 	resetData: function() {

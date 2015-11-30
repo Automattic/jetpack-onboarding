@@ -1,9 +1,9 @@
-var React = require('react'),
-	SetupProgressStore = require('../stores/setup-progress-store'),
-	SetupProgressActions = require('../actions/setup-progress-actions'),
-	Button = require('@automattic/dops-components/client/components/button'),
-	m = require('@automattic/dops-components/client/utils/m'),
-	Radium = require('radium');
+var React = require( 'react' ),
+	SetupProgressStore = require( 'stores/setup-progress-store' ),
+	SetupProgressActions = require( 'actions/setup-progress-actions' ),
+	Button = require( '@automattic/dops-components/client/components/button' ),
+	m = require( '@automattic/dops-components/client/utils/m' ),
+	Radium = require( 'radium' );
 
 function getSetupState() {
 	return {};
