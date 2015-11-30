@@ -23349,6 +23349,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(4),
+	    classNames = __webpack_require__(202),
 	    SiteStore = __webpack_require__(170),
 	    Button = __webpack_require__(177),
 	    WelcomeSection = __webpack_require__(207),
@@ -23357,7 +23358,9 @@
 	function getSiteLayoutState() {
 		return {
 			site_title: SiteStore.getTitle(),
-			layout: SiteStore.getLayout()
+			layout: SiteStore.getLayout(),
+			siteScreenshot: JPS.base_url + '/img/layout__site-blog.png',
+			blogScreenshot: JPS.base_url + '/img/layout__blog.png'
 		};
 	}
 	
@@ -23394,7 +23397,7 @@
 				WelcomeSection,
 				{ id: 'welcome__homepage' },
 				React.createElement(
-					'h3',
+					'h1',
 					null,
 					'Let\'s launch ',
 					React.createElement(
@@ -23404,19 +23407,56 @@
 					)
 				),
 				React.createElement(
-					'h4',
-					null,
-					'Select a Layout'
-				),
-				React.createElement(
 					'p',
 					{ className: 'welcome__callout welcome__homepage--callout' },
-					'WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.'
+					'Design your homepage'
 				),
 				React.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit },
-					'Am I a static or blog page?'
+					React.createElement(
+						'div',
+						{ className: 'welcome__homepage-cols' },
+						React.createElement(
+							'div',
+							{ className: classNames({ 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'site-blog' }) },
+							React.createElement(
+								'label',
+								null,
+								React.createElement('input', { type: 'radio', name: 'site_layout', value: 'site-blog', checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout, className: 'screen-reader-text' }),
+								React.createElement('img', { src: this.state.siteScreenshot }),
+								React.createElement(
+									'p',
+									null,
+									'Some static content mixed with news or posts'
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: classNames({ 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'blog' }) },
+							React.createElement(
+								'label',
+								null,
+								React.createElement('input', { type: 'radio', name: 'site_layout', value: 'blog', checked: this.state.layout === 'blog', onChange: this.handleSetLayout, className: 'screen-reader-text' }),
+								React.createElement('img', { src: this.state.blogScreenshot }),
+								React.createElement(
+									'p',
+									null,
+									'Only news or posts'
+								)
+							)
+						)
+					),
+					React.createElement(
+						'p',
+						{ className: 'welcome__submit' },
+						React.createElement(
+							Button,
+							{ primary: true, type: 'submit' },
+							'Next Step →'
+						)
+					)
 				)
 			);
 		}

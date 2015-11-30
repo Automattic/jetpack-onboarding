@@ -1,0 +1,20 @@
+.welcome__homepage-cols {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	margin: 50px 0;
+}
+
+.welcome__homepage-col {
+	flex: 1;
+
+	img {
+		border: 2px solid transparent;
+	}
+
+	&.is-selected {
+		img {
+			border-color: $blue-wordpress;
+		}
+	}
+}

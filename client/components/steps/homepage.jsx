@@ -1,4 +1,5 @@
 var React = require( 'react' ),
+	classNames = require( 'classnames' ),
 	SiteStore = require( 'stores/site-store' ),
 	Button = require( '@automattic/dops-components/client/components/button' ),
 	WelcomeSection = require( '../page/container' ),
@@ -7,11 +8,13 @@ var React = require( 'react' ),
 function getSiteLayoutState() {
 	return {
 		site_title: SiteStore.getTitle(),
-		layout: SiteStore.getLayout()
+		layout: SiteStore.getLayout(),
+		siteScreenshot: `${ JPS.base_url }/img/layout__site-blog.png`,
+		blogScreenshot: `${ JPS.base_url }/img/layout__blog.png`,
 	};
 }
 
-var HomepageStep = React.createClass({
+var HomepageStep = React.createClass( {
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener( this._onChange );
@@ -41,15 +44,33 @@ var HomepageStep = React.createClass({
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__homepage">
-				<h3>Let&apos;s launch <em>{ this.state.site_title }</em></h3>
-				<h4>Select a Layout</h4>
-				<p className="welcome__callout welcome__homepage--callout">WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.</p>
+				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
+				<p className="welcome__callout welcome__homepage--callout">Design your homepage</p>
 				<form onSubmit={ this.handleSubmit }>
-					Am I a static or blog page?
+					<div className="welcome__homepage-cols">
+						<div className={ classNames( { 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'site-blog' } ) }>
+							<label>
+								<input type="radio" name="site_layout" value="site-blog" checked={ this.state.layout === 'site-blog' } onChange={ this.handleSetLayout } className='screen-reader-text'/>
+								<img src={ this.state.siteScreenshot } />
+								<p>Some static content mixed with news or posts</p>
+							</label>
+						</div>
+						<div className={ classNames( { 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'blog' } ) }>
+							<label>
+								<input type="radio" name="site_layout" value="blog" checked={ this.state.layout === 'blog' } onChange={ this.handleSetLayout } className='screen-reader-text' />
+								<img src={ this.state.blogScreenshot } />
+								<p>Only news or posts</p>
+							</label>
+						</div>
+					</div>
+
+					<p className="welcome__submit">
+						<Button primary type="submit">Next Step &rarr;</Button>
+					</p>
 				</form>
 			</WelcomeSection>
 		);
 	}
-});
+} );
 
 module.exports = HomepageStep;
