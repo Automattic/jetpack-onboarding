@@ -19956,7 +19956,6 @@
 	
 	  // set the completion status of each step to the saved values
 	  steps.forEach(function (step) {
-	
 	    // default values for skipped, completed and static
 	    if (typeof step.completed === 'undefined') {
 	      step.completed = JPS.step_status[step.slug] && JPS.step_status[step.slug].completed || false;
@@ -21127,7 +21126,13 @@
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
 			SiteActions.setLayout(layout).done((function () {
-				this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
+				this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
+			}).bind(this));
+		},
+	
+		submitHomepageStep: function submitHomepageStep(layout) {
+			SiteActions.setLayout(layout).done((function () {
+				this.completeAndNextStep(Paths.HOMEPAGE_STEP_SLUG);
 			}).bind(this));
 		},
 	
@@ -25463,20 +25468,61 @@
 	'use strict';
 	
 	var React = __webpack_require__(4),
-	    SiteStore = __webpack_require__(170),
 	    Button = __webpack_require__(177),
-	    WelcomeSection = __webpack_require__(207),
-	    SetupProgressActions = __webpack_require__(166);
+	    SiteStore = __webpack_require__(170),
+	    WelcomeSection = __webpack_require__(207);
 	
-	function getSiteLayoutState() {
+	function getSiteState() {
 		return {
-			site_title: SiteStore.getTitle(),
-			layout: SiteStore.getLayout()
+			site_title: SiteStore.getTitle()
 		};
 	}
 	
-	var LayoutStep = React.createClass({
-		displayName: 'LayoutStep',
+	var SettingsItem = React.createClass({
+		displayName: 'SettingsItem',
+	
+		styles: {
+			item: {
+				padding: '1em',
+				marginBottom: '1em',
+				listStyle: 'none',
+				background: '#f5f5f5',
+				border: '1px solid #ddd'
+			},
+	
+			heading: {
+				margin: 0,
+				fontSize: '1.2em',
+				fontWeight: 800
+			}
+		},
+	
+		render: function render() {
+			return React.createElement(
+				'li',
+				{ style: this.styles.item },
+				React.createElement(
+					'h5',
+					{ style: this.styles.heading },
+					this.props.title
+				),
+				this.props.children
+			);
+		}
+	});
+	
+	var AdvancedSettingsStep = React.createClass({
+		displayName: 'AdvancedSettingsStep',
+	
+		styles: {
+			wrapper: {
+				marginLeft: 0
+			}
+		},
+	
+		getInitialState: function getInitialState() {
+			return getSiteState();
+		},
 	
 		componentDidMount: function componentDidMount() {
 			SiteStore.addChangeListener(this._onChange);
@@ -25487,26 +25533,13 @@
 		},
 	
 		_onChange: function _onChange() {
-			this.setState(getSiteLayoutState());
-		},
-	
-		getInitialState: function getInitialState() {
-			return getSiteLayoutState();
-		},
-	
-		handleSetLayout: function handleSetLayout(e) {
-			this.setState({ layout: jQuery(e.currentTarget).val() });
-		},
-	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitLayoutStep(this.state.layout);
+			this.setState(getSiteState());
 		},
 	
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
-				{ id: 'welcome__layout' },
+				null,
 				React.createElement(
 					'h3',
 					null,
@@ -25520,66 +25553,95 @@
 				React.createElement(
 					'h4',
 					null,
-					'Select a Layout'
+					'Advanced settings'
 				),
 				React.createElement(
-					'p',
-					{ className: 'welcome__callout welcome__layout--callout' },
-					'WordPress can be a blog, a web site with a hierarchy of static pages, or a combination of the two.'
-				),
-				React.createElement(
-					'form',
-					{ onSubmit: this.handleSubmit },
+					'ul',
+					{ style: this.styles.wrapper },
 					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'website', checked: this.state.layout === 'website', onChange: this.handleSetLayout }),
-						' Static Website',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site with a hierarchy of pages'
-						)
-					),
-					React.createElement('br', null),
-					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'site-blog', checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout }),
-						' Static Website with a blog',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site with pages that also has a blog or news section'
-						)
-					),
-					React.createElement('br', null),
-					React.createElement(
-						'label',
-						null,
-						React.createElement('input', { type: 'radio', name: 'site_layout', value: 'blog', checked: this.state.layout === 'blog', onChange: this.handleSetLayout }),
-						' Just a blog',
-						React.createElement(
-							'p',
-							{ className: 'description' },
-							'A web site that will constantly show new content (articles, photos, videos, etc.)'
-						)
-					),
-					React.createElement(
-						'p',
-						{ className: 'welcome__submit' },
+						SettingsItem,
+						{ title: 'Fine-tune your site\'s layout and appearance' },
+						'Customize your site’s colors, fonts, sidebars and other settings.',
+						React.createElement('br', null),
 						React.createElement(
 							Button,
-							{ primary: true, type: 'submit' },
-							'Next Step →'
+							{ color: 'blue', href: JPS.steps.advanced_settings.customize_url },
+							'Customize my site'
+						),
+						'  ',
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.themes_url },
+							'Browse and add themes'
 						)
+					),
+					(SiteStore.getLayout() === 'blog' || SiteStore.getLayout() === 'site-blog') && React.createElement(
+						SettingsItem,
+						{ title: 'Create your first blog post' },
+						'An epic essay or just "Hello World!"',
+						React.createElement('br', null),
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.new_blog_post_url },
+							'Write a new blog post'
+						),
+						'  ',
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.manage_posts_url },
+							'Manage posts'
+						)
+					),
+					React.createElement(
+						SettingsItem,
+						{ title: 'Create a static page' },
+						'"About me", "Our Services" or anything else you can imagine.',
+						React.createElement('br', null),
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.new_page_url },
+							'Create a new page'
+						),
+						'  ',
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.manage_pages_url },
+							'Manage pages'
+						)
+					),
+					React.createElement(
+						SettingsItem,
+						{ title: 'Extend your site\'s functionality' },
+						'WordPress offers thousands of plugins from Jetpack and the WordPress community.',
+						React.createElement('br', null),
+						React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.plugins_url },
+							'Manage plugins'
+						),
+						'  ',
+						SiteStore.getJetpackConfigured() && React.createElement(
+							Button,
+							{ color: 'blue', href: JPS.steps.advanced_settings.jetpack_modules_url },
+							'Manage Jetpack modules'
+						)
+					),
+					React.createElement(
+						SettingsItem,
+						{ title: 'Learn more' },
+						React.createElement(
+							'a',
+							{ href: 'https://codex.wordpress.org/First_Steps_With_WordPress' },
+							'First Steps with WordPress'
+						),
+						' - an online guide from the creators of WordPress'
 					)
 				)
 			);
 		}
 	});
 	
-	module.exports = LayoutStep;
+	module.exports = AdvancedSettingsStep;
 
 /***/ }
 /******/ ]);

@@ -15,7 +15,6 @@ function setSteps(steps) {
 
   // set the completion status of each step to the saved values
   steps.forEach( function(step) {
-    
     // default values for skipped, completed and static
     if ( typeof( step.completed ) === 'undefined' ) {
       step.completed = (JPS.step_status[step.slug] && JPS.step_status[step.slug].completed) || false;  

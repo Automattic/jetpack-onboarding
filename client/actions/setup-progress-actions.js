@@ -140,7 +140,13 @@ var SetupProgressActions = {
 
 	submitLayoutStep: function(layout) {
 		SiteActions.setLayout(layout).done(function() {
-			this.completeAndNextStep(Paths.LAYOUT_STEP_SLUG);
+			this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
+		}.bind(this));
+	},
+
+	submitHomepageStep: function(layout) {
+		SiteActions.setLayout(layout).done(function() {
+			this.completeAndNextStep(Paths.HOMEPAGE_STEP_SLUG);
 		}.bind(this));
 	},
 
