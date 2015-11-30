@@ -38,11 +38,11 @@ var GetStarted = React.createClass({
 		return (
 			<div className="welcome__get-started--intro">
 				<div className="welcome__get-started--wrapper">
-					<h3>Welcome to WordPress</h3>
+					<h1>Welcome to WordPress</h1>
 					<p className="welcome__callout welcome__get-started--callout">Would you like help designing your site?</p>
 					<p>
-						<Button onClick={this.handleGetStarted}>Yes</Button>
-						<Button onClick={this.handleNoThanks}>No thanks</Button>
+						<Button onClick={ this.handleGetStarted } primary>Yes</Button>
+						<Button onClick={ this.handleNoThanks }>No thanks</Button>
 					</p>
 				</div>
 			</div>

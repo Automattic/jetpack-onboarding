@@ -1,9 +1,6 @@
 #jpo-welcome-panel {
 	*, *:before, *:after { box-sizing: border-box; }
 
-	background-repeat: no-repeat;
-	background-position: center bottom;
-	-webkit-background-size: 520px auto;
 	position: fixed;
 	top: 0;
 	left: 160px;
@@ -22,6 +19,10 @@
 
 	@media ( max-width: 782px ) {
 		left: 0px;
+	}
+
+	button + button {
+		margin-left: 20px;
 	}
 }
 
