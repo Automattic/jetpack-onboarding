@@ -23542,7 +23542,7 @@
 				null,
 				React.createElement(
 					'p',
-					{ className: 'welcome__callout welcome__contact--callout' },
+					{ className: 'welcome__callout welcome__contact--callout welcome__contact-exists--callout' },
 					'View your starter ',
 					React.createElement(
 						'a',
@@ -23572,7 +23572,7 @@
 					{ className: 'welcome__contact-col' },
 					React.createElement(
 						'p',
-						{ className: 'welcome__callout welcome__contact--callout' },
+						{ className: 'welcome__callout welcome__contact--callout welcome__contact-build--callout' },
 						'Build a ',
 						React.createElement(
 							'em',

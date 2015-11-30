@@ -61,7 +61,7 @@ var ContactPageStep = React.createClass( {
 	_renderWithContactPage: function() {
 		return (
 			<div>
-				<p className="welcome__callout welcome__contact--callout">View your starter <a href={ this.state.contactPageURL } target="_blank">Contact Us</a> page.</p>
+				<p className="welcome__callout welcome__contact--callout welcome__contact-exists--callout">View your starter <a href={ this.state.contactPageURL } target="_blank">Contact Us</a> page.</p>
 				<p className="welcome__submit">
 					<Button primary onClick={ this.handleContinue }>Next Step &rarr;</Button>
 				</p>
@@ -73,7 +73,7 @@ var ContactPageStep = React.createClass( {
 		return (
 			<div className="welcome__contact-cols">
 				<div className="welcome__contact-col">
-					<p className="welcome__callout welcome__contact--callout">Build a <em>starter</em> "Contact Us" page?</p>
+					<p className="welcome__callout welcome__contact--callout welcome__contact-build--callout">Build a <em>starter</em> "Contact Us" page?</p>
 
 					<p className="welcome__submit">
 						<Button primary onClick={ this.handleBuildContact }>Yes</Button>
