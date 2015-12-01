@@ -600,7 +600,11 @@
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
-          align-items: flex-start; }
+          align-items: flex-start;
+  margin-top: 50px; }
+  @media (max-width: 700px) {
+    .welcome__review-cols {
+      margin-top: 0; } }
 
 .welcome__review-col {
   -webkit-box-flex: 1;
