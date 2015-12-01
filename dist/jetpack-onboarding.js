@@ -23587,28 +23587,32 @@
 					'div',
 					{ className: 'welcome__contact-col' },
 					React.createElement(
-						'p',
-						{ className: 'welcome__callout welcome__contact--callout welcome__contact-build--callout' },
-						'Build a ',
+						'div',
+						{ className: 'welcome__contact-button' },
 						React.createElement(
-							'em',
-							null,
-							'starter'
-						),
-						' "Contact Us" page?'
-					),
-					React.createElement(
-						'p',
-						{ className: 'welcome__submit' },
-						React.createElement(
-							Button,
-							{ primary: true, onClick: this.handleBuildContact },
-							'Yes'
+							'p',
+							{ className: 'welcome__callout welcome__contact--callout welcome__contact-build--callout' },
+							'Build a ',
+							React.createElement(
+								'em',
+								null,
+								'starter'
+							),
+							' "Contact Us" page?'
 						),
 						React.createElement(
-							Button,
-							{ onClick: this.handleSubmit },
-							'No Thanks'
+							'p',
+							{ className: 'welcome__submit' },
+							React.createElement(
+								Button,
+								{ primary: true, onClick: this.handleBuildContact },
+								'Yes'
+							),
+							React.createElement(
+								Button,
+								{ onClick: this.handleSubmit },
+								'No Thanks'
+							)
 						)
 					)
 				),

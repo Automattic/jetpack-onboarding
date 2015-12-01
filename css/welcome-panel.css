@@ -582,12 +582,17 @@
               flex: 1 100%;
       margin-bottom: 15px; } }
 
+.welcome__contact-button {
+  display: inline-block;
+  text-align: left; }
+
 .welcome__contact--screenshot img {
   border: 1px solid #ccc; }
 
 @media (min-width: 701px) {
   .welcome__container .welcome__contact-build--callout {
-    margin-bottom: 50px; } }
+    margin-top: 50px;
+    margin-bottom: 30px; } }
 
 .welcome__review-cols {
   display: -webkit-box;
