@@ -37,9 +37,22 @@ var AdvancedSettingsStep = React.createClass({
 		};
 	},
 
+	handleDismiss: function( event ) {
+		event.preventDefault();
+		jQuery( '#welcome-panel' ).addClass('hidden');
+		jQuery.post( ajaxurl, {
+			action: 'update-welcome-panel',
+			visible: 0,
+			welcomepanelnonce: jQuery( '#welcomepanelnonce' ).val()
+		} );
+		jQuery( '#wp_welcome_panel-hide' ).prop( 'checked', false );
+	},
+
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__review">
+				<div className="welcome__dismiss"><a href="#" onClick={ this.handleDismiss }><Dashicon name="dismiss" /> Dismiss</a></div>
+
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
 				<p className="welcome__callout welcome__review--callout">Great Work!</p>
 

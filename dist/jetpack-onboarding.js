@@ -23879,10 +23879,31 @@
 			};
 		},
 	
+		handleDismiss: function handleDismiss(event) {
+			event.preventDefault();
+			jQuery('#welcome-panel').addClass('hidden');
+			jQuery.post(ajaxurl, {
+				action: 'update-welcome-panel',
+				visible: 0,
+				welcomepanelnonce: jQuery('#welcomepanelnonce').val()
+			});
+			jQuery('#wp_welcome_panel-hide').prop('checked', false);
+		},
+	
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
 				{ id: 'welcome__review' },
+				React.createElement(
+					'div',
+					{ className: 'welcome__dismiss' },
+					React.createElement(
+						'a',
+						{ href: '#', onClick: this.handleDismiss },
+						React.createElement(Dashicon, { name: 'dismiss' }),
+						' Dismiss'
+					)
+				),
 				React.createElement(
 					'h1',
 					null,

@@ -28,3 +28,13 @@
 	display: inline-block;
 	text-align: left;
 }
+
+.welcome__dismiss {
+	float: right;
+	font-size: 14px;
+	line-height: 20px;
+
+	* {
+		vertical-align: middle;
+	}
+}

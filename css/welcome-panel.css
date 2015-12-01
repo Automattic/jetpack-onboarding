@@ -630,3 +630,10 @@
 .welcome__review-list {
   display: inline-block;
   text-align: left; }
+
+.welcome__dismiss {
+  float: right;
+  font-size: 14px;
+  line-height: 20px; }
+  .welcome__dismiss * {
+    vertical-align: middle; }
