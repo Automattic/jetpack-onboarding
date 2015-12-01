@@ -21142,7 +21142,8 @@
 		},
 	
 		confirmHomepageStep: function confirmHomepageStep(layout) {
-			this.completeAndNextStep(Paths.IS_BLOG_STEP_SLUG);
+			this.completeStep(Paths.IS_BLOG_STEP_SLUG);
+			this.skipToStep(Paths.HOMEPAGE_STEP_SLUG);
 		},
 	
 		createContactPage: function createContactPage(contactPage) {
