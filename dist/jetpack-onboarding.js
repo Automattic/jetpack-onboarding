@@ -23881,13 +23881,7 @@
 	
 		handleDismiss: function handleDismiss(event) {
 			event.preventDefault();
-			jQuery('#welcome-panel').addClass('hidden');
-			jQuery.post(ajaxurl, {
-				action: 'update-welcome-panel',
-				visible: 0,
-				welcomepanelnonce: jQuery('#welcomepanelnonce').val()
-			});
-			jQuery('#wp_welcome_panel-hide').prop('checked', false);
+			jQuery('#welcome-panel .welcome-panel-close').trigger('click');
 		},
 	
 		render: function render() {
