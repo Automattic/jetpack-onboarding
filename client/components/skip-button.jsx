@@ -9,14 +9,6 @@ function getSetupProgress() {
 }
 
 var SkipButton = React.createClass({
-
-	style: {
-		color: '#bbb',
-		fontSize: '90%',
-		marginLeft: 20,
-		borderBottom: '1px dotted #bbb'
-	},
-
 	componentDidMount: function() {
 		SetupProgressStore.addChangeListener(this._onChange);
 	},
@@ -39,11 +31,13 @@ var SkipButton = React.createClass({
 	},
 
 	render: function() {
-		var completed = (this.state.completed);
+		var completed = ( this.state.completed );
 		if ( completed ) {
 			return null;
 		} else {
-			return (<a style={this.style} href="#" onClick={this.handleSkip}>Not now</a>);
+			return (
+				<a className="welcome__skip-step" href="#" onClick={this.handleSkip}>Not now</a>
+			);
 		}
 	}
 });

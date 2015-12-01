@@ -1,5 +1,4 @@
 var React = require('react'),
-	Radium = require('radium'),
 	SkipButton = require('../skip-button'),
 	SiteStore = require('stores/site-store'),
 	SiteActions = require('actions/site-actions'),
@@ -72,4 +71,4 @@ var JetpackJumpstart = React.createClass({
 	}
 });
 
-module.exports = Radium(JetpackJumpstart);
+module.exports = JetpackJumpstart;

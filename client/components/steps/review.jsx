@@ -1,6 +1,7 @@
 var React = require('react'),
 	Button = require('@automattic/dops-components/client/components/button'),
 	SiteStore = require('stores/site-store'),
+	Dashicon = require('../dashicon'),
 	WelcomeSection = require('../page/container');
 
 function getSiteState() {
@@ -29,48 +30,25 @@ var AdvancedSettingsStep = React.createClass({
 
 	render: function() {
 		return (
-			<WelcomeSection>
+			<WelcomeSection id="welcome__review">
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
-				<h4>Advanced settings</h4>
+				<p className="welcome__callout welcome__review--callout">Great Work!</p>
 
-				<ul style={this.styles.wrapper}>
-					<SettingsItem title="Fine-tune your site's layout and appearance">
-						Customize your site’s colors, fonts, sidebars and other settings.
-						<br />
-						<Button color="blue" href={JPS.steps.advanced_settings.customize_url}>Customize my site</Button>
-						&nbsp;&nbsp;
-						<Button color="blue" href={JPS.steps.advanced_settings.themes_url}>Browse and add themes</Button>
-					</SettingsItem>
+				<div className="welcome__review-cols">
+					<div className="welcome__review-col">
+						<ul className="welcome__review-list">
+							<li><Dashicon name="yes" /> Navigation and description <a href="#">(edit)</a></li>
+							<li><Dashicon name="yes" /> Homepage layout <a href="#">(edit)</a></li>
+							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#">(edit)</a></li>
+							<li><Dashicon name="yes" /> Jetpack <a href="#">(edit)</a></li>
+						</ul>
+					</div>
 
-					{(SiteStore.getLayout() === 'blog' || SiteStore.getLayout() === 'site-blog') && (
-						<SettingsItem title="Create your first blog post">
-							An epic essay or just "Hello World!"
-							<br />
-							<Button color="blue" href={JPS.steps.advanced_settings.new_blog_post_url}>Write a new blog post</Button>
-							&nbsp;&nbsp;
-							<Button color="blue" href={JPS.steps.advanced_settings.manage_posts_url}>Manage posts</Button>
-						</SettingsItem>
-					)}
-					<SettingsItem title="Create a static page">
-						"About me", "Our Services" or anything else you can imagine.
-						<br />
-						<Button color="blue" href={JPS.steps.advanced_settings.new_page_url}>Create a new page</Button>
-						&nbsp;&nbsp;
-						<Button color="blue" href={JPS.steps.advanced_settings.manage_pages_url}>Manage pages</Button>
-					</SettingsItem>
-					<SettingsItem title="Extend your site's functionality">
-						WordPress offers thousands of plugins from Jetpack and the WordPress community.
-						<br />
-						<Button color="blue" href={JPS.steps.advanced_settings.plugins_url}>Manage plugins</Button>
-						&nbsp;&nbsp;
-						{SiteStore.getJetpackConfigured() && (
-							<Button color="blue" href={JPS.steps.advanced_settings.jetpack_modules_url}>Manage Jetpack modules</Button>
-						)}
-					</SettingsItem>
-					<SettingsItem title="Learn more">
-						<a href="https://codex.wordpress.org/First_Steps_With_WordPress">First Steps with WordPress</a> - an online guide from the creators of WordPress
-					</SettingsItem>
-				</ul>
+					<div className="welcome__review-col welcome__review-themes">
+						<img src={ `${ JPS.base_url }/img/review__themes.png` } />
+						<p><Button href={ JPS.steps.advanced_settings.themes_url } primary>Choose a Theme</Button></p>
+					</div>
+				</div>
 			</WelcomeSection>
 		);
 	}

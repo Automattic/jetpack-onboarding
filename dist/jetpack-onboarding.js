@@ -98,7 +98,7 @@
 			}, {
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
-				welcomeView: __webpack_require__(229),
+				welcomeView: __webpack_require__(214),
 				includeInProgress: false
 			}]);
 	
@@ -23614,12 +23614,11 @@
 	'use strict';
 	
 	var React = __webpack_require__(4),
-	    Radium = __webpack_require__(212),
-	    SkipButton = __webpack_require__(227),
+	    SkipButton = __webpack_require__(212),
 	    SiteStore = __webpack_require__(170),
 	    SiteActions = __webpack_require__(169),
 	    Paths = __webpack_require__(167),
-	    ContentBox = __webpack_require__(228),
+	    ContentBox = __webpack_require__(213),
 	    WelcomeSection = __webpack_require__(207),
 	    SetupProgressActions = __webpack_require__(166),
 	    SpinnerStore = __webpack_require__(172),
@@ -23734,1366 +23733,10 @@
 		}
 	});
 	
-	module.exports = Radium(JetpackJumpstart);
+	module.exports = JetpackJumpstart;
 
 /***/ },
 /* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Enhancer = __webpack_require__(213);
-	
-	module.exports = function (ComposedComponent) {
-	  return Enhancer(ComposedComponent);
-	};
-	module.exports.Style = __webpack_require__(223);
-	module.exports.PrintStyleSheet = __webpack_require__(225);
-	module.exports.getState = __webpack_require__(216);
-	module.exports.keyframes = __webpack_require__(226);
-	module.exports.Config = __webpack_require__(221);
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var resolveStyles = __webpack_require__(214);
-	var printStyles = __webpack_require__(222);
-	
-	var enhanceWithRadium = function enhanceWithRadium(ComposedComponent) {
-	  var RadiumEnhancer = (function (_ComposedComponent) {
-	    _inherits(RadiumEnhancer, _ComposedComponent);
-	
-	    function RadiumEnhancer() {
-	      _classCallCheck(this, RadiumEnhancer);
-	
-	      _get(Object.getPrototypeOf(RadiumEnhancer.prototype), 'constructor', this).apply(this, arguments);
-	
-	      this.state = this.state || {};
-	      this.state._radiumStyleState = {};
-	
-	      if (RadiumEnhancer.printStyleClass) {
-	        this.printStyleClass = RadiumEnhancer.printStyleClass;
-	      }
-	    }
-	
-	    // Class inheritance uses Object.create and because of __proto__ issues
-	    // with IE <10 any static properties of the superclass aren't inherited and
-	    // so need to be manually populated
-	    // See http://babeljs.io/docs/advanced/caveats/#classes-10-and-below-
-	    // This also fixes React Hot Loader by exposing the original components top level
-	    // prototype methods on the Radium enhanced prototype as discussed in #219.
-	
-	    _createClass(RadiumEnhancer, [{
-	      key: 'render',
-	      value: function render() {
-	        var renderedElement = _get(Object.getPrototypeOf(RadiumEnhancer.prototype), 'render', this).call(this);
-	        return resolveStyles(this, renderedElement);
-	      }
-	    }, {
-	      key: 'componentWillUnmount',
-	      value: function componentWillUnmount() {
-	        if (_get(Object.getPrototypeOf(RadiumEnhancer.prototype), 'componentWillUnmount', this)) {
-	          _get(Object.getPrototypeOf(RadiumEnhancer.prototype), 'componentWillUnmount', this).call(this);
-	        }
-	
-	        if (this._radiumMouseUpListener) {
-	          this._radiumMouseUpListener.remove();
-	        }
-	
-	        if (this._radiumMediaQueryListenersByQuery) {
-	          Object.keys(this._radiumMediaQueryListenersByQuery).forEach(function (query) {
-	            this._radiumMediaQueryListenersByQuery[query].remove();
-	          }, this);
-	        }
-	      }
-	    }]);
-	
-	    return RadiumEnhancer;
-	  })(ComposedComponent);
-	
-	  Object.getOwnPropertyNames(ComposedComponent.prototype).forEach(function (key) {
-	    if (!RadiumEnhancer.prototype.hasOwnProperty(key)) {
-	      var descriptor = Object.getOwnPropertyDescriptor(ComposedComponent.prototype, key);
-	      Object.defineProperty(RadiumEnhancer.prototype, key, descriptor);
-	    }
-	  });
-	
-	  RadiumEnhancer.displayName = ComposedComponent.displayName || ComposedComponent.name || 'Component';
-	
-	  RadiumEnhancer.printStyleClass = printStyles.addPrintStyles(RadiumEnhancer);
-	
-	  return RadiumEnhancer;
-	};
-	
-	module.exports = enhanceWithRadium;
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var MouseUpListener = __webpack_require__(215);
-	var getState = __webpack_require__(216);
-	var getStateKey = __webpack_require__(217);
-	var Prefixer = __webpack_require__(218);
-	var Config = __webpack_require__(221);
-	
-	var ExecutionEnvironment = __webpack_require__(219);
-	var React = __webpack_require__(4);
-	
-	// babel-eslint 3.1.7 fails here for some reason, error:
-	//   0:0  error  Cannot call method 'isSequenceExpression' of undefined
-	//
-	// declare class RadiumComponent extends ReactComponent {
-	//   _lastMouseDown: number,
-	//   _radiumMediaQueryListenersByQuery: Object<string, {remove: () => void}>,
-	//   _radiumMouseUpListener: {remove: () => void},
-	// }
-	
-	var mediaQueryListByQueryString = {};
-	
-	var _isSpecialKey = function _isSpecialKey(key) {
-	  return key[0] === ':' || key[0] === '@';
-	};
-	
-	var _getStyleState = function _getStyleState(component, key, value) {
-	  return getState(component.state, key, value);
-	};
-	
-	var _setStyleState = function _setStyleState(component, key, newState) {
-	  var existing = component._lastRadiumState || component.state && component.state._radiumStyleState || {};
-	
-	  var state = { _radiumStyleState: _extends({}, existing) };
-	  state._radiumStyleState[key] = _extends({}, state._radiumStyleState[key], newState);
-	
-	  component._lastRadiumState = state._radiumStyleState;
-	  component.setState(state);
-	};
-	
-	// Merge style objects. Special casing for props starting with ';'; the values
-	// should be objects, and are merged with others of the same name (instead of
-	// overwriting).
-	var _mergeStyles = function _mergeStyles(styles) {
-	  var result = {};
-	
-	  styles.forEach(function (style) {
-	    if (!style || typeof style !== 'object' || Array.isArray(style)) {
-	      return;
-	    }
-	
-	    Object.keys(style).forEach(function (key) {
-	      if (_isSpecialKey(key) && result[key]) {
-	        result[key] = _mergeStyles([result[key], style[key]]);
-	      } else {
-	        result[key] = style[key];
-	      }
-	    });
-	  });
-	
-	  return result;
-	};
-	
-	var _mouseUp = function _mouseUp(component) {
-	  Object.keys(component.state._radiumStyleState).forEach(function (key) {
-	    if (_getStyleState(component, key, ':active')) {
-	      _setStyleState(component, key, { ':active': false });
-	    }
-	  });
-	};
-	
-	var _onMediaQueryChange = function _onMediaQueryChange(component, query, mediaQueryList) {
-	  var state = {};
-	  state[query] = mediaQueryList.matches;
-	  _setStyleState(component, '_all', state);
-	};
-	
-	var _resolveMediaQueryStyles = function _resolveMediaQueryStyles(component, style) {
-	  if (!Config.canMatchMedia()) {
-	    return style;
-	  }
-	
-	  Object.keys(style).filter(function (name) {
-	    return name[0] === '@';
-	  }).map(function (query) {
-	    var mediaQueryStyles = style[query];
-	    query = query.replace('@media ', '');
-	
-	    // Create a global MediaQueryList if one doesn't already exist
-	    var mql = mediaQueryListByQueryString[query];
-	    if (!mql) {
-	      mediaQueryListByQueryString[query] = mql = Config.matchMedia(query);
-	    }
-	
-	    // Keep track of which keys already have listeners
-	    if (!component._radiumMediaQueryListenersByQuery) {
-	      component._radiumMediaQueryListenersByQuery = {};
-	    }
-	
-	    if (!component._radiumMediaQueryListenersByQuery[query]) {
-	      var listener = _onMediaQueryChange.bind(null, component, query);
-	      mql.addListener(listener);
-	      component._radiumMediaQueryListenersByQuery[query] = {
-	        remove: function remove() {
-	          mql.removeListener(listener);
-	        }
-	      };
-	    }
-	
-	    // Apply media query states
-	    if (mql.matches) {
-	      style = _mergeStyles([style, mediaQueryStyles]);
-	    }
-	  });
-	
-	  return style;
-	};
-	
-	// Wrapper around React.cloneElement. To avoid processing the same element
-	// twice, whenever we clone an element add a special non-enumerable prop to
-	// make sure we don't process this element again.
-	var _cloneElement = function _cloneElement(renderedElement, newProps, newChildren) {
-	  // Only add flag if this is a normal DOM element
-	  if (typeof renderedElement.type === 'string') {
-	    newProps = _extends({}, newProps, { _radiumDidResolveStyles: true });
-	  }
-	
-	  return React.cloneElement(renderedElement, newProps, newChildren);
-	};
-	
-	//
-	// The nucleus of Radium. resolveStyles is called on the rendered elements
-	// before they are returned in render. It iterates over the elements and
-	// children, rewriting props to add event handlers required to capture user
-	// interactions (e.g. mouse over). It also replaces the style prop because it
-	// adds in the various interaction styles (e.g. :hover).
-	//
-	var resolveStyles = function resolveStyles(component, // ReactComponent, flow+eslint complaining
-	renderedElement, // ReactElement
-	existingKeyMap) {
-	  // ReactElement
-	  existingKeyMap = existingKeyMap || {};
-	
-	  if (!renderedElement ||
-	  // Bail if we've already processed this element. This ensures that only the
-	  // owner of an element processes that element, since the owner's render
-	  // function will be called first (which will always be the case, since you
-	  // can't know what else to render until you render the parent component).
-	  renderedElement.props && renderedElement.props._radiumDidResolveStyles) {
-	    return renderedElement;
-	  }
-	
-	  // Recurse over children first in case we bail early. Note that children only
-	  // include those rendered in `this` component. Child nodes in other components
-	  // will not be here, so each component needs to use Radium.
-	  var oldChildren = renderedElement.props.children;
-	  var newChildren = oldChildren;
-	  if (oldChildren) {
-	    var childrenType = typeof oldChildren;
-	    if (childrenType === 'string' || childrenType === 'number') {
-	      // Don't do anything with a single primitive child
-	      newChildren = oldChildren;
-	    } else if (childrenType === 'function') {
-	      // Wrap the function, resolving styles on the result
-	      newChildren = function () {
-	        var result = oldChildren.apply(this, arguments);
-	        if (React.isValidElement(result)) {
-	          return resolveStyles(component, result, existingKeyMap);
-	        }
-	        return result;
-	      };
-	    } else if (React.Children.count(oldChildren) === 1 && oldChildren.type) {
-	      // If a React Element is an only child, don't wrap it in an array for
-	      // React.Children.map() for React.Children.only() compatibility.
-	      var onlyChild = React.Children.only(oldChildren);
-	      newChildren = resolveStyles(component, onlyChild, existingKeyMap);
-	    } else {
-	      newChildren = React.Children.map(oldChildren, function (child) {
-	        if (React.isValidElement(child)) {
-	          return resolveStyles(component, child, existingKeyMap);
-	        }
-	
-	        return child;
-	      });
-	    }
-	  }
-	
-	  var props = renderedElement.props;
-	  var newProps = {};
-	
-	  // Recurse over props, just like children
-	  Object.keys(props).forEach(function (prop) {
-	    // We already recurse over children above
-	    if (prop === 'children') {
-	      return;
-	    }
-	
-	    var propValue = props[prop];
-	    if (React.isValidElement(propValue)) {
-	      newProps[prop] = resolveStyles(component, propValue, existingKeyMap);
-	    }
-	  });
-	
-	  var hasResolvedProps = Object.keys(newProps).length > 0;
-	
-	  // Bail early if element is not a simple ReactDOMElement.
-	  if (!React.isValidElement(renderedElement) || typeof renderedElement.type !== 'string') {
-	    if (oldChildren === newChildren && !hasResolvedProps) {
-	      return renderedElement;
-	    }
-	
-	    return _cloneElement(renderedElement, hasResolvedProps ? newProps : {}, newChildren);
-	  }
-	
-	  var style = props.style;
-	
-	  // Convenient syntax for multiple styles: `style={[style1, style2, etc]}`
-	  // Ignores non-objects, so you can do `this.state.isCool && styles.cool`.
-	  if (Array.isArray(style)) {
-	    style = _mergeStyles(style);
-	  }
-	
-	  if (false) {
-	    // Warn if you use longhand and shorthand properties in the same style
-	    // object.
-	    // https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties
-	
-	    var shorthandPropertyExpansions = {
-	      'background': ['backgroundAttachment', 'backgroundBlendMode', 'backgroundClip', 'backgroundColor', 'backgroundImage', 'backgroundOrigin', 'backgroundPosition', 'backgroundPositionX', 'backgroundPositionY', 'backgroundRepeat', 'backgroundRepeatX', 'backgroundRepeatY', 'backgroundSize'],
-	      'border': ['borderBottom', 'borderBottomColor', 'borderBottomStyle', 'borderBottomWidth', 'borderColor', 'borderLeft', 'borderLeftColor', 'borderLeftStyle', 'borderLeftWidth', 'borderRight', 'borderRightColor', 'borderRightStyle', 'borderRightWidth', 'borderStyle', 'borderTop', 'borderTopColor', 'borderTopStyle', 'borderTopWidth', 'borderWidth'],
-	      'borderImage': ['borderImageOutset', 'borderImageRepeat', 'borderImageSlice', 'borderImageSource', 'borderImageWidth'],
-	      'borderRadius': ['borderBottomLeftRadius', 'borderBottomRightRadius', 'borderTopLeftRadius', 'borderTopRightRadius'],
-	      'font': ['fontFamily', 'fontKerning', 'fontSize', 'fontStretch', 'fontStyle', 'fontVariant', 'fontVariantLigatures', 'fontWeight', 'lineHeight'],
-	      'listStyle': ['listStyleImage', 'listStylePosition', 'listStyleType'],
-	      'margin': ['marginBottom', 'marginLeft', 'marginRight', 'marginTop'],
-	      'padding': ['paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop'],
-	      'transition': ['transitionDelay', 'transitionDuration', 'transitionProperty', 'transitionTimingFunction']
-	    };
-	
-	    var checkProps = function checkProps(s) {
-	      if (typeof s !== 'object' || !s) {
-	        return;
-	      }
-	
-	      var styleKeys = Object.keys(s);
-	      styleKeys.forEach(function (styleKey) {
-	        if (shorthandPropertyExpansions[styleKey] && shorthandPropertyExpansions[styleKey].some(function (sp) {
-	          return styleKeys.indexOf(sp) !== -1;
-	        })) {
-	          if (process.env.NODE_ENV !== 'production') {
-	            /* eslint-disable no-console */
-	            console.warn('Radium: property "' + styleKey + '" in style object', style, ': do not mix longhand and ' + 'shorthand properties in the same style object. Check the render ' + 'method of ' + component.constructor.displayName + '.', 'See https://github.com/FormidableLabs/radium/issues/95 for more ' + 'information.');
-	            /* eslint-enable no-console */
-	          }
-	        }
-	      });
-	
-	      styleKeys.forEach(function (k) {
-	        return checkProps(s[k]);
-	      });
-	    };
-	    checkProps(style);
-	  }
-	
-	  // Bail early if no interactive styles.
-	  if (!style || !Object.keys(style).some(_isSpecialKey)) {
-	    if (style) {
-	      // Still perform vendor prefixing, though.
-	      newProps.style = Prefixer.getPrefixedStyle(component, style);
-	      return _cloneElement(renderedElement, newProps, newChildren);
-	    } else if (newChildren || hasResolvedProps) {
-	      return _cloneElement(renderedElement, newProps, newChildren);
-	    }
-	
-	    return renderedElement;
-	  }
-	
-	  // We need a unique key to correlate state changes due to user interaction
-	  // with the rendered element, so we know to apply the proper interactive
-	  // styles.
-	  var originalKey = renderedElement.ref || renderedElement.key;
-	  var key = getStateKey(originalKey);
-	
-	  if (existingKeyMap[key]) {
-	    throw new Error('Radium requires each element with interactive styles to have a unique ' + 'key, set using either the ref or key prop. ' + (originalKey ? 'Key "' + originalKey + '" is a duplicate.' : 'Multiple elements have no key specified.'));
-	  }
-	
-	  existingKeyMap[key] = true;
-	
-	  // Media queries can contain pseudo styles, like :hover
-	  style = _resolveMediaQueryStyles(component, style);
-	
-	  var newStyle = {};
-	  Object.keys(style).forEach(function (styleKey) {
-	    if (!_isSpecialKey(styleKey)) {
-	      newStyle[styleKey] = style[styleKey];
-	    }
-	  });
-	
-	  // Only add handlers if necessary
-	  if (style[':hover'] || style[':active']) {
-	    // Always call the existing handler if one is already defined.
-	    // This code, and the very similar ones below, could be abstracted a bit
-	    // more, but it hurts readability IMO.
-	    var existingOnMouseEnter = props.onMouseEnter;
-	    newProps.onMouseEnter = function (e) {
-	      existingOnMouseEnter && existingOnMouseEnter(e);
-	      _setStyleState(component, key, { ':hover': true });
-	    };
-	
-	    var existingOnMouseLeave = props.onMouseLeave;
-	    newProps.onMouseLeave = function (e) {
-	      existingOnMouseLeave && existingOnMouseLeave(e);
-	      _setStyleState(component, key, { ':hover': false });
-	    };
-	  }
-	
-	  if (style[':active']) {
-	    var existingOnMouseDown = props.onMouseDown;
-	    newProps.onMouseDown = function (e) {
-	      existingOnMouseDown && existingOnMouseDown(e);
-	      component._lastMouseDown = Date.now();
-	      _setStyleState(component, key, { ':active': true });
-	    };
-	  }
-	
-	  if (style[':focus']) {
-	    var existingOnFocus = props.onFocus;
-	    newProps.onFocus = function (e) {
-	      existingOnFocus && existingOnFocus(e);
-	      _setStyleState(component, key, { ':focus': true });
-	    };
-	
-	    var existingOnBlur = props.onBlur;
-	    newProps.onBlur = function (e) {
-	      existingOnBlur && existingOnBlur(e);
-	      _setStyleState(component, key, { ':focus': false });
-	    };
-	  }
-	
-	  // Merge the styles in the order they were defined
-	  var interactionStyles = Object.keys(style).filter(function (name) {
-	    return name === ':active' && _getStyleState(component, key, ':active') || name === ':hover' && _getStyleState(component, key, ':hover') || name === ':focus' && _getStyleState(component, key, ':focus');
-	  }).map(function (name) {
-	    return style[name];
-	  });
-	
-	  if (interactionStyles.length) {
-	    newStyle = _mergeStyles([newStyle].concat(interactionStyles));
-	  }
-	
-	  if (style[':active'] && !component._radiumMouseUpListener && ExecutionEnvironment.canUseEventListeners) {
-	    component._radiumMouseUpListener = MouseUpListener.subscribe(_mouseUp.bind(null, component));
-	  }
-	
-	  newProps.style = Prefixer.getPrefixedStyle(component, newStyle);
-	
-	  return _cloneElement(renderedElement, newProps, newChildren);
-	};
-	
-	// Exposing methods for tests is ugly, but the alternative, re-requiring the
-	// module each time, is too slow
-	resolveStyles.__clearStateForTests = function () {
-	  mediaQueryListByQueryString = {};
-	};
-	
-	module.exports = resolveStyles;
-
-/***/ },
-/* 215 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var _callbacks = [];
-	var _mouseUpListenerIsActive = false;
-	
-	var _handleMouseUp = function _handleMouseUp(ev) {
-	  _callbacks.forEach(function (callback) {
-	    callback(ev);
-	  });
-	};
-	
-	var subscribe = function subscribe(callback) {
-	  if (_callbacks.indexOf(callback) === -1) {
-	    _callbacks.push(callback);
-	  }
-	
-	  if (!_mouseUpListenerIsActive) {
-	    window.addEventListener('mouseup', _handleMouseUp);
-	    _mouseUpListenerIsActive = true;
-	  }
-	
-	  return {
-	    remove: function remove() {
-	      var index = _callbacks.indexOf(callback);
-	      _callbacks.splice(index, 1);
-	
-	      if (_callbacks.length === 0 && _mouseUpListenerIsActive) {
-	        window.removeEventListener('mouseup', _handleMouseUp);
-	        _mouseUpListenerIsActive = false;
-	      }
-	    }
-	  };
-	};
-	
-	module.exports = {
-	  subscribe: subscribe
-	};
-
-/***/ },
-/* 216 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var getStateKey = __webpack_require__(217);
-	
-	var VALID_KEYS = [':active', ':focus', ':hover'];
-	
-	var getState = function getState(state, elementKey, value) {
-	  if (VALID_KEYS.indexOf(value) === -1) {
-	    throw new Error('Radium.getState invalid value param: `' + value + '`');
-	  }
-	
-	  var key = getStateKey(elementKey);
-	
-	  return !!(state && state._radiumStyleState && state._radiumStyleState[key] && state._radiumStyleState[key][value]);
-	};
-	
-	module.exports = getState;
-
-/***/ },
-/* 217 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var getStateKey = function getStateKey(elementKey) {
-	  return elementKey === null || elementKey === undefined ? 'main' : elementKey.toString();
-	};
-	
-	module.exports = getStateKey;
-
-/***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Based on https://github.com/jsstyles/css-vendor, but without having to
-	 * convert between different cases all the time.
-	 *
-	 * 
-	 */
-	
-	'use strict';
-	
-	var ExecutionEnvironment = __webpack_require__(219);
-	var arrayFind = __webpack_require__(220);
-	
-	var VENDOR_PREFIX_REGEX = /-(moz|webkit|ms|o)-/;
-	
-	var vendorPrefixes = ['Webkit', 'ms', 'Moz', 'O'];
-	
-	var infoByCssPrefix = {
-	  '-moz-': {
-	    cssPrefix: '-moz-',
-	    jsPrefix: 'Moz',
-	    alternativeProperties: {
-	      // OLD - Firefox 19-
-	      alignItems: [{ css: '-moz-box-align', js: 'MozBoxAlign' }],
-	      flex: [{ css: '-moz-box-flex', js: 'MozBoxFlex' }],
-	      flexDirection: [{ css: '-moz-box-orient', js: 'MozBoxOrient' }],
-	      justifyContent: [{ css: '-moz-box-pack', js: 'MozBoxPack' }],
-	      order: [{ css: '-moz-box-ordinal-group', js: 'MozBoxOrdinalGroup' }]
-	    },
-	    alternativeValues: {
-	      // OLD - Firefox 19-
-	      alignItems: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end']
-	      },
-	      display: {
-	        flex: ['-moz-box']
-	      },
-	      flexDirection: {
-	        column: ['vertical'],
-	        row: ['horizontal']
-	      },
-	      justifyContent: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end'],
-	        'space-between': ['justify']
-	      }
-	    }
-	  },
-	  '-ms-': {
-	    cssPrefix: '-ms-',
-	    jsPrefix: 'ms',
-	    alternativeProperties: {
-	      // TWEENER - IE 10
-	      alignContent: [{ css: '-ms-flex-line-pack', js: 'msFlexLinePack' }],
-	      alignItems: [{ css: '-ms-flex-align', js: 'msFlexAlign' }],
-	      alignSelf: [{ css: '-ms-flex-align-item', js: 'msFlexAlignItem' }],
-	      justifyContent: [{ css: '-ms-flex-pack', js: 'msFlexPack' }],
-	      order: [{ css: '-ms-flex-order', js: 'msFlexOrder' }]
-	    },
-	    alternativeValues: {
-	      // TWEENER - IE 10
-	      alignContent: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end'],
-	        'space-between': ['justify'],
-	        'space-around': ['distribute']
-	      },
-	      alignItems: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end']
-	      },
-	      alignSelf: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end']
-	      },
-	      display: {
-	        flex: ['-ms-flexbox'],
-	        'inline-flex': ['-ms-inline-flexbox']
-	      },
-	      justifyContent: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end'],
-	        'space-between': ['justify'],
-	        'space-around': ['distribute']
-	      }
-	    }
-	  },
-	  '-o-': {
-	    cssPrefix: '-o-',
-	    jsPrefix: 'O'
-	  },
-	  '-webkit-': {
-	    cssPrefix: '-webkit-',
-	    jsPrefix: 'Webkit',
-	    alternativeProperties: {
-	      // OLD - iOS 6-, Safari 3.1-6
-	      alignItems: [{ css: '-webkit-box-align', js: 'WebkitBoxAlign' }],
-	      flex: [{ css: '-webkit-box-flex', js: 'MozBoxFlex' }],
-	      flexDirection: [{ css: '-webkit-box-orient', js: 'WebkitBoxOrient' }],
-	      justifyContent: [{ css: '-webkit-box-pack', js: 'WebkitBoxPack' }],
-	      order: [{ css: '-webkit-box-ordinal-group', js: 'WebkitBoxOrdinalGroup' }]
-	    },
-	    alternativeValues: {
-	      // OLD - iOS 6-, Safari 3.1-6
-	      alignItems: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end']
-	      },
-	      display: {
-	        flex: ['-webkit-box']
-	      },
-	      flexDirection: {
-	        row: ['horizontal'],
-	        column: ['vertical']
-	      },
-	      justifyContent: {
-	        'flex-start': ['start'],
-	        'flex-end': ['end'],
-	        'space-between': ['justify']
-	      }
-	    }
-	  }
-	};
-	
-	/**
-	 * CSS properties which accept numbers but are not in units of "px".
-	 * Copied from React core June 22, 2015.
-	 * https://github.com/facebook/react/blob/
-	 * ba81b60ad8e93b747be42a03b797065932c49c96/
-	 * src/renderers/dom/shared/CSSProperty.js
-	 */
-	var isUnitlessNumber = {
-	  boxFlex: true,
-	  boxFlexGroup: true,
-	  columnCount: true,
-	  flex: true,
-	  flexGrow: true,
-	  flexPositive: true,
-	  flexShrink: true,
-	  flexNegative: true,
-	  fontWeight: true,
-	  lineClamp: true,
-	  lineHeight: true,
-	  opacity: true,
-	  order: true,
-	  orphans: true,
-	  tabSize: true,
-	  widows: true,
-	  zIndex: true,
-	  zoom: true,
-	
-	  // SVG-related properties
-	  fillOpacity: true,
-	  strokeDashoffset: true,
-	  strokeOpacity: true,
-	  strokeWidth: true
-	};
-	
-	var domStyle = {};
-	var prefixedPropertyCache = {};
-	var prefixedValueCache = {};
-	var prefixInfo = {
-	  cssPrefix: '',
-	  jsPrefix: ''
-	};
-	
-	if (ExecutionEnvironment.canUseDOM) {
-	  domStyle = document.createElement('p').style;
-	
-	  // older Firefox versions may have no float property in style object
-	  // so we need to add it manually
-	  if (domStyle.float === undefined) {
-	    domStyle.float = '';
-	  }
-	
-	  // Based on http://davidwalsh.name/vendor-prefix
-	  var prefixMatch;
-	  var windowStyles = window.getComputedStyle(document.documentElement, '');
-	
-	  // Array.prototype.slice.call(windowStyles) fails with
-	  // "Uncaught TypeError: undefined is not a function"
-	  // in older versions Android (KitKat) web views
-	  for (var i = 0; i < windowStyles.length; i++) {
-	    prefixMatch = windowStyles[i].match(VENDOR_PREFIX_REGEX);
-	
-	    if (prefixMatch) {
-	      break;
-	    }
-	  }
-	
-	  var cssVendorPrefix = prefixMatch && prefixMatch[0];
-	
-	  prefixInfo = cssVendorPrefix && infoByCssPrefix[cssVendorPrefix] ? infoByCssPrefix[cssVendorPrefix] : prefixInfo;
-	}
-	
-	var _camelCaseRegex = /([a-z])?([A-Z])/g;
-	var _camelCaseReplacer = function _camelCaseReplacer(match, p1, p2) {
-	  return p1 + '-' + p2.toLowerCase();
-	};
-	var _camelCaseToDashCase = function _camelCaseToDashCase(s) {
-	  return s.replace(_camelCaseRegex, _camelCaseReplacer);
-	};
-	
-	var getPrefixedPropertyName = function getPrefixedPropertyName(property) {
-	  if (prefixedPropertyCache.hasOwnProperty(property)) {
-	    return prefixedPropertyCache[property];
-	  }
-	
-	  var unprefixed = {
-	    css: _camelCaseToDashCase(property),
-	    js: property,
-	    isDefaultForServer: true
-	  };
-	
-	  // Try the prefixed version first. Chrome in particular has the `filter` and
-	  // `webkitFilter` properties availalbe on the style object, but only the
-	  // prefixed version actually works.
-	  var possiblePropertyNames = [
-	  // Prefixed
-	  {
-	    css: prefixInfo.cssPrefix + _camelCaseToDashCase(property),
-	    js: prefixInfo.jsPrefix + property[0].toUpperCase() + property.slice(1)
-	  }, unprefixed];
-	
-	  // Alternative property names
-	  if (prefixInfo.alternativeProperties && prefixInfo.alternativeProperties[property]) {
-	    possiblePropertyNames = possiblePropertyNames.concat(prefixInfo.alternativeProperties[property]);
-	  }
-	
-	  var workingProperty = arrayFind(possiblePropertyNames, function (possiblePropertyName) {
-	    if (possiblePropertyName.js in domStyle) {
-	      return possiblePropertyName;
-	    }
-	  }) || false;
-	
-	  return prefixedPropertyCache[property] = workingProperty;
-	};
-	
-	// We are un-prefixing values before checking for isUnitlessNumber,
-	// otherwise we are at risk of being in a situation where someone
-	// explicitly passes something like `MozBoxFlex: 1` and that will
-	// in turn get transformed into `MozBoxFlex: 1px`.
-	var _getUnprefixedProperty = function _getUnprefixedProperty(property) {
-	  var noPrefixProperty = property;
-	
-	  vendorPrefixes.some(function (prefix) {
-	    // Let's check if the property starts with a vendor prefix
-	    if (property.indexOf(prefix) === 0) {
-	      noPrefixProperty = noPrefixProperty.replace(prefix, '');
-	
-	      // We have removed the vendor prefix, however the first
-	      // character is going to be uppercase hence won't match
-	      // any of the `isUnitlessNumber` keys as they all start
-	      // with lower case. Let's ensure that the first char is
-	      // lower case.
-	      noPrefixProperty = noPrefixProperty.charAt(0).toLowerCase() + noPrefixProperty.slice(1);
-	
-	      return true;
-	    }
-	  });
-	
-	  return noPrefixProperty;
-	};
-	
-	// React is planning to deprecate adding px automatically
-	// (https://github.com/facebook/react/issues/1873), and if they do, this
-	// should change to a warning or be removed in favor of React's warning.
-	// Same goes for below.
-	var _addPixelSuffixToValueIfNeeded = function _addPixelSuffixToValueIfNeeded(originalProperty, value) {
-	  var unPrefixedProperty = _getUnprefixedProperty(originalProperty);
-	
-	  if (value !== 0 && !isNaN(value) && !isUnitlessNumber[unPrefixedProperty]) {
-	    return value + 'px';
-	  }
-	  return value;
-	};
-	
-	var _getPrefixedValue = function _getPrefixedValue(component, property, value, originalProperty) {
-	  if (!Array.isArray(value)) {
-	    // don't test numbers (pure or stringy), but do add 'px' prefix if needed
-	    if (!isNaN(value) && value !== null) {
-	      return _addPixelSuffixToValueIfNeeded(originalProperty, value);
-	    }
-	
-	    if (typeof value !== 'string') {
-	      if (value !== null && value !== undefined) {
-	        value = value.toString();
-	      } else {
-	        return value;
-	      }
-	    }
-	
-	    // don't test numbers with units (e.g. 10em)
-	    if (!isNaN(parseInt(value, 10))) {
-	      return value;
-	    }
-	  }
-	
-	  var cacheKey = Array.isArray(value) ? value.join(' || ') : property + value;
-	
-	  if (prefixedValueCache.hasOwnProperty(cacheKey)) {
-	    return prefixedValueCache[cacheKey];
-	  }
-	
-	  var possibleValues;
-	  if (Array.isArray(value)) {
-	    // Add px for the same values React would, otherwise the testing below will
-	    // fail and it will try to fallback.
-	    possibleValues = value.map(function (v) {
-	      return _addPixelSuffixToValueIfNeeded(originalProperty, v);
-	    });
-	
-	    // Add prefixed versions
-	    possibleValues = possibleValues.concat(value.filter(function (v) {
-	      return !isNaN(v);
-	    }) // Don't prefix numbers
-	    .map(function (v) {
-	      return prefixInfo.cssPrefix + v;
-	    }));
-	  } else {
-	    possibleValues = [
-	    // Unprefixed
-	    value,
-	    // Prefixed
-	    prefixInfo.cssPrefix + value];
-	  }
-	
-	  // Alternative values
-	  if (prefixInfo.alternativeValues && prefixInfo.alternativeValues[originalProperty] && prefixInfo.alternativeValues[originalProperty][value]) {
-	    possibleValues = possibleValues.concat(prefixInfo.alternativeValues[originalProperty][value]);
-	  }
-	
-	  // Test possible value in order
-	  var workingValue = arrayFind(possibleValues, function (possibleValue) {
-	    domStyle[property] = '';
-	    domStyle[property] = possibleValue;
-	
-	    // Note that we just make sure it is not an empty string. Browsers will
-	    // sometimes rewrite values, but still accept them. They will set the value
-	    // to an empty string if not supported.
-	    // E.g. for border, "solid 1px black" becomes "1px solid black"
-	    //      but "foobar" becomes "", since it is not supported.
-	    return !!domStyle[property];
-	  });
-	
-	  if (workingValue) {
-	    prefixedValueCache[cacheKey] = workingValue;
-	  } else {
-	    // Unsupported, assume unprefixed works, but warn
-	    prefixedValueCache[cacheKey] = value;
-	
-	    if (false) {
-	      /* eslint-disable no-console */
-	      if (console && console.warn) {
-	        var componentContext = component ? ' in component "' + component.constructor.displayName + '"' : '';
-	
-	        console.warn('Unsupported CSS value "' + value + '" for property "' + property + '$"' + componentContext);
-	      }
-	      /* eslint-enable no-console */
-	    }
-	  }
-	
-	  return prefixedValueCache[cacheKey];
-	};
-	
-	// Returns a new style object with vendor prefixes added to property names
-	// and values.
-	var getPrefixedStyle = function getPrefixedStyle(component, // ReactComponent
-	style) {
-	  var mode = arguments.length <= 2 || arguments[2] === undefined ? 'js' : arguments[2];
-	
-	  if (!ExecutionEnvironment.canUseDOM) {
-	    return Object.keys(style).reduce(function (newStyle, key) {
-	      var value = style[key];
-	      var newKey = mode === 'css' ? _camelCaseToDashCase(key) : key;
-	      var newValue = Array.isArray(value) ? value[0] : value;
-	      newStyle[newKey] = newValue;
-	      return newStyle;
-	    }, {});
-	  }
-	
-	  var prefixedStyle = {};
-	  Object.keys(style).forEach(function (property) {
-	    var value = style[property];
-	
-	    var newProperty = getPrefixedPropertyName(property);
-	    if (newProperty === false) {
-	      // Ignore unsupported properties
-	      if (false) {
-	        /* eslint-disable no-console */
-	        if (console && console.warn) {
-	          var componentContext = component ? ' in component "' + component.constructor.displayName + '"' : '';
-	
-	          console.warn('Unsupported CSS property "' + property + '$"' + componentContext);
-	        }
-	        /* eslint-enable no-console */
-	        return;
-	      }
-	    }
-	
-	    var newValue = _getPrefixedValue(component, newProperty.js, value, property);
-	
-	    prefixedStyle[newProperty[mode]] = newValue;
-	  });
-	  return prefixedStyle;
-	};
-	
-	module.exports = {
-	  getPrefixedPropertyName: getPrefixedPropertyName,
-	  getPrefixedStyle: getPrefixedStyle,
-	  cssPrefix: prefixInfo.cssPrefix,
-	  jsPrefix: prefixInfo.jsPrefix
-	};
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
-	  Based on code that is Copyright 2013-2015, Facebook, Inc.
-	  All rights reserved.
-	*/
-	
-	(function () {
-		'use strict';
-	
-		var canUseDOM = !!(
-			typeof window !== 'undefined' &&
-			window.document &&
-			window.document.createElement
-		);
-	
-		var ExecutionEnvironment = {
-	
-			canUseDOM: canUseDOM,
-	
-			canUseWorkers: typeof Worker !== 'undefined',
-	
-			canUseEventListeners:
-				canUseDOM && !!(window.addEventListener || window.attachEvent),
-	
-			canUseViewport: canUseDOM && !!window.screen
-	
-		};
-	
-		if (true) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return ExecutionEnvironment;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = ExecutionEnvironment;
-		} else {
-			window.ExecutionEnvironment = ExecutionEnvironment;
-		}
-	
-	}());
-
-
-/***/ },
-/* 220 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	function find(array, predicate, context) {
-	  if (typeof Array.prototype.find === 'function') {
-	    return array.find(predicate, context);
-	  }
-	
-	  context = context || this;
-	  var length = array.length;
-	  var i;
-	
-	  if (typeof predicate !== 'function') {
-	    throw new TypeError(predicate + ' is not a function');
-	  }
-	
-	  for (i = 0; i < length; i++) {
-	    if (predicate.call(context, array[i], i, array)) {
-	      return array[i];
-	    }
-	  }
-	}
-	
-	module.exports = find;
-
-
-/***/ },
-/* 221 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var ExecutionEnvironment = __webpack_require__(219);
-	
-	var _matchMediaFunction = ExecutionEnvironment.canUseDOM && window && window.matchMedia && function (mediaQueryString) {
-	  return window.matchMedia(mediaQueryString);
-	};
-	
-	module.exports = {
-	  canMatchMedia: function canMatchMedia() {
-	    return typeof _matchMediaFunction === 'function';
-	  },
-	
-	  matchMedia: function matchMedia(query) {
-	    return _matchMediaFunction(query);
-	  },
-	
-	  setMatchMedia: function setMatchMedia(nextMatchMediaFunction) {
-	    _matchMediaFunction = nextMatchMediaFunction;
-	  }
-	};
-
-/***/ },
-/* 222 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	var allPrintStyles = {};
-	var listeners = [];
-	
-	var subscribe = function subscribe(listener) {
-	  if (listeners.indexOf(listener) === -1) {
-	    listeners.push(listener);
-	  }
-	
-	  return {
-	    remove: function remove() {
-	      var listenerIndex = listeners.indexOf(listener);
-	
-	      if (listenerIndex > -1) {
-	        listeners.splice(listenerIndex, 1);
-	      }
-	    }
-	  };
-	};
-	
-	var _emitChange = function _emitChange() {
-	  listeners.forEach(function (listener) {
-	    return listener();
-	  });
-	};
-	
-	var _appendImportantToEachValue = function _appendImportantToEachValue(styleObj) {
-	  var importantStyleObj = {};
-	
-	  Object.keys(styleObj).forEach(function (key) {
-	    var value = styleObj[key];
-	
-	    // This breaks unitless values but they'll be deprecated soon anyway
-	    // https://github.com/facebook/react/issues/1873
-	    value = value + " !important";
-	    importantStyleObj[key] = value;
-	  });
-	
-	  return importantStyleObj;
-	};
-	
-	var addPrintStyles = function addPrintStyles(Component) {
-	  if (!Component.printStyles) {
-	    return;
-	  }
-	
-	  var printStyleClass = {};
-	
-	  Object.keys(Component.printStyles).forEach(function (key) {
-	    var styles = Component.printStyles[key];
-	    var className = "Radium-" + Component.displayName + "-" + key;
-	    allPrintStyles["." + className] = _appendImportantToEachValue(styles);
-	    printStyleClass[key] = className;
-	  });
-	
-	  // Allows for lazy loading of JS that then calls Radium to update the
-	  // print styles
-	  _emitChange();
-	  return printStyleClass;
-	};
-	
-	var getPrintStyles = function getPrintStyles() {
-	  return allPrintStyles;
-	};
-	
-	module.exports = {
-	  addPrintStyles: addPrintStyles,
-	  getPrintStyles: getPrintStyles,
-	  subscribe: subscribe
-	};
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var createMarkupForStyles = __webpack_require__(224);
-	var Prefixer = __webpack_require__(218);
-	
-	var React = __webpack_require__(4);
-	
-	var buildCssString = function buildCssString(component, selector, rules) {
-	  if (!selector || !rules) {
-	    return;
-	  }
-	
-	  var prefixedRules = Prefixer.getPrefixedStyle(component, rules, 'css');
-	  var serializedRules = createMarkupForStyles(prefixedRules);
-	
-	  return selector + '{' + serializedRules + '}';
-	};
-	
-	var Style = React.createClass({
-	  displayName: 'Style',
-	
-	  propTypes: {
-	    rules: React.PropTypes.object,
-	    scopeSelector: React.PropTypes.string
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      scopeSelector: ''
-	    };
-	  },
-	
-	  _buildStyles: function _buildStyles(styles) {
-	    var _this = this;
-	
-	    return Object.keys(styles).reduce(function (accumulator, selector) {
-	      var rules = styles[selector];
-	
-	      if (selector === 'mediaQueries') {
-	        accumulator += _this._buildMediaQueryString(rules);
-	      } else {
-	        var completeSelector = (_this.props.scopeSelector ? _this.props.scopeSelector + ' ' : '') + selector;
-	        accumulator += buildCssString(_this, completeSelector, rules);
-	      }
-	
-	      return accumulator;
-	    }, '');
-	  },
-	
-	  _buildMediaQueryString: function _buildMediaQueryString(mediaQueryObj) {
-	    var _this2 = this;
-	
-	    var contextMediaQueries = this._getContextMediaQueries();
-	    var mediaQueryString = '';
-	
-	    Object.keys(mediaQueryObj).forEach(function (query) {
-	      var completeQuery = contextMediaQueries[query] ? contextMediaQueries[query] : query;
-	      mediaQueryString += '@media ' + completeQuery + '{' + _this2._buildStyles(mediaQueryObj[query]) + '}';
-	    });
-	
-	    return mediaQueryString;
-	  },
-	
-	  _getContextMediaQueries: function _getContextMediaQueries() {
-	    var contextMediaQueries = {};
-	    if (this.context && this.context.mediaQueries) {
-	      Object.keys(this.context.mediaQueries).forEach((function (query) {
-	        contextMediaQueries[query] = this.context.mediaQueries[query].media;
-	      }).bind(this));
-	    }
-	
-	    return contextMediaQueries;
-	  },
-	
-	  render: function render() {
-	    if (!this.props.rules) {
-	      return null;
-	    }
-	
-	    var styles = this._buildStyles(this.props.rules);
-	
-	    return React.createElement('style', { dangerouslySetInnerHTML: { __html: styles } });
-	  }
-	});
-	
-	module.exports = Style;
-
-/***/ },
-/* 224 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var createMarkupForStyles = function createMarkupForStyles(style, spaces) {
-	  spaces = spaces || '';
-	  return Object.keys(style).map(function (property) {
-	    return spaces + property + ': ' + style[property] + ';';
-	  }).join('\n');
-	};
-	
-	module.exports = createMarkupForStyles;
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(4);
-	
-	var Style = __webpack_require__(223);
-	var printStyles = __webpack_require__(222);
-	
-	var PrintStyle = React.createClass({
-	  displayName: 'PrintStyle',
-	
-	  getInitialState: function getInitialState() {
-	    return this._getStylesState();
-	  },
-	
-	  componentDidMount: function componentDidMount() {
-	    this.subscription = printStyles.subscribe(this._onChange);
-	  },
-	
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.subscription.remove();
-	  },
-	
-	  _onChange: function _onChange() {
-	    this.setState(this._getStylesState());
-	  },
-	
-	  _getStylesState: function _getStylesState() {
-	    return {
-	      styles: printStyles.getPrintStyles()
-	    };
-	  },
-	
-	  render: function render() {
-	    return React.createElement(Style, { rules: {
-	        mediaQueries: {
-	          print: this.state.styles
-	        }
-	      } });
-	  }
-	});
-	
-	module.exports = PrintStyle;
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var createMarkupForStyles = __webpack_require__(224);
-	var Prefixer = __webpack_require__(218);
-	
-	var ExecutionEnvironment = __webpack_require__(219);
-	
-	var isAnimationSupported = ExecutionEnvironment.canUseDOM && Prefixer.getPrefixedPropertyName('animation') !== false;
-	
-	var animationIndex = 1;
-	var animationStyleSheet = null;
-	var keyframesPrefixed = 'keyframes';
-	
-	if (isAnimationSupported) {
-	  animationStyleSheet = document.createElement('style');
-	  document.head.appendChild(animationStyleSheet);
-	
-	  // Test if prefix needed for keyframes (copied from PrefixFree)
-	  animationStyleSheet.textContent = '@keyframes {}';
-	  if (!animationStyleSheet.sheet.cssRules.length) {
-	    keyframesPrefixed = Prefixer.cssPrefix + 'keyframes';
-	  }
-	}
-	
-	// Simple animation helper that injects CSS into a style object containing the
-	// keyframes, and returns a string with the generated animation name.
-	var keyframes = function keyframes(keyframeRules, component) {
-	  var name = 'Animation' + animationIndex;
-	  animationIndex += 1;
-	
-	  if (!isAnimationSupported) {
-	    return name;
-	  }
-	
-	  var rule = '@' + keyframesPrefixed + ' ' + name + ' {\n' + Object.keys(keyframeRules).map(function (percentage) {
-	    var props = keyframeRules[percentage];
-	    var prefixedProps = Prefixer.getPrefixedStyle(component, props, 'css');
-	    var serializedProps = createMarkupForStyles(prefixedProps, '  ');
-	    return '  ' + percentage + ' {\n  ' + serializedProps + '\n  }';
-	  }).join('\n') + '\n}\n';
-	
-	  // for flow
-	  /* istanbul ignore next */
-	  if (!animationStyleSheet) {
-	    throw new Error('keyframes not initialized properly');
-	  }
-	
-	  animationStyleSheet.sheet.insertRule(rule, animationStyleSheet.sheet.cssRules.length);
-	  return name;
-	};
-	
-	module.exports = keyframes;
-
-/***/ },
-/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25110,13 +23753,6 @@
 	
 	var SkipButton = React.createClass({
 		displayName: 'SkipButton',
-	
-		style: {
-			color: '#bbb',
-			fontSize: '90%',
-			marginLeft: 20,
-			borderBottom: '1px dotted #bbb'
-		},
 	
 		componentDidMount: function componentDidMount() {
 			SetupProgressStore.addChangeListener(this._onChange);
@@ -25146,7 +23782,7 @@
 			} else {
 				return React.createElement(
 					'a',
-					{ style: this.style, href: '#', onClick: this.handleSkip },
+					{ className: 'welcome__skip-step', href: '#', onClick: this.handleSkip },
 					'Not now'
 				);
 			}
@@ -25156,7 +23792,7 @@
 	module.exports = SkipButton;
 
 /***/ },
-/* 228 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25178,7 +23814,7 @@
 	module.exports = ContentBox;
 
 /***/ },
-/* 229 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25186,6 +23822,7 @@
 	var React = __webpack_require__(4),
 	    Button = __webpack_require__(177),
 	    SiteStore = __webpack_require__(170),
+	    Dashicon = __webpack_require__(215),
 	    WelcomeSection = __webpack_require__(207);
 	
 	function getSiteState() {
@@ -25216,7 +23853,7 @@
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
-				null,
+				{ id: 'welcome__review' },
 				React.createElement(
 					'h1',
 					null,
@@ -25228,90 +23865,84 @@
 					)
 				),
 				React.createElement(
-					'h4',
-					null,
-					'Advanced settings'
+					'p',
+					{ className: 'welcome__callout welcome__review--callout' },
+					'Great Work!'
 				),
 				React.createElement(
-					'ul',
-					{ style: this.styles.wrapper },
+					'div',
+					{ className: 'welcome__review-cols' },
 					React.createElement(
-						SettingsItem,
-						{ title: 'Fine-tune your site\'s layout and appearance' },
-						'Customize your site’s colors, fonts, sidebars and other settings.',
-						React.createElement('br', null),
+						'div',
+						{ className: 'welcome__review-col' },
 						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.customize_url },
-							'Customize my site'
-						),
-						'  ',
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.themes_url },
-							'Browse and add themes'
-						)
-					),
-					(SiteStore.getLayout() === 'blog' || SiteStore.getLayout() === 'site-blog') && React.createElement(
-						SettingsItem,
-						{ title: 'Create your first blog post' },
-						'An epic essay or just "Hello World!"',
-						React.createElement('br', null),
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.new_blog_post_url },
-							'Write a new blog post'
-						),
-						'  ',
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.manage_posts_url },
-							'Manage posts'
-						)
-					),
-					React.createElement(
-						SettingsItem,
-						{ title: 'Create a static page' },
-						'"About me", "Our Services" or anything else you can imagine.',
-						React.createElement('br', null),
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.new_page_url },
-							'Create a new page'
-						),
-						'  ',
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.manage_pages_url },
-							'Manage pages'
-						)
-					),
-					React.createElement(
-						SettingsItem,
-						{ title: 'Extend your site\'s functionality' },
-						'WordPress offers thousands of plugins from Jetpack and the WordPress community.',
-						React.createElement('br', null),
-						React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.plugins_url },
-							'Manage plugins'
-						),
-						'  ',
-						SiteStore.getJetpackConfigured() && React.createElement(
-							Button,
-							{ color: 'blue', href: JPS.steps.advanced_settings.jetpack_modules_url },
-							'Manage Jetpack modules'
+							'ul',
+							{ className: 'welcome__review-list' },
+							React.createElement(
+								'li',
+								null,
+								React.createElement(Dashicon, { name: 'yes' }),
+								' Navigation and description ',
+								React.createElement(
+									'a',
+									{ href: '#' },
+									'(edit)'
+								)
+							),
+							React.createElement(
+								'li',
+								null,
+								React.createElement(Dashicon, { name: 'yes' }),
+								' Homepage layout ',
+								React.createElement(
+									'a',
+									{ href: '#' },
+									'(edit)'
+								)
+							),
+							React.createElement(
+								'li',
+								null,
+								React.createElement(Dashicon, { name: 'yes' }),
+								' ',
+								React.createElement(
+									'em',
+									null,
+									'Contact Us'
+								),
+								' page ',
+								React.createElement(
+									'a',
+									{ href: '#' },
+									'(edit)'
+								)
+							),
+							React.createElement(
+								'li',
+								null,
+								React.createElement(Dashicon, { name: 'yes' }),
+								' Jetpack ',
+								React.createElement(
+									'a',
+									{ href: '#' },
+									'(edit)'
+								)
+							)
 						)
 					),
 					React.createElement(
-						SettingsItem,
-						{ title: 'Learn more' },
+						'div',
+						{ className: 'welcome__review-col welcome__review-themes' },
+						React.createElement('img', { src: JPS.base_url + '/img/review__themes.png' }),
 						React.createElement(
-							'a',
-							{ href: 'https://codex.wordpress.org/First_Steps_With_WordPress' },
-							'First Steps with WordPress'
-						),
-						' - an online guide from the creators of WordPress'
+							'p',
+							null,
+							React.createElement(
+								Button,
+								{ href: JPS.steps.advanced_settings.themes_url, primary: true },
+								'Choose a Theme'
+							)
+						)
 					)
 				)
 			);
@@ -25319,6 +23950,41 @@
 	});
 	
 	module.exports = AdvancedSettingsStep;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// simple noticon wrapper
+	
+	"use strict";
+	
+	var React = __webpack_require__(4);
+	
+	var Dashicon = React.createClass({
+		displayName: "Dashicon",
+	
+		propTypes: {
+			name: React.PropTypes.string.isRequired,
+			style: React.PropTypes.object,
+			onMouseOver: React.PropTypes.func,
+			onMouseOut: React.PropTypes.func
+		},
+	
+		render: function render() {
+			return React.createElement(
+				"span",
+				{
+					style: this.props.style,
+					onMouseOver: this.props.onMouseOver,
+					onMouseOut: this.props.onMouseOut,
+					className: "dashicons dashicons-" + this.props.name },
+				this.props.children
+			);
+		}
+	});
+	
+	module.exports = Dashicon;
 
 /***/ }
 /******/ ]);
