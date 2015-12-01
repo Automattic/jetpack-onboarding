@@ -85,8 +85,13 @@ var SetupProgressActions = {
 				actionType: JPSConstants.STEP_SKIP
 			});	
 		}
+	},
 
-		
+	skipToStep: function( step ) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SELECT,
+			slug: step
+		});
 	},
 
 	getStarted: function() {

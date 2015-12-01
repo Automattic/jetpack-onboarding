@@ -1,7 +1,9 @@
 var React = require('react'),
 	Button = require('@automattic/dops-components/client/components/button'),
 	SiteStore = require('stores/site-store'),
+	Paths = require('../../constants/jetpack-onboarding-paths'),
 	Dashicon = require('../dashicon'),
+	SetupProgressActions = require( 'actions/setup-progress-actions' ),
 	WelcomeSection = require('../page/container');
 
 function getSiteState() {
@@ -28,6 +30,13 @@ var AdvancedSettingsStep = React.createClass({
 		this.setState(getSiteState());
 	},
 
+	handleSkipTo: function( slug ) {
+		return function( event ) {
+			event.preventDefault();
+			SetupProgressActions.skipToStep( slug );
+		};
+	},
+
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__review">
@@ -37,10 +46,10 @@ var AdvancedSettingsStep = React.createClass({
 				<div className="welcome__review-cols">
 					<div className="welcome__review-col">
 						<ul className="welcome__review-list">
-							<li><Dashicon name="yes" /> Navigation and description <a href="#">(edit)</a></li>
-							<li><Dashicon name="yes" /> Homepage layout <a href="#">(edit)</a></li>
-							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#">(edit)</a></li>
-							<li><Dashicon name="yes" /> Jetpack <a href="#">(edit)</a></li>
+							<li><Dashicon name="yes" /> Navigation and description <a href="#" onClick={ this.handleSkipTo( Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo( Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#" onClick={ this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> Jetpack <a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>(edit)</a></li>
 						</ul>
 					</div>
 

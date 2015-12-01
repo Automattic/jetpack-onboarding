@@ -21081,6 +21081,13 @@
 			}
 		},
 	
+		skipToStep: function skipToStep(step) {
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_SELECT,
+				slug: step
+			});
+		},
+	
 		getStarted: function getStarted() {
 			SpinnerActions.show("Loading");
 			WPAjax.post(JPS.step_actions.start).fail(function (msg) {
@@ -23822,7 +23829,9 @@
 	var React = __webpack_require__(4),
 	    Button = __webpack_require__(177),
 	    SiteStore = __webpack_require__(170),
+	    Paths = __webpack_require__(167),
 	    Dashicon = __webpack_require__(215),
+	    SetupProgressActions = __webpack_require__(166),
 	    WelcomeSection = __webpack_require__(207);
 	
 	function getSiteState() {
@@ -23848,6 +23857,13 @@
 	
 		_onChange: function _onChange() {
 			this.setState(getSiteState());
+		},
+	
+		handleSkipTo: function handleSkipTo(slug) {
+			return function (event) {
+				event.preventDefault();
+				SetupProgressActions.skipToStep(slug);
+			};
 		},
 	
 		render: function render() {
@@ -23885,7 +23901,7 @@
 								' Navigation and description ',
 								React.createElement(
 									'a',
-									{ href: '#' },
+									{ href: '#', onClick: this.handleSkipTo(Paths.SITE_TITLE_STEP_SLUG) },
 									'(edit)'
 								)
 							),
@@ -23896,7 +23912,7 @@
 								' Homepage layout ',
 								React.createElement(
 									'a',
-									{ href: '#' },
+									{ href: '#', onClick: this.handleSkipTo(Paths.IS_BLOG_STEP_SLUG) },
 									'(edit)'
 								)
 							),
@@ -23913,7 +23929,7 @@
 								' page ',
 								React.createElement(
 									'a',
-									{ href: '#' },
+									{ href: '#', onClick: this.handleSkipTo(Paths.CONTACT_PAGE_STEP_SLUG) },
 									'(edit)'
 								)
 							),
@@ -23924,7 +23940,7 @@
 								' Jetpack ',
 								React.createElement(
 									'a',
-									{ href: '#' },
+									{ href: '#', onClick: this.handleSkipTo(Paths.JETPACK_MODULES_STEP_SLUG) },
 									'(edit)'
 								)
 							)
