@@ -19883,16 +19883,24 @@
 		},
 	
 		_renderDebug: function _renderDebug() {
-			// <a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
-			// <a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
 			if (JPS.debug) {
 				return React.createElement(
 					'div',
-					null,
+					{ className: 'welcome__debug' },
 					React.createElement(
 						'a',
 						{ href: '#', className: 'button', onClick: this.handleReset },
 						'Reset Wizard'
+					),
+					React.createElement(
+						'a',
+						{ href: '#', className: 'button', onClick: this.handleShowSpinner },
+						'Show spinner'
+					),
+					React.createElement(
+						'a',
+						{ href: '#', className: 'button', onClick: this.handleHideSpinner },
+						'Hide spinner'
 					)
 				);
 			} else {

@@ -89,12 +89,12 @@ module.exports = React.createClass( {
 	},
 
 	_renderDebug: function() {
-		// <a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
-		// <a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
 		if ( JPS.debug ) {
 			return (
-				<div>
+				<div className="welcome__debug">
 					<a href="#" className="button" onClick={this.handleReset}>Reset Wizard</a>
+					<a href="#" className="button" onClick={this.handleShowSpinner}>Show spinner</a>
+					<a href="#" className="button" onClick={this.handleHideSpinner}>Hide spinner</a>
 				</div>
 			);
 		} else {
