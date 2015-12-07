@@ -61,7 +61,7 @@ var AdvancedSettingsStep = React.createClass({
 								</ul>
 							</li>
 							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#" onClick={ this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG ) }>(edit)</a></li>
-							<li><Dashicon name="yes" /> Jetpack <a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> <a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack</a> <a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack</a></li>
 						</ul>
 					</div>
 

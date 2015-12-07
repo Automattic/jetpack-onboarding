@@ -24045,11 +24045,17 @@
 								'li',
 								null,
 								React.createElement(Dashicon, { name: 'yes' }),
-								' Jetpack ',
+								' ',
+								React.createElement(
+									'a',
+									{ href: JPS.steps.advanced_settings.jetpack_dash },
+									'Jetpack'
+								),
+								' ',
 								React.createElement(
 									'a',
 									{ href: '#', onClick: this.handleSkipTo(Paths.JETPACK_MODULES_STEP_SLUG) },
-									'(edit)'
+									'Connect Jetpack'
 								)
 							)
 						)

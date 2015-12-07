@@ -126,6 +126,7 @@ class Jetpack_Onboarding_EndPoints {
 				'contact_page' => $contact_page_info,
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
+					'jetpack_dash' => admin_url( 'admin.php?page=jetpack' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
 					'themes_url' => admin_url( 'themes.php' ),
 					'plugins_url' => admin_url( 'plugins.php' ),
