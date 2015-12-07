@@ -45,21 +45,21 @@ var HomepageStep = React.createClass( {
 		return (
 			<WelcomeSection id="welcome__homepage">
 				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
-				<p className="welcome__callout welcome__homepage--callout">Design your homepage</p>
+				<p className="welcome__callout welcome__homepage--callout">What should visitors see on your homepage?</p>
 				<form onSubmit={ this.handleSubmit }>
 					<div className="welcome__homepage-cols">
 						<div className={ classNames( { 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'site-blog' } ) }>
 							<label>
 								<input type="radio" name="site_layout" value="site-blog" checked={ this.state.layout === 'site-blog' } onChange={ this.handleSetLayout } className='screen-reader-text'/>
 								<img src={ this.state.siteScreenshot } />
-								<p>Some static content mixed with news or posts</p>
+								<p>A static welcome page</p>
 							</label>
 						</div>
 						<div className={ classNames( { 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'blog' } ) }>
 							<label>
 								<input type="radio" name="site_layout" value="blog" checked={ this.state.layout === 'blog' } onChange={ this.handleSetLayout } className='screen-reader-text' />
 								<img src={ this.state.blogScreenshot } />
-								<p>Only news or posts</p>
+								<p>Most recent news or updates</p>
 							</label>
 						</div>
 					</div>

@@ -23425,7 +23425,7 @@
 				React.createElement(
 					'p',
 					{ className: 'welcome__callout welcome__homepage--callout' },
-					'Design your homepage'
+					'What should visitors see on your homepage?'
 				),
 				React.createElement(
 					'form',
@@ -23444,7 +23444,7 @@
 								React.createElement(
 									'p',
 									null,
-									'Some static content mixed with news or posts'
+									'A static welcome page'
 								)
 							)
 						),
@@ -23459,7 +23459,7 @@
 								React.createElement(
 									'p',
 									null,
-									'Only news or posts'
+									'Most recent news or updates'
 								)
 							)
 						)
