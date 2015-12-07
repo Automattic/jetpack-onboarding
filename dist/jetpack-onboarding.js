@@ -23980,7 +23980,7 @@
 								'li',
 								null,
 								React.createElement(Dashicon, { name: 'yes' }),
-								' Navigation and description ',
+								' Title and description ',
 								React.createElement(
 									'a',
 									{ href: '#', onClick: this.handleSkipTo(Paths.SITE_TITLE_STEP_SLUG) },
@@ -23996,6 +23996,32 @@
 									'a',
 									{ href: '#', onClick: this.handleSkipTo(Paths.IS_BLOG_STEP_SLUG) },
 									'(edit)'
+								),
+								React.createElement(
+									'ul',
+									null,
+									React.createElement(
+										'li',
+										null,
+										'Edit: ',
+										React.createElement(
+											'a',
+											{ href: '' },
+											'Welcome'
+										),
+										' page'
+									),
+									React.createElement(
+										'li',
+										null,
+										'Edit: ',
+										React.createElement(
+											'a',
+											{ href: '' },
+											'News and Updates'
+										),
+										' page'
+									)
 								)
 							),
 							React.createElement(

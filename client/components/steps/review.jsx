@@ -53,8 +53,13 @@ var AdvancedSettingsStep = React.createClass({
 				<div className="welcome__review-cols">
 					<div className="welcome__review-col">
 						<ul className="welcome__review-list">
-							<li><Dashicon name="yes" /> Navigation and description <a href="#" onClick={ this.handleSkipTo( Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
-							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo( Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo( Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo( Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
+								<ul>
+									<li>Edit: <a href="">Welcome</a> page</li>
+									<li>Edit: <a href="">News and Updates</a> page</li>
+								</ul>
+							</li>
 							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#" onClick={ this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG ) }>(edit)</a></li>
 							<li><Dashicon name="yes" /> Jetpack <a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>(edit)</a></li>
 						</ul>
