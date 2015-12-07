@@ -55,7 +55,7 @@ var SiteTitleStep = React.createClass( {
 					</p>
 					<p>
 						<label className='screen-reader-text' htmlFor="site_description">Site Description</label>
-						<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={ this.handleChangeDescription } value={ this.state.description } placeholder="Site Description" required />
+						<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={ this.handleChangeDescription } value={ this.state.description } placeholder="Site Description (this can be changed later)" required />
 					</p>
 					<p className="welcome__submit">
 						<Button primary type="submit">Next Step &rarr;</Button>
