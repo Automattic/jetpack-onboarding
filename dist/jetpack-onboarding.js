@@ -24063,7 +24063,7 @@
 							null,
 							React.createElement(
 								Button,
-								{ href: JPS.steps.advanced_settings.themes_url, primary: true },
+								{ href: JPS.steps.advanced_settings.customize_url, primary: true },
 								'Choose a Theme'
 							)
 						)
