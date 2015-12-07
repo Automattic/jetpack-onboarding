@@ -8,7 +8,12 @@ var React = require('react'),
 
 function getSiteState() {
 	return {
-		site_title: SiteStore.getTitle()
+		site_title: SiteStore.getTitle(),
+		contactUrl: SiteStore.getContactPageEditURL(),
+		welcomeUrl: SiteStore.getWelcomePageEditURL(),
+		newsUrl: SiteStore.getNewsPageEditURL(),
+		isJPConnected: SiteStore.getJetpackConfigured(),
+		layout: SiteStore.getLayout(),
 	};
 }
 
@@ -55,13 +60,23 @@ var AdvancedSettingsStep = React.createClass({
 						<ul className="welcome__review-list">
 							<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo( Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
 							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo( Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
+							{ this.state.layout !== 'blog' ?
 								<ul>
-									<li>Edit: <a href="">Welcome</a> page</li>
-									<li>Edit: <a href="">News and Updates</a> page</li>
-								</ul>
+									<li><a href={ this.state.welcomeUrl }>Edit your Welcome page</a></li>
+								{ ( this.state.layout !== 'website' ) ?
+									<li><a href={ this.state.newsUrl }>Edit your News and Updates page</a></li> : null
+								}
+								</ul> :
+								null
+							}
 							</li>
-							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href="#" onClick={ this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG ) }>(edit)</a></li>
-							<li><Dashicon name="yes" /> <a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack</a> <a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack</a></li>
+							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href={ this.state.contactUrl }>(edit)</a></li>
+							<li><Dashicon name="yes" />
+							{ this.state.isJPConnected ?
+								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack</a> :
+								<a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack</a>
+							}
+							</li>
 						</ul>
 					</div>
 

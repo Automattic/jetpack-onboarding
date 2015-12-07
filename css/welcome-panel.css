@@ -629,6 +629,9 @@
 .welcome__review-list {
   display: inline-block;
   text-align: left; }
+  .welcome__review-list ul {
+    margin-top: 6px;
+    margin-left: 30px; }
 
 .welcome__dismiss {
   float: right;

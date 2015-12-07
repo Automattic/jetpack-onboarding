@@ -74,7 +74,7 @@ function setContactUsPage( pageInfo ) {
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
-  	return JPS.bloginfo.name;
+    return JPS.bloginfo.name;
   },
 
   getDescription: function() {
@@ -83,6 +83,18 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getContactPageURL: function() {
     return JPS.steps.contact_page && JPS.steps.contact_page.url;
+  },
+
+  getContactPageEditURL: function() {
+    return JPS.steps.contact_page && JPS.steps.contact_page.editUrl.replace('&amp;','&');
+  },
+
+  getWelcomePageEditURL: function() {
+    return JPS.steps.layout && JPS.steps.layout.welcomeEditUrl.replace('&amp;','&');
+  },
+
+  getNewsPageEditURL: function() {
+    return JPS.steps.layout && JPS.steps.layout.postsEditUrl.replace('&amp;','&');
   },
 
   getThemes: function() {

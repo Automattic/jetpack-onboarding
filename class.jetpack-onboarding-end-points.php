@@ -78,14 +78,6 @@ class Jetpack_Onboarding_EndPoints {
 			$step_statuses['jetpack'] = array('completed' => true);
 		}
 
-		$themes = 
-			array_slice ( 
-				array_map( 
-					array(__CLASS__, 'normalize_installed_theme'),
-					wp_prepare_themes_for_js()
-				),
-			0, self::MAX_THEMES);
-
 		return array(
 			'base_url' => JETPACK_ONBOARDING_BASE_URL,
 			'site_url' => site_url(),
@@ -116,13 +108,10 @@ class Jetpack_Onboarding_EndPoints {
 				'complete' => 'jpo_step_complete'
 			),
 			'jetpack' => $jetpack_config,
-			'themes' => $themes,
 			'started' => $started,
 			'step_status' => $step_statuses,
 			'steps' => array(
-				'layout' => array(
-					'current' => self::get_layout()
-				),
+				'layout' => self::get_layout(),
 				'contact_page' => $contact_page_info,
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
@@ -141,17 +130,26 @@ class Jetpack_Onboarding_EndPoints {
 	}
 
 	static function get_layout() {
+		$posts_url = $welcome_url = '';
 		if ( get_option( 'show_on_front' ) == 'page') {
 			if ( get_option( 'page_for_posts' ) == 0 || get_option( 'page_for_posts' ) == null ) {
 				$layout = 'website';
+				$welcome_url = get_edit_post_link( get_option( 'page_on_front' ) );
+				$posts_url = '';
 			} else {
 				$layout = 'site-blog';
+				$welcome_url = get_edit_post_link( get_option( 'page_on_front' ) );
+				$posts_url = get_edit_post_link( get_option( 'page_for_posts' ) );
 			}
 		} else {
 			$layout = 'blog';
 		}
 
-		return $layout;
+		return array(
+			'current' => $layout,
+			'welcomeEditUrl' => $welcome_url,
+			'postsEditUrl' => $posts_url,
+		);
 	}
 
 	static function default_theme_filter($theme) {
@@ -426,6 +424,7 @@ Warwick, RI 02889
 
 		return array(
 			'url' => $contact_page->guid,
+			'editUrl' => get_edit_post_link( $page_id ),
 			'post_title' => $contact_page->post_title,
 			'post_content' => $contact_page->post_content
 		);

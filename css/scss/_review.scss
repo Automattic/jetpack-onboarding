@@ -27,6 +27,11 @@
 .welcome__review-list {
 	display: inline-block;
 	text-align: left;
+
+	ul {
+		margin-top: 6px;
+		margin-left: 30px;
+	}
 }
 
 .welcome__dismiss {
