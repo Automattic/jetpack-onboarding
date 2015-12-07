@@ -535,8 +535,7 @@
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
-          align-items: flex-start;
-  margin: 50px 0; }
+          align-items: flex-start; }
 
 .welcome__homepage-col {
   -webkit-box-flex: 1;

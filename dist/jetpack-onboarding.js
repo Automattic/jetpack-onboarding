@@ -23435,21 +23435,6 @@
 						{ className: 'welcome__homepage-cols' },
 						React.createElement(
 							'div',
-							{ className: classNames({ 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'site-blog' }) },
-							React.createElement(
-								'label',
-								null,
-								React.createElement('input', { type: 'radio', name: 'site_layout', value: 'site-blog', checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout, className: 'screen-reader-text' }),
-								React.createElement('img', { src: this.state.siteScreenshot }),
-								React.createElement(
-									'p',
-									null,
-									'A static welcome page'
-								)
-							)
-						),
-						React.createElement(
-							'div',
 							{ className: classNames({ 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'blog' }) },
 							React.createElement(
 								'label',
@@ -23460,6 +23445,21 @@
 									'p',
 									null,
 									'Most recent news or updates'
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: classNames({ 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'site-blog' }) },
+							React.createElement(
+								'label',
+								null,
+								React.createElement('input', { type: 'radio', name: 'site_layout', value: 'site-blog', checked: this.state.layout === 'site-blog', onChange: this.handleSetLayout, className: 'screen-reader-text' }),
+								React.createElement('img', { src: this.state.siteScreenshot }),
+								React.createElement(
+									'p',
+									null,
+									'A static welcome page'
 								)
 							)
 						)
