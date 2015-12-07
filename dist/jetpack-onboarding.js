@@ -22052,7 +22052,7 @@
 					React.createElement(
 						'p',
 						{ className: 'welcome__callout welcome__get-started--callout' },
-						'Would you like help designing your site?'
+						'Would you like help launching your site?'
 					),
 					React.createElement(
 						'p',
