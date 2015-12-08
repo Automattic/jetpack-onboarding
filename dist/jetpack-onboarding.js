@@ -21158,6 +21158,7 @@
 			SpinnerActions.show("Creating Page");
 			return SiteActions.createContactUsPage(contactPage).done((function () {
 				this.completeStep(Paths.CONTACT_PAGE_STEP_SLUG);
+				this.selectNextStep();
 			}).bind(this)).always(function () {
 				SpinnerActions.hide();
 			});

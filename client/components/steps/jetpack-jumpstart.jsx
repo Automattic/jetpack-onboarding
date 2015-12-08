@@ -41,7 +41,7 @@ var JetpackJumpstart = React.createClass({
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		SiteActions.configureJetpack(Paths.JETPACK_MODULES_STEP_SLUG);
+		SiteActions.configureJetpack( Paths.REVIEW_STEP_SLUG );
 	},
 
 	handleNext: function (e) {
