@@ -80,10 +80,10 @@ var AdvancedSettingsStep = React.createClass({
 							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a></li>
 							<li><Dashicon name="yes" />
 							{ this.state.isJPConnected ?
-								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack</a> :
-								<a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack</a>
+								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack: </a> :
+								<a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
 							}
-							</li>
+							increase visitors and improve security</li>
 						</ul>
 					</div>
 
