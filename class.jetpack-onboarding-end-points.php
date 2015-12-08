@@ -375,8 +375,8 @@ class Jetpack_Onboarding_EndPoints {
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
-		$title = esc_html( $_REQUEST['title'] );
-		$description = esc_html( $_REQUEST['description'] );
+		$title = wp_unslash( $_REQUEST['title'] ); // sanitization (sanitize_option) is run in update_option
+		$description = wp_unslash( $_REQUEST['description'] ); // sanitization (sanitize_option) is run in update_option
 
 		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
 		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
