@@ -23690,7 +23690,7 @@
 		handleJetpackConnect: function handleJetpackConnect(e) {
 			e.preventDefault();
 	
-			SiteActions.configureJetpack(Paths.JETPACK_MODULES_STEP_SLUG);
+			SiteActions.configureJetpack(Paths.REVIEW_STEP_SLUG);
 		},
 	
 		handleNext: function handleNext(e) {
@@ -23903,6 +23903,13 @@
 		},
 	
 		render: function render() {
+			var contactProps = {};
+			if (this.state.contactUrl) {
+				contactProps.href = this.state.contactUrl;
+			} else {
+				contactProps.href = '#';
+				contactProps.onClick = this.handleSkipTo(Paths.CONTACT_PAGE_STEP_SLUG);
+			}
 			return React.createElement(
 				WelcomeSection,
 				{ id: 'welcome__review' },
@@ -23997,7 +24004,7 @@
 								' page ',
 								React.createElement(
 									'a',
-									{ href: this.state.contactUrl },
+									contactProps,
 									'(edit)'
 								)
 							),

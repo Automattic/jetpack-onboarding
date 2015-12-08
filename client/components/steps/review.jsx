@@ -48,6 +48,13 @@ var AdvancedSettingsStep = React.createClass({
 	},
 
 	render: function() {
+		let contactProps = {};
+		if ( this.state.contactUrl ) {
+			contactProps.href = this.state.contactUrl;
+		} else {
+			contactProps.href = '#';
+			contactProps.onClick = this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG );
+		}
 		return (
 			<WelcomeSection id="welcome__review">
 				<div className="welcome__dismiss"><a href="#" onClick={ this.handleDismiss }><Dashicon name="dismiss" /> Dismiss</a></div>
@@ -70,7 +77,7 @@ var AdvancedSettingsStep = React.createClass({
 								null
 							}
 							</li>
-							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a href={ this.state.contactUrl }>(edit)</a></li>
+							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a></li>
 							<li><Dashicon name="yes" />
 							{ this.state.isJPConnected ?
 								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack</a> :
