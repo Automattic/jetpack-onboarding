@@ -20838,6 +20838,9 @@
 		SITE_JETPACK_ADD_MODULES: null,
 		SITE_SET_LAYOUT: null,
 	
+		SITE_CREATE_CONTACT_US_PAGE: null,
+		SITE_CREATE_LAYOUT_PAGES: null,
+	
 		SAVE_STARTED: null,
 		SAVE_FINISHED: null,
 	
@@ -21344,7 +21347,12 @@
 	
 		setLayout: function setLayout(layoutName) {
 	
-			WPAjax.post(JPS.site_actions.set_layout, { layout: layoutName }).fail(function (msg) {
+			WPAjax.post(JPS.site_actions.set_layout, { layout: layoutName }).done(function (page_info) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_CREATE_LAYOUT_PAGES,
+					data: page_info
+				});
+			}).fail(function (msg) {
 				FlashActions.error("Error setting layout: " + msg);
 			});
 	
@@ -21535,6 +21543,11 @@
 	  JPS.steps.contact_page = pageInfo;
 	}
 	
+	function setLayoutPages(pageInfo) {
+	  JPS.steps.layout.welcomeEditUrl = pageInfo.welcome;
+	  JPS.steps.layout.postsEditUrl = pageInfo.posts;
+	}
+	
 	var SiteStore = _.extend({}, EventEmitter.prototype, {
 	
 	  getTitle: function getTitle() {
@@ -21694,6 +21707,11 @@
 	
 	    case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
 	      setContactUsPage(action.data);
+	      SiteStore.emitChange();
+	      break;
+	
+	    case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
+	      setLayoutPages(action.data);
 	      SiteStore.emitChange();
 	      break;
 	

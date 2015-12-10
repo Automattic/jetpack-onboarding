@@ -19,6 +19,9 @@ module.exports = keyMirror({
 	SITE_JETPACK_ADD_MODULES: null,
 	SITE_SET_LAYOUT: null,
 
+	SITE_CREATE_CONTACT_US_PAGE: null,
+	SITE_CREATE_LAYOUT_PAGES: null,
+
 	SAVE_STARTED: null,
 	SAVE_FINISHED: null,
 

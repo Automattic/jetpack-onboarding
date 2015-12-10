@@ -71,6 +71,11 @@ function setContactUsPage( pageInfo ) {
   JPS.steps.contact_page = pageInfo;
 }
 
+function setLayoutPages( pageInfo ) {
+  JPS.steps.layout.welcomeEditUrl = pageInfo.welcome;
+  JPS.steps.layout.postsEditUrl = pageInfo.posts;
+}
+
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
@@ -229,7 +234,12 @@ AppDispatcher.register(function(action) {
     case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
       setContactUsPage(action.data);
       SiteStore.emitChange();
-      break;      
+      break;
+
+    case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
+      setLayoutPages( action.data );
+      SiteStore.emitChange();
+      break;
 
     default:
       // no op

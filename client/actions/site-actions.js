@@ -94,20 +94,26 @@ var SiteActions = {
 	},
 
 	setLayout: function( layoutName ) {
-	
+
 		WPAjax.
 			post( JPS.site_actions.set_layout, { layout: layoutName } ).
-			fail( function (msg ) {
+			done( function ( page_info ){
+				AppDispatcher.dispatch( {
+					actionType: JPSConstants.SITE_CREATE_LAYOUT_PAGES,
+					data: page_info
+				} );
+			} ).
+			fail( function (msg ){
 				FlashActions.error("Error setting layout: "+msg);
-			});
+			} );
 
 		// FlashActions.notice("Set layout to "+layoutName);
-		AppDispatcher.dispatch({
+		AppDispatcher.dispatch( {
 			actionType: JPSConstants.SITE_SET_LAYOUT,
 			layout: layoutName
-	    });
+		} );
 
-	    return jQuery.Deferred().resolve(); // XXX HACK
+		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
 	createContactUsPage: function( contactPage ) {
@@ -118,7 +124,7 @@ var SiteActions = {
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_CREATE_CONTACT_US_PAGE,
 					data: page_info
-				});		
+				});
 			}).
 			fail( function( msg ) {
 				FlashActions.error("Error creating contact us page: "+msg);
