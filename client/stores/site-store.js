@@ -86,15 +86,21 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getContactPageEditURL: function() {
-    return JPS.steps.contact_page && JPS.steps.contact_page.editUrl.replace('&amp;','&');
+    if ( JPS.steps.contact_page && JPS.steps.contact_page.editUrl ) {
+      return JPS.steps.contact_page.editUrl.replace('&amp;','&');
+    }
   },
 
   getWelcomePageEditURL: function() {
-    return JPS.steps.layout && JPS.steps.layout.welcomeEditUrl.replace('&amp;','&');
+    if ( JPS.steps.layout && JPS.steps.layout.welcomeEditUrl ) {
+      return JPS.steps.layout.welcomeEditUrl.replace('&amp;','&');
+    }
   },
 
   getNewsPageEditURL: function() {
-    return JPS.steps.layout && JPS.steps.layout.postsEditUrl.replace('&amp;','&');
+    if ( JPS.steps.layout && JPS.steps.layout.postsEditUrl ) {
+      return JPS.steps.layout.postsEditUrl.replace('&amp;','&');
+    }
   },
 
   getThemes: function() {

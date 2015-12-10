@@ -601,32 +601,23 @@ Warwick, RI 02889
 		}
 
 		// if no specific front page already set, find first or create
-		$existing_front_page = get_option( 'page_on_front' ) && 
-								(get_option( 'page_on_front' ) != 0) && 
+		$existing_front_page = get_option( 'page_on_front' ) &&
+								(get_option( 'page_on_front' ) != 0) &&
 								get_page(get_option( 'page_on_front' ));
 
 		if ( ! $existing_front_page ) {
 
-			// set to earliest published page if possible
-			$pages = get_pages( array('sort_column' => 'post_date', 'number' => 1, 'post_status' => 'publish') );
-			$first_page_created = $pages[0];
+			// Always create a new page
+			$page = array(
+				'post_type' => 'page',
+				'post_title' => 'Home page',
+				'post_name' => 'home',
+				'post_content' => "This is your front page. Click the 'edit' link to change the contents",
+				'post_status' => 'publish',
+				'comment_status' => 'closed'
+			);
 
-			if ( $first_page_created != null ) {
-				$page_id = $first_page_created->ID;
-			} else {
-
-				// create page
-				$page = array(
-					'post_type' => 'page',
-					'post_title' => 'Home page',
-					'post_name' => 'home',
-					'post_content' => "This is your front page. Click the 'edit' link to change the contents", 
-					'post_status' => 'publish',
-					'comment_status' => 'closed'
-				);
-
-				$page_id = wp_insert_post( $page );
-			} 
+			$page_id = wp_insert_post( $page );
 
 			if ( $page_id != 0 ) {
 				update_option( 'page_on_front', $page_id );
