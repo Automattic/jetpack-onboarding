@@ -38,6 +38,13 @@ var HomepageStep = React.createClass( {
 		SetupProgressActions.submitLayoutStep( layout );
 	},
 
+	skipStep: function( e ) {
+		e.preventDefault();
+		let layout = 'blog';
+		this.setState( { layout: layout } );
+		SetupProgressActions.submitLayoutStep( layout );
+	},
+
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__homepage">
@@ -60,6 +67,9 @@ var HomepageStep = React.createClass( {
 							</label>
 						</div>
 					</div>
+					<p className="welcome__skip">
+						<a className="welcome__skip-link" href="#" onClick={ this.skipStep }>Skip this step</a>
+					</p>
 				</form>
 			</WelcomeSection>
 		);

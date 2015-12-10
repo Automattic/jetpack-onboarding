@@ -23418,6 +23418,13 @@
 			SetupProgressActions.submitLayoutStep(layout);
 		},
 	
+		skipStep: function skipStep(e) {
+			e.preventDefault();
+			var layout = 'blog';
+			this.setState({ layout: layout });
+			SetupProgressActions.submitLayoutStep(layout);
+		},
+	
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
@@ -23472,6 +23479,15 @@
 									'A static welcome page'
 								)
 							)
+						)
+					),
+					React.createElement(
+						'p',
+						{ className: 'welcome__skip' },
+						React.createElement(
+							'a',
+							{ className: 'welcome__skip-link', href: '#', onClick: this.skipStep },
+							'Skip this step'
 						)
 					)
 				)
