@@ -33,12 +33,9 @@ var HomepageStep = React.createClass( {
 	},
 
 	handleSetLayout: function( e ) {
-		this.setState( { layout: jQuery( e.currentTarget ).val() } );
-	},
-
-	handleSubmit: function( e ) {
-		e.preventDefault();
-		SetupProgressActions.submitLayoutStep( this.state.layout );
+		let layout = jQuery( e.currentTarget ).val();
+		this.setState( { layout: layout } );
+		SetupProgressActions.submitLayoutStep( layout );
 	},
 
 	render: function() {
@@ -46,7 +43,7 @@ var HomepageStep = React.createClass( {
 			<WelcomeSection id="welcome__homepage">
 				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
 				<p className="welcome__callout welcome__homepage--callout">What should visitors see on your homepage?</p>
-				<form onSubmit={ this.handleSubmit }>
+				<form>
 					<div className="welcome__homepage-cols">
 						<div className={ classNames( { 'welcome__homepage-col': true, 'is-selected': this.state.layout === 'blog' } ) }>
 							<label>
@@ -63,10 +60,6 @@ var HomepageStep = React.createClass( {
 							</label>
 						</div>
 					</div>
-
-					<p className="welcome__submit">
-						<Button primary type="submit">Next Step &rarr;</Button>
-					</p>
 				</form>
 			</WelcomeSection>
 		);

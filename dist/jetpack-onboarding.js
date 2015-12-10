@@ -89,16 +89,16 @@
 			}, {
 				name: "Contact Info",
 				slug: Paths.CONTACT_PAGE_STEP_SLUG,
-				welcomeView: __webpack_require__(211)
+				welcomeView: __webpack_require__(210)
 			}, {
 				name: 'Enable Jetpack',
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				neverSkip: true, // don't skip this even if it's been completed
-				welcomeView: __webpack_require__(212)
+				welcomeView: __webpack_require__(211)
 			}, {
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
-				welcomeView: __webpack_require__(215),
+				welcomeView: __webpack_require__(214),
 				includeInProgress: false
 			}]);
 	
@@ -23378,7 +23378,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(4),
-	    classNames = __webpack_require__(210),
+	    classNames = __webpack_require__(202),
 	    SiteStore = __webpack_require__(170),
 	    Button = __webpack_require__(177),
 	    WelcomeSection = __webpack_require__(207),
@@ -23413,12 +23413,9 @@
 		},
 	
 		handleSetLayout: function handleSetLayout(e) {
-			this.setState({ layout: jQuery(e.currentTarget).val() });
-		},
-	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitLayoutStep(this.state.layout);
+			var layout = jQuery(e.currentTarget).val();
+			this.setState({ layout: layout });
+			SetupProgressActions.submitLayoutStep(layout);
 		},
 	
 		render: function render() {
@@ -23442,7 +23439,7 @@
 				),
 				React.createElement(
 					'form',
-					{ onSubmit: this.handleSubmit },
+					null,
 					React.createElement(
 						'div',
 						{ className: 'welcome__homepage-cols' },
@@ -23476,15 +23473,6 @@
 								)
 							)
 						)
-					),
-					React.createElement(
-						'p',
-						{ className: 'welcome__submit' },
-						React.createElement(
-							Button,
-							{ primary: true, type: 'submit' },
-							'Next Step →'
-						)
 					)
 				)
 			);
@@ -23495,60 +23483,6 @@
 
 /***/ },
 /* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
-	  Licensed under the MIT License (MIT), see
-	  http://jedwatson.github.io/classnames
-	*/
-	/* global define */
-	
-	(function () {
-		'use strict';
-	
-		var hasOwn = {}.hasOwnProperty;
-	
-		function classNames () {
-			var classes = '';
-	
-			for (var i = 0; i < arguments.length; i++) {
-				var arg = arguments[i];
-				if (!arg) continue;
-	
-				var argType = typeof arg;
-	
-				if (argType === 'string' || argType === 'number') {
-					classes += ' ' + arg;
-				} else if (Array.isArray(arg)) {
-					classes += ' ' + classNames.apply(null, arg);
-				} else if (argType === 'object') {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes += ' ' + key;
-						}
-					}
-				}
-			}
-	
-			return classes.substr(1);
-		}
-	
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
-		} else if (true) {
-			// register as 'classnames', consistent with npm package name
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-				return classNames;
-			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else {
-			window.classNames = classNames;
-		}
-	}());
-
-
-/***/ },
-/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23695,17 +23629,17 @@
 	module.exports = ContactPageStep;
 
 /***/ },
-/* 212 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(4),
-	    SkipButton = __webpack_require__(213),
+	    SkipButton = __webpack_require__(212),
 	    SiteStore = __webpack_require__(170),
 	    SiteActions = __webpack_require__(169),
 	    Paths = __webpack_require__(167),
-	    ContentBox = __webpack_require__(214),
+	    ContentBox = __webpack_require__(213),
 	    WelcomeSection = __webpack_require__(207),
 	    SetupProgressActions = __webpack_require__(166),
 	    SpinnerStore = __webpack_require__(172),
@@ -23823,7 +23757,7 @@
 	module.exports = JetpackJumpstart;
 
 /***/ },
-/* 213 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23879,7 +23813,7 @@
 	module.exports = SkipButton;
 
 /***/ },
-/* 214 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23901,7 +23835,7 @@
 	module.exports = ContentBox;
 
 /***/ },
-/* 215 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23910,7 +23844,7 @@
 	    Button = __webpack_require__(177),
 	    SiteStore = __webpack_require__(170),
 	    Paths = __webpack_require__(167),
-	    Dashicon = __webpack_require__(216),
+	    Dashicon = __webpack_require__(215),
 	    SetupProgressActions = __webpack_require__(166),
 	    WelcomeSection = __webpack_require__(207);
 	
@@ -24101,7 +24035,7 @@
 	module.exports = AdvancedSettingsStep;
 
 /***/ },
-/* 216 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// simple noticon wrapper
