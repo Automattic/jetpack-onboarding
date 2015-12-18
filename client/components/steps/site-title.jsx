@@ -31,16 +31,16 @@ var SiteTitleStep = React.createClass( {
 	},
 
 	handleChangeTitle: function(e) {
-		SiteActions.setTitle( e.currentTarget.value );
+		this.setState( { title: e.currentTarget.value } );
 	},
 
 	handleChangeDescription: function(e) {
-		SiteActions.setDescription( e.currentTarget.value );
+		this.setState( { description: e.currentTarget.value } );
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-		SetupProgressActions.submitTitleStep();
+		SetupProgressActions.submitTitleStep( this.state.title, this.state.description );
 	},
 
 	render: function() {

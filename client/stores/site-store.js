@@ -191,6 +191,12 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
+    case JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION:
+      setTitle(action.description);
+      setDescription(action.description);
+      SiteStore.emitChange();
+      break;    
+
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
       SiteStore.emitChange();

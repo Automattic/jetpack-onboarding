@@ -20,9 +20,7 @@ var SiteActions = {
 	    });
 	},
 
-	saveTitleAndDescription: function() {
-		var title = SiteStore.getTitle();
-		var description = SiteStore.getDescription();
+	saveTitleAndDescription: function( title, description ) {
 		
 		WPAjax.
 			post( JPS.site_actions.set_title, { title: title, description: description } ).
@@ -31,10 +29,12 @@ var SiteActions = {
 			});
 
 		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+		
 		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
-			title: title
+			title: title,
+			description: description
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK

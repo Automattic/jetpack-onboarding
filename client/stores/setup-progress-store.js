@@ -4,8 +4,7 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher'),
   EventEmitter = require('events').EventEmitter,
-  JPSConstants = require('../constants/jetpack-onboarding-constants'),
-  WPAjax = require('../utils/wp-ajax');
+  JPSConstants = require('../constants/jetpack-onboarding-constants');
 
 var CHANGE_EVENT = 'change';
 
@@ -95,14 +94,19 @@ function selectNextPendingStep() {
 function getNextPendingStep() {
   // if the _next_ step is neverSkip, we proceed to it
   var stepIndex = currentStepIndex();
-  if ( stepIndex ) {
+  if ( stepIndex !== false ) {
     if ( _steps[stepIndex+1] && _steps[stepIndex+1].neverSkip === true ) {
       return _steps[stepIndex+1];
     }
   }
 
   // otherwise find the next uncompleted, unskipped step
-  return _.findWhere( _steps, { completed: false, skipped: false } );
+  var nextPendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
+  return nextPendingStep;
+}
+
+function getPendingStepAfter( fromStep ) {
+
 }
 
 function currentStepSlug() {
@@ -117,6 +121,10 @@ function currentStepSlug() {
 
 function currentStepIndex() {
   var slug = currentStepSlug();
+  return getStepIndex(slug);
+}
+
+function getStepIndex(slug) {
   for ( var i=0; i<_steps.length; i++ ) {
     if ( _steps[i].slug === slug ) {
       return i;
@@ -127,8 +135,6 @@ function currentStepIndex() {
 
 function select(stepSlug) {
   window.location.hash = 'welcome/steps/'+stepSlug;
-  // record analytics
-  WPAjax.post(JPS.step_actions.view, { step: stepSlug }, { quiet: true });
 }
 
 //reset everything back to defaults

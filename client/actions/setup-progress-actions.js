@@ -11,10 +11,10 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 var SetupProgressActions = {
 	resetData: function() {
 		WPAjax.
-		post(JPS.site_actions.reset_data).
-		fail(function(msg) {
-			FlashActions.error("Failed to save data: " + msg);
-		});
+			post(JPS.site_actions.reset_data).
+			fail(function(msg) {
+				FlashActions.error("Failed to save data: " + msg);
+			});
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.RESET_DATA
 		});
@@ -30,33 +30,19 @@ var SetupProgressActions = {
 
 		// NOTE: this needs to come after the dispatch, so that the completion % 
 		// is already updated and can be included in the metadata
-		return this._recordComplete(step, meta);
+		return this._recordStepComplete(step, meta);
 	},
 
 	completeAndNextStep: function(slug, meta) {
-		SpinnerActions.show("Loading");
 		this.completeStep(slug, meta).always(function() {
-			AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_NEXT
-			});
-			SpinnerActions.hide();
-		});
-	},
+			// getCurrentStep _should_ return the correct step slug for the 'next' step here... 
+			// this needs to be in the callback because otherwise there's a chance
+			// that COMPLETE could be registered in analytics after VIEWED
+			this._recordStepViewed( SetupProgressStore.getCurrentStep() );
+		}.bind(this));
 
-	_recordComplete: function(step, meta) {
-		if (typeof(meta) === 'undefined') {
-			meta = {};
-		}
-
-		meta.completion = SetupProgressStore.getProgressPercent();
-
-		return WPAjax.
-		post(JPS.step_actions.complete, {
-			step: step.slug,
-			data: meta
-		}).
-		fail(function(msg) {
-			FlashActions.error(msg);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_NEXT
 		});
 	},
 
@@ -67,66 +53,46 @@ var SetupProgressActions = {
 		var step = SetupProgressStore.getCurrentStep();
 
 		if (!step.skipped) {
-			SpinnerActions.show("Loading");
-			WPAjax.
-			post(JPS.step_actions.skip, {
-				step: step.slug
-			}).
-			fail(function(msg) {
-				FlashActions.error(msg);
-			}).always(function() {
-				SpinnerActions.hide();
-				AppDispatcher.dispatch({
-					actionType: JPSConstants.STEP_SKIP
-				});	
-			});
-		} else {
-			AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_SKIP
-			});	
+			this._recordStepSkipped( step );
 		}
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_SKIP
+		});	
 	},
 
-	skipToStep: function( step ) {
+	setCurrentStep: function( stepSlug ) {
+		FlashActions.unset();
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_SELECT,
-			slug: step
+			slug: stepSlug
 		});
+		this._recordStepViewed( { slug: stepSlug } );
 	},
 
 	getStarted: function() {
-		SpinnerActions.show("Loading");
 		WPAjax.
-		post(JPS.step_actions.start).
-		fail(function(msg) {
-			FlashActions.error(msg);
-		}).
-		always(function() {
-			SpinnerActions.hide();
-			AppDispatcher.dispatch({
-				actionType: JPSConstants.STEP_GET_STARTED
+			post(JPS.step_actions.start).
+			fail(function(msg) {
+				FlashActions.error(msg);
 			});
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_GET_STARTED
 		});
 	},
 
 	disableJPS: function() {
 		SpinnerActions.show("");
 		WPAjax.
-		post(JPS.step_actions.disable).
-		fail(function(msg) {
-			FlashActions.error(msg);
-		}).
-		always(function() {
-			window.location.reload();
-		});
-	},
-
-	setCurrentStep: function(slug) {
-		FlashActions.unset();
-		AppDispatcher.dispatch({
-			actionType: JPSConstants.STEP_SELECT,
-			slug: slug
-		});
+			post(JPS.step_actions.disable).
+			fail(function(msg) {
+				SpinnerActions.hide();
+				FlashActions.error(msg);
+			}).
+			always(function() {
+				window.location.reload();
+			});
 	},
 
 	// moves on to the next step, but doesn't mark it as "skipped"
@@ -135,12 +101,12 @@ var SetupProgressActions = {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_NEXT
 		});
+		this._recordStepViewed( SetupProgressStore.getCurrentStep() );
 	},
 
-	submitTitleStep: function() {
-		SiteActions.saveTitleAndDescription().done(function() {
-			this.completeAndNextStep(Paths.SITE_TITLE_STEP_SLUG);
-		}.bind(this));
+	submitTitleStep: function( title, description ) {
+		SiteActions.saveTitleAndDescription( title, description );
+		this.completeAndNextStep(Paths.SITE_TITLE_STEP_SLUG);
 	},
 
 	submitLayoutStep: function( layout ) {
@@ -155,23 +121,13 @@ var SetupProgressActions = {
 
 	confirmHomepageStep: function( layout ) {
 		this.completeStep( Paths.IS_BLOG_STEP_SLUG );
-		this.skipToStep( Paths.HOMEPAGE_STEP_SLUG );
+		this.setCurrentStep( Paths.HOMEPAGE_STEP_SLUG );
 	},
 
 	createContactPage: function(contactPage) {
-		SpinnerActions.show("Creating Page");
-		return SiteActions.createContactUsPage(contactPage).
-			done( function() {
-				this.completeStep(Paths.CONTACT_PAGE_STEP_SLUG);
-				this.selectNextStep();
-			}.bind(this)).
-			always( function() {
-				SpinnerActions.hide();
-			});
-
-		// done(function() {
-		// 	this.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
-		// }.bind(this));
+		SiteActions.createContactUsPage(contactPage);
+		this.completeStep(Paths.CONTACT_PAGE_STEP_SLUG);
+		this.selectNextStep();
 	},
 
 	skipContactPageBuild: function() {
@@ -196,6 +152,43 @@ var SetupProgressActions = {
 		this.completeAndNextStep(Paths.DESIGN_STEP_SLUG, {
 			themeId: SiteStore.getActiveThemeId()
 		});
+	},
+
+	_recordStepViewed: function( step ) {
+		// record analytics to say we viewed the next step
+  		return WPAjax.
+  			post(JPS.step_actions.view, { 
+  				step: step.slug 
+  			}, { 
+  				quiet: true 
+  			});
+	},
+
+	_recordStepComplete: function( step, meta ) {
+		if (typeof(meta) === 'undefined') {
+			meta = {};
+		}
+
+		meta.completion = SetupProgressStore.getProgressPercent();
+
+		return WPAjax.
+			post(JPS.step_actions.complete, {
+				step: step.slug,
+				data: meta
+			}).
+			fail(function(msg) {
+				FlashActions.error(msg);
+			});
+	},
+
+	_recordStepSkipped: function( step ) {
+		return WPAjax.
+			post(JPS.step_actions.skip, {
+				step: step.slug
+			}).
+			fail(function(msg) {
+				FlashActions.error(msg);
+			});
 	}
 };
 
