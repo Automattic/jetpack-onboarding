@@ -71,6 +71,11 @@ function setContactUsPage( pageInfo ) {
   JPS.steps.contact_page = pageInfo;
 }
 
+function setLayoutPages( pageInfo ) {
+  JPS.steps.layout.welcomeEditUrl = pageInfo.welcome;
+  JPS.steps.layout.postsEditUrl = pageInfo.posts;
+}
+
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
@@ -86,15 +91,21 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
   },
 
   getContactPageEditURL: function() {
-    return JPS.steps.contact_page && JPS.steps.contact_page.editUrl.replace('&amp;','&');
+    if ( JPS.steps.contact_page && JPS.steps.contact_page.editUrl ) {
+      return JPS.steps.contact_page.editUrl.replace('&amp;','&');
+    }
   },
 
   getWelcomePageEditURL: function() {
-    return JPS.steps.layout && JPS.steps.layout.welcomeEditUrl.replace('&amp;','&');
+    if ( JPS.steps.layout && JPS.steps.layout.welcomeEditUrl ) {
+      return JPS.steps.layout.welcomeEditUrl.replace('&amp;','&');
+    }
   },
 
   getNewsPageEditURL: function() {
-    return JPS.steps.layout && JPS.steps.layout.postsEditUrl.replace('&amp;','&');
+    if ( JPS.steps.layout && JPS.steps.layout.postsEditUrl ) {
+      return JPS.steps.layout.postsEditUrl.replace('&amp;','&');
+    }
   },
 
   getThemes: function() {
@@ -223,7 +234,12 @@ AppDispatcher.register(function(action) {
     case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
       setContactUsPage(action.data);
       SiteStore.emitChange();
-      break;      
+      break;
+
+    case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
+      setLayoutPages( action.data );
+      SiteStore.emitChange();
+      break;
 
     default:
       // no op
