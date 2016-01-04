@@ -35,11 +35,9 @@ var AdvancedSettingsStep = React.createClass({
 		this.setState(getSiteState());
 	},
 
-	handleSkipTo: function( slug ) {
-		return function( event ) {
-			event.preventDefault();
-			SetupProgressActions.skipToStep( slug );
-		};
+	handleSkipTo: function( slug, event ) {
+		event.preventDefault();
+		SetupProgressActions.setCurrentStep( slug );
 	},
 
 	handleDismiss: function( event ) {
@@ -53,7 +51,7 @@ var AdvancedSettingsStep = React.createClass({
 			contactProps.href = this.state.contactUrl;
 		} else {
 			contactProps.href = '#';
-			contactProps.onClick = this.handleSkipTo( Paths.CONTACT_PAGE_STEP_SLUG );
+			contactProps.onClick = this.handleSkipTo.bind(this, Paths.CONTACT_PAGE_STEP_SLUG );
 		}
 		return (
 			<WelcomeSection id="welcome__review">
@@ -65,8 +63,8 @@ var AdvancedSettingsStep = React.createClass({
 				<div className="welcome__review-cols">
 					<div className="welcome__review-col">
 						<ul className="welcome__review-list">
-							<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo( Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
-							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo( Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
+							<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
+							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
 							{ this.state.layout !== 'blog' ?
 								<ul>
 									<li><a href={ this.state.welcomeUrl }>Edit your Welcome page</a></li>
@@ -81,7 +79,7 @@ var AdvancedSettingsStep = React.createClass({
 							<li><Dashicon name="yes" />
 							{ this.state.isJPConnected ?
 								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack: </a> :
-								<a href="#" onClick={ this.handleSkipTo( Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
+								<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
 							}
 							increase visitors and improve security</li>
 						</ul>
