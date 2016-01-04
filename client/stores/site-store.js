@@ -192,7 +192,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION:
-      setTitle(action.description);
+      setTitle(action.title);
       setDescription(action.description);
       SiteStore.emitChange();
       break;    
