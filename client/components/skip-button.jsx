@@ -1,6 +1,7 @@
 var React = require('react'),
 	SetupProgressStore = require('stores/setup-progress-store'),
-	SetupProgressActions = require('actions/setup-progress-actions');
+	SetupProgressActions = require('actions/setup-progress-actions'),
+	Button = require('@automattic/dops-components/client/components/button');
 
 function getSetupProgress() {
 	return {
@@ -36,7 +37,7 @@ var SkipButton = React.createClass({
 			return null;
 		} else {
 			return (
-				<a className="welcome__skip-step" href="#" onClick={this.handleSkip}>Not now</a>
+				<Button className="welcome__skip-step" href="#" onClick={this.handleSkip}>Not now</Button>
 			);
 		}
 	}

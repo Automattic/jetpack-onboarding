@@ -532,6 +532,9 @@
   .welcome__loading-message * {
     vertical-align: middle; }
 
+.welcome__submit {
+  margin-top: 32px; }
+
 .welcome__container .welcome__get-started--callout {
   margin-top: 8px;
   margin-bottom: 40px; }
@@ -592,9 +595,6 @@
 
 .welcome__contact--screenshot img {
   border: 1px solid #ccc; }
-
-.welcome__contact-submit {
-  margin-top: 32px; }
 
 .welcome__review-cols {
   display: -webkit-box;

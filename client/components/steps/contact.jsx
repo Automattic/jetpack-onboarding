@@ -74,7 +74,7 @@ var ContactPageStep = React.createClass( {
 			<div className="welcome__contact">
 				<p className="welcome__callout welcome__contact--callout welcome__contact-build--callout">Build a <em>starter</em> "Contact Us" page?</p>
 				<img src={ this.state.contactPageScreenshot } />
-				<div className="welcome__contact-submit">
+				<div className="welcome__submit">
 					<Button primary onClick={ this.handleBuildContact }>Yes</Button>
 					<Button onClick={ this.handleSubmit }>No Thanks</Button>
 				</div>
