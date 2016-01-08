@@ -55,7 +55,8 @@ var AdvancedSettingsStep = React.createClass({
 		}
 		return (
 			<WelcomeSection id="welcome__review">
-				<div className="welcome__dismiss"><a href="#" onClick={ this.handleDismiss }><Dashicon name="dismiss" /> Dismiss</a></div>
+				<div className="welcome__dismiss">
+					<a href="#" onClick={ this.handleDismiss }><Dashicon name="dismiss" /><span className='screen-reader-text'>Dismiss</span></a></div>
 
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
 				<p className="welcome__callout welcome__review--callout">Great Work!</p>
@@ -87,7 +88,7 @@ var AdvancedSettingsStep = React.createClass({
 
 					<div className="welcome__review-col welcome__review-themes">
 						<img src={ `${ JPS.base_url }/img/review__themes.png` } />
-						<p><Button href={ JPS.steps.advanced_settings.customize_url } primary>Choose a Theme</Button></p>
+						<p><Button href={ JPS.steps.advanced_settings.customize_url } >Choose a Theme</Button></p>
 					</div>
 				</div>
 			</WelcomeSection>

@@ -4,9 +4,13 @@
 	h1 {
 		font-size: 32px;
 		line-height: 1.2;
-		font-weight: bold;
+		font-weight: 400;
 		padding-right: 0;
-		margin-bottom: 30px;
+		margin-bottom: 0;
+
+		@media ( max-width: 600px ) {
+			font-size: 20px;
+		}
 	}
 
 	h4 {
@@ -35,17 +39,22 @@
 	}
 
 	.submit {
-		// margin: 0px !important;
-		// padding: 5px 5px !important;
 		background-color: #EEE;
 		text-align: right;
 	}
 
 	.welcome__callout {
-		margin: 1em 0;
+		margin-top: 8px;
+		margin-bottom: 40px;
 		color: #777;
 		font-size: 18px;
 		line-height: 1.5;
+
+		@media ( max-width: 600px ) {
+			margin-top: 0;
+			margin-bottom: 24px;
+			font-size: 13px;
+		}
 	}
 
 	.welcome__skip-link {

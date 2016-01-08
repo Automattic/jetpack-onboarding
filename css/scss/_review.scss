@@ -35,9 +35,9 @@
 }
 
 .welcome__dismiss {
-	float: right;
-	font-size: 14px;
-	line-height: 20px;
+	position: absolute;
+	top: 8px;
+	right: 16px;
 
 	* {
 		vertical-align: middle;
