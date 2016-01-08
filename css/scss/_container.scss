@@ -41,7 +41,7 @@
 	min-height: calc( 100vh - 66px ); // 46 + 20
 	@include fancy-clearfix;
 
-	@media ( min-width: 765px ) {
+	@media ( min-width: 782px ) {
 		margin: 20px;
 		padding: 80px 16px;
 		min-height: calc( 100vh - 72px ); // 32 + 40
