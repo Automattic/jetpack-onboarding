@@ -49,9 +49,9 @@ var SiteTitleStep = React.createClass( {
 				<h1>Let&apos;s launch your new website</h1>
 				<p className="welcome__callout welcome__site-title--callout">Name and describe your website</p>
 				<form onSubmit={ this.handleSubmit } className="welcome__site-title--form">
-						<label className='sscreen-reader-text' htmlFor="site_title">Site Title</label>
+						<label htmlFor="site_title">Site Title</label>
 						<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={ this.handleChangeTitle } value={ this.state.title } placeholder="Site Title (this can be changed later)" required />
-						<label className='sscreen-reader-text' htmlFor="site_description">Site Description</label>
+						<label htmlFor="site_description">Site Description</label>
 						<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={ this.handleChangeDescription } value={ this.state.description } placeholder="Site Description (this can be changed later)" required />
 						<Button className='welcome-submit' primary type="submit">Next Step</Button>
 				</form>
