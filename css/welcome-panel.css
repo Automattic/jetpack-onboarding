@@ -463,7 +463,7 @@
       width: calc( 100% - 36px); } }
   @media (max-width: 782px) {
     #jpo-welcome-panel {
-      top: 46px;
+      top: 0;
       left: 0px;
       width: 100%; } }
   #jpo-welcome-panel button + button {
@@ -475,7 +475,7 @@
   position: relative;
   background: #fff;
   border: 1px solid #ddd;
-  margin: 10px;
+  margin: 56px 10px 10px;
   padding: 52px 16px;
   min-height: 600px;
   min-height: calc( 100vh - 66px); }
@@ -485,7 +485,7 @@
     height: 0;
     clear: both;
     visibility: hidden; }
-  @media (min-width: 764px) {
+  @media (min-width: 765px) {
     .welcome__wrapper {
       margin: 20px;
       padding: 80px 16px;
