@@ -14,7 +14,8 @@ function getJetpackState() {
 		site_title: SiteStore.getTitle(),
 		jetpackConfigured: SiteStore.getJetpackConfigured(),
 		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
-		modulesEnabled: SiteStore.getActiveModuleSlugs()
+		modulesEnabled: SiteStore.getActiveModuleSlugs(),
+		settingsUrl: SiteStore.getJetpackSettingsUrl()
 	};
 }
 
@@ -58,7 +59,7 @@ var JetpackJumpstart = React.createClass({
 				{ this.state.jetpackConfigured ?
 					<div>
 						<p>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
-						<p><a href="#">Check out the settings page…</a></p>
+						<p><a href={ this.state.settingsUrl }>Check out the settings page…</a></p>
 						<p><Button style={{float: 'right'}} color="blue" onClick={this.handleNext}>Next Step &rarr;</Button></p>
 					</div> :
 					<div>

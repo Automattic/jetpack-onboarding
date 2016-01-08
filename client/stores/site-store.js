@@ -146,6 +146,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     return JPS.jetpack.jumpstart_modules;
   },
 
+  getJetpackSettingsUrl: function() {
+    return JPS.steps.advanced_settings && JPS.steps.advanced_settings.jetpack_modules_url;
+  },
+
   getPopularThemes: function() {
     return WPAjax.post(JPS.site_actions.get_popular_themes, {}, {quiet: true});
   },
