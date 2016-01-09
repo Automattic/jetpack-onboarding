@@ -489,6 +489,7 @@
   .welcome__wrapper button + button {
     margin-left: 20px; }
   .welcome__wrapper img {
+    width: 100%;
     max-width: 100%; }
 
 .welcome__container {
