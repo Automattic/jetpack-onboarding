@@ -9,8 +9,8 @@ function getSiteLayoutState() {
 	return {
 		site_title: SiteStore.getTitle(),
 		layout: SiteStore.getLayout(),
-		siteScreenshot: `${ JPS.base_url }/img/layout__site-blog.png`,
-		blogScreenshot: `${ JPS.base_url }/img/layout__blog.png`,
+		siteScreenshot: `${ JPS.base_url }/img/jpo-layout-static.jpg`,
+		blogScreenshot: `${ JPS.base_url }/img/jpo-layout-news.jpg`,
 	};
 }
 

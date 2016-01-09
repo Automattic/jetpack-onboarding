@@ -87,8 +87,8 @@ var AdvancedSettingsStep = React.createClass({
 					</div>
 
 					<div className="welcome__review-col welcome__review-themes">
-						<img src={ `${ JPS.base_url }/img/review__themes.png` } />
-						<p><Button href={ JPS.steps.advanced_settings.customize_url } >Choose a Theme</Button></p>
+						<img src={ `${ JPS.base_url }/img/jpo-themes.png` } />
+						<p><Button href={ JPS.steps.advanced_settings.customize_url } >Customize your site</Button></p>
 					</div>
 				</div>
 			</WelcomeSection>

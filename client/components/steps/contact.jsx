@@ -8,7 +8,7 @@ function getSiteContactState() {
 	return {
 		site_title: SiteStore.getTitle(),
 		contactPageURL: SiteStore.getContactPageURL(),
-		contactPageScreenshot : `${ JPS.base_url }/img/contact-us-screenshot.png`
+		contactPageScreenshot : `${ JPS.base_url }/img/jpo-contact.jpg`
 	};
 }
 

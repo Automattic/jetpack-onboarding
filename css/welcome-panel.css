@@ -466,10 +466,6 @@
       top: 0;
       left: 0px;
       width: 100%; } }
-  #jpo-welcome-panel button + button {
-    margin-left: 20px; }
-  #jpo-welcome-panel img {
-    max-width: 100%; }
 
 .welcome__wrapper {
   position: relative;
@@ -490,12 +486,16 @@
       margin: 20px;
       padding: 80px 16px;
       min-height: calc( 100vh - 72px); } }
+  .welcome__wrapper button + button {
+    margin-left: 20px; }
+  .welcome__wrapper img {
+    max-width: 100%; }
 
 .welcome__container {
-  float: left;
   padding: 0 10px;
   width: 100%;
-  max-width: 1024px; }
+  max-width: 1024px;
+  margin: 0 auto; }
 
 .welcome__content-box {
   background: white;
@@ -544,6 +544,19 @@
       margin-bottom: 24px;
       font-size: 13px; } }
 
+.welcome__get-started-image {
+  width: 60vw;
+  max-width: 520px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%); }
+  @media (max-width: 550px), (max-height: 550px) {
+    .welcome__get-started-image {
+      display: none; } }
+
 #welcome__site-title .welcome__site-title--form {
   max-width: 400px;
   margin: 0 auto;
@@ -588,13 +601,14 @@
               flex: 1 100%;
       margin-bottom: 15px; } }
   .welcome__homepage-col img {
-    vertical-align: middle;
-    border: 2px solid transparent; }
+    max-width: 320px;
+    height: auto;
+    vertical-align: middle; }
   .welcome__homepage-col.is-selected img {
-    border-color: #c3ef96; }
+    box-shadow: 0 0 0 3px #bfe7f3; }
 
-.welcome__contact--screenshot img {
-  border: 1px solid #ccc; }
+.welcome__contact img {
+  max-width: 320px; }
 
 .welcome__review-cols {
   display: -webkit-box;
@@ -642,3 +656,7 @@
   right: 16px; }
   .welcome__dismiss * {
     vertical-align: middle; }
+
+.welcome__review-themes img {
+  max-width: 320px;
+  border: 1px solid #ccd8e1; }

@@ -21,14 +21,6 @@
 		left: 0px;
 		width: 100%;
 	}
-
-	button + button {
-		margin-left: 20px;
-	}
-
-	img {
-		max-width: 100%;
-	}
 }
 
 .welcome__wrapper {
@@ -46,13 +38,19 @@
 		padding: 80px 16px;
 		min-height: calc( 100vh - 72px ); // 32 + 40
 	}
+	button + button {
+		margin-left: 20px;
+	}
+	img {
+		max-width: 100%;
+	}
 }
 
 .welcome__container {
-	float: left;
 	padding: 0 10px;
 	width: 100%;
 	max-width: 1024px;
+	margin: 0 auto;
 }
 
 .welcome__content-box {
