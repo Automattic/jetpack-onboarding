@@ -60,7 +60,7 @@ class Jetpack_Onboarding_WelcomePanel {
 
 			wp_register_script( 'ie-shims', plugins_url( 'dist/ie-shims.js', __FILE__ ), array( 'react' ));
 			$wp_scripts->add_data( 'ie-shims', 'conditional', 'lt IE 9' );
-			
+
 			//Core JS app
 			wp_register_script( 'jetpack-onboarding', plugins_url( 'dist/jetpack-onboarding.js', __FILE__ ), array( 'jquery', 'underscore', 'wp-pointer', 'ie-shims', 'react' ) );
 			wp_localize_script( 'jetpack-onboarding', 'JPS', $jpo_vars );
@@ -79,7 +79,6 @@ class Jetpack_Onboarding_WelcomePanel {
 			do_action( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY );
 		}
 
-		echo "<div id='jpo-welcome-panel'>Loading Welcome Wizard</div>";
+		echo "<div id='jpo-welcome-panel'><span class='screen-reader-text'>Loading Welcome Wizard</span></div>";
 	}
 }
-
