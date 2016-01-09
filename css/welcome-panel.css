@@ -576,6 +576,8 @@ img.welcome__get-started-image {
     float: right; }
 
 .welcome__homepage-cols {
+  max-width: 780px;
+  margin: 0 auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
