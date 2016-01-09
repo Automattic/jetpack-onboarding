@@ -67,9 +67,9 @@ var HomepageStep = React.createClass( {
 							</label>
 						</div>
 					</div>
-					<p className="welcome__skip">
-						<a className="welcome__skip-link" href="#" onClick={ this.skipStep }>Skip this step</a>
-					</p>
+					<div className="welcome__submit">
+						<Button className="welcome__skip-link" onClick={ this.skipStep }>Skip this step</Button>
+					</div>
 				</form>
 			</WelcomeSection>
 		);
