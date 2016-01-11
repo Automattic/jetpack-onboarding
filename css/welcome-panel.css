@@ -536,6 +536,10 @@
 .welcome__submit {
   margin-top: 32px; }
 
+img.welcome__loading-spinner {
+  width: 16px;
+  height: 16px; }
+
 .welcome__container .welcome__get-started--callout {
   margin-top: 8px;
   margin-bottom: 40px; }
