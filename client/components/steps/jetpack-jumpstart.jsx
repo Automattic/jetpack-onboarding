@@ -36,13 +36,19 @@ var JetpackJumpstart = React.createClass({
 	getInitialState: function() {
 		var state = getJetpackState();
 		state.showMoreModules = false;
+		state.jetpackConnecting = false;
 		return state;
 	},
 
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 
-		SiteActions.configureJetpack( Paths.REVIEW_STEP_SLUG );
+		this.setState( { jetpackConnecting: true } );
+		SiteActions
+			.configureJetpack( Paths.REVIEW_STEP_SLUG )
+			.always(function() {
+				this.setState( { jetpackConnecting: false } );
+			}.bind( this ) );
 	},
 
 	handleNext: function (e) {
@@ -65,8 +71,8 @@ var JetpackJumpstart = React.createClass({
 						</div>
 					</div> :
 					<div className='welcome__submit'>
-						<Button onClick={ this.handleJetpackConnect } primary>Connect to WordPress.com</Button>
-						<SkipButton />
+						<Button disabled={this.state.jetpackConnecting} onClick={ this.handleJetpackConnect } primary>{ this.state.jetpackConnecting ? 'Connecting' : 'Connect' } to WordPress.com</Button>
+						{ !this.state.jetpackConnecting && <SkipButton /> }
 					</div>
 				}
 			</WelcomeSection>
