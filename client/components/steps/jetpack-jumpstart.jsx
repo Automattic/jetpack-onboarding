@@ -60,7 +60,9 @@ var JetpackJumpstart = React.createClass({
 					<div>
 						<p>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
 						<p><a href={ this.state.settingsUrl }>Check out the settings page…</a></p>
-						<p><Button style={{float: 'right'}} color="blue" onClick={this.handleNext}>Next Step &rarr;</Button></p>
+						<div className="welcome__submit">
+							<Button primary onClick={this.handleNext}>Next Step</Button>
+						</div>
 					</div> :
 					<div className='welcome__submit'>
 						<Button onClick={ this.handleJetpackConnect } primary>Connect to WordPress.com</Button>
