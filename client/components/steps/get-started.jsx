@@ -45,6 +45,7 @@ var GetStarted = React.createClass({
 						<Button onClick={ this.handleNoThanks }>No thanks</Button>
 					</p>
 				</div>
+				<img className='welcome__get-started-image' src={ `${ JPS.base_url }/img/jpo-welcome.png` } />
 			</div>
 		);
 	}

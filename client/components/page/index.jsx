@@ -107,7 +107,7 @@ module.exports = React.createClass( {
 			return (
 				<div className="welcome__loading-overlay">
 					<div className="welcome__loading-message">
-						<img src={ `${JPS.base_url}/img/spinner-2x.gif` } width="16px" height="16px" />
+						<img className="welcome__loading-spinner" src={ `${JPS.base_url}/img/spinner-2x.gif` } width="16px" height="16px" />
 						&nbsp;&nbsp;{ this.state.spinnerMessage }
 					</div>
 				</div>

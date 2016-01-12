@@ -8,7 +8,7 @@ function getSiteContactState() {
 	return {
 		site_title: SiteStore.getTitle(),
 		contactPageURL: SiteStore.getContactPageURL(),
-		contactPageScreenshot : `${ JPS.base_url }/img/contact-us-screenshot.png`
+		contactPageScreenshot : `${ JPS.base_url }/img/jpo-contact.jpg`
 	};
 }
 
@@ -62,7 +62,7 @@ var ContactPageStep = React.createClass( {
 		return (
 			<div>
 				<p className="welcome__callout welcome__contact--callout welcome__contact-exists--callout">View your starter <a href={ this.state.contactPageURL } target="_blank">Contact Us</a> page.</p>
-				<p className="welcome__submit">
+				<p className="welcome__contact-submit">
 					<Button primary onClick={ this.handleContinue }>Next Step &rarr;</Button>
 				</p>
 			</div>
@@ -71,19 +71,12 @@ var ContactPageStep = React.createClass( {
 
 	_renderWithoutContactPage: function() {
 		return (
-			<div className="welcome__contact-cols">
-				<div className="welcome__contact-col">
-					<div className="welcome__contact-button">
-						<p className="welcome__callout welcome__contact--callout welcome__contact-build--callout">Build a <em>starter</em> "Contact Us" page?</p>
-
-						<p className="welcome__submit">
-							<Button primary onClick={ this.handleBuildContact }>Yes</Button>
-							<Button onClick={ this.handleSubmit }>No Thanks</Button>
-						</p>
-					</div>
-				</div>
-				<div className="welcome__contact-col welcome__contact--screenshot">
-					<img src={ this.state.contactPageScreenshot } />
+			<div className="welcome__contact">
+				<p className="welcome__callout welcome__contact--callout welcome__contact-build--callout">Build a <em>starter</em> "Contact Us" page?</p>
+				<img src={ this.state.contactPageScreenshot } />
+				<div className="welcome__submit">
+					<Button primary onClick={ this.handleBuildContact }>Yes</Button>
+					<Button onClick={ this.handleSubmit }>No Thanks</Button>
 				</div>
 			</div>
 		);

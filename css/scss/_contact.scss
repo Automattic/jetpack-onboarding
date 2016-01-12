@@ -1,32 +1,5 @@
-.welcome__contact-cols {
-	display: flex;
-	flex-flow: row wrap;
-	align-items: flex-start;
-}
-
-.welcome__contact-col {
-	flex: 1;
-
-	@media ( max-width: 700px ) {
-		flex: 1 100%;
-		margin-bottom: 15px;
-	}
-}
-
-.welcome__contact-button {
-	display: inline-block;
-	text-align: left;
-}
-
-.welcome__contact--screenshot {
+.welcome__contact {
 	img {
-		border: 1px solid #ccc;
-	}
-}
-
-@media ( min-width: 701px ) {
-	.welcome__container .welcome__contact-build--callout {
-		margin-top: 50px;
-		margin-bottom: 30px;
+		max-width: 320px;
 	}
 }

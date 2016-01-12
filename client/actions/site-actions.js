@@ -141,7 +141,6 @@ var SiteActions = {
 	},
 
 	configureJetpack: function(return_to_step) {
-		SpinnerActions.show("Connecting to WordPress.com");
 		return WPAjax.
 			post( JPS.site_actions.configure_jetpack, { return_to_step: return_to_step } ).
 			done( function ( data ) {
@@ -151,13 +150,10 @@ var SiteActions = {
 
 				if ( data.next ) {
 					window.location.replace(data.next);
-				} else {
-					SpinnerActions.hide();
 				}
 			}).
 			fail( function ( msg ) {
 				FlashActions.error("Error enabling Jetpack: "+msg);
-				SpinnerActions.hide();
 			});
 	},
 

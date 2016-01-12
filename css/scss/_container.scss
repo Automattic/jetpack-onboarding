@@ -2,49 +2,56 @@
 	*, *:before, *:after { box-sizing: border-box; }
 
 	position: fixed;
-	top: 0;
+	top: 32px;
 	left: 160px;
+	bottom: 0;
 	z-index: 999;
-	margin-bottom: 20px;
-	padding: 100px;
 	width: calc( 100% - 160px );
-	height: 100%;
 	overflow: auto;
 	box-sizing: border-box;
-	background-color: #fff;
+	background-color: #f1f1f1;
 
 	@media ( max-width: 960px ) {
 		left: 36px;
-		padding-left: 50px;
-		padding-right: 50px;
 		width: calc( 100% - 36px );
 	}
 
 	@media ( max-width: 782px ) {
+		top: 0;
 		left: 0px;
-		padding-left: 20px;
-		padding-right: 20px;
 		width: 100%;
-	}
-
-	button + button {
-		margin-left: 20px;
-	}
-
-	img {
-		max-width: 100%;
 	}
 }
 
 .welcome__wrapper {
 	position: relative;
+	background: #fff;
+	border: 1px solid #ddd;
+	margin: 56px 10px 10px;
+	padding: 52px 16px;
+	min-height: 600px; // fallback
+	min-height: calc( 100vh - 66px ); // 46 + 20
+	@include fancy-clearfix;
+
+	@media ( min-width: 782px ) {
+		margin: 20px;
+		padding: 80px 16px;
+		min-height: calc( 100vh - 72px ); // 32 + 40
+	}
+	button + button {
+		margin-left: 20px;
+	}
+	img {
+		width: 100%;
+		max-width: 100%;
+	}
 }
 
 .welcome__container {
-	float: left;
 	padding: 0 10px;
 	width: 100%;
 	max-width: 1024px;
+	margin: 0 auto;
 }
 
 .welcome__content-box {
@@ -88,3 +95,17 @@
 	}
 }
 
+.welcome__submit {
+	margin-top: 32px;
+}
+
+img.welcome__loading-spinner {
+	width: 16px;
+	height: 16px;
+}
+
+#welcome__jetpack {
+	.welcome__skip-step {
+		margin-left: 10px;
+	}
+}

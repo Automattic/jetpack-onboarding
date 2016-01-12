@@ -1,4 +1,6 @@
 .welcome__homepage-cols {
+	max-width: 780px;
+	margin: 0 auto;
 	display: flex;
 	flex-flow: row wrap;
 	align-items: flex-start;
@@ -13,13 +15,14 @@
 	}
 
 	img {
+		max-width: 320px;
+		height: auto;
 		vertical-align: middle;
-		border: 2px solid transparent;
 	}
 
 	&.is-selected {
 		img {
-			border-color: #c3ef96;
+			box-shadow: 0 0 0 3px #bfe7f3;
 		}
 	}
 }

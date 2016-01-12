@@ -1,14 +1,26 @@
 .welcome__container {
 	.welcome__get-started--callout {
-		margin: 20px 0;
+		margin-top: 8px;
+		margin-bottom: 40px;
 
 		@media ( max-width: 600px ) {
-			margin-bottom: 15px;
-			font-size: 15px;
-		}
-
-		@media ( max-width: 320px ) {
+			margin-top: 0;
+			margin-bottom: 24px;
 			font-size: 13px;
 		}
+	}
+}
+
+img.welcome__get-started-image {
+	width: 60vw;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX( -50% );
+
+	// preventing the image from covering actions on smaller views
+	@media ( max-width: 550px ),
+		( max-height: 550px ) {
+		display: none;
 	}
 }

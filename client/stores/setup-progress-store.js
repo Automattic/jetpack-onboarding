@@ -79,7 +79,8 @@ function ensureValidStepSlug() {
 
     var pendingStep = getNextPendingStep();
     if ( pendingStep !== null ) {
-      window.location.hash = 'welcome/steps/'+pendingStep.slug;
+      var hash = 'welcome/steps/'+pendingStep.slug;
+      window.history.pushState(null, document.title, window.location.pathname + '#' + hash);
     }    
   }
 }
@@ -134,7 +135,8 @@ function getStepIndex(slug) {
 }
 
 function select(stepSlug) {
-  window.location.hash = 'welcome/steps/'+stepSlug;
+  var hash = 'welcome/steps/'+stepSlug;
+  window.history.pushState(null, document.title, window.location.pathname + '#' + hash);
 }
 
 //reset everything back to defaults
@@ -192,6 +194,11 @@ var SetupProgressStore = _.extend({}, EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener( CHANGE_EVENT, callback );
   }
+});
+
+// force a navigation refresh when the URL changes
+window.addEventListener("popstate", function(){
+    SetupProgressStore.emitChange();
 });
 
 // Register callback to handle all updates
