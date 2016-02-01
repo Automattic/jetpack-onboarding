@@ -8,7 +8,7 @@ class Jetpack_Onboarding_EndPoints {
 	const CONTACTPAGE_ID_KEY = 'jpo_contactpage_id';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
-	const VERSION = "1.0";
+	const VERSION = "1.1";
 
 	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -536,6 +536,8 @@ Warwick, RI 02889
 
 			if ( JETPACK_STEP_AUTO_REDIRECT ) {
 				$connect_url = add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, $connect_url );
+				$connect_url = add_query_arg( 'host', 'bluehost', $connect_url );
+				$connect_url = add_query_arg( 'from', 'jpo', $connect_url );
 			}
 
 			wp_send_json_success( array('next' => $connect_url) );
