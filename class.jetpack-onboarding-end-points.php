@@ -109,7 +109,7 @@ class Jetpack_Onboarding_EndPoints {
 			),
 			'jetpack' => $jetpack_config,
 			'started' => $started,
-			'step_status' => $step_statuses,
+			'step_status' => $step_statuses,''
 			'steps' => array(
 				'layout' => self::get_layout(),
 				'contact_page' => $contact_page_info,
@@ -536,7 +536,7 @@ Warwick, RI 02889
 
 			if ( JETPACK_STEP_AUTO_REDIRECT ) {
 				$connect_url = add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, $connect_url );
-				$connect_url = add_query_arg( 'host', '0', $connect_url );
+				$connect_url = add_query_arg( 'host', JETPACK_STEP_AUTO_REDIRECT_HOST_TYPE, $connect_url );
 				$connect_url = add_query_arg( 'from', 'jpo', $connect_url );
 			}
 
