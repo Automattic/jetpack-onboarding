@@ -109,7 +109,7 @@ class Jetpack_Onboarding_EndPoints {
 			),
 			'jetpack' => $jetpack_config,
 			'started' => $started,
-			'step_status' => $step_statuses,''
+			'step_status' => $step_statuses,
 			'steps' => array(
 				'layout' => self::get_layout(),
 				'contact_page' => $contact_page_info,
