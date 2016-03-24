@@ -10,6 +10,7 @@ defined( 'JETPACK_ONBOARDING_BASE_DIR' )         or define( 'JETPACK_ONBOARDING_
 defined( 'JETPACK_ONBOARDING_BASE_URL' )         or define( 'JETPACK_ONBOARDING_BASE_URL', plugins_url( 'jetpack-onboarding', dirname( __FILE__ ) ) );
 defined( 'JETPACK_STEP_AUTO_REDIRECT' )     or define( 'JETPACK_STEP_AUTO_REDIRECT', true );
 defined( 'JETPACK_STEP_AUTO_REDIRECT_SRC' ) or define( 'JETPACK_STEP_AUTO_REDIRECT_SRC', 'custom_src' );
+defined( 'JETPACK_STEP_AUTO_REDIRECT_HOST_TYPE' ) or define( 'JETPACK_STEP_AUTO_REDIRECT_HOST_TYPE', '0' );
 
 
 function jpo_start() {
