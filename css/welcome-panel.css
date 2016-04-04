@@ -669,3 +669,14 @@ img.welcome__get-started-image {
 .welcome__review-themes img {
   max-width: 320px;
   border: 1px solid #ccd8e1; }
+
+.jetpack_connect_info {
+  padding: 50px;
+  text-align: left; }
+  .jetpack_connect_info img {
+    width: 320px;
+    float: left;
+    margin: 0 20px 50px 0; }
+  .jetpack_connect_info .clear {
+    clear: both;
+    margin: 20px; }
