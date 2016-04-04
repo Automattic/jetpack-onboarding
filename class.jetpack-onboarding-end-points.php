@@ -536,9 +536,11 @@ Warwick, RI 02889
 
 			if ( JETPACK_STEP_AUTO_REDIRECT ) {
 				$connect_url = add_query_arg( 'src', JETPACK_STEP_AUTO_REDIRECT_SRC, $connect_url );
-				$connect_url = add_query_arg( 'host', '0', $connect_url );
-				$connect_url = add_query_arg( 'from', 'jpo', $connect_url );
 			}
+
+			$connect_url = add_query_arg( 'host', JETPACK_ONBOARDING_VENDOR_CODE, $connect_url );
+			$connect_url = add_query_arg( 'product', JETPACK_ONBOARDING_PRODUCT_CODE, $connect_url );
+			$connect_url = add_query_arg( 'from', 'jpo', $connect_url );
 
 			wp_send_json_success( array('next' => $connect_url) );
 		} else {
