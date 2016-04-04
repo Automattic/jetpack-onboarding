@@ -23834,12 +23834,12 @@
 				React.createElement(
 					'div',
 					{ className: 'jetpack_connect_info' },
-					React.createElement('img', { src: JPS.base_url + '/img/stats-example-sm.png' }),
 					React.createElement(
 						'h2',
 						null,
 						'Grow and Track Your Community'
 					),
+					React.createElement('img', { src: JPS.base_url + '/img/stats-example-sm.png' }),
 					React.createElement(
 						'p',
 						null,
@@ -23849,14 +23849,17 @@
 						'p',
 						null,
 						'Use Jetpack tools like Publicize, Sharing, Subscribing and Related Posts to increase traffic, and onsite engagement.'
-					),
-					React.createElement('br', { className: 'clear' }),
-					React.createElement('img', { src: JPS.base_url + '/img/feature-photon-sm.jpg' }),
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'jetpack_connect_info' },
 					React.createElement(
 						'h2',
 						null,
 						'Increase Security and Site Speed'
 					),
+					React.createElement('img', { src: JPS.base_url + '/img/feature-photon-sm.jpg' }),
 					React.createElement(
 						'p',
 						null,
