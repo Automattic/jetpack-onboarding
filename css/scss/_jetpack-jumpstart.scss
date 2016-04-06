@@ -1,0 +1,26 @@
+.jetpack_connect_info {
+
+    @media screen and ( max-width: 782px ) {
+        width: 95%;
+        margin: 0 5%;
+        float: none;
+    }
+
+    text-align: left;
+    float: left;
+    width: 43%;
+    margin: 0 3.5%;
+
+    h2 {
+        width: 100%;
+        text-align: center;
+        margin: 40px 0 20px 0;
+    }
+
+    img {
+        width: 100%;
+        float: left;
+        margin: 0 0 20px 0;
+    }
+
+}

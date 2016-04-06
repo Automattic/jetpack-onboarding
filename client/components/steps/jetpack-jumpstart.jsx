@@ -75,6 +75,18 @@ var JetpackJumpstart = React.createClass({
 						{ !this.state.jetpackConnecting && <SkipButton /> }
 					</div>
 				}
+				<div className='jetpack_connect_info'>
+					<h2>Grow and Track Your Community</h2>
+					<img src={ `${ JPS.base_url }/img/stats-example-sm.png` } />
+					<p>Jetpack provides Stats, insights and visitor information.</p>
+					<p>Use Jetpack tools like Publicize, Sharing, Subscribing and Related Posts to increase traffic, and onsite engagement.</p>
+				</div>
+				<div className='jetpack_connect_info'>
+					<h2>Increase Security and Site Speed</h2>
+					<img src={ `${ JPS.base_url }/img/feature-photon-sm.jpg` } />
+					<p>Gain peace of mind with Protect, the tool that has blocked billions of login attacks on millions of sites.</p>
+					<p>Photon utilizes the state-of-the-art WordPress.com content delivery network to load your gorgeous images super fast optimized for any device, and it’s completely free.</p>
+				</div>
 			</WelcomeSection>
 		);
 	}
