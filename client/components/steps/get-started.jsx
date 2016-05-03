@@ -31,7 +31,7 @@ var GetStarted = React.createClass({
 
 	handleNoThanks: function(e) {
 		e.preventDefault();
-		SetupProgressActions.disableJPS();
+		SetupProgressActions.disableJPO();
 	},
 
 	render: function() {

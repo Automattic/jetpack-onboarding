@@ -82,7 +82,20 @@ var SetupProgressActions = {
 		});
 	},
 
-	disableJPS: function() {
+	closeJPO: function() {
+		SpinnerActions.show("");
+		WPAjax.
+			post(JPS.step_actions.close).
+			fail(function(msg) {
+				SpinnerActions.hide();
+				FlashActions.error(msg);
+			}).
+			always(function() {
+				window.location.reload();
+			});
+	},
+
+	disableJPO: function() {
 		SpinnerActions.show("");
 		WPAjax.
 			post(JPS.step_actions.disable).
