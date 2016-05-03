@@ -70,9 +70,9 @@ var SetupProgressActions = {
 		this._recordStepViewed( { slug: stepSlug } );
 	},
 
-	getStarted: function() {
+	getStarted: function( siteType ) {
 		WPAjax.
-			post(JPS.step_actions.start).
+			post(JPS.step_actions.start, { siteType: siteType }).
 			fail(function(msg) {
 				FlashActions.error(msg);
 			});

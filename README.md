@@ -46,12 +46,12 @@ An integration might look like this:
 
 class JetpackOnboardingTracking {
 	static function track_jpo_usage() {
-		add_action('jpo_started', array(__CLASS__, 'track_started'));
+		add_action('jpo_started', array(__CLASS__, 'track_started'), 10, 1);
 		add_action('jpo_step_skipped', array(__CLASS__, 'track_step_skipped'));
 		add_action('jpo_step_completed', array(__CLASS__, 'track_step_completed'));
 	}
 
-	static function track_started() {
+	static function track_started( $siteType ) { // 'personal' or 'business'
 		self::record_user_event('none', 'started');
 	}
 

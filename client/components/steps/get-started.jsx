@@ -24,9 +24,9 @@ var GetStarted = React.createClass({
 		return getSetupState();
 	},
 
-	handleGetStarted: function(e) {
+	handleGetStarted: function(sitePurpose, e) {
 		e.preventDefault();
-		SetupProgressActions.getStarted();
+		SetupProgressActions.getStarted( sitePurpose );
 	},
 
 	handleNoThanks: function(e) {
@@ -41,7 +41,12 @@ var GetStarted = React.createClass({
 					<h1>Welcome to WordPress</h1>
 					<p className="welcome__callout welcome__get-started--callout">Would you like help launching your site?</p>
 					<p>
-						<Button onClick={ this.handleGetStarted } primary>Yes</Button>
+						<Button onClick={ this.handleGetStarted.bind(this, "business") } primary>Yes, I’m building a business site</Button>
+					</p>
+					<p>
+						<Button onClick={ this.handleGetStarted.bind(this, "personal") } primary>Yes, I’m building a personal site</Button>
+					</p>
+					<p>
 						<Button onClick={ this.handleNoThanks }>No thanks</Button>
 					</p>
 				</div>

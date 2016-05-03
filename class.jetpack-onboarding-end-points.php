@@ -322,7 +322,7 @@ class Jetpack_Onboarding_EndPoints {
 	static function started() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::STARTED_KEY, true );
-		do_action('jpo_started');
+		do_action('jpo_started', $_REQUEST['siteType']);
 		wp_send_json_success( 'true' );
 	}
 
