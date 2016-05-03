@@ -3,6 +3,11 @@
 // Below, you can choose from either using global form styles or class-driven
 // form styles. By default, the global styles are on.
 
+%clear-text {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 %form {
 	ul {
 		margin: 0;
