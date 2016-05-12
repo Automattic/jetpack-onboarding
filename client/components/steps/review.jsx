@@ -42,7 +42,7 @@ var AdvancedSettingsStep = React.createClass({
 
 	handleDismiss: function( event ) {
 		event.preventDefault();
-		jQuery( '#welcome-panel .welcome-panel-close' ).trigger( 'click' );
+		SetupProgressActions.closeJPO();
 	},
 
 	render: function() {

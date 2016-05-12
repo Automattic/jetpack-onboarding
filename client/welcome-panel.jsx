@@ -1,4 +1,5 @@
 var React = require( 'react' ),
+	ReactDOM = require( 'react-dom' ),
 	WelcomeWidget = require( './components/page' ),
 	Paths = require( './constants/jetpack-onboarding-paths' ),
 	SetupProgressStore = require( 'stores/setup-progress-store' );
@@ -48,7 +49,7 @@ module.exports = function() {
 			}
 		] );
 
-		React.render(
+		ReactDOM.render(
 			React.createElement( WelcomeWidget, {} ), document.getElementById( 'jpo-welcome-panel' )
 		);
 	} );

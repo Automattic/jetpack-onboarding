@@ -70,9 +70,9 @@ var SetupProgressActions = {
 		this._recordStepViewed( { slug: stepSlug } );
 	},
 
-	getStarted: function() {
+	getStarted: function( siteType ) {
 		WPAjax.
-			post(JPS.step_actions.start).
+			post(JPS.step_actions.start, { siteType: siteType }).
 			fail(function(msg) {
 				FlashActions.error(msg);
 			});
@@ -82,7 +82,20 @@ var SetupProgressActions = {
 		});
 	},
 
-	disableJPS: function() {
+	closeJPO: function() {
+		SpinnerActions.show("");
+		WPAjax.
+			post(JPS.step_actions.close).
+			fail(function(msg) {
+				SpinnerActions.hide();
+				FlashActions.error(msg);
+			}).
+			always(function() {
+				window.location.reload();
+			});
+	},
+
+	disableJPO: function() {
 		SpinnerActions.show("");
 		WPAjax.
 			post(JPS.step_actions.disable).

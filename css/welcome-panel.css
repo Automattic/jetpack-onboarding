@@ -2,20 +2,14 @@
   /*Checkbooms*/
   /* end checkbooms */
   /*Search Inputs*/ }
+  .welcome__container input[type=checkbox]:checked:before, .welcome__container .checkbox-tristate:checked:before {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; }
   .welcome__container form ul {
     margin: 0;
     padding: 0;
     list-style: none; }
-  .welcome__container input[type="text"],
-  .welcome__container input[type="search"],
-  .welcome__container input[type="email"],
-  .welcome__container input[type="number"],
-  .welcome__container input[type="password"],
-  .welcome__container input[type=checkbox], .welcome__container .checkbox-tristate,
-  .welcome__container input[type=radio],
-  .welcome__container input[type="tel"],
-  .welcome__container input[type="url"],
-  .welcome__container textarea {
+  .welcome__container input[type="text"], .welcome__container input[type="search"], .welcome__container input[type="email"], .welcome__container input[type="number"], .welcome__container input[type="password"], .welcome__container input[type=checkbox], .welcome__container .checkbox-tristate, .welcome__container input[type=radio], .welcome__container input[type="tel"], .welcome__container input[type="url"], .welcome__container textarea {
     margin: 0;
     padding: 7px 14px;
     width: 100%;
@@ -27,152 +21,35 @@
     -webkit-transition: all .15s ease-in-out;
     transition: all .15s ease-in-out;
     box-sizing: border-box; }
-    .welcome__container input[type="text"]::-webkit-input-placeholder,
-    .welcome__container input[type="search"]::-webkit-input-placeholder,
-    .welcome__container input[type="email"]::-webkit-input-placeholder,
-    .welcome__container input[type="number"]::-webkit-input-placeholder,
-    .welcome__container input[type="password"]::-webkit-input-placeholder,
-    .welcome__container input[type=checkbox]::-webkit-input-placeholder, .welcome__container .checkbox-tristate::-webkit-input-placeholder,
-    .welcome__container input[type=radio]::-webkit-input-placeholder,
-    .welcome__container input[type="tel"]::-webkit-input-placeholder,
-    .welcome__container input[type="url"]::-webkit-input-placeholder,
-    .welcome__container textarea::-webkit-input-placeholder {
+    .welcome__container input[type="text"]::-webkit-input-placeholder, .welcome__container input[type="search"]::-webkit-input-placeholder, .welcome__container input[type="email"]::-webkit-input-placeholder, .welcome__container input[type="number"]::-webkit-input-placeholder, .welcome__container input[type="password"]::-webkit-input-placeholder, .welcome__container input[type=checkbox]::-webkit-input-placeholder, .welcome__container .checkbox-tristate::-webkit-input-placeholder, .welcome__container input[type=radio]::-webkit-input-placeholder, .welcome__container input[type="tel"]::-webkit-input-placeholder, .welcome__container input[type="url"]::-webkit-input-placeholder, .welcome__container textarea::-webkit-input-placeholder {
       color: #999999; }
-    .welcome__container input[type="text"]::-moz-placeholder,
-    .welcome__container input[type="search"]::-moz-placeholder,
-    .welcome__container input[type="email"]::-moz-placeholder,
-    .welcome__container input[type="number"]::-moz-placeholder,
-    .welcome__container input[type="password"]::-moz-placeholder,
-    .welcome__container input[type=checkbox]::-moz-placeholder, .welcome__container .checkbox-tristate::-moz-placeholder,
-    .welcome__container input[type=radio]::-moz-placeholder,
-    .welcome__container input[type="tel"]::-moz-placeholder,
-    .welcome__container input[type="url"]::-moz-placeholder,
-    .welcome__container textarea::-moz-placeholder {
+    .welcome__container input[type="text"]::-moz-placeholder, .welcome__container input[type="search"]::-moz-placeholder, .welcome__container input[type="email"]::-moz-placeholder, .welcome__container input[type="number"]::-moz-placeholder, .welcome__container input[type="password"]::-moz-placeholder, .welcome__container input[type=checkbox]::-moz-placeholder, .welcome__container .checkbox-tristate::-moz-placeholder, .welcome__container input[type=radio]::-moz-placeholder, .welcome__container input[type="tel"]::-moz-placeholder, .welcome__container input[type="url"]::-moz-placeholder, .welcome__container textarea::-moz-placeholder {
       color: #999999; }
-    .welcome__container input[type="text"]:-ms-input-placeholder,
-    .welcome__container input[type="search"]:-ms-input-placeholder,
-    .welcome__container input[type="email"]:-ms-input-placeholder,
-    .welcome__container input[type="number"]:-ms-input-placeholder,
-    .welcome__container input[type="password"]:-ms-input-placeholder,
-    .welcome__container input[type=checkbox]:-ms-input-placeholder, .welcome__container .checkbox-tristate:-ms-input-placeholder,
-    .welcome__container input[type=radio]:-ms-input-placeholder,
-    .welcome__container input[type="tel"]:-ms-input-placeholder,
-    .welcome__container input[type="url"]:-ms-input-placeholder,
-    .welcome__container textarea:-ms-input-placeholder {
+    .welcome__container input[type="text"]:-ms-input-placeholder, .welcome__container input[type="search"]:-ms-input-placeholder, .welcome__container input[type="email"]:-ms-input-placeholder, .welcome__container input[type="number"]:-ms-input-placeholder, .welcome__container input[type="password"]:-ms-input-placeholder, .welcome__container input[type=checkbox]:-ms-input-placeholder, .welcome__container .checkbox-tristate:-ms-input-placeholder, .welcome__container input[type=radio]:-ms-input-placeholder, .welcome__container input[type="tel"]:-ms-input-placeholder, .welcome__container input[type="url"]:-ms-input-placeholder, .welcome__container textarea:-ms-input-placeholder {
       color: #999999; }
-    .welcome__container input[type="text"]::placeholder,
-    .welcome__container input[type="search"]::placeholder,
-    .welcome__container input[type="email"]::placeholder,
-    .welcome__container input[type="number"]::placeholder,
-    .welcome__container input[type="password"]::placeholder,
-    .welcome__container input[type=checkbox]::placeholder, .welcome__container .checkbox-tristate::placeholder,
-    .welcome__container input[type=radio]::placeholder,
-    .welcome__container input[type="tel"]::placeholder,
-    .welcome__container input[type="url"]::placeholder,
-    .welcome__container textarea::placeholder {
+    .welcome__container input[type="text"]::placeholder, .welcome__container input[type="search"]::placeholder, .welcome__container input[type="email"]::placeholder, .welcome__container input[type="number"]::placeholder, .welcome__container input[type="password"]::placeholder, .welcome__container input[type=checkbox]::placeholder, .welcome__container .checkbox-tristate::placeholder, .welcome__container input[type=radio]::placeholder, .welcome__container input[type="tel"]::placeholder, .welcome__container input[type="url"]::placeholder, .welcome__container textarea::placeholder {
       color: #999999; }
-    .welcome__container input[type="text"]:hover,
-    .welcome__container input[type="search"]:hover,
-    .welcome__container input[type="email"]:hover,
-    .welcome__container input[type="number"]:hover,
-    .welcome__container input[type="password"]:hover,
-    .welcome__container input[type=checkbox]:hover, .welcome__container .checkbox-tristate:hover,
-    .welcome__container input[type=radio]:hover,
-    .welcome__container input[type="tel"]:hover,
-    .welcome__container input[type="url"]:hover,
-    .welcome__container textarea:hover {
+    .welcome__container input[type="text"]:hover, .welcome__container input[type="search"]:hover, .welcome__container input[type="email"]:hover, .welcome__container input[type="number"]:hover, .welcome__container input[type="password"]:hover, .welcome__container input[type=checkbox]:hover, .welcome__container .checkbox-tristate:hover, .welcome__container input[type=radio]:hover, .welcome__container input[type="tel"]:hover, .welcome__container input[type="url"]:hover, .welcome__container textarea:hover {
       border-color: #b3b3b3; }
-    .welcome__container input[type="text"]:focus,
-    .welcome__container input[type="search"]:focus,
-    .welcome__container input[type="email"]:focus,
-    .welcome__container input[type="number"]:focus,
-    .welcome__container input[type="password"]:focus,
-    .welcome__container input[type=checkbox]:focus, .welcome__container .checkbox-tristate:focus,
-    .welcome__container input[type=radio]:focus,
-    .welcome__container input[type="tel"]:focus,
-    .welcome__container input[type="url"]:focus,
-    .welcome__container textarea:focus {
+    .welcome__container input[type="text"]:focus, .welcome__container input[type="search"]:focus, .welcome__container input[type="email"]:focus, .welcome__container input[type="number"]:focus, .welcome__container input[type="password"]:focus, .welcome__container input[type=checkbox]:focus, .welcome__container .checkbox-tristate:focus, .welcome__container input[type=radio]:focus, .welcome__container input[type="tel"]:focus, .welcome__container input[type="url"]:focus, .welcome__container textarea:focus {
       border-color: #0073AA;
       outline: none;
       box-shadow: 0 0 0 2px #008ec2; }
-      .welcome__container input[type="text"]:focus::-ms-clear,
-      .welcome__container input[type="search"]:focus::-ms-clear,
-      .welcome__container input[type="email"]:focus::-ms-clear,
-      .welcome__container input[type="number"]:focus::-ms-clear,
-      .welcome__container input[type="password"]:focus::-ms-clear,
-      .welcome__container input[type=checkbox]:focus::-ms-clear, .welcome__container .checkbox-tristate:focus::-ms-clear,
-      .welcome__container input[type=radio]:focus::-ms-clear,
-      .welcome__container input[type="tel"]:focus::-ms-clear,
-      .welcome__container input[type="url"]:focus::-ms-clear,
-      .welcome__container textarea:focus::-ms-clear {
+      .welcome__container input[type="text"]:focus::-ms-clear, .welcome__container input[type="search"]:focus::-ms-clear, .welcome__container input[type="email"]:focus::-ms-clear, .welcome__container input[type="number"]:focus::-ms-clear, .welcome__container input[type="password"]:focus::-ms-clear, .welcome__container input[type=checkbox]:focus::-ms-clear, .welcome__container .checkbox-tristate:focus::-ms-clear, .welcome__container input[type=radio]:focus::-ms-clear, .welcome__container input[type="tel"]:focus::-ms-clear, .welcome__container input[type="url"]:focus::-ms-clear, .welcome__container textarea:focus::-ms-clear {
         display: none; }
-    .welcome__container input[type="text"]:disabled,
-    .welcome__container input[type="search"]:disabled,
-    .welcome__container input[type="email"]:disabled,
-    .welcome__container input[type="number"]:disabled,
-    .welcome__container input[type="password"]:disabled,
-    .welcome__container input[type=checkbox]:disabled, .welcome__container .checkbox-tristate:disabled,
-    .welcome__container input[type=radio]:disabled,
-    .welcome__container input[type="tel"]:disabled,
-    .welcome__container input[type="url"]:disabled,
-    .welcome__container textarea:disabled {
+    .welcome__container input[type="text"]:disabled, .welcome__container input[type="search"]:disabled, .welcome__container input[type="email"]:disabled, .welcome__container input[type="number"]:disabled, .welcome__container input[type="password"]:disabled, .welcome__container input[type=checkbox]:disabled, .welcome__container .checkbox-tristate:disabled, .welcome__container input[type=radio]:disabled, .welcome__container input[type="tel"]:disabled, .welcome__container input[type="url"]:disabled, .welcome__container textarea:disabled {
       background: #f7f7f7;
       border-color: #e6e6e6;
       color: #b3b3b3; }
-      .welcome__container input[type="text"]:disabled:hover,
-      .welcome__container input[type="search"]:disabled:hover,
-      .welcome__container input[type="email"]:disabled:hover,
-      .welcome__container input[type="number"]:disabled:hover,
-      .welcome__container input[type="password"]:disabled:hover,
-      .welcome__container input[type=checkbox]:disabled:hover, .welcome__container .checkbox-tristate:disabled:hover,
-      .welcome__container input[type=radio]:disabled:hover,
-      .welcome__container input[type="tel"]:disabled:hover,
-      .welcome__container input[type="url"]:disabled:hover,
-      .welcome__container textarea:disabled:hover {
+      .welcome__container input[type="text"]:disabled:hover, .welcome__container input[type="search"]:disabled:hover, .welcome__container input[type="email"]:disabled:hover, .welcome__container input[type="number"]:disabled:hover, .welcome__container input[type="password"]:disabled:hover, .welcome__container input[type=checkbox]:disabled:hover, .welcome__container .checkbox-tristate:disabled:hover, .welcome__container input[type=radio]:disabled:hover, .welcome__container input[type="tel"]:disabled:hover, .welcome__container input[type="url"]:disabled:hover, .welcome__container textarea:disabled:hover {
         cursor: default; }
-      .welcome__container input[type="text"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="search"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="email"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="number"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="password"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type=checkbox]:disabled::-webkit-input-placeholder, .welcome__container .checkbox-tristate:disabled::-webkit-input-placeholder,
-      .welcome__container input[type=radio]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="tel"]:disabled::-webkit-input-placeholder,
-      .welcome__container input[type="url"]:disabled::-webkit-input-placeholder,
-      .welcome__container textarea:disabled::-webkit-input-placeholder {
+      .welcome__container input[type="text"]:disabled::-webkit-input-placeholder, .welcome__container input[type="search"]:disabled::-webkit-input-placeholder, .welcome__container input[type="email"]:disabled::-webkit-input-placeholder, .welcome__container input[type="number"]:disabled::-webkit-input-placeholder, .welcome__container input[type="password"]:disabled::-webkit-input-placeholder, .welcome__container input[type=checkbox]:disabled::-webkit-input-placeholder, .welcome__container .checkbox-tristate:disabled::-webkit-input-placeholder, .welcome__container input[type=radio]:disabled::-webkit-input-placeholder, .welcome__container input[type="tel"]:disabled::-webkit-input-placeholder, .welcome__container input[type="url"]:disabled::-webkit-input-placeholder, .welcome__container textarea:disabled::-webkit-input-placeholder {
         color: #b3b3b3; }
-      .welcome__container input[type="text"]:disabled::-moz-placeholder,
-      .welcome__container input[type="search"]:disabled::-moz-placeholder,
-      .welcome__container input[type="email"]:disabled::-moz-placeholder,
-      .welcome__container input[type="number"]:disabled::-moz-placeholder,
-      .welcome__container input[type="password"]:disabled::-moz-placeholder,
-      .welcome__container input[type=checkbox]:disabled::-moz-placeholder, .welcome__container .checkbox-tristate:disabled::-moz-placeholder,
-      .welcome__container input[type=radio]:disabled::-moz-placeholder,
-      .welcome__container input[type="tel"]:disabled::-moz-placeholder,
-      .welcome__container input[type="url"]:disabled::-moz-placeholder,
-      .welcome__container textarea:disabled::-moz-placeholder {
+      .welcome__container input[type="text"]:disabled::-moz-placeholder, .welcome__container input[type="search"]:disabled::-moz-placeholder, .welcome__container input[type="email"]:disabled::-moz-placeholder, .welcome__container input[type="number"]:disabled::-moz-placeholder, .welcome__container input[type="password"]:disabled::-moz-placeholder, .welcome__container input[type=checkbox]:disabled::-moz-placeholder, .welcome__container .checkbox-tristate:disabled::-moz-placeholder, .welcome__container input[type=radio]:disabled::-moz-placeholder, .welcome__container input[type="tel"]:disabled::-moz-placeholder, .welcome__container input[type="url"]:disabled::-moz-placeholder, .welcome__container textarea:disabled::-moz-placeholder {
         color: #b3b3b3; }
-      .welcome__container input[type="text"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="search"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="email"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="number"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="password"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type=checkbox]:disabled:-ms-input-placeholder, .welcome__container .checkbox-tristate:disabled:-ms-input-placeholder,
-      .welcome__container input[type=radio]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="tel"]:disabled:-ms-input-placeholder,
-      .welcome__container input[type="url"]:disabled:-ms-input-placeholder,
-      .welcome__container textarea:disabled:-ms-input-placeholder {
+      .welcome__container input[type="text"]:disabled:-ms-input-placeholder, .welcome__container input[type="search"]:disabled:-ms-input-placeholder, .welcome__container input[type="email"]:disabled:-ms-input-placeholder, .welcome__container input[type="number"]:disabled:-ms-input-placeholder, .welcome__container input[type="password"]:disabled:-ms-input-placeholder, .welcome__container input[type=checkbox]:disabled:-ms-input-placeholder, .welcome__container .checkbox-tristate:disabled:-ms-input-placeholder, .welcome__container input[type=radio]:disabled:-ms-input-placeholder, .welcome__container input[type="tel"]:disabled:-ms-input-placeholder, .welcome__container input[type="url"]:disabled:-ms-input-placeholder, .welcome__container textarea:disabled:-ms-input-placeholder {
         color: #b3b3b3; }
-      .welcome__container input[type="text"]:disabled::placeholder,
-      .welcome__container input[type="search"]:disabled::placeholder,
-      .welcome__container input[type="email"]:disabled::placeholder,
-      .welcome__container input[type="number"]:disabled::placeholder,
-      .welcome__container input[type="password"]:disabled::placeholder,
-      .welcome__container input[type=checkbox]:disabled::placeholder, .welcome__container .checkbox-tristate:disabled::placeholder,
-      .welcome__container input[type=radio]:disabled::placeholder,
-      .welcome__container input[type="tel"]:disabled::placeholder,
-      .welcome__container input[type="url"]:disabled::placeholder,
-      .welcome__container textarea:disabled::placeholder {
+      .welcome__container input[type="text"]:disabled::placeholder, .welcome__container input[type="search"]:disabled::placeholder, .welcome__container input[type="email"]:disabled::placeholder, .welcome__container input[type="number"]:disabled::placeholder, .welcome__container input[type="password"]:disabled::placeholder, .welcome__container input[type=checkbox]:disabled::placeholder, .welcome__container .checkbox-tristate:disabled::placeholder, .welcome__container input[type=radio]:disabled::placeholder, .welcome__container input[type="tel"]:disabled::placeholder, .welcome__container input[type="url"]:disabled::placeholder, .welcome__container textarea:disabled::placeholder {
         color: #b3b3b3; }
   .welcome__container textarea {
     min-height: 92px; }
@@ -528,7 +405,6 @@
   border-radius: 2px;
   border: 2px solid #888;
   -webkit-transform: translate(-50%, 0);
-      -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0); }
   .welcome__loading-message * {
     vertical-align: middle; }
@@ -558,7 +434,6 @@ img.welcome__get-started-image {
   bottom: 0;
   left: 50%;
   -webkit-transform: translateX(-50%);
-      -ms-transform: translateX(-50%);
           transform: translateX(-50%); }
   @media (max-width: 550px), (max-height: 550px) {
     img.welcome__get-started-image {

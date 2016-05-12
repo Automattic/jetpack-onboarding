@@ -22,6 +22,7 @@ var jsLoader = IS_HOT_UPDATE ?
 
 // build the plugin list, optionally excluding hot update plugins if we're building for production
 var plugins = [
+		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js"),
 		new ExtractTextPlugin("[name].css"),
 		IS_HOT_UPDATE ? new webpack.optimize.OccurenceOrderPlugin() : false,
 	    IS_HOT_UPDATE ? new webpack.HotModuleReplacementPlugin() : false,
@@ -39,7 +40,8 @@ module.exports = {
     progress: true,
 	entry: {
 		"jetpack-onboarding": "./client/jetpack-onboarding.js",
-		"ie-shims": "./client/ie-shims.js"
+		"ie-shims": "./client/ie-shims.js",
+		"vendor": ["react", "react-dom"]
 	},
 	output: {
 		publicPath: '/assets/',
@@ -50,7 +52,6 @@ module.exports = {
 	resolve: {
 		extensions: ["", ".js", ".jsx"],
 		alias: {
-			"react": path.join(__dirname, "/node_modules/react"),
 			"stores": path.join(__dirname, "/client/stores"),
 			"actions": path.join(__dirname, "/client/actions"),
 		},

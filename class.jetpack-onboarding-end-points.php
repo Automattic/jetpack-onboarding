@@ -4,7 +4,6 @@ class Jetpack_Onboarding_EndPoints {
 	const STEP_STATUS_KEY = 'jpo_step_statuses';
 	const FIRSTRUN_KEY = 'jpo_firstrun';
 	const STARTED_KEY = 'jpo_started';
-	const DISABLED_KEY = 'jpo_disabled';
 	const CONTACTPAGE_ID_KEY = 'jpo_contactpage_id';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
@@ -36,6 +35,7 @@ class Jetpack_Onboarding_EndPoints {
 			add_action( 'wp_ajax_jpo_step_complete', array( __CLASS__, 'step_complete' ) );
 			add_action( 'wp_ajax_jpo_started', array( __CLASS__, 'started' ) );
 			add_action( 'wp_ajax_jpo_disabled', array( __CLASS__, 'disabled' ) );
+			add_action( 'wp_ajax_jpo_closed', array( __CLASS__, 'closed' ) );
 			add_action( 'wp_ajax_jpo_reset_data', array( __CLASS__, 'reset_data' ) );
 		}
 	}
@@ -103,6 +103,7 @@ class Jetpack_Onboarding_EndPoints {
 			'step_actions' => array(
 				'start' => 'jpo_started',
 				'disable' => 'jpo_disabled',
+				'close' => 'jpo_closed',
 				'view' => 'jpo_step_view',
 				'skip' => 'jpo_step_skip',
 				'complete' => 'jpo_step_complete'
@@ -321,15 +322,50 @@ class Jetpack_Onboarding_EndPoints {
 	static function started() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::STARTED_KEY, true );
-		do_action('jpo_started');
+		do_action('jpo_started', $_REQUEST['siteType']);
 		wp_send_json_success( 'true' );
 	}
 
+	// These next two functions are the same,
+	// but the first == "NO" on opening screen,
+	// whereas the second happens if you close the metabox
 	static function disabled() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		update_option( self::DISABLED_KEY, true );
+		self::hide_dashboard_widget();
 		do_action('jpo_disabled');
 		wp_send_json_success( 'true' );
+	}
+
+	static function closed() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		self::hide_dashboard_widget();
+		wp_send_json_success( 'true' );
+	}
+
+	static function hide_dashboard_widget() {
+		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
+
+		if ( !$setting || !is_array( $setting ) ) {
+			$setting = array();
+		}
+
+		if ( ! in_array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID, $setting ) ) {
+			$setting[] = Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID;
+			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true);
+		}
+	}
+
+	static function show_dashboard_widget() {
+		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
+
+		if ( !$setting || !is_array( $setting ) ) {
+			$setting = array();
+		}
+
+		if ( in_array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID, $setting ) ) {
+			$setting = array_diff( $setting, array(Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID) );
+			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true);
+		}
 	}
 
 	static function step_view() {
