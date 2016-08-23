@@ -22,20 +22,19 @@ var SetupProgressActions = {
 
 	completeStep: function(slug, meta) {
 		var step = SetupProgressStore.getStepFromSlug(slug);
-
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_COMPLETE,
 			slug: slug
 		});
 
-		// NOTE: this needs to come after the dispatch, so that the completion % 
+		// NOTE: this needs to come after the dispatch, so that the completion %
 		// is already updated and can be included in the metadata
 		return this._recordStepComplete(step, meta);
 	},
 
 	completeAndNextStep: function(slug, meta) {
 		this.completeStep(slug, meta).always(function() {
-			// getCurrentStep _should_ return the correct step slug for the 'next' step here... 
+			// getCurrentStep _should_ return the correct step slug for the 'next' step here...
 			// this needs to be in the callback because otherwise there's a chance
 			// that COMPLETE could be registered in analytics after VIEWED
 			this._recordStepViewed( SetupProgressStore.getCurrentStep() );
@@ -58,7 +57,7 @@ var SetupProgressActions = {
 
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_SKIP
-		});	
+		});
 	},
 
 	setCurrentStep: function( stepSlug ) {
@@ -76,6 +75,9 @@ var SetupProgressActions = {
 			fail(function(msg) {
 				FlashActions.error(msg);
 			});
+
+
+		SiteActions.setType( siteType );
 
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.STEP_GET_STARTED
@@ -120,6 +122,11 @@ var SetupProgressActions = {
 	submitTitleStep: function( title, description ) {
 		SiteActions.saveTitleAndDescription( title, description );
 		this.completeAndNextStep(Paths.SITE_TITLE_STEP_SLUG);
+	},
+
+	submitBusinessAddress: function( businessAddress ) {
+		SiteActions.saveBusinessAddress( businessAddress );
+		this.completeAndNextStep( Paths.REVIEW_STEP_SLUG );
 	},
 
 	submitLayoutStep: function( layout ) {
@@ -170,10 +177,10 @@ var SetupProgressActions = {
 	_recordStepViewed: function( step ) {
 		// record analytics to say we viewed the next step
   		return WPAjax.
-  			post(JPS.step_actions.view, { 
-  				step: step.slug 
-  			}, { 
-  				quiet: true 
+  			post(JPS.step_actions.view, {
+  				step: step.slug
+  			}, {
+  				quiet: true
   			});
 	},
 

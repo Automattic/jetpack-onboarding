@@ -1,5 +1,5 @@
 <?php
-class Jetpack_Onboarding_EndPoints { 
+class Jetpack_Onboarding_EndPoints {
 	const AJAX_NONCE = 'jpo-ajax';
 	const STEP_STATUS_KEY = 'jpo_step_statuses';
 	const FIRSTRUN_KEY = 'jpo_firstrun';
@@ -173,7 +173,7 @@ class Jetpack_Onboarding_EndPoints {
 		if ( is_wp_error( $themes )) {
 			wp_send_json_error("There was an error loading themes: ".$themes->get_error_message());
 			die();
-		} 
+		}
 		$non_installed_themes = array_filter($themes->themes, array(__CLASS__, 'existing_theme_filter'));
 		$rand_keys_to_exclude = array_rand( $non_installed_themes, ( sizeof($non_installed_themes) - self::NUM_RAND_THEMES ) );
 
@@ -182,7 +182,7 @@ class Jetpack_Onboarding_EndPoints {
 
 
 		// error_log(print_r($random_non_installed_themes, true));
-		
+
 		wp_send_json_success( array_map( array(__CLASS__, 'normalize_api_theme'), array_values( $random_non_installed_themes ) ) );
 	}
 
@@ -221,7 +221,7 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function activate_jetpack_modules() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
+
 		// shamelessly copied from class.jetpack.php
 		$modules = $_REQUEST['modules'];
 		$modules = array_map( 'sanitize_key', $modules );
@@ -241,7 +241,7 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function deactivate_jetpack_modules() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
+
 		// shamelessly copied from class.jetpack.php
 		$modules = $_REQUEST['modules'];
 		$modules = array_map( 'sanitize_key', $modules );
@@ -398,9 +398,9 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function update_step_status($step, $field, $value) {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
-		
+
 		if( ! array_key_exists( $step, $step_statuses ) ) {
-			$step_statuses[$step] = array();	
+			$step_statuses[$step] = array();
 		}
 
 		$step_statuses[$step][$field] = $value;
@@ -416,7 +416,7 @@ class Jetpack_Onboarding_EndPoints {
 
 		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
 		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
-		
+
 		if ( $updated_title && $updated_description ) {
 			wp_send_json_success( $title );
 		} else {
@@ -491,7 +491,7 @@ Warwick, RI 02889
  			wp_send_json_error('Theme does not exist: '.$theme_id);
  			die();
 		}
-		
+
 		if ( ! $theme->is_allowed() ) {
 			wp_send_json_error('Action not permitted for '.$theme_id);
 			die();
@@ -509,10 +509,10 @@ Warwick, RI 02889
 		if ( ! $theme->exists() ) {
 			include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 			include_once( ABSPATH . 'wp-admin/includes/theme-install.php' );
-			
+
 			$theme_info = themes_api( 'theme_information', array(
-				'slug' => $theme_id, 
-				'fields' => array( 'sections' => false, 'tags' => false ) 
+				'slug' => $theme_id,
+				'fields' => array( 'sections' => false, 'tags' => false )
 			) );
 
 			error_log(print_r($theme_info, true));
@@ -531,7 +531,7 @@ Warwick, RI 02889
 					wp_send_json_error('Could not install theme (unspecified server error)');
 					die();
 				}
-			} 
+			}
 		}
 
 		wp_send_json_success( $theme_id );
@@ -583,7 +583,7 @@ Warwick, RI 02889
 			wp_send_json_success( 'already_active' );
 		}
 
-		
+
 	}
 
 	static function set_layout_to_website() {

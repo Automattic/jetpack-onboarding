@@ -42,10 +42,16 @@ module.exports = function() {
 				welcomeView: require('./components/steps/jetpack-jumpstart'),
 			},
 			{
+				name: 'Business Address',
+				slug: Paths.BUSINESS_ADDRESS,
+				welcomeView: require('./components/steps/business-address'),
+			},
+			{
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
 				welcomeView: require('./components/steps/review'),
-				includeInProgress: false
+				includeInProgress: false,
+				neverSkip: true
 			}
 		] );
 
