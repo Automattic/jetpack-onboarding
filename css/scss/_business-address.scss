@@ -1,0 +1,22 @@
+.welcome__container {
+	.welcome__business-address--form {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	input.welcome__business-address--input {
+		max-width: 312px;
+		margin-bottom: 16px;
+	}
+
+	input#business-address-1,
+	input#business-address-2,
+	input#business-name {
+		max-width: 100%;
+	}
+
+	.welcome__button-container {
+		width: 100%;
+	}
+}

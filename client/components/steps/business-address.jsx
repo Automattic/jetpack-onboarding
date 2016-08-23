@@ -1,0 +1,75 @@
+var React = require( 'react' ),
+	SkipButton = require( '../skip-button' ),
+	SiteStore = require( 'stores/site-store' ),
+	WelcomeSection = require( '../page/container' ),
+	SetupProgressActions = require( 'actions/setup-progress-actions' ),
+	Button = require( '@automattic/dops-components/client/components/button' );
+
+function getJetpackState() {
+	return {
+		site_title: SiteStore.getTitle(),
+		jetpackConfigured: SiteStore.getJetpackConfigured(),
+		jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
+		modulesEnabled: SiteStore.getActiveModuleSlugs(),
+		settingsUrl: SiteStore.getJetpackSettingsUrl()
+	};
+}
+
+module.exports = React.createClass( {
+
+	componentDidMount: function() {
+		SiteStore.addChangeListener( this._onChange );
+		if ( JPS.bloginfo.type !== 'business' ) {
+			SetupProgressActions.skipStep();
+		}
+	},
+
+	componentWillUnmount: function() {
+		SiteStore.removeChangeListener( this._onChange );
+	},
+
+	_onChange: function() {
+		this.setState( getJetpackState() );
+	},
+
+	getInitialState: function() {
+		var state = getJetpackState();
+		state.showMoreModules = false;
+		state.jetpackConnecting = false;
+		return state;
+	},
+
+	handleChange: function( e ) {
+		var newValue = {};
+		newValue[ e.currentTarget.name ] = e.currentTarget.value;
+		this.setState( newValue );
+	},
+
+	handleSubmit: function( e ) {
+		e.preventDefault();
+		SetupProgressActions.submitBusinessAddress( this.state );
+	},
+
+	render: function() {
+		return (
+			<WelcomeSection id="welcome__jetpack">
+				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
+				<p className="welcome__callout welcome__jetpack--callout">Add your business address (if you have one)</p>
+				<form onSubmit={ this.handleSubmit } className="welcome__business-address--form">
+						<input className="welcome__business-address--input" type="text" name="business_name" id="business-name" onChange={ this.handleChange } placeholder="Business Name: Jack's Pizza shop" required />
+						<input className="welcome__business-address--input" type="text" name="business_address_1" id="business-address-1" onChange={ this.handleChange } placeholder="Address: Pizza street" required />
+						<input className="welcome__business-address--input" type="text" name="business_address_2" id="business-address-2" onChange={ this.handleChange } placeholder="Address: Pizza street 2" />
+						<input className="welcome__business-address--input" type="text" name="business_city" id="business-city" onChange={ this.handleChange } placeholder="City" required/>
+						<input className="welcome__business-address--input" type="text" name="business_state" id="business-state" onChange={ this.handleChange } placeholder="State" />
+						<input className="welcome__business-address--input" type="text" name="business_zip" id="business-zip" onChange={ this.handleChange } placeholder="Zip" required />
+						<div className="welcome__button-container">
+							<Button className='welcome-submit' primary type="submit">Next Step</Button>
+							<SkipButton />
+						</div>
+				</form>
+
+			</WelcomeSection>
+		);
+	}
+} );
+

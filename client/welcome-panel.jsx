@@ -40,12 +40,19 @@ module.exports = function() {
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				neverSkip: true, // don't skip this even if it's been completed
 				welcomeView: require('./components/steps/jetpack-jumpstart'),
+				//welcomeView: require('./components/steps/business-address')
+			},
+			{
+				name: 'Business Address',
+				slug: Paths.BUSINESS_ADDRESS,
+				welcomeView: require('./components/steps/business-address'),
 			},
 			{
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
 				welcomeView: require('./components/steps/review'),
-				includeInProgress: false
+				includeInProgress: false,
+				neverSkip: true
 			}
 		] );
 

@@ -11,6 +11,10 @@ var CHANGE_EVENT = 'change';
 
 var layout = JPS.steps.layout.current;
 
+function setType(newType) {
+  JPS.bloginfo.type = newType;
+}
+
 function setTitle(newTitle) {
 	JPS.bloginfo.name = newTitle;
 }
@@ -36,7 +40,7 @@ function installedTheme(theme) {
 
 function setJetpackModuleActivated(slug) {
   if ( _.indexOf( JPS.jetpack.active_modules, slug ) === -1 ) {
-    JPS.jetpack.active_modules.push(slug);  
+    JPS.jetpack.active_modules.push(slug);
   }
 }
 
@@ -80,6 +84,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
     return JPS.bloginfo.name;
+  },
+
+  getType: function() {
+    return JPS.bloginfo.type;
   },
 
   getDescription: function() {
@@ -185,6 +193,11 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
+    case JPSConstants.SITE_SET_TYPE:
+      setType(action.type);
+      SiteStore.emitChange();
+      break;
+
     case JPSConstants.SITE_SET_TITLE:
       setTitle(action.title);
       SiteStore.emitChange();
@@ -199,7 +212,7 @@ AppDispatcher.register(function(action) {
       setTitle(action.title);
       setDescription(action.description);
       SiteStore.emitChange();
-      break;    
+      break;
 
     case JPSConstants.SITE_SET_THEME:
       setActiveTheme(action.themeId);
@@ -231,7 +244,7 @@ AppDispatcher.register(function(action) {
       SiteStore.emitChange();
       break;
 
-    case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED: 
+    case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED:
       setJetpackJumpstartActivated();
       SiteStore.emitChange();
       break;

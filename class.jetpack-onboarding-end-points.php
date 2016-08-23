@@ -1,5 +1,5 @@
 <?php
-class Jetpack_Onboarding_EndPoints { 
+class Jetpack_Onboarding_EndPoints {
 	const AJAX_NONCE = 'jpo-ajax';
 	const STEP_STATUS_KEY = 'jpo_step_statuses';
 	const FIRSTRUN_KEY = 'jpo_firstrun';
@@ -27,6 +27,7 @@ class Jetpack_Onboarding_EndPoints {
 			add_action( 'wp_ajax_jpo_install_theme', array( __CLASS__, 'install_theme' ) );
 			add_action( 'wp_ajax_jpo_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
 			add_action( 'wp_ajax_jpo_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
+			add_action( 'wp_ajax_jpo_add_business_address', array( __CLASS__, 'add_business_address' ) );
 			add_action( 'wp_ajax_jpo_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jpo_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jpo_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
@@ -94,6 +95,7 @@ class Jetpack_Onboarding_EndPoints {
 				'install_theme' => 'jpo_install_theme',
 				'get_popular_themes' => 'jpo_get_popular_themes',
 				'configure_jetpack' => 'jpo_configure_jetpack',
+				'add_business_address' => 'jpo_add_business_address',
 				'activate_jetpack_modules' => 'jpo_activate_jetpack_modules',
 				'deactivate_jetpack_modules' => 'jpo_deactivate_jetpack_modules',
 				'list_jetpack_modules' => 'jpo_list_jetpack_modules',
@@ -173,7 +175,7 @@ class Jetpack_Onboarding_EndPoints {
 		if ( is_wp_error( $themes )) {
 			wp_send_json_error("There was an error loading themes: ".$themes->get_error_message());
 			die();
-		} 
+		}
 		$non_installed_themes = array_filter($themes->themes, array(__CLASS__, 'existing_theme_filter'));
 		$rand_keys_to_exclude = array_rand( $non_installed_themes, ( sizeof($non_installed_themes) - self::NUM_RAND_THEMES ) );
 
@@ -182,7 +184,7 @@ class Jetpack_Onboarding_EndPoints {
 
 
 		// error_log(print_r($random_non_installed_themes, true));
-		
+
 		wp_send_json_success( array_map( array(__CLASS__, 'normalize_api_theme'), array_values( $random_non_installed_themes ) ) );
 	}
 
@@ -221,7 +223,7 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function activate_jetpack_modules() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
+
 		// shamelessly copied from class.jetpack.php
 		$modules = $_REQUEST['modules'];
 		$modules = array_map( 'sanitize_key', $modules );
@@ -241,7 +243,7 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function deactivate_jetpack_modules() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
-		
+
 		// shamelessly copied from class.jetpack.php
 		$modules = $_REQUEST['modules'];
 		$modules = array_map( 'sanitize_key', $modules );
@@ -398,9 +400,9 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function update_step_status($step, $field, $value) {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
-		
+
 		if( ! array_key_exists( $step, $step_statuses ) ) {
-			$step_statuses[$step] = array();	
+			$step_statuses[$step] = array();
 		}
 
 		$step_statuses[$step][$field] = $value;
@@ -416,7 +418,7 @@ class Jetpack_Onboarding_EndPoints {
 
 		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
 		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
-		
+
 		if ( $updated_title && $updated_description ) {
 			wp_send_json_success( $title );
 		} else {
@@ -491,7 +493,7 @@ Warwick, RI 02889
  			wp_send_json_error('Theme does not exist: '.$theme_id);
  			die();
 		}
-		
+
 		if ( ! $theme->is_allowed() ) {
 			wp_send_json_error('Action not permitted for '.$theme_id);
 			die();
@@ -509,10 +511,10 @@ Warwick, RI 02889
 		if ( ! $theme->exists() ) {
 			include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 			include_once( ABSPATH . 'wp-admin/includes/theme-install.php' );
-			
+
 			$theme_info = themes_api( 'theme_information', array(
-				'slug' => $theme_id, 
-				'fields' => array( 'sections' => false, 'tags' => false ) 
+				'slug' => $theme_id,
+				'fields' => array( 'sections' => false, 'tags' => false )
 			) );
 
 			error_log(print_r($theme_info, true));
@@ -531,10 +533,52 @@ Warwick, RI 02889
 					wp_send_json_error('Could not install theme (unspecified server error)');
 					die();
 				}
-			} 
+			}
 		}
 
 		wp_send_json_success( $theme_id );
+	}
+
+	static function have_contact_info_widget( $widgets ) {
+		foreach ($widgets as $widget) {
+    		if ( strpos( $widget, 'widget_widget_contact_info' ) ) {
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+
+	static function add_business_address() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$active_sidebars = get_option( 'sidebars_widgets' );
+		$widget_options = get_option( 'widget_widget_contact_info' );
+		if( isset( $active_sidebars['sidebar-1'] ) &&
+			( ! isset( $widget_options[1] ) || str_replace(array("\n", "\r"), '', $widget_options[1]['address'] )== '3999 Mission Boulevard, San Diego CA 92109' ) // default address
+			) {
+			$title =  wp_unslash( $_REQUEST['business_name'] );
+			$address = wp_unslash( $_REQUEST['business_address_1'] . ' ' .
+				$_REQUEST['business_address_2']. ' ' .
+				$_REQUEST['business_city']. ' ' .
+				$_REQUEST['business_state']. ' ' .
+				$_REQUEST['business_zip']. ' ' );
+			$phone = wp_unslash( $_REQUEST['phone'] );
+			$hours = wp_unslash( $_REQUEST['hours'] );
+			$widget_options[1] = array( 'title' => $title, 'address' => $address, 'phone' => $phone, 'hours' => $hours, 'showmap' => false );
+			$widget_options[0] = 1;
+			update_option( 'widget_widget_contact_info', $widget_options ); //update widget default options
+			if ( ! self::have_contact_info_widget( $active_sidebars['sidebar-1'] ) ) {
+
+				array_push( $active_sidebars['sidebar-1'], 'widget_contact_info-1' );
+				update_option( 'sidebars_widgets', $active_sidebars ); //update sidebars
+				wp_send_json_success( array( 'widget' => true, 'updated' => true ) );
+				die();
+			}
+
+			wp_send_json_success( array( 'widget' => false, 'updated' => true ) );
+			die();
+		}
+
+		wp_send_json_success( array( 'widget' => false, 'updated' => false ) );
 	}
 
 	// try to activate the plugin if necessary and kick off the jetpack connection flow
@@ -583,7 +627,7 @@ Warwick, RI 02889
 			wp_send_json_success( 'already_active' );
 		}
 
-		
+
 	}
 
 	static function set_layout_to_website() {

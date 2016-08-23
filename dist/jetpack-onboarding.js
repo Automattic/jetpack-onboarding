@@ -54,11 +54,17 @@ webpackJsonp([1],[
 				slug: Paths.JETPACK_MODULES_STEP_SLUG,
 				neverSkip: true, // don't skip this even if it's been completed
 				welcomeView: __webpack_require__(218)
+			}, //welcomeView: require('./components/steps/business-address')
+			{
+				name: 'Business Address',
+				slug: Paths.BUSINESS_ADDRESS,
+				welcomeView: __webpack_require__(221)
 			}, {
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
-				welcomeView: __webpack_require__(221),
-				includeInProgress: false
+				welcomeView: __webpack_require__(222),
+				includeInProgress: false,
+				neverSkip: true
 			}]);
 	
 			ReactDOM.render(React.createElement(WelcomeWidget, {}), document.getElementById('jpo-welcome-panel'));
@@ -1017,8 +1023,12 @@ webpackJsonp([1],[
 	      er = arguments[1];
 	      if (er instanceof Error) {
 	        throw er; // Unhandled 'error' event
+	      } else {
+	        // At least give some kind of context to the user
+	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+	        err.context = er;
+	        throw err;
 	      }
-	      throw TypeError('Uncaught, unspecified "error" event.');
 	    }
 	  }
 	
@@ -1273,7 +1283,9 @@ webpackJsonp([1],[
 		STEP_NEXT: null,
 		STEP_SKIP: null,
 		SITE_SET_TITLE: null,
+		SITE_SET_TYPE: null,
 		SITE_SET_DESCRIPTION: null,
+		SITE_ADD_BUSINESS_ADDRESS: null,
 		SITE_SAVE_TITLE_AND_DESCRIPTION: null,
 		SITE_CONTACT_PAGE_ID: null,
 		SITE_SET_THEME: null,
@@ -1389,7 +1401,6 @@ webpackJsonp([1],[
 	
 		completeStep: function completeStep(slug, meta) {
 			var step = SetupProgressStore.getStepFromSlug(slug);
-	
 			AppDispatcher.dispatch({
 				actionType: JPSConstants.STEP_COMPLETE,
 				slug: slug
@@ -1442,6 +1453,8 @@ webpackJsonp([1],[
 				FlashActions.error(msg);
 			});
 	
+			SiteActions.setType(siteType);
+	
 			AppDispatcher.dispatch({
 				actionType: JPSConstants.STEP_GET_STARTED
 			});
@@ -1479,6 +1492,11 @@ webpackJsonp([1],[
 		submitTitleStep: function submitTitleStep(title, description) {
 			SiteActions.saveTitleAndDescription(title, description);
 			this.completeAndNextStep(Paths.SITE_TITLE_STEP_SLUG);
+		},
+	
+		submitBusinessAddress: function submitBusinessAddress(businessAddress) {
+			SiteActions.saveBusinessAddress(businessAddress);
+			this.completeAndNextStep(Paths.REVIEW_STEP_SLUG);
 		},
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
@@ -1578,7 +1596,8 @@ webpackJsonp([1],[
 		ADVANCED_STEP_SLUG: 'advanced',
 		REVIEW_STEP_SLUG: 'review',
 		JETPACK_MODULES_STEP_SLUG: 'jetpack',
-		CONTACT_PAGE_STEP_SLUG: 'contact-page'
+		CONTACT_PAGE_STEP_SLUG: 'contact-page',
+		BUSINESS_ADDRESS: 'business-address'
 	};
 
 /***/ },
@@ -1637,6 +1656,13 @@ webpackJsonp([1],[
 			});
 		},
 	
+		setType: function setType(type) {
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.SITE_SET_TYPE,
+				type: type
+			});
+		},
+	
 		setDescription: function setDescription(description) {
 			AppDispatcher.dispatch({
 				actionType: JPSConstants.SITE_SET_DESCRIPTION,
@@ -1657,6 +1683,23 @@ webpackJsonp([1],[
 				actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 				title: title,
 				description: description
+			});
+	
+			return jQuery.Deferred().resolve(); // XXX HACK
+		},
+	
+		saveBusinessAddress: function saveBusinessAddress(businessAddress) {
+			console.log(businessAddress);
+			WPAjax.post(JPS.site_actions.add_business_address, businessAddress).fail(function (msg) {
+				FlashActions.error("Error setting title: " + msg);
+			});
+	
+			jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+	
+			// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.SITE_ADD_BUSINESS_ADDRESS,
+				address: businessAddress
 			});
 	
 			return jQuery.Deferred().resolve(); // XXX HACK
@@ -1840,6 +1883,10 @@ webpackJsonp([1],[
 	
 	var layout = JPS.steps.layout.current;
 	
+	function setType(newType) {
+	  JPS.bloginfo.type = newType;
+	}
+	
 	function setTitle(newTitle) {
 	  JPS.bloginfo.name = newTitle;
 	}
@@ -1911,6 +1958,10 @@ webpackJsonp([1],[
 	
 	  getTitle: function getTitle() {
 	    return JPS.bloginfo.name;
+	  },
+	
+	  getType: function getType() {
+	    return JPS.bloginfo.type;
 	  },
 	
 	  getDescription: function getDescription() {
@@ -2018,6 +2069,11 @@ webpackJsonp([1],[
 	AppDispatcher.register(function (action) {
 	
 	  switch (action.actionType) {
+	    case JPSConstants.SITE_SET_TYPE:
+	      setType(action.type);
+	      SiteStore.emitChange();
+	      break;
+	
 	    case JPSConstants.SITE_SET_TITLE:
 	      setTitle(action.title);
 	      SiteStore.emitChange();
@@ -3747,7 +3803,7 @@ webpackJsonp([1],[
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2015 Jed Watson.
+	  Copyright (c) 2016 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
@@ -3759,7 +3815,7 @@ webpackJsonp([1],[
 		var hasOwn = {}.hasOwnProperty;
 	
 		function classNames () {
-			var classes = '';
+			var classes = [];
 	
 			for (var i = 0; i < arguments.length; i++) {
 				var arg = arguments[i];
@@ -3768,19 +3824,19 @@ webpackJsonp([1],[
 				var argType = typeof arg;
 	
 				if (argType === 'string' || argType === 'number') {
-					classes += ' ' + arg;
+					classes.push(arg);
 				} else if (Array.isArray(arg)) {
-					classes += ' ' + classNames.apply(null, arg);
+					classes.push(classNames.apply(null, arg));
 				} else if (argType === 'object') {
 					for (var key in arg) {
 						if (hasOwn.call(arg, key) && arg[key]) {
-							classes += ' ' + key;
+							classes.push(key);
 						}
 					}
 				}
 			}
 	
-			return classes.substr(1);
+			return classes.join(' ');
 		}
 	
 		if (typeof module !== 'undefined' && module.exports) {
@@ -4346,17 +4402,19 @@ webpackJsonp([1],[
 	
 		handleJetpackConnect: function handleJetpackConnect(e) {
 			e.preventDefault();
+			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS : Paths.REVIEW_STEP_SLUG;
 	
 			this.setState({ jetpackConnecting: true });
-			SiteActions.configureJetpack(Paths.REVIEW_STEP_SLUG).always((function () {
+			SiteActions.configureJetpack(path).always((function () {
 				this.setState({ jetpackConnecting: false });
 			}).bind(this));
 		},
 	
 		handleNext: function handleNext(e) {
 			e.preventDefault();
+			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS : Paths.REVIEW_STEP_SLUG;
 	
-			SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
+			SetupProgressActions.completeAndNextStep(path);
 		},
 	
 		render: function render() {
@@ -4547,10 +4605,112 @@ webpackJsonp([1],[
 	'use strict';
 	
 	var React = __webpack_require__(4),
+	    SkipButton = __webpack_require__(219),
+	    SiteStore = __webpack_require__(170),
+	    WelcomeSection = __webpack_require__(214),
+	    SetupProgressActions = __webpack_require__(166),
+	    Button = __webpack_require__(179);
+	
+	function getJetpackState() {
+		return {
+			site_title: SiteStore.getTitle(),
+			jetpackConfigured: SiteStore.getJetpackConfigured(),
+			jumpstartEnabled: SiteStore.getJetpackJumpstartEnabled(),
+			modulesEnabled: SiteStore.getActiveModuleSlugs(),
+			settingsUrl: SiteStore.getJetpackSettingsUrl()
+		};
+	}
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		componentDidMount: function componentDidMount() {
+			SiteStore.addChangeListener(this._onChange);
+			if (JPS.bloginfo.type !== 'business') {
+				SetupProgressActions.skipStep();
+			}
+		},
+	
+		componentWillUnmount: function componentWillUnmount() {
+			SiteStore.removeChangeListener(this._onChange);
+		},
+	
+		_onChange: function _onChange() {
+			this.setState(getJetpackState());
+		},
+	
+		getInitialState: function getInitialState() {
+			var state = getJetpackState();
+			state.showMoreModules = false;
+			state.jetpackConnecting = false;
+			return state;
+		},
+	
+		handleChange: function handleChange(e) {
+			var newValue = {};
+			newValue[e.currentTarget.name] = e.currentTarget.value;
+			this.setState(newValue);
+		},
+	
+		handleSubmit: function handleSubmit(e) {
+			e.preventDefault();
+			SetupProgressActions.submitBusinessAddress(this.state);
+		},
+	
+		render: function render() {
+			return React.createElement(
+				WelcomeSection,
+				{ id: 'welcome__jetpack' },
+				React.createElement(
+					'h1',
+					null,
+					'Let\'s launch ',
+					React.createElement(
+						'em',
+						null,
+						this.state.site_title
+					)
+				),
+				React.createElement(
+					'p',
+					{ className: 'welcome__callout welcome__jetpack--callout' },
+					'Add your business address (if you have one)'
+				),
+				React.createElement(
+					'form',
+					{ onSubmit: this.handleSubmit, className: 'welcome__business-address--form' },
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_name', id: 'business-name', onChange: this.handleChange, placeholder: 'Business Name: Jack\'s Pizza shop', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_1', id: 'business-address-1', onChange: this.handleChange, placeholder: 'Address: Pizza street', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_2', id: 'business-address-2', onChange: this.handleChange, placeholder: 'Address: Pizza street 2' }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_city', id: 'business-city', onChange: this.handleChange, placeholder: 'City', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_state', id: 'business-state', onChange: this.handleChange, placeholder: 'State' }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_zip', id: 'business-zip', onChange: this.handleChange, placeholder: 'Zip', required: true }),
+					React.createElement(
+						'div',
+						{ className: 'welcome__button-container' },
+						React.createElement(
+							Button,
+							{ className: 'welcome-submit', primary: true, type: 'submit' },
+							'Next Step'
+						),
+						React.createElement(SkipButton, null)
+					)
+				)
+			);
+		}
+	});
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4),
 	    Button = __webpack_require__(179),
 	    SiteStore = __webpack_require__(170),
 	    Paths = __webpack_require__(167),
-	    Dashicon = __webpack_require__(222),
+	    Dashicon = __webpack_require__(223),
 	    SetupProgressActions = __webpack_require__(166),
 	    WelcomeSection = __webpack_require__(214);
 	
@@ -4743,7 +4903,7 @@ webpackJsonp([1],[
 	module.exports = AdvancedSettingsStep;
 
 /***/ },
-/* 222 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// simple noticon wrapper
