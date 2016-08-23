@@ -27,6 +27,7 @@ class Jetpack_Onboarding_EndPoints {
 			add_action( 'wp_ajax_jpo_install_theme', array( __CLASS__, 'install_theme' ) );
 			add_action( 'wp_ajax_jpo_get_popular_themes', array( __CLASS__, 'get_popular_themes' ) );
 			add_action( 'wp_ajax_jpo_configure_jetpack', array( __CLASS__, 'configure_jetpack' ) );
+			add_action( 'wp_ajax_jpo_add_business_address', array( __CLASS__, 'add_business_address' ) );
 			add_action( 'wp_ajax_jpo_activate_jetpack_modules', array( __CLASS__, 'activate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jpo_deactivate_jetpack_modules', array( __CLASS__, 'deactivate_jetpack_modules' ) );
 			add_action( 'wp_ajax_jpo_list_jetpack_modules', array( __CLASS__, 'list_jetpack_modules' ) );
@@ -94,6 +95,7 @@ class Jetpack_Onboarding_EndPoints {
 				'install_theme' => 'jpo_install_theme',
 				'get_popular_themes' => 'jpo_get_popular_themes',
 				'configure_jetpack' => 'jpo_configure_jetpack',
+				'add_business_address' => 'jpo_add_business_address',
 				'activate_jetpack_modules' => 'jpo_activate_jetpack_modules',
 				'deactivate_jetpack_modules' => 'jpo_deactivate_jetpack_modules',
 				'list_jetpack_modules' => 'jpo_list_jetpack_modules',
@@ -535,6 +537,48 @@ Warwick, RI 02889
 		}
 
 		wp_send_json_success( $theme_id );
+	}
+
+	static function have_contact_info_widget( $widgets ) {
+		foreach ($widgets as $widget) {
+    		if ( strpos( $widget, 'widget_widget_contact_info' ) ) {
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+
+	static function add_business_address() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$active_sidebars = get_option( 'sidebars_widgets' );
+		$widget_options = get_option( 'widget_widget_contact_info' );
+		if( isset( $active_sidebars['sidebar-1'] ) &&
+			( ! isset( $widget_options[1] ) || str_replace(array("\n", "\r"), '', $widget_options[1]['address'] )== '3999 Mission Boulevard, San Diego CA 92109' ) // default address
+			) {
+			$title =  wp_unslash( $_REQUEST['business_name'] );
+			$address = wp_unslash( $_REQUEST['business_address_1'] . ' ' .
+				$_REQUEST['business_address_2']. ' ' .
+				$_REQUEST['business_city']. ' ' .
+				$_REQUEST['business_state']. ' ' .
+				$_REQUEST['business_zip']. ' ' );
+			$phone = wp_unslash( $_REQUEST['phone'] );
+			$hours = wp_unslash( $_REQUEST['hours'] );
+			$widget_options[1] = array( 'title' => $title, 'address' => $address, 'phone' => $phone, 'hours' => $hours, 'showmap' => false );
+			$widget_options[0] = 1;
+			update_option( 'widget_widget_contact_info', $widget_options ); //update widget default options
+			if ( ! self::have_contact_info_widget( $active_sidebars['sidebar-1'] ) ) {
+
+				array_push( $active_sidebars['sidebar-1'], 'widget_contact_info-1' );
+				update_option( 'sidebars_widgets', $active_sidebars ); //update sidebars
+				wp_send_json_success( array( 'widget' => true, 'updated' => true ) );
+				die();
+			}
+
+			wp_send_json_success( array( 'widget' => false, 'updated' => true ) );
+			die();
+		}
+
+		wp_send_json_success( array( 'widget' => false, 'updated' => false ) );
 	}
 
 	// try to activate the plugin if necessary and kick off the jetpack connection flow
