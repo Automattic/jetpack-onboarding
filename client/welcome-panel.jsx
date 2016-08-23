@@ -43,7 +43,7 @@ module.exports = function() {
 			},
 			{
 				name: 'Business Address',
-				slug: Paths.BUSINESS_ADDRESS,
+				slug: Paths.BUSINESS_ADDRESS_SLUG,
 				welcomeView: require('./components/steps/business-address'),
 			},
 			{

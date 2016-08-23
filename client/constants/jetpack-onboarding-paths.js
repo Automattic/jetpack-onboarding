@@ -10,5 +10,5 @@ module.exports = {
 	REVIEW_STEP_SLUG: 'review',
 	JETPACK_MODULES_STEP_SLUG: 'jetpack',
 	CONTACT_PAGE_STEP_SLUG: 'contact-page',
-	BUSINESS_ADDRESS: 'business-address'
+	BUSINESS_ADDRESS_SLUG: 'business-address'
 };

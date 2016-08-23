@@ -43,7 +43,7 @@ var JetpackJumpstart = React.createClass({
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
 		const path = JPS.bloginfo.type === 'business' ?
-			Paths.BUSINESS_ADDRESS :
+			Paths.BUSINESS_ADDRESS_SLUG :
 			Paths.REVIEW_STEP_SLUG;
 
 		this.setState( { jetpackConnecting: true } );
@@ -57,7 +57,7 @@ var JetpackJumpstart = React.createClass({
 	handleNext: function (e) {
 		e.preventDefault();
 		const path = JPS.bloginfo.type === 'business' ?
-			Paths.BUSINESS_ADDRESS :
+			Paths.BUSINESS_ADDRESS_SLUG :
 			Paths.REVIEW_STEP_SLUG;
 
 		SetupProgressActions.completeAndNextStep( path );

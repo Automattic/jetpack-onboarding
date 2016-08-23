@@ -56,7 +56,7 @@ webpackJsonp([1],[
 				welcomeView: __webpack_require__(218)
 			}, {
 				name: 'Business Address',
-				slug: Paths.BUSINESS_ADDRESS,
+				slug: Paths.BUSINESS_ADDRESS_SLUG,
 				welcomeView: __webpack_require__(221)
 			}, {
 				name: "Review settings",
@@ -1495,7 +1495,7 @@ webpackJsonp([1],[
 	
 		submitBusinessAddress: function submitBusinessAddress(businessAddress) {
 			SiteActions.saveBusinessAddress(businessAddress);
-			this.completeAndNextStep(Paths.REVIEW_STEP_SLUG);
+			this.completeAndNextStep(Paths.BUSINESS_ADDRESS_SLUG);
 		},
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
@@ -1596,7 +1596,7 @@ webpackJsonp([1],[
 		REVIEW_STEP_SLUG: 'review',
 		JETPACK_MODULES_STEP_SLUG: 'jetpack',
 		CONTACT_PAGE_STEP_SLUG: 'contact-page',
-		BUSINESS_ADDRESS: 'business-address'
+		BUSINESS_ADDRESS_SLUG: 'business-address'
 	};
 
 /***/ },
@@ -4400,7 +4400,7 @@ webpackJsonp([1],[
 	
 		handleJetpackConnect: function handleJetpackConnect(e) {
 			e.preventDefault();
-			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS : Paths.REVIEW_STEP_SLUG;
+			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
 	
 			this.setState({ jetpackConnecting: true });
 			SiteActions.configureJetpack(path).always((function () {
@@ -4410,7 +4410,7 @@ webpackJsonp([1],[
 	
 		handleNext: function handleNext(e) {
 			e.preventDefault();
-			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS : Paths.REVIEW_STEP_SLUG;
+			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
 	
 			SetupProgressActions.completeAndNextStep(path);
 		},
