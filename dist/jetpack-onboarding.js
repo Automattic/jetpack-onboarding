@@ -4876,7 +4876,12 @@ webpackJsonp([1],[
 									'a',
 									contactProps,
 									'(edit)'
-								)
+								),
+								!this.state.isJPConnected ? React.createElement(
+									'a',
+									{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG) },
+									' Requires a Jetpack Connection '
+								) : null
 							),
 							React.createElement(
 								'li',
@@ -4908,7 +4913,12 @@ webpackJsonp([1],[
 									'a',
 									{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG) },
 									'(edit)'
-								)
+								),
+								!this.state.isJPConnected ? React.createElement(
+									'a',
+									{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG) },
+									' Requires a Jetpack Connection '
+								) : null
 							) : null
 						)
 					),
