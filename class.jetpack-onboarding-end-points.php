@@ -489,9 +489,9 @@ Warwick, RI 02889
 		$theme = wp_get_theme( $theme_id );
 
 		// try to install the theme if it doesn't exist
- 		if ( ! $theme->exists() ) {
- 			wp_send_json_error('Theme does not exist: '.$theme_id);
- 			die();
+		if ( ! $theme->exists() ) {
+			wp_send_json_error('Theme does not exist: '.$theme_id);
+			die();
 		}
 
 		if ( ! $theme->is_allowed() ) {
@@ -537,6 +537,22 @@ Warwick, RI 02889
 		}
 
 		wp_send_json_success( $theme_id );
+	}
+
+	static function have_contact_info_widget( $sidebar ) {
+		$sidebars_widgets = get_option( 'sidebars_widgets', array() );
+
+		if ( ! isset( $sidebars_widgets[ $sidebar ] ) ) {
+			return false;
+		}
+
+		foreach ( $sidebars_widgets[ $sidebar ] as $widget ) {
+			if ( strpos( $widget, 'widget_widget_contact_info' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	static function insert_widget_in_sidebar( $widget_id, $widget_options, $sidebar ) {
@@ -603,7 +619,9 @@ Warwick, RI 02889
 				'showmap' => false
 			);
 
-			self::insert_widget_in_sidebar( 'widget_contact_info', $widget_options, $first_sidebar );
+			if ( ! self::have_contact_info_widget( $first_sidebar ) ) {
+				self::insert_widget_in_sidebar( 'widget_contact_info', $widget_options, $first_sidebar );
+			}
 
 			wp_send_json_success( array( 'updated' => true ) );
 			die();
