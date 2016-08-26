@@ -1692,7 +1692,14 @@ webpackJsonp([1],[
 				FlashActions.error("Error setting title: " + msg);
 			});
 	
-			jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+			var business_address_1 = businessAddress.business_address_1;
+			var business_address_2 = businessAddress.business_address_2;
+			var business_city = businessAddress.business_city;
+			var business_name = businessAddress.business_name;
+			var business_state = businessAddress.business_state;
+			var business_zip = businessAddress.business_zip;
+	
+			JPS.bloginfo = Object.assign({}, JPS.bloginfo, { business_address_1: business_address_1, business_address_2: business_address_2, business_city: business_city, business_name: business_name, business_state: business_state, business_zip: business_zip });
 	
 			// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 			AppDispatcher.dispatch({
@@ -4641,6 +4648,15 @@ webpackJsonp([1],[
 			var state = getJetpackState();
 			state.showMoreModules = false;
 			state.jetpackConnecting = false;
+			var _JPS$bloginfo = JPS.bloginfo;
+			var business_address_1 = _JPS$bloginfo.business_address_1;
+			var business_address_2 = _JPS$bloginfo.business_address_2;
+			var business_city = _JPS$bloginfo.business_city;
+			var business_name = _JPS$bloginfo.business_name;
+			var business_state = _JPS$bloginfo.business_state;
+			var business_zip = _JPS$bloginfo.business_zip;
+	
+			state = Object.assign({}, state, { business_address_1: business_address_1, business_address_2: business_address_2, business_city: business_city, business_name: business_name, business_state: business_state, business_zip: business_zip });
 			return state;
 		},
 	
@@ -4677,12 +4693,12 @@ webpackJsonp([1],[
 				React.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit, className: 'welcome__business-address--form' },
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_name', id: 'business-name', onChange: this.handleChange, placeholder: 'Business Name: Jack\'s Pizza shop', required: true }),
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_1', id: 'business-address-1', onChange: this.handleChange, placeholder: 'Address: Pizza street', required: true }),
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_2', id: 'business-address-2', onChange: this.handleChange, placeholder: 'Address: Pizza street 2' }),
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_city', id: 'business-city', onChange: this.handleChange, placeholder: 'City', required: true }),
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_state', id: 'business-state', onChange: this.handleChange, placeholder: 'State' }),
-					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_zip', id: 'business-zip', onChange: this.handleChange, placeholder: 'Zip', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_name', id: 'business-name', value: this.state.business_name, onChange: this.handleChange, placeholder: 'Business Name: Jack\'s Pizza shop', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_1', id: 'business-address-1', value: this.state.business_address_1, onChange: this.handleChange, placeholder: 'Address: Pizza street', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_address_2', id: 'business-address-2', value: this.state.business_address_2, onChange: this.handleChange, placeholder: 'Address: Pizza street 2' }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_city', id: 'business-city', value: this.state.business_city, onChange: this.handleChange, placeholder: 'City', required: true }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_state', id: 'business-state', value: this.state.business_state, onChange: this.handleChange, placeholder: 'State' }),
+					React.createElement('input', { className: 'welcome__business-address--input', type: 'text', name: 'business_zip', id: 'business-zip', value: this.state.business_zip, onChange: this.handleChange, placeholder: 'Zip', required: true }),
 					React.createElement(
 						'div',
 						{ className: 'welcome__button-container' },
@@ -4876,7 +4892,24 @@ webpackJsonp([1],[
 									'Connect Jetpack: '
 								),
 								'increase visitors and improve security'
-							)
+							),
+							JPS.bloginfo.type === 'business' ? React.createElement(
+								'li',
+								null,
+								React.createElement(Dashicon, { name: 'yes' }),
+								' ',
+								React.createElement(
+									'em',
+									null,
+									'Business Address'
+								),
+								' page ',
+								React.createElement(
+									'a',
+									{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG) },
+									'(edit)'
+								)
+							) : null
 						)
 					),
 					React.createElement(

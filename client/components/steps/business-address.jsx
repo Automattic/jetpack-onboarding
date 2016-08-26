@@ -36,6 +36,8 @@ module.exports = React.createClass( {
 		var state = getJetpackState();
 		state.showMoreModules = false;
 		state.jetpackConnecting = false;
+		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = JPS.bloginfo;
+		state = Object.assign( {}, state, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
 		return state;
 	},
 
@@ -56,12 +58,12 @@ module.exports = React.createClass( {
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
 				<p className="welcome__callout welcome__jetpack--callout">Add your business address (if you have one)</p>
 				<form onSubmit={ this.handleSubmit } className="welcome__business-address--form">
-						<input className="welcome__business-address--input" type="text" name="business_name" id="business-name" onChange={ this.handleChange } placeholder="Business Name: Jack's Pizza shop" required />
-						<input className="welcome__business-address--input" type="text" name="business_address_1" id="business-address-1" onChange={ this.handleChange } placeholder="Address: Pizza street" required />
-						<input className="welcome__business-address--input" type="text" name="business_address_2" id="business-address-2" onChange={ this.handleChange } placeholder="Address: Pizza street 2" />
-						<input className="welcome__business-address--input" type="text" name="business_city" id="business-city" onChange={ this.handleChange } placeholder="City" required/>
-						<input className="welcome__business-address--input" type="text" name="business_state" id="business-state" onChange={ this.handleChange } placeholder="State" />
-						<input className="welcome__business-address--input" type="text" name="business_zip" id="business-zip" onChange={ this.handleChange } placeholder="Zip" required />
+						<input className="welcome__business-address--input" type="text" name="business_name" id="business-name" value={ this.state.business_name } onChange={ this.handleChange } placeholder="Business Name: Jack's Pizza shop" required />
+						<input className="welcome__business-address--input" type="text" name="business_address_1" id="business-address-1" value={ this.state.business_address_1 } onChange={ this.handleChange } placeholder="Address: Pizza street" required />
+						<input className="welcome__business-address--input" type="text" name="business_address_2" id="business-address-2" value={ this.state.business_address_2 } onChange={ this.handleChange } placeholder="Address: Pizza street 2" />
+						<input className="welcome__business-address--input" type="text" name="business_city" id="business-city" value={ this.state.business_city } onChange={ this.handleChange } placeholder="City" required/>
+						<input className="welcome__business-address--input" type="text" name="business_state" id="business-state" value={ this.state.business_state } onChange={ this.handleChange } placeholder="State" />
+						<input className="welcome__business-address--input" type="text" name="business_zip" id="business-zip" value={ this.state.business_zip } onChange={ this.handleChange } placeholder="Zip" required />
 						<div className="welcome__button-container">
 							<Button className='welcome-submit' primary type="submit">Next Step</Button>
 							<SkipButton />

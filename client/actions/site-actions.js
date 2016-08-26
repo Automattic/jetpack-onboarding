@@ -54,7 +54,9 @@ var SiteActions = {
 				FlashActions.error("Error setting title: "+msg);
 			});
 
-		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
+		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = businessAddress;
+
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
 
 		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
