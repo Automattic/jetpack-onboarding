@@ -547,7 +547,7 @@ Warwick, RI 02889
 		}
 
 		foreach ( $sidebars_widgets[ $sidebar ] as $widget ) {
-			if ( strpos( $widget, 'widget_widget_contact_info' ) ) {
+			if ( strpos( $widget, 'widget_contact_info' ) !== false ) {
 				return true;
 			}
 		}
@@ -575,6 +575,31 @@ Warwick, RI 02889
 
 		// Store updated sidebars, widgets and their instances
 		update_option( 'sidebars_widgets', $sidebars_widgets );
+		update_option( 'widget_' . $widget_id, $widget_instances );
+	}
+
+	static function update_widget_in_sidebar( $widget_id, $widget_options, $sidebar ) {
+		// Retrieve sidebars, widgets and their instances
+		$sidebars_widgets = get_option( 'sidebars_widgets', array() );
+		$widget_instances = get_option( 'widget_' . $widget_id, array() );
+
+		// Retrieve index of first widget instance in that sidebar
+		$widget_key = false;
+		foreach ( $sidebars_widgets[ $sidebar ] as $widget ) {
+			if ( strpos( $widget, 'widget_contact_info' ) !== false ) {
+				$widget_key = absint( str_replace( 'widget_contact_info-', '', $widget ) );
+				break;
+			}
+		}
+
+		if ( ! $widget_key ) {
+			return;
+		}
+
+		// Update the widget instance with the new data
+		$widget_instances[ $widget_key ] = array_merge( $widget_instances[ $widget_key ], $widget_options );
+
+		// Store updated widget instances
 		update_option( 'widget_' . $widget_id, $widget_instances );
 	}
 
@@ -621,6 +646,8 @@ Warwick, RI 02889
 
 			if ( ! self::have_contact_info_widget( $first_sidebar ) ) {
 				self::insert_widget_in_sidebar( 'widget_contact_info', $widget_options, $first_sidebar );
+			} else {
+				self::update_widget_in_sidebar( 'widget_contact_info', $widget_options, $first_sidebar );
 			}
 
 			wp_send_json_success( array( 'updated' => true ) );
