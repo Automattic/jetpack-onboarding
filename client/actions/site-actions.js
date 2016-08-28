@@ -168,6 +168,14 @@ var SiteActions = {
 	},
 
 	configureJetpack: function(return_to_step) {
+
+
+/****************
+
+complete step
+
+*********************/
+
 		return WPAjax.
 			post( JPS.site_actions.configure_jetpack, { return_to_step: return_to_step } ).
 			done( function ( data ) {

@@ -126,7 +126,8 @@ var SetupProgressActions = {
 
 	submitBusinessAddress: function( businessAddress ) {
 		SiteActions.saveBusinessAddress( businessAddress );
-		this.completeAndNextStep( Paths.BUSINESS_ADDRESS_SLUG );
+		this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
+		this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 
 	submitLayoutStep: function( layout ) {

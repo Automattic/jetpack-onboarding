@@ -19,9 +19,7 @@ module.exports = React.createClass( {
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener( this._onChange );
-		if ( JPS.bloginfo.type !== 'business' ) {
-			SetupProgressActions.skipStep();
-		}
+		JPS.shownBusinessAddressStep = true;
 	},
 
 	componentWillUnmount: function() {

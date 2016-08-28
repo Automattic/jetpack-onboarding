@@ -86,7 +86,7 @@ var AdvancedSettingsStep = React.createClass({
 								<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
 							}
 							increase visitors and improve security</li>
-							{ JPS.bloginfo.type === 'business' ?
+							{ JPS.shownBusinessAddressStep ?
 								<li>
 									<Dashicon name="yes" /> <em>Business Address</em> page <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG ) }>(edit)</a>
 									{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }

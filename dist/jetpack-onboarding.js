@@ -1495,7 +1495,8 @@ webpackJsonp([1],[
 	
 		submitBusinessAddress: function submitBusinessAddress(businessAddress) {
 			SiteActions.saveBusinessAddress(businessAddress);
-			this.completeAndNextStep(Paths.BUSINESS_ADDRESS_SLUG);
+			this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
+			this.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 		},
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
@@ -1798,6 +1799,13 @@ webpackJsonp([1],[
 		},
 	
 		configureJetpack: function configureJetpack(return_to_step) {
+	
+			/****************
+	  
+	  complete step
+	  
+	  *********************/
+	
 			return WPAjax.post(JPS.site_actions.configure_jetpack, { return_to_step: return_to_step }).done(function (data) {
 				AppDispatcher.dispatch({
 					actionType: JPSConstants.SITE_JETPACK_CONFIGURED
@@ -4631,9 +4639,7 @@ webpackJsonp([1],[
 	
 		componentDidMount: function componentDidMount() {
 			SiteStore.addChangeListener(this._onChange);
-			if (JPS.bloginfo.type !== 'business') {
-				SetupProgressActions.skipStep();
-			}
+			JPS.shownBusinessAddressStep = true;
 		},
 	
 		componentWillUnmount: function componentWillUnmount() {
@@ -4898,7 +4904,7 @@ webpackJsonp([1],[
 								),
 								'increase visitors and improve security'
 							),
-							JPS.bloginfo.type === 'business' ? React.createElement(
+							JPS.shownBusinessAddressStep ? React.createElement(
 								'li',
 								null,
 								React.createElement(Dashicon, { name: 'yes' }),
