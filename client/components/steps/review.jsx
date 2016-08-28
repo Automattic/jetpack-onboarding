@@ -76,13 +76,24 @@ var AdvancedSettingsStep = React.createClass({
 								null
 							}
 							</li>
-							<li><Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a></li>
+							<li>
+								<Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a>
+								{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
+							</li>
 							<li><Dashicon name="yes" />
 							{ this.state.isJPConnected ?
 								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack: </a> :
 								<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
 							}
 							increase visitors and improve security</li>
+							{ JPS.shownBusinessAddressStep ?
+								<li>
+									<Dashicon name="yes" /> <em>Business Address</em> page <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG ) }>(edit)</a>
+									{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
+ 								</li> :
+								null
+
+							}
 						</ul>
 					</div>
 

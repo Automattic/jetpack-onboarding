@@ -13,6 +13,13 @@ var SiteActions = {
 	    });
 	},
 
+	setType: function(type) {
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SET_TYPE,
+			type: type
+	    });
+	},
+
 	setDescription: function(description) {
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SET_DESCRIPTION,
@@ -21,7 +28,7 @@ var SiteActions = {
 	},
 
 	saveTitleAndDescription: function( title, description ) {
-		
+
 		WPAjax.
 			post( JPS.site_actions.set_title, { title: title, description: description } ).
 			fail( function ( msg ) {
@@ -29,12 +36,32 @@ var SiteActions = {
 			});
 
 		jQuery('#wp-admin-bar-site-name .ab-item').html(title);
-		
+
 		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION,
 			title: title,
 			description: description
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
+	saveBusinessAddress: function( businessAddress ) {
+		WPAjax.
+			post( JPS.site_actions.add_business_address, businessAddress ).
+			fail( function ( msg ) {
+				FlashActions.error("Error setting title: "+msg);
+			});
+
+		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = businessAddress;
+
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
+
+		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_ADD_BUSINESS_ADDRESS,
+			address: businessAddress
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK
@@ -141,6 +168,14 @@ var SiteActions = {
 	},
 
 	configureJetpack: function(return_to_step) {
+
+
+/****************
+
+complete step
+
+*********************/
+
 		return WPAjax.
 			post( JPS.site_actions.configure_jetpack, { return_to_step: return_to_step } ).
 			done( function ( data ) {

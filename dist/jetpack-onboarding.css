@@ -37,6 +37,7 @@
     .dops-button[disabled]:active, .dops-button:disabled:active {
       border-width: 1px 1px 2px; }
   .dops-button:focus {
+    outline: 0;
     border-color: #0085ba;
     box-shadow: 0 0 0 2px #008ec2; }
   .dops-button.is-compact {

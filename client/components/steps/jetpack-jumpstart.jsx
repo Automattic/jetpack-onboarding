@@ -42,10 +42,13 @@ var JetpackJumpstart = React.createClass({
 
 	handleJetpackConnect: function (e) {
 		e.preventDefault();
+		const path = JPS.bloginfo.type === 'business' ?
+			Paths.BUSINESS_ADDRESS_SLUG :
+			Paths.REVIEW_STEP_SLUG;
 
 		this.setState( { jetpackConnecting: true } );
 		SiteActions
-			.configureJetpack( Paths.REVIEW_STEP_SLUG )
+			.configureJetpack( path )
 			.always(function() {
 				this.setState( { jetpackConnecting: false } );
 			}.bind( this ) );
@@ -53,8 +56,11 @@ var JetpackJumpstart = React.createClass({
 
 	handleNext: function (e) {
 		e.preventDefault();
+		const path = JPS.bloginfo.type === 'business' ?
+			Paths.BUSINESS_ADDRESS_SLUG :
+			Paths.REVIEW_STEP_SLUG;
 
-		SetupProgressActions.completeAndNextStep(Paths.JETPACK_MODULES_STEP_SLUG);
+		SetupProgressActions.completeAndNextStep( path );
 	},
 
 	render: function() {
