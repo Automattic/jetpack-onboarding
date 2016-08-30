@@ -34,7 +34,11 @@ module.exports = React.createClass( {
 		var state = getJetpackState();
 		state.showMoreModules = false;
 		state.jetpackConnecting = false;
-		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = JPS.bloginfo;
+		const { business_address_1, business_address_2, business_city, business_state, business_zip } = JPS.bloginfo;
+		let business_name = JPS.bloginfo.business_name;
+		if ( 'undefined' === typeof business_name ) {
+			business_name = state.site_title;
+		}
 		state = Object.assign( {}, state, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
 		return state;
 	},
