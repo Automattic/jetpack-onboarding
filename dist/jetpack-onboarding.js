@@ -4658,10 +4658,13 @@ webpackJsonp([1],[
 			var business_address_1 = _JPS$bloginfo.business_address_1;
 			var business_address_2 = _JPS$bloginfo.business_address_2;
 			var business_city = _JPS$bloginfo.business_city;
-			var business_name = _JPS$bloginfo.business_name;
 			var business_state = _JPS$bloginfo.business_state;
 			var business_zip = _JPS$bloginfo.business_zip;
 	
+			var business_name = JPS.bloginfo.business_name;
+			if ('undefined' === typeof business_name) {
+				business_name = state.site_title;
+			}
 			state = Object.assign({}, state, { business_address_1: business_address_1, business_address_2: business_address_2, business_city: business_city, business_name: business_name, business_state: business_state, business_zip: business_zip });
 			return state;
 		},
