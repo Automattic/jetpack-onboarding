@@ -19,4 +19,14 @@
 	.welcome__button-container {
 		width: 100%;
 	}
+
+	.welcome__business-address--woo-container {
+		width: 100%;
+		text-align: left;
+		margin-bottom: 8px;
+
+		.welcome__business-address--checkbox {
+			margin-right: 8px;
+		}
+	}
 }

@@ -575,3 +575,10 @@ img.welcome__get-started-image {
 
 .welcome__container .welcome__button-container {
   width: 100%; }
+
+.welcome__container .welcome__business-address--woo-container {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 8px; }
+  .welcome__container .welcome__business-address--woo-container .welcome__business-address--checkbox {
+    margin-right: 8px; }

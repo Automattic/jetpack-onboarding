@@ -14,6 +14,9 @@ function getSiteState() {
 		newsUrl: SiteStore.getNewsPageEditURL(),
 		isJPConnected: SiteStore.getJetpackConfigured(),
 		layout: SiteStore.getLayout(),
+		wooCommerceStatus: SiteStore.getWooCommerceStatus(),
+		wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl(),
+		pluginsUrl: SiteStore.getPluginsUrl()
 	};
 }
 
@@ -43,6 +46,27 @@ var AdvancedSettingsStep = React.createClass({
 	handleDismiss: function( event ) {
 		event.preventDefault();
 		SetupProgressActions.closeJPO();
+	},
+
+	renderWooCommerceStatus: function() {
+		const { install_woo } = JPS.bloginfo;
+		if ( ! install_woo ) {
+			return null;
+		}
+		if ( this.state.wooCommerceStatus ) {
+			return (
+				<li>
+					<Dashicon name="yes" /> Woo Installed! <a href={ this.state.wooCommerceSetupUrl }>Set up shop</a>
+				</li>
+			);
+		} else {
+			return (
+				<li>
+					<Dashicon name="no" /> Error installing WooCommerce <a href={ this.state.pluginsUrl }>Try manual installation</a>
+				</li>
+			)
+		}
+		
 	},
 
 	render: function() {
@@ -94,6 +118,7 @@ var AdvancedSettingsStep = React.createClass({
 								null
 
 							}
+							{ this.renderWooCommerceStatus() }
 						</ul>
 					</div>
 

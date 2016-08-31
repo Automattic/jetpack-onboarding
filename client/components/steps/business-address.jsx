@@ -34,24 +34,40 @@ module.exports = React.createClass( {
 		var state = getJetpackState();
 		state.showMoreModules = false;
 		state.jetpackConnecting = false;
-		const { business_address_1, business_address_2, business_city, business_state, business_zip } = JPS.bloginfo;
+		const { business_address_1, business_address_2, business_city, business_state, business_zip, sell_online, install_woo } = JPS.bloginfo;
 		let business_name = JPS.bloginfo.business_name;
 		if ( 'undefined' === typeof business_name ) {
 			business_name = state.site_title;
 		}
-		state = Object.assign( {}, state, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
+		state = Object.assign( {}, state, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip, sell_online, install_woo } );
 		return state;
 	},
 
 	handleChange: function( e ) {
 		var newValue = {};
-		newValue[ e.currentTarget.name ] = e.currentTarget.value;
+		if ( 'checkbox' === e.currentTarget.type ) {
+			newValue[ e.currentTarget.name ] = e.currentTarget.checked;
+		} else {
+			newValue[ e.currentTarget.name ] = e.currentTarget.value;
+		}
 		this.setState( newValue );
 	},
 
 	handleSubmit: function( e ) {
 		e.preventDefault();
 		SetupProgressActions.submitBusinessAddress( this.state );
+	},
+
+	renderInstallWooCheckbox: function() {
+		if ( ! this.state.sell_online ) {
+			return null;
+		}
+		return (
+			<div className="welcome__business-address--woo-container">
+				<input className="welcome__business-address--checkbox" type="checkbox" name="install_woo" id="install-woo" checked={ this.state.install_woo } onChange={ this.handleChange } />
+					<label for="install_woo">Install WooCommerce now</label>
+			</div>
+		);
 	},
 
 	render: function() {
@@ -66,6 +82,11 @@ module.exports = React.createClass( {
 						<input className="welcome__business-address--input" type="text" name="business_city" id="business-city" value={ this.state.business_city } onChange={ this.handleChange } placeholder="City" required/>
 						<input className="welcome__business-address--input" type="text" name="business_state" id="business-state" value={ this.state.business_state } onChange={ this.handleChange } placeholder="State" />
 						<input className="welcome__business-address--input" type="text" name="business_zip" id="business-zip" value={ this.state.business_zip } onChange={ this.handleChange } placeholder="Zip" required />
+						<div className="welcome__business-address--woo-container">
+							<input className="welcome__business-address--checkbox" type="checkbox" name="sell_online" id="sell-online" checked={ this.state.sell_online } onChange={ this.handleChange } />
+								<label for="sell_online">I want to sell online</label>
+						</div>
+						{ this.renderInstallWooCheckbox() }
 						<div className="welcome__button-container">
 							<Button className='welcome-submit' primary type="submit">Next Step</Button>
 							<SkipButton />

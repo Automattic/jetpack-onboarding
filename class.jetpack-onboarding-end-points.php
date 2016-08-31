@@ -8,6 +8,8 @@ class Jetpack_Onboarding_EndPoints {
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
 	const VERSION = "1.4";
+	const WOOCOMMERCE_ID = 'woocommerce/woocommerce.php';
+	const WOOCOMMERCE_SLUG = 'woocommerce';
 
 	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -38,6 +40,7 @@ class Jetpack_Onboarding_EndPoints {
 			add_action( 'wp_ajax_jpo_disabled', array( __CLASS__, 'disabled' ) );
 			add_action( 'wp_ajax_jpo_closed', array( __CLASS__, 'closed' ) );
 			add_action( 'wp_ajax_jpo_reset_data', array( __CLASS__, 'reset_data' ) );
+			add_action( 'wp_ajax_jpo_install_woocommerce', array( __CLASS__, 'install_woocommerce' ) );
 		}
 	}
 
@@ -100,7 +103,8 @@ class Jetpack_Onboarding_EndPoints {
 				'deactivate_jetpack_modules' => 'jpo_deactivate_jetpack_modules',
 				'list_jetpack_modules' => 'jpo_list_jetpack_modules',
 				'reset_data' => 'jpo_reset_data',
-				'build_contact_page' => 'jpo_build_contact_page'
+				'build_contact_page' => 'jpo_build_contact_page',
+				'install_woocommerce' => 'jpo_install_woocommerce'
 			),
 			'step_actions' => array(
 				'start' => 'jpo_started',
@@ -111,6 +115,7 @@ class Jetpack_Onboarding_EndPoints {
 				'complete' => 'jpo_step_complete'
 			),
 			'jetpack' => $jetpack_config,
+			'woocommerce_status' => is_plugin_active( self::WOOCOMMERCE_ID ),
 			'started' => $started,
 			'step_status' => $step_statuses,
 			'steps' => array(
@@ -126,7 +131,8 @@ class Jetpack_Onboarding_EndPoints {
 					'new_blog_post_url' => admin_url( 'post-new.php' ),
 					'manage_posts_url' => admin_url( 'edit.php' ),
 					'new_page_url' => admin_url( 'post-new.php?post_type=page' ),
-					'manage_pages_url' => admin_url( 'edit.php?post_type=page' )
+					'manage_pages_url' => admin_url( 'edit.php?post_type=page' ),
+					'woocommerce_setup_url' => admin_url( 'admin.php?page=wc-setup' )
 				)
 			),
 		);
@@ -537,6 +543,41 @@ Warwick, RI 02889
 		}
 
 		wp_send_json_success( $theme_id );
+	}
+
+	static function install_plugin( $slug ) {
+		if ( is_multisite() && ! current_user_can( 'manage_network' ) ) {
+			return new WP_Error( 'not_allowed', 'You are not allowed to install plugins on this site.' );
+		}
+		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		include_once ABSPATH . 'wp-admin/includes/file.php';
+		$upgrader  = new Plugin_Upgrader( new Automatic_Upgrader_Skin() );
+		$zip_url = "https://downloads.wordpress.org/plugin/{$slug}.latest-stable.zip";
+		$result = $upgrader->install( $zip_url );
+		if ( is_wp_error( $result ) || ! $result ) {
+			return new WP_Error( 'install_error', 'Could not install plugin ' . $slug );
+		}
+		return true;
+	}
+
+	static function install_woocommerce() {
+		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
+		$result = true;
+		if ( ! array_key_exists( self::WOOCOMMERCE_ID, get_plugins() ) ) {
+			$installed = self::install_plugin( self::WOOCOMMERCE_SLUG );
+			if ( is_wp_error( $installed ) ) {
+				$result = $installed;
+			} else {
+				$result = activate_plugin( self::WOOCOMMERCE_ID );
+			}
+		} else if ( ! is_plugin_active( self::WOOCOMMERCE_ID ) ) {
+			$result = activate_plugin( self::WOOCOMMERCE_ID );
+		}
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( 'Could not install WooCommerce: ' . $result->get_error_message() );
+		} else {
+			wp_send_json_success();
+		}
 	}
 
 	static function have_contact_info_widget( $sidebar ) {

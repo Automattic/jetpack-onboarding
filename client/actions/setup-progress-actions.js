@@ -126,6 +126,9 @@ var SetupProgressActions = {
 
 	submitBusinessAddress: function( businessAddress ) {
 		SiteActions.saveBusinessAddress( businessAddress );
+		if ( businessAddress.sell_online && businessAddress.install_woo ) {
+			SiteActions.installWooCommerce();
+		}
 		this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
 		this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},

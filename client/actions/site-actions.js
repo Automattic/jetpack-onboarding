@@ -54,9 +54,9 @@ var SiteActions = {
 				FlashActions.error("Error setting title: "+msg);
 			});
 
-		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = businessAddress;
+		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip, sell_online, install_woo } = businessAddress;
 
-		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip, sell_online, install_woo } );
 
 		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
@@ -65,6 +65,23 @@ var SiteActions = {
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
+	installWooCommerce: function() {
+		SpinnerActions.show( "Installing WooCommerce" );
+		return WPAjax.
+			post( JPS.site_actions.install_woocommerce ).
+			done( function ( ) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+				});
+			}).
+			fail( function ( msg ) {
+				FlashActions.error( msg );
+			}).
+			always( function() {
+				SpinnerActions.hide();
+			});
 	},
 
 	setContactPageId: function(contactPageID) {
