@@ -576,9 +576,8 @@ img.welcome__get-started-image {
 .welcome__container .welcome__button-container {
   width: 100%; }
 
-.welcome__container .welcome__business-address--woo-container {
-  width: 100%;
-  text-align: left;
-  margin-bottom: 8px; }
-  .welcome__container .welcome__business-address--woo-container .welcome__business-address--checkbox {
-    margin-right: 8px; }
+.welcome__container .welcome__woocommerce--install-container {
+  margin-bottom: 20px; }
+  .welcome__container .welcome__woocommerce--install-container .welcome__woocommerce--checkbox {
+    float: none;
+    margin: 1px 8px 0 0; }

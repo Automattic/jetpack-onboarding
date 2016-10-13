@@ -47,6 +47,11 @@ module.exports = function() {
 				welcomeView: require('./components/steps/business-address'),
 			},
 			{
+				name: 'WooCommerce',
+				slug: Paths.WOOCOMMERCE_SLUG,
+				welcomeView: require('./components/steps/woocommerce'),
+			},
+			{
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
 				welcomeView: require('./components/steps/review'),

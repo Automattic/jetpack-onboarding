@@ -54,14 +54,26 @@ var SiteActions = {
 				FlashActions.error("Error setting title: "+msg);
 			});
 
-		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip, sell_online, install_woo } = businessAddress;
+		const { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } = businessAddress;
 
-		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip, sell_online, install_woo } );
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { business_address_1, business_address_2, business_city, business_name, business_state, business_zip } );
 
 		// FlashActions.notice( "Set title to '"+title+"' and description to '"+description+"'" );
 		AppDispatcher.dispatch({
 			actionType: JPSConstants.SITE_ADD_BUSINESS_ADDRESS,
 			address: businessAddress
+	    });
+
+		return jQuery.Deferred().resolve(); // XXX HACK
+	},
+
+	saveWoocommerce: function( woocommerce ) {
+		const { install_woo } = woocommerce;
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { install_woo } );
+
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
+			data: woocommerce
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK

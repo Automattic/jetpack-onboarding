@@ -61,6 +61,10 @@ function skip() {
   var step = getStepFromSlug(stepSlug);
   step.skipped = true;
   selectNextPendingStep();
+  if ( stepSlug === 'business-address' ) {
+    // skip the WooCommerce step if we're skipping the Business Address
+    skip();
+  }
 }
 
 function getStepFromSlug( stepSlug ) {
