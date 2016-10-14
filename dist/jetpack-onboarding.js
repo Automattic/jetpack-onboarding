@@ -4883,10 +4883,10 @@ webpackJsonp([1],[
 					React.createElement(
 						'div',
 						{ className: 'welcome__woocommerce--install-container' },
-						React.createElement('input', { className: 'welcome__woocommerce--checkbox', type: 'checkbox', name: 'install_woo', id: 'install-woo', checked: this.state.install_woo, onChange: this.handleChange }),
+						React.createElement('input', { className: 'welcome__woocommerce--checkbox', type: 'checkbox', name: 'install_woo', id: 'install_woo', checked: this.state.install_woo, onChange: this.handleChange }),
 						React.createElement(
 							'label',
-							{ 'for': 'install_woo' },
+							{ htmlFor: 'install_woo' },
 							'Install WooCommerce now'
 						)
 					),

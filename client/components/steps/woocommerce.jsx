@@ -63,8 +63,8 @@ module.exports = React.createClass( {
 				<form onSubmit={ this.handleSubmit } className="welcome__woocommerce--form">
 						
 					<div className="welcome__woocommerce--install-container">
-						<input className="welcome__woocommerce--checkbox" type="checkbox" name="install_woo" id="install-woo" checked={ this.state.install_woo } onChange={ this.handleChange } />
-						<label for="install_woo">Install WooCommerce now</label>
+						<input className="welcome__woocommerce--checkbox" type="checkbox" name="install_woo" id="install_woo" checked={ this.state.install_woo } onChange={ this.handleChange } />
+						<label htmlFor="install_woo">Install WooCommerce now</label>
 					</div>
 
 					<div className="welcome__button-container">

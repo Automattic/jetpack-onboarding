@@ -59,7 +59,7 @@ class Jetpack_Onboarding_WelcomePanel {
 
 		// CSS
 		wp_enqueue_style( 'jetpack-onboarding-components', plugins_url( 'dist/jetpack-onboarding.css', __FILE__ ), array( 'wp-admin' ) );
-		wp_enqueue_style( 'jetpack-onboarding-panel', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer' ) );
+		wp_enqueue_style( 'jetpack-onboarding-panel', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer', 'dashicons' ) );
 		wp_enqueue_style( 'ie8' );
 		
 	}

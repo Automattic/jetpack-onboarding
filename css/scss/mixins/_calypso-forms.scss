@@ -133,13 +133,13 @@ input[type=checkbox] {
 	&:checked:before {
 		@extend %clear-text;
 
-		content: '\f418';
+		content: '\f147';
 		margin: -4px 0 0 -5px;
 		float: left;
 		display: inline-block;
 		vertical-align: middle;
 		width: 16px;
-		font: 400 23px/1 Noticons;
+		font: 400 23px/1 Dashicons;
 		speak: none;
 		color: $blue-medium;
 	}
@@ -156,7 +156,7 @@ input[type=radio] {
 	&:checked:before {
 		float: left;
 		display: inline-block;
-		content: '\2022';
+		content: '\f159';
 		margin: 3px;
 		width: 8px;
 		height: 8px;
@@ -222,12 +222,12 @@ input[type=radio] {
 	&:before {
 		position: absolute;
 		color: $blue-medium;
-		font-family: Noticons;
+		font-family: Dashicons;
 	}
 
 	.some-selected & {
 		&:before {
-			content: '\f421'; // .noticon-minimize
+			content: '\f460'; // .noticon-minimize
 			top: 7px;
 			left: 0;
 		}
