@@ -455,10 +455,6 @@ webpackJsonp([1],[
 	  var step = _getStepFromSlug(stepSlug);
 	  step.skipped = true;
 	  selectNextPendingStep();
-	  if (stepSlug === 'business-address') {
-	    // skip the WooCommerce step if we're skipping the Business Address
-	    skip();
-	  }
 	}
 	
 	function _getStepFromSlug(stepSlug) {
@@ -4498,7 +4494,10 @@ webpackJsonp([1],[
 		},
 	
 		handleSkip: function handleSkip() {
-			SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
+			if (JPS.bloginfo.type !== 'business') {
+				return SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
+			}
+			return SetupProgressActions.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
 		},
 	
 		render: function render() {
@@ -4555,7 +4554,7 @@ webpackJsonp([1],[
 						this.state.jetpackConnecting ? 'Connecting' : 'Connect',
 						' to WordPress.com'
 					),
-					!this.state.jetpackConnecting && React.createElement(SkipButton, { handleSkip: JPS.bloginfo.type !== 'business' ? this.handleSkip : false })
+					!this.state.jetpackConnecting && React.createElement(SkipButton, { handleSkip: this.handleSkip })
 				),
 				React.createElement(
 					'div',

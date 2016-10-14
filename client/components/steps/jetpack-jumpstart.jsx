@@ -64,7 +64,10 @@ var JetpackJumpstart = React.createClass({
 	},
 
 	handleSkip: function() {
-		SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
+		if ( JPS.bloginfo.type !== 'business' ) {
+			return SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
+		}
+		return SetupProgressActions.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
 	},
 
 	render: function() {
@@ -82,7 +85,7 @@ var JetpackJumpstart = React.createClass({
 					</div> :
 					<div className='welcome__submit'>
 						<Button disabled={this.state.jetpackConnecting} onClick={ this.handleJetpackConnect } primary>{ this.state.jetpackConnecting ? 'Connecting' : 'Connect' } to WordPress.com</Button>
-						{ !this.state.jetpackConnecting && <SkipButton handleSkip={ JPS.bloginfo.type !== 'business' ? this.handleSkip : false } /> }
+						{ !this.state.jetpackConnecting && <SkipButton handleSkip={ this.handleSkip } /> }
 					</div>
 				}
 				<div className='jetpack_connect_info'>
