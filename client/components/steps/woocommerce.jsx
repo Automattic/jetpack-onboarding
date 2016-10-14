@@ -7,7 +7,9 @@ var React = require( 'react' ),
 
 function getJetpackState() {
 	return {
-		site_title: SiteStore.getTitle()
+		site_title: SiteStore.getTitle(),
+		wooCommerceStatus: SiteStore.getWooCommerceStatus(),
+		wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl(),
 	};
 }
 
@@ -54,10 +56,9 @@ module.exports = React.createClass( {
 		SetupProgressActions.submitWoocommerce( this.state );
 	},
 
-	render: function() {
+	renderInstall: function() {
 		return (
-			<WelcomeSection id="welcome__jetpack">
-				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
+			<div>
 				<p className="welcome__callout welcome__jetpack--callout">Are you looking to sell online?</p>
 				<form onSubmit={ this.handleSubmit } className="welcome__woocommerce--form">
 						
@@ -71,6 +72,30 @@ module.exports = React.createClass( {
 						<SkipButton />
 					</div>
 				</form>
+			</div>
+		);
+	},
+
+	renderAlreadyInstalled: function() {
+		return (
+			<div>
+				<p className="welcome__callout welcome__jetpack--callout">WooCommerce has already been installed.</p>
+				<div className="welcome__button-container">
+					<Button className='welcome-submit' primary type="submit" href={ this.state.wooCommerceSetupUrl }>Setup your store</Button>
+					<SkipButton />
+				</div>
+			</div>
+		);
+	},
+
+	render: function() {
+		return (
+			<WelcomeSection id="welcome__jetpack">
+				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
+				{ this.state.wooCommerceStatus
+					? this.renderAlreadyInstalled()
+					: this.renderInstall()
+				}
 			</WelcomeSection>
 		);
 	}

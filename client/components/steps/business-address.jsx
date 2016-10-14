@@ -19,7 +19,6 @@ module.exports = React.createClass( {
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener( this._onChange );
-		JPS.shownBusinessAddressStep = true;
 	},
 
 	componentWillUnmount: function() {

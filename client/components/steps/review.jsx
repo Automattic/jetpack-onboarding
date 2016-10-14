@@ -49,16 +49,23 @@ var AdvancedSettingsStep = React.createClass({
 	},
 
 	renderWooCommerceStatus: function() {
-		const { install_woo } = JPS.bloginfo;
-		if ( ! install_woo ) {
+		const { install_woo, type } = JPS.bloginfo;
+		if ( type !== 'business' ) {
 			return null;
 		}
+
 		if ( this.state.wooCommerceStatus ) {
 			return (
 				<li>
-					<Dashicon name="yes" /> Woo Installed! <a href={ this.state.wooCommerceSetupUrl }>Set up shop</a>
+					<Dashicon name="yes" /> WooCommerce Installed! <a href={ this.state.wooCommerceSetupUrl }>Set up shop</a>
 				</li>
 			);
+		} else if ( ! install_woo ) {
+			return (
+				<li>
+					<Dashicon name="no" /> WooCommerce not installed. <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.WOOCOMMERCE_SLUG ) }>Install WooCommerce?</a>
+				</li>
+			)
 		} else {
 			return (
 				<li>
@@ -110,9 +117,12 @@ var AdvancedSettingsStep = React.createClass({
 								<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
 							}
 							increase visitors and improve security</li>
-							{ JPS.shownBusinessAddressStep ?
+							{ JPS.bloginfo.type === 'business' ?
 								<li>
-									<Dashicon name="yes" /> <em>Business Address</em> page <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG ) }>(edit)</a>
+									{ JPS.steps.business_address
+										? <Dashicon name="yes" />
+										: <Dashicon name="no" />
+									} <em>Business Address</em> page <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.BUSINESS_ADDRESS_SLUG ) }>(edit)</a>
 									{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
  								</li> :
 								null

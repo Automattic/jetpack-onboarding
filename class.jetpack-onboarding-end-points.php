@@ -4,7 +4,9 @@ class Jetpack_Onboarding_EndPoints {
 	const STEP_STATUS_KEY = 'jpo_step_statuses';
 	const FIRSTRUN_KEY = 'jpo_firstrun';
 	const STARTED_KEY = 'jpo_started';
+	const SITE_TYPE = 'jpo_site_type';
 	const CONTACTPAGE_ID_KEY = 'jpo_contactpage_id';
+	const BUSINESS_ADDRESS_SAVED_KEY = 'jpo_business_address_saved';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
 	const VERSION = "1.4";
@@ -46,8 +48,10 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function js_vars() {
 		$step_statuses = get_option( self::STEP_STATUS_KEY, array() );
-		$started = get_option( self::STARTED_KEY, false);
+		$started = get_option( self::STARTED_KEY, false );
+		$site_type = get_option( self::SITE_TYPE, '' );
 		$contact_page_id = get_option( self::CONTACTPAGE_ID_KEY, false );
+		$business_address_saved = get_option( self::BUSINESS_ADDRESS_SAVED_KEY, false );
 
 		if ( $contact_page_id ) {
 			$contact_page_info = self::contact_page_to_json( $contact_page_id );
@@ -89,7 +93,8 @@ class Jetpack_Onboarding_EndPoints {
 			'debug' => WP_DEBUG ? true : false,
 			'bloginfo' => array(
 				'name' => wp_kses_decode_entities(stripslashes(get_bloginfo('name'))),
-				'description' => wp_kses_decode_entities(stripslashes(get_bloginfo('description')))
+				'description' => wp_kses_decode_entities(stripslashes(get_bloginfo('description'))),
+				'type' => $site_type,
 			),
 			'site_actions' => array(
 				'set_title' => 'jpo_set_title',
@@ -121,6 +126,7 @@ class Jetpack_Onboarding_EndPoints {
 			'steps' => array(
 				'layout' => self::get_layout(),
 				'contact_page' => $contact_page_info,
+				'business_address' => boolval( $business_address_saved ),
 				'advanced_settings' => array(
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
 					'jetpack_dash' => admin_url( 'admin.php?page=jetpack' ),
@@ -331,6 +337,7 @@ class Jetpack_Onboarding_EndPoints {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 		update_option( self::STARTED_KEY, true );
 		do_action('jpo_started', $_REQUEST['siteType']);
+		update_option( self::SITE_TYPE, $_REQUEST['siteType'] );
 		wp_send_json_success( 'true' );
 	}
 
@@ -691,6 +698,7 @@ Warwick, RI 02889
 				self::update_widget_in_sidebar( 'widget_contact_info', $widget_options, $first_sidebar );
 			}
 
+			update_option( self::BUSINESS_ADDRESS_SAVED_KEY, 1 );
 			wp_send_json_success( array( 'updated' => true ) );
 			die();
 		}

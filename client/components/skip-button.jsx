@@ -28,6 +28,11 @@ var SkipButton = React.createClass({
 
 	handleSkip: function (e) {
 		e.preventDefault();
+
+		if ( this.props.handleSkip ) {
+			return this.props.handleSkip();
+		}
+
 		SetupProgressActions.skipStep();
 	},
 
