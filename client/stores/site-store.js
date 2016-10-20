@@ -80,6 +80,10 @@ function setLayoutPages( pageInfo ) {
   JPS.steps.layout.postsEditUrl = pageInfo.posts;
 }
 
+function setWooCommerceStatus() {
+  JPS.woocommerce_status = true;
+}
+
 var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getTitle: function() {
@@ -129,6 +133,14 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
     }
     return null;
   },
+  
+  getWooCommerceStatus: function() {
+    return JPS.woocommerce_status;
+  },
+
+  getWooCommerceSetupUrl: function() {
+    return JPS.steps.advanced_settings.woocommerce_setup_url;
+  },
 
   getJetpackConfigured: function() {
     return JPS.jetpack.configured;
@@ -156,6 +168,10 @@ var SiteStore = _.extend({}, EventEmitter.prototype, {
 
   getJetpackSettingsUrl: function() {
     return JPS.steps.advanced_settings && JPS.steps.advanced_settings.jetpack_modules_url;
+  },
+
+  getPluginsUrl: function() {
+    return JPS.steps.advanced_settings.plugins_url;
   },
 
   getPopularThemes: function() {
@@ -263,6 +279,11 @@ AppDispatcher.register(function(action) {
       setLayoutPages( action.data );
       SiteStore.emitChange();
       break;
+    
+    case JPSConstants.SITE_INSTALL_WOOCOMMERCE:
+          setWooCommerceStatus();
+          SiteStore.emitChange();
+          break;
 
     default:
       // no op

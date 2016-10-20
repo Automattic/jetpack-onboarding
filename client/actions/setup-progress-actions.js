@@ -127,6 +127,15 @@ var SetupProgressActions = {
 	submitBusinessAddress: function( businessAddress ) {
 		SiteActions.saveBusinessAddress( businessAddress );
 		this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
+		this.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
+	},
+
+	submitWoocommerce: function( woocommerce ) {
+		SiteActions.saveWoocommerce( woocommerce );
+		if ( woocommerce.install_woo ) {
+			SiteActions.installWooCommerce();
+		}
+		this.completeStep(Paths.WOOCOMMERCE_SLUG);
 		this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 

@@ -59,9 +59,13 @@ webpackJsonp([1],[
 				slug: Paths.BUSINESS_ADDRESS_SLUG,
 				welcomeView: __webpack_require__(221)
 			}, {
+				name: 'WooCommerce',
+				slug: Paths.WOOCOMMERCE_SLUG,
+				welcomeView: __webpack_require__(222)
+			}, {
 				name: "Review settings",
 				slug: Paths.REVIEW_STEP_SLUG,
-				welcomeView: __webpack_require__(222),
+				welcomeView: __webpack_require__(223),
 				includeInProgress: false,
 				neverSkip: true
 			}]);
@@ -1285,6 +1289,8 @@ webpackJsonp([1],[
 		SITE_SET_TYPE: null,
 		SITE_SET_DESCRIPTION: null,
 		SITE_ADD_BUSINESS_ADDRESS: null,
+		SITE_SAVE_WOOCOMMERCE: null,
+		SITE_INSTALL_WOOCOMMERCE: null,
 		SITE_SAVE_TITLE_AND_DESCRIPTION: null,
 		SITE_CONTACT_PAGE_ID: null,
 		SITE_SET_THEME: null,
@@ -1496,6 +1502,15 @@ webpackJsonp([1],[
 		submitBusinessAddress: function submitBusinessAddress(businessAddress) {
 			SiteActions.saveBusinessAddress(businessAddress);
 			this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
+			this.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
+		},
+	
+		submitWoocommerce: function submitWoocommerce(woocommerce) {
+			SiteActions.saveWoocommerce(woocommerce);
+			if (woocommerce.install_woo) {
+				SiteActions.installWooCommerce();
+			}
+			this.completeStep(Paths.WOOCOMMERCE_SLUG);
 			this.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 		},
 	
@@ -1597,7 +1612,8 @@ webpackJsonp([1],[
 		REVIEW_STEP_SLUG: 'review',
 		JETPACK_MODULES_STEP_SLUG: 'jetpack',
 		CONTACT_PAGE_STEP_SLUG: 'contact-page',
-		BUSINESS_ADDRESS_SLUG: 'business-address'
+		BUSINESS_ADDRESS_SLUG: 'business-address',
+		WOOCOMMERCE_SLUG: 'woocommerce'
 	};
 
 /***/ },
@@ -1709,6 +1725,32 @@ webpackJsonp([1],[
 			});
 	
 			return jQuery.Deferred().resolve(); // XXX HACK
+		},
+	
+		saveWoocommerce: function saveWoocommerce(woocommerce) {
+			var install_woo = woocommerce.install_woo;
+	
+			JPS.bloginfo = Object.assign({}, JPS.bloginfo, { install_woo: install_woo });
+	
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
+				data: woocommerce
+			});
+	
+			return jQuery.Deferred().resolve(); // XXX HACK
+		},
+	
+		installWooCommerce: function installWooCommerce() {
+			SpinnerActions.show("Installing WooCommerce");
+			return WPAjax.post(JPS.site_actions.install_woocommerce).done(function () {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+				});
+			}).fail(function (msg) {
+				FlashActions.error(msg);
+			}).always(function () {
+				SpinnerActions.hide();
+			});
 		},
 	
 		setContactPageId: function setContactPageId(contactPageID) {
@@ -1967,6 +2009,10 @@ webpackJsonp([1],[
 	  JPS.steps.layout.postsEditUrl = pageInfo.posts;
 	}
 	
+	function setWooCommerceStatus() {
+	  JPS.woocommerce_status = true;
+	}
+	
 	var SiteStore = _.extend({}, EventEmitter.prototype, {
 	
 	  getTitle: function getTitle() {
@@ -2017,6 +2063,14 @@ webpackJsonp([1],[
 	    return null;
 	  },
 	
+	  getWooCommerceStatus: function getWooCommerceStatus() {
+	    return JPS.woocommerce_status;
+	  },
+	
+	  getWooCommerceSetupUrl: function getWooCommerceSetupUrl() {
+	    return JPS.steps.advanced_settings.woocommerce_setup_url;
+	  },
+	
 	  getJetpackConfigured: function getJetpackConfigured() {
 	    return JPS.jetpack.configured;
 	  },
@@ -2045,6 +2099,10 @@ webpackJsonp([1],[
 	
 	  getJetpackSettingsUrl: function getJetpackSettingsUrl() {
 	    return JPS.steps.advanced_settings && JPS.steps.advanced_settings.jetpack_modules_url;
+	  },
+	
+	  getPluginsUrl: function getPluginsUrl() {
+	    return JPS.steps.advanced_settings.plugins_url;
 	  },
 	
 	  getPopularThemes: function getPopularThemes() {
@@ -2150,6 +2208,11 @@ webpackJsonp([1],[
 	
 	    case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
 	      setLayoutPages(action.data);
+	      SiteStore.emitChange();
+	      break;
+	
+	    case JPSConstants.SITE_INSTALL_WOOCOMMERCE:
+	      setWooCommerceStatus();
 	      SiteStore.emitChange();
 	      break;
 	
@@ -4430,6 +4493,13 @@ webpackJsonp([1],[
 			SetupProgressActions.completeAndNextStep(path);
 		},
 	
+		handleSkip: function handleSkip() {
+			if (JPS.bloginfo.type !== 'business') {
+				return SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
+			}
+			return SetupProgressActions.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
+		},
+	
 		render: function render() {
 			return React.createElement(
 				WelcomeSection,
@@ -4484,7 +4554,7 @@ webpackJsonp([1],[
 						this.state.jetpackConnecting ? 'Connecting' : 'Connect',
 						' to WordPress.com'
 					),
-					!this.state.jetpackConnecting && React.createElement(SkipButton, null)
+					!this.state.jetpackConnecting && React.createElement(SkipButton, { handleSkip: this.handleSkip })
 				),
 				React.createElement(
 					'div',
@@ -4570,6 +4640,11 @@ webpackJsonp([1],[
 	
 		handleSkip: function handleSkip(e) {
 			e.preventDefault();
+	
+			if (this.props.handleSkip) {
+				return this.props.handleSkip();
+			}
+	
 			SetupProgressActions.skipStep();
 		},
 	
@@ -4639,7 +4714,6 @@ webpackJsonp([1],[
 	
 		componentDidMount: function componentDidMount() {
 			SiteStore.addChangeListener(this._onChange);
-			JPS.shownBusinessAddressStep = true;
 		},
 	
 		componentWillUnmount: function componentWillUnmount() {
@@ -4671,7 +4745,11 @@ webpackJsonp([1],[
 	
 		handleChange: function handleChange(e) {
 			var newValue = {};
-			newValue[e.currentTarget.name] = e.currentTarget.value;
+			if ('checkbox' === e.currentTarget.type) {
+				newValue[e.currentTarget.name] = e.currentTarget.checked;
+			} else {
+				newValue[e.currentTarget.name] = e.currentTarget.value;
+			}
 			this.setState(newValue);
 		},
 	
@@ -4730,10 +4808,153 @@ webpackJsonp([1],[
 	'use strict';
 	
 	var React = __webpack_require__(4),
+	    SkipButton = __webpack_require__(219),
+	    SiteStore = __webpack_require__(170),
+	    WelcomeSection = __webpack_require__(214),
+	    SetupProgressActions = __webpack_require__(166),
+	    Button = __webpack_require__(179);
+	
+	function getJetpackState() {
+		return {
+			site_title: SiteStore.getTitle(),
+			wooCommerceStatus: SiteStore.getWooCommerceStatus(),
+			wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl()
+		};
+	}
+	
+	module.exports = React.createClass({
+		displayName: 'exports',
+	
+		componentDidMount: function componentDidMount() {
+			SiteStore.addChangeListener(this._onChange);
+			JPS.shownWoocommerceStep = true;
+		},
+	
+		componentWillUnmount: function componentWillUnmount() {
+			SiteStore.removeChangeListener(this._onChange);
+		},
+	
+		_onChange: function _onChange() {
+			this.setState(getJetpackState());
+		},
+	
+		getInitialState: function getInitialState() {
+			var state = getJetpackState();
+	
+			var install_woo = JPS.bloginfo.install_woo;
+	
+			var business_name = JPS.bloginfo.business_name;
+			if ('undefined' === typeof business_name) {
+				business_name = state.site_title;
+			}
+	
+			state = Object.assign({}, state, { business_name: business_name, install_woo: install_woo });
+			return state;
+		},
+	
+		handleChange: function handleChange(e) {
+			var newValue = {};
+			if ('checkbox' === e.currentTarget.type) {
+				newValue[e.currentTarget.name] = e.currentTarget.checked;
+			} else {
+				newValue[e.currentTarget.name] = e.currentTarget.value;
+			}
+			this.setState(newValue);
+		},
+	
+		handleSubmit: function handleSubmit(e) {
+			e.preventDefault();
+			SetupProgressActions.submitWoocommerce(this.state);
+		},
+	
+		renderInstall: function renderInstall() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'p',
+					{ className: 'welcome__callout welcome__jetpack--callout' },
+					'Are you looking to sell online?'
+				),
+				React.createElement(
+					'form',
+					{ onSubmit: this.handleSubmit, className: 'welcome__woocommerce--form' },
+					React.createElement(
+						'div',
+						{ className: 'welcome__woocommerce--install-container' },
+						React.createElement('input', { className: 'welcome__woocommerce--checkbox', type: 'checkbox', name: 'install_woo', id: 'install_woo', checked: this.state.install_woo, onChange: this.handleChange }),
+						React.createElement(
+							'label',
+							{ htmlFor: 'install_woo' },
+							'Install WooCommerce now'
+						)
+					),
+					React.createElement(
+						'div',
+						{ className: 'welcome__button-container' },
+						React.createElement(
+							Button,
+							{ className: 'welcome-submit', primary: true, type: 'submit' },
+							'Next Step'
+						),
+						React.createElement(SkipButton, null)
+					)
+				)
+			);
+		},
+	
+		renderAlreadyInstalled: function renderAlreadyInstalled() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'p',
+					{ className: 'welcome__callout welcome__jetpack--callout' },
+					'WooCommerce has already been installed.'
+				),
+				React.createElement(
+					'div',
+					{ className: 'welcome__button-container' },
+					React.createElement(
+						Button,
+						{ className: 'welcome-submit', primary: true, type: 'submit', href: this.state.wooCommerceSetupUrl },
+						'Setup your store'
+					),
+					React.createElement(SkipButton, null)
+				)
+			);
+		},
+	
+		render: function render() {
+			return React.createElement(
+				WelcomeSection,
+				{ id: 'welcome__jetpack' },
+				React.createElement(
+					'h1',
+					null,
+					'Let\'s launch ',
+					React.createElement(
+						'em',
+						null,
+						this.state.site_title
+					)
+				),
+				this.state.wooCommerceStatus ? this.renderAlreadyInstalled() : this.renderInstall()
+			);
+		}
+	});
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(4),
 	    Button = __webpack_require__(179),
 	    SiteStore = __webpack_require__(170),
 	    Paths = __webpack_require__(167),
-	    Dashicon = __webpack_require__(223),
+	    Dashicon = __webpack_require__(224),
 	    SetupProgressActions = __webpack_require__(166),
 	    WelcomeSection = __webpack_require__(214);
 	
@@ -4744,7 +4965,10 @@ webpackJsonp([1],[
 			welcomeUrl: SiteStore.getWelcomePageEditURL(),
 			newsUrl: SiteStore.getNewsPageEditURL(),
 			isJPConnected: SiteStore.getJetpackConfigured(),
-			layout: SiteStore.getLayout()
+			layout: SiteStore.getLayout(),
+			wooCommerceStatus: SiteStore.getWooCommerceStatus(),
+			wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl(),
+			pluginsUrl: SiteStore.getPluginsUrl()
 		};
 	}
 	
@@ -4775,6 +4999,54 @@ webpackJsonp([1],[
 		handleDismiss: function handleDismiss(event) {
 			event.preventDefault();
 			SetupProgressActions.closeJPO();
+		},
+	
+		renderWooCommerceStatus: function renderWooCommerceStatus() {
+			var _JPS$bloginfo = JPS.bloginfo;
+			var install_woo = _JPS$bloginfo.install_woo;
+			var type = _JPS$bloginfo.type;
+	
+			if (type !== 'business') {
+				return null;
+			}
+	
+			if (this.state.wooCommerceStatus) {
+				return React.createElement(
+					'li',
+					null,
+					React.createElement(Dashicon, { name: 'yes' }),
+					' WooCommerce Installed! ',
+					React.createElement(
+						'a',
+						{ href: this.state.wooCommerceSetupUrl },
+						'Set up shop'
+					)
+				);
+			} else if (!install_woo) {
+				return React.createElement(
+					'li',
+					null,
+					React.createElement(Dashicon, { name: 'no' }),
+					' WooCommerce not installed. ',
+					React.createElement(
+						'a',
+						{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.WOOCOMMERCE_SLUG) },
+						'Install WooCommerce?'
+					)
+				);
+			} else {
+				return React.createElement(
+					'li',
+					null,
+					React.createElement(Dashicon, { name: 'no' }),
+					' Error installing WooCommerce ',
+					React.createElement(
+						'a',
+						{ href: this.state.pluginsUrl },
+						'Try manual installation'
+					)
+				);
+			}
 		},
 	
 		render: function render() {
@@ -4907,10 +5179,10 @@ webpackJsonp([1],[
 								),
 								'increase visitors and improve security'
 							),
-							JPS.shownBusinessAddressStep ? React.createElement(
+							JPS.bloginfo.type === 'business' ? React.createElement(
 								'li',
 								null,
-								React.createElement(Dashicon, { name: 'yes' }),
+								JPS.steps.business_address ? React.createElement(Dashicon, { name: 'yes' }) : React.createElement(Dashicon, { name: 'no' }),
 								' ',
 								React.createElement(
 									'em',
@@ -4928,7 +5200,8 @@ webpackJsonp([1],[
 									{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG) },
 									' Requires a Jetpack Connection '
 								) : null
-							) : null
+							) : null,
+							this.renderWooCommerceStatus()
 						)
 					),
 					React.createElement(
@@ -4953,7 +5226,7 @@ webpackJsonp([1],[
 	module.exports = AdvancedSettingsStep;
 
 /***/ },
-/* 223 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// simple noticon wrapper

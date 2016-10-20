@@ -88,13 +88,13 @@
     display: block;
     margin-left: 24px; }
   .welcome__container input[type=checkbox]:checked:before, .welcome__container .checkbox-tristate:checked:before {
-    content: '\f418';
+    content: '\f147';
     margin: -4px 0 0 -5px;
     float: left;
     display: inline-block;
     vertical-align: middle;
     width: 16px;
-    font: 400 23px/1 Noticons;
+    font: 400 23px/1 Dashicons;
     speak: none;
     color: #0085ba; }
   .welcome__container input[type=checkbox]:disabled:checked:before, .welcome__container .checkbox-tristate:disabled:checked:before {
@@ -106,7 +106,7 @@
     .welcome__container input[type=radio]:checked:before {
       float: left;
       display: inline-block;
-      content: '\2022';
+      content: '\f159';
       margin: 3px;
       width: 8px;
       height: 8px;
@@ -157,9 +157,9 @@
     .welcome__container .checkbox-tristate:before {
       position: absolute;
       color: #0085ba;
-      font-family: Noticons; }
+      font-family: Dashicons; }
     .some-selected .welcome__container .checkbox-tristate:before {
-      content: '\f421';
+      content: '\f460';
       top: 7px;
       left: 0; }
     .all-selected .welcome__container .checkbox-tristate:before {
@@ -575,3 +575,9 @@ img.welcome__get-started-image {
 
 .welcome__container .welcome__button-container {
   width: 100%; }
+
+.welcome__container .welcome__woocommerce--install-container {
+  margin-bottom: 20px; }
+  .welcome__container .welcome__woocommerce--install-container .welcome__woocommerce--checkbox {
+    float: none;
+    margin: 1px 8px 0 0; }

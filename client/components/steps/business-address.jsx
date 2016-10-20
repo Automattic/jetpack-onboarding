@@ -19,7 +19,6 @@ module.exports = React.createClass( {
 
 	componentDidMount: function() {
 		SiteStore.addChangeListener( this._onChange );
-		JPS.shownBusinessAddressStep = true;
 	},
 
 	componentWillUnmount: function() {
@@ -45,7 +44,11 @@ module.exports = React.createClass( {
 
 	handleChange: function( e ) {
 		var newValue = {};
-		newValue[ e.currentTarget.name ] = e.currentTarget.value;
+		if ( 'checkbox' === e.currentTarget.type ) {
+			newValue[ e.currentTarget.name ] = e.currentTarget.checked;
+		} else {
+			newValue[ e.currentTarget.name ] = e.currentTarget.value;
+		}
 		this.setState( newValue );
 	},
 
