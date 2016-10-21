@@ -1,7 +1,8 @@
 var React = require( 'react' ),
 	SetupProgressStore = require( 'stores/setup-progress-store' ),
 	SetupProgressActions = require( 'actions/setup-progress-actions' ),
-	Button = require( '@automattic/dops-components/client/components/button' );
+	Button = require( '@automattic/dops-components/client/components/button' ),
+	Paths = require('../../constants/jetpack-onboarding-paths');
 
 function getSetupState() {
 	return {};
@@ -26,6 +27,14 @@ var GetStarted = React.createClass({
 
 	handleGetStarted: function(sitePurpose, e) {
 		e.preventDefault();
+
+		if ( 'personal' === sitePurpose ) {
+			// We want to mark business only steps as complete, so they don't linger as pending steps
+			// within the personal flow.
+			SetupProgressActions.completeStepNoRecord( Paths.BUSINESS_ADDRESS_SLUG );
+			SetupProgressActions.completeStepNoRecord( Paths.WOOCOMMERCE_SLUG );
+		}
+
 		SetupProgressActions.getStarted( sitePurpose );
 	},
 

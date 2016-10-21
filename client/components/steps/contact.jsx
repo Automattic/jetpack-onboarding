@@ -43,7 +43,8 @@ var ContactPageStep = React.createClass( {
 
 	handleContinue: function( e ) {
 		e.preventDefault();
-		SetupProgressActions.completeAndNextStep( Paths.CONTACT_PAGE_STEP_SLUG );
+		SetupProgressActions.completeStepNoRecord( Paths.CONTACT_PAGE_STEP_SLUG );
+		SetupProgressActions.selectNextStep();
 	},
 
 	render: function() {

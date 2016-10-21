@@ -2638,7 +2638,8 @@ webpackJsonp([1],[
 	var React = __webpack_require__(4),
 	    SetupProgressStore = __webpack_require__(158),
 	    SetupProgressActions = __webpack_require__(166),
-	    Button = __webpack_require__(179);
+	    Button = __webpack_require__(179),
+	    Paths = __webpack_require__(167);
 	
 	function getSetupState() {
 		return {};
@@ -2665,6 +2666,14 @@ webpackJsonp([1],[
 	
 		handleGetStarted: function handleGetStarted(sitePurpose, e) {
 			e.preventDefault();
+	
+			if ('personal' === sitePurpose) {
+				// We want to mark business only steps as complete, so they don't linger as pending steps
+				// within the personal flow.
+				SetupProgressActions.completeStepNoRecord(Paths.BUSINESS_ADDRESS_SLUG);
+				SetupProgressActions.completeStepNoRecord(Paths.WOOCOMMERCE_SLUG);
+			}
+	
 			SetupProgressActions.getStarted(sitePurpose);
 		},
 	
@@ -4353,7 +4362,8 @@ webpackJsonp([1],[
 	
 		handleContinue: function handleContinue(e) {
 			e.preventDefault();
-			SetupProgressActions.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
+			SetupProgressActions.completeStepNoRecord(Paths.CONTACT_PAGE_STEP_SLUG);
+			SetupProgressActions.selectNextStep();
 		},
 	
 		render: function render() {
@@ -4498,12 +4508,8 @@ webpackJsonp([1],[
 	
 		handleNext: function handleNext(event) {
 			event.preventDefault();
-			SetupProgressActions.completeStep(Paths.JETPACK_MODULES_STEP_SLUG);
-			if (JPS.bloginfo.type === 'business') {
-				SetupProgressActions.setCurrentStep(Paths.BUSINESS_ADDRESS_SLUG);
-			} else {
-				SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
-			}
+			SetupProgressActions.completeStepNoRecord(Paths.JETPACK_MODULES_STEP_SLUG);
+			SetupProgressActions.selectNextStep();
 		},
 	
 		handleSkip: function handleSkip() {

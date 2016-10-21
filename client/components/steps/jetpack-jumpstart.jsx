@@ -56,12 +56,8 @@ var JetpackJumpstart = React.createClass({
 
 	handleNext: function( event ) {
 		event.preventDefault();
-		SetupProgressActions.completeStep( Paths.JETPACK_MODULES_STEP_SLUG );
-		if ( JPS.bloginfo.type === 'business' ) {
-			SetupProgressActions.setCurrentStep( Paths.BUSINESS_ADDRESS_SLUG );
-		} else {
-			SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
-		}
+		SetupProgressActions.completeStepNoRecord( Paths.JETPACK_MODULES_STEP_SLUG );
+		SetupProgressActions.selectNextStep();
 	},
 
 	handleSkip: function() {
