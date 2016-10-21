@@ -56,11 +56,12 @@ var JetpackJumpstart = React.createClass({
 
 	handleNext: function( event ) {
 		event.preventDefault();
-		const path = JPS.bloginfo.type === 'business' ?
-			Paths.BUSINESS_ADDRESS_SLUG :
-			Paths.REVIEW_STEP_SLUG;
-
-		SetupProgressActions.completeAndNextStep( path );
+		SetupProgressActions.completeStep( Paths.JETPACK_MODULES_STEP_SLUG );
+		if ( JPS.bloginfo.type === 'business' ) {
+			SetupProgressActions.setCurrentStep( Paths.BUSINESS_ADDRESS_SLUG );
+		} else {
+			SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
+		}
 	},
 
 	handleSkip: function() {
@@ -84,7 +85,7 @@ var JetpackJumpstart = React.createClass({
 								<p>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
 								<p><a href={ this.state.settingsUrl }>Check out the settings page…</a></p>
 								<div className="welcome__submit">
-									<Button primary onClick={this.handleNext}>Next Step</Button>
+									<Button primary onClick={ this.handleNext }>Next Step</Button>
 								</div>
 							</div>
 						:	<div className='welcome__submit'>

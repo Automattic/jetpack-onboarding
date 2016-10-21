@@ -4488,9 +4488,12 @@ webpackJsonp([1],[
 	
 		handleNext: function handleNext(event) {
 			event.preventDefault();
-			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
-	
-			SetupProgressActions.completeAndNextStep(path);
+			SetupProgressActions.completeStep(Paths.JETPACK_MODULES_STEP_SLUG);
+			if (JPS.bloginfo.type === 'business') {
+				SetupProgressActions.setCurrentStep(Paths.BUSINESS_ADDRESS_SLUG);
+			} else {
+				SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
+			}
 		},
 	
 		handleSkip: function handleSkip() {
