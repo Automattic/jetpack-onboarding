@@ -4343,7 +4343,7 @@ webpackJsonp([1],[
 	
 		handleContinue: function handleContinue(e) {
 			e.preventDefault();
-			SetupProgressActions.selectNextStep();
+			SetupProgressActions.skipStep();
 		},
 	
 		render: function render() {

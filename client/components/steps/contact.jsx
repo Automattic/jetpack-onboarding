@@ -42,7 +42,7 @@ var ContactPageStep = React.createClass( {
 
 	handleContinue: function( e ) {
 		e.preventDefault();
-		SetupProgressActions.selectNextStep();
+		SetupProgressActions.skipStep();
 	},
 
 	render: function() {
