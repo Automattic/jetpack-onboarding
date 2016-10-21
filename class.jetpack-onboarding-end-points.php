@@ -229,6 +229,7 @@ class Jetpack_Onboarding_EndPoints {
 
 		delete_option( self::STEP_STATUS_KEY );
 		delete_option( self::STARTED_KEY );
+		delete_option( self::CONTACTPAGE_ID_KEY );
 
 		wp_send_json_success( 'deleted' );
 	}
