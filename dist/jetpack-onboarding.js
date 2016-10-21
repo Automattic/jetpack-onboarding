@@ -1404,6 +1404,15 @@ webpackJsonp([1],[
 			});
 		},
 	
+		completeStepNoRecord: function completeStepNoRecord(slug) {
+			// Sometimes we want to mark a step as complete without recording the completion in our tracking data.
+			var step = SetupProgressStore.getStepFromSlug(slug);
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_COMPLETE,
+				slug: slug
+			});
+		},
+	
 		completeStep: function completeStep(slug, meta) {
 			var step = SetupProgressStore.getStepFromSlug(slug);
 			AppDispatcher.dispatch({
