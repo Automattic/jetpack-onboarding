@@ -41,19 +41,9 @@ module.exports = React.createClass( {
 		return state;
 	},
 
-	handleChange: function( e ) {
-		var newValue = {};
-		if ( 'checkbox' === e.currentTarget.type ) {
-			newValue[ e.currentTarget.name ] = e.currentTarget.checked;
-		} else {
-			newValue[ e.currentTarget.name ] = e.currentTarget.value;
-		}
-		this.setState( newValue );
-	},
-
-	handleSubmit: function( e ) {
-		e.preventDefault();
-		SetupProgressActions.submitWoocommerce( this.state );
+	handleSubmit: function( event ) {
+		event.preventDefault();
+		SetupProgressActions.submitWoocommerce( Object.assign( {}, this.state, { install_woo: true } ) );
 	},
 
 	renderInstall: function() {
@@ -63,12 +53,10 @@ module.exports = React.createClass( {
 				<form onSubmit={ this.handleSubmit } className="welcome__woocommerce--form">
 						
 					<div className="welcome__woocommerce--install-container">
-						<input className="welcome__woocommerce--checkbox" type="checkbox" name="install_woo" id="install_woo" checked={ this.state.install_woo } onChange={ this.handleChange } />
-						<label htmlFor="install_woo">Install WooCommerce now</label>
+						<Button className='welcome-submit' primary type="submit">Install WooCommerce</Button>
 					</div>
 
 					<div className="welcome__button-container">
-						<Button className='welcome-submit' primary type="submit">Next Step</Button>
 						<SkipButton />
 					</div>
 				</form>

@@ -4852,19 +4852,9 @@ webpackJsonp([1],[
 			return state;
 		},
 	
-		handleChange: function handleChange(e) {
-			var newValue = {};
-			if ('checkbox' === e.currentTarget.type) {
-				newValue[e.currentTarget.name] = e.currentTarget.checked;
-			} else {
-				newValue[e.currentTarget.name] = e.currentTarget.value;
-			}
-			this.setState(newValue);
-		},
-	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitWoocommerce(this.state);
+		handleSubmit: function handleSubmit(event) {
+			event.preventDefault();
+			SetupProgressActions.submitWoocommerce(Object.assign({}, this.state, { install_woo: true }));
 		},
 	
 		renderInstall: function renderInstall() {
@@ -4882,21 +4872,15 @@ webpackJsonp([1],[
 					React.createElement(
 						'div',
 						{ className: 'welcome__woocommerce--install-container' },
-						React.createElement('input', { className: 'welcome__woocommerce--checkbox', type: 'checkbox', name: 'install_woo', id: 'install_woo', checked: this.state.install_woo, onChange: this.handleChange }),
 						React.createElement(
-							'label',
-							{ htmlFor: 'install_woo' },
-							'Install WooCommerce now'
+							Button,
+							{ className: 'welcome-submit', primary: true, type: 'submit' },
+							'Install WooCommerce'
 						)
 					),
 					React.createElement(
 						'div',
 						{ className: 'welcome__button-container' },
-						React.createElement(
-							Button,
-							{ className: 'welcome-submit', primary: true, type: 'submit' },
-							'Next Step'
-						),
 						React.createElement(SkipButton, null)
 					)
 				)
