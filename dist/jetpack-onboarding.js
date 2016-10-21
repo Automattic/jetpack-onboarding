@@ -4476,8 +4476,8 @@ webpackJsonp([1],[
 			return state;
 		},
 	
-		handleJetpackConnect: function handleJetpackConnect(e) {
-			e.preventDefault();
+		handleJetpackConnect: function handleJetpackConnect(event) {
+			event.preventDefault();
 			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
 	
 			this.setState({ jetpackConnecting: true });
@@ -4486,18 +4486,19 @@ webpackJsonp([1],[
 			}).bind(this));
 		},
 	
-		handleNext: function handleNext(e) {
-			e.preventDefault();
+		handleNext: function handleNext(event) {
+			event.preventDefault();
 			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
 	
 			SetupProgressActions.completeAndNextStep(path);
 		},
 	
 		handleSkip: function handleSkip() {
+			SetupProgressActions.skipStep();
 			if (JPS.bloginfo.type !== 'business') {
 				return SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 			}
-			return SetupProgressActions.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
+			return SetupProgressActions.setCurrentStep(Paths.BUSINESS_ADDRESS_SLUG);
 		},
 	
 		render: function render() {
@@ -4550,7 +4551,10 @@ webpackJsonp([1],[
 					{ className: 'welcome__submit' },
 					React.createElement(
 						Button,
-						{ disabled: this.state.jetpackConnecting, onClick: this.handleJetpackConnect, primary: true },
+						{
+							disabled: this.state.jetpackConnecting,
+							onClick: this.handleJetpackConnect,
+							primary: true },
 						this.state.jetpackConnecting ? 'Connecting' : 'Connect',
 						' to WordPress.com'
 					),
