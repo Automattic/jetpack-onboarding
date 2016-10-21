@@ -4302,7 +4302,8 @@ webpackJsonp([1],[
 	    SiteStore = __webpack_require__(170),
 	    Button = __webpack_require__(179),
 	    WelcomeSection = __webpack_require__(214),
-	    SetupProgressActions = __webpack_require__(166);
+	    SetupProgressActions = __webpack_require__(166),
+	    Paths = __webpack_require__(167);
 	
 	function getSiteContactState() {
 		return {
@@ -4343,7 +4344,7 @@ webpackJsonp([1],[
 	
 		handleContinue: function handleContinue(e) {
 			e.preventDefault();
-			SetupProgressActions.skipStep();
+			SetupProgressActions.completeAndNextStep(Paths.CONTACT_PAGE_STEP_SLUG);
 		},
 	
 		render: function render() {
