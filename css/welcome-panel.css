@@ -454,8 +454,9 @@ img.welcome__get-started-image {
     width: 100%;
     margin-bottom: 16px; }
   #welcome__site-title .welcome__site-title--form button {
-    margin-top: 32px;
-    float: right; }
+    margin-top: 32px; }
+  #welcome__site-title .welcome__site-title--form .welcome__submit {
+    text-align: center; }
 
 .welcome__homepage-cols {
   max-width: 780px;

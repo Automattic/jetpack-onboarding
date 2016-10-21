@@ -4060,9 +4060,13 @@ webpackJsonp([1],[
 					),
 					React.createElement('input', { type: 'text', name: 'site_description', id: 'site-description', autoComplete: 'off', onChange: this.handleChangeDescription, value: this.state.description, placeholder: 'e.g. Just another WordPress blog', required: true }),
 					React.createElement(
-						Button,
-						{ className: 'welcome-submit', primary: true, type: 'submit' },
-						'Next Step'
+						'div',
+						{ className: 'welcome__submit' },
+						React.createElement(
+							Button,
+							{ primary: true, type: 'submit' },
+							'Next Step'
+						)
 					)
 				)
 			);

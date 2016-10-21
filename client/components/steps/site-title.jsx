@@ -53,7 +53,9 @@ var SiteTitleStep = React.createClass( {
 						<input type="text" name="site_title" id="site-title" autoComplete="off" onChange={ this.handleChangeTitle } value={ this.state.title } placeholder="e.g. My WordPress site" required />
 						<label htmlFor="site_description">Site Description</label>
 						<input type="text" name="site_description" id="site-description" autoComplete="off" onChange={ this.handleChangeDescription } value={ this.state.description } placeholder="e.g. Just another WordPress blog" required />
-						<Button className='welcome-submit' primary type="submit">Next Step</Button>
+						<div className="welcome__submit">
+							<Button primary type="submit">Next Step</Button>
+						</div>
 				</form>
 			</WelcomeSection>
 		);
