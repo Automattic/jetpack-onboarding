@@ -51,12 +51,9 @@ module.exports = React.createClass( {
 			<div>
 				<p className="welcome__callout welcome__jetpack--callout">Are you looking to sell online?</p>
 				<form onSubmit={ this.handleSubmit } className="welcome__woocommerce--form">
-						
-					<div className="welcome__woocommerce--install-container">
-						<Button className='welcome-submit' primary type="submit">Install WooCommerce</Button>
-					</div>
 
 					<div className="welcome__button-container">
+						<Button className='welcome-submit' primary type="submit">Install WooCommerce</Button>
 						<SkipButton />
 					</div>
 				</form>

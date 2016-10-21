@@ -4894,16 +4894,12 @@ webpackJsonp([1],[
 					{ onSubmit: this.handleSubmit, className: 'welcome__woocommerce--form' },
 					React.createElement(
 						'div',
-						{ className: 'welcome__woocommerce--install-container' },
+						{ className: 'welcome__button-container' },
 						React.createElement(
 							Button,
 							{ className: 'welcome-submit', primary: true, type: 'submit' },
 							'Install WooCommerce'
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'welcome__button-container' },
+						),
 						React.createElement(SkipButton, null)
 					)
 				)
