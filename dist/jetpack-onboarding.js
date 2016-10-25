@@ -1514,8 +1514,8 @@ webpackJsonp([1],[
 			this.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
 		},
 	
-		submitWoocommerce: function submitWoocommerce(woocommerce) {
-			SiteActions.saveWoocommerce(woocommerce);
+		submitWoocommerce: function submitWoocommerce() {
+			SiteActions.saveWoocommerce();
 			if (woocommerce.install_woo) {
 				SiteActions.installWooCommerce();
 			}
@@ -1736,14 +1736,11 @@ webpackJsonp([1],[
 			return jQuery.Deferred().resolve(); // XXX HACK
 		},
 	
-		saveWoocommerce: function saveWoocommerce(woocommerce) {
-			var install_woo = woocommerce.install_woo;
-	
-			JPS.bloginfo = Object.assign({}, JPS.bloginfo, { install_woo: install_woo });
+		saveWoocommerce: function saveWoocommerce() {
+			JPS.bloginfo = Object.assign({}, JPS.bloginfo, { install_woo: true });
 	
 			AppDispatcher.dispatch({
-				actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
-				data: woocommerce
+				actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE
 			});
 	
 			return jQuery.Deferred().resolve(); // XXX HACK
@@ -4881,7 +4878,7 @@ webpackJsonp([1],[
 	
 		handleSubmit: function handleSubmit(event) {
 			event.preventDefault();
-			SetupProgressActions.submitWoocommerce(Object.assign({}, this.state, { install_woo: true }));
+			SetupProgressActions.submitWoocommerce();
 		},
 	
 		renderInstall: function renderInstall() {

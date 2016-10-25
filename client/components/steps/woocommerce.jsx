@@ -43,7 +43,7 @@ module.exports = React.createClass( {
 
 	handleSubmit: function( event ) {
 		event.preventDefault();
-		SetupProgressActions.submitWoocommerce( Object.assign( {}, this.state, { install_woo: true } ) );
+		SetupProgressActions.submitWoocommerce();
 	},
 
 	renderInstall: function() {

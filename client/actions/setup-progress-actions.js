@@ -139,8 +139,8 @@ var SetupProgressActions = {
 		this.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
 	},
 
-	submitWoocommerce: function( woocommerce ) {
-		SiteActions.saveWoocommerce( woocommerce );
+	submitWoocommerce: function() {
+		SiteActions.saveWoocommerce();
 		if ( woocommerce.install_woo ) {
 			SiteActions.installWooCommerce();
 		}

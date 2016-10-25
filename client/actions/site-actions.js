@@ -67,13 +67,11 @@ var SiteActions = {
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
 
-	saveWoocommerce: function( woocommerce ) {
-		const { install_woo } = woocommerce;
-		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { install_woo } );
+	saveWoocommerce: function() {
+		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { install_woo: true } );
 
 		AppDispatcher.dispatch({
-			actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
-			data: woocommerce
+			actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE
 	    });
 
 		return jQuery.Deferred().resolve(); // XXX HACK
