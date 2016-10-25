@@ -139,13 +139,11 @@ var SetupProgressActions = {
 		this.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
 	},
 
-	submitWoocommerce: function() {
-		SiteActions.saveWoocommerce();
-		if ( woocommerce.install_woo ) {
-			SiteActions.installWooCommerce();
-		}
-		this.completeStep(Paths.WOOCOMMERCE_SLUG);
-		this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
+	installWoocommerce: function() {
+		//SiteActions.saveWoocommerce();
+		//SiteActions.installWooCommerce();
+		//this.completeStep(Paths.WOOCOMMERCE_SLUG);
+		//this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 
 	submitLayoutStep: function( layout ) {

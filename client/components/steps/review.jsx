@@ -49,7 +49,7 @@ var AdvancedSettingsStep = React.createClass({
 	},
 
 	renderWooCommerceStatus: function() {
-		const { install_woo, type } = JPS.bloginfo;
+		const { is_shop, type } = JPS.bloginfo;
 		if ( type !== 'business' ) {
 			return null;
 		}
@@ -60,7 +60,7 @@ var AdvancedSettingsStep = React.createClass({
 					<Dashicon name="yes" /> WooCommerce Installed! <a href={ this.state.wooCommerceSetupUrl }>Set up shop</a>
 				</li>
 			);
-		} else if ( ! install_woo ) {
+		} else if ( ! is_shop ) {
 			return (
 				<li>
 					<Dashicon name="no" /> WooCommerce not installed. <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.WOOCOMMERCE_SLUG ) }>Install WooCommerce?</a>
