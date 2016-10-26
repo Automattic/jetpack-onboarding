@@ -47,6 +47,10 @@ module.exports = React.createClass( {
 		window.location = this.state.wooCommerceSetupUrl;
 	},
 
+	goToJpoReview: function() {
+		SetupProgressActions.setCurrentStep( Path.REVIEW_STEP_SLUG );
+	},
+
 	handleSubmit: function( event ) {
 		event.preventDefault();
 		SiteActions.installWooCommerce();
@@ -73,7 +77,7 @@ module.exports = React.createClass( {
 				<p className="welcome__callout welcome__jetpack--callout">WooCommerce is ready to go</p>
 				<div className="welcome__button-container">
 					<Button className='welcome-submit' primary onClick={ this.goToWooSetup }>Setup your store</Button>
-					<SkipButton />
+					<Button onClick={ this.goToJpoReview }>Not right now</Button>
 				</div>
 			</div>
 		);

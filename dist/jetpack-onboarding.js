@@ -4905,6 +4905,10 @@ webpackJsonp([1],[
 			window.location = this.state.wooCommerceSetupUrl;
 		},
 	
+		goToJpoReview: function goToJpoReview() {
+			SetupProgressActions.setCurrentStep(Path.REVIEW_STEP_SLUG);
+		},
+	
 		handleSubmit: function handleSubmit(event) {
 			event.preventDefault();
 			SiteActions.installWooCommerce();
@@ -4953,7 +4957,11 @@ webpackJsonp([1],[
 						{ className: 'welcome-submit', primary: true, onClick: this.goToWooSetup },
 						'Setup your store'
 					),
-					React.createElement(SkipButton, null)
+					React.createElement(
+						Button,
+						{ onClick: this.goToJpoReview },
+						'Not right now'
+					)
 				)
 			);
 		},
