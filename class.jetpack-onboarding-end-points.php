@@ -9,7 +9,7 @@ class Jetpack_Onboarding_EndPoints {
 	const BUSINESS_ADDRESS_SAVED_KEY = 'jpo_business_address_saved';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
-	const VERSION = "1.4";
+	const VERSION = "1.5";
 	const WOOCOMMERCE_ID = 'woocommerce/woocommerce.php';
 	const WOOCOMMERCE_SLUG = 'woocommerce';
 
