@@ -20,6 +20,15 @@ var SetupProgressActions = {
 		});
 	},
 
+	completeStepNoRecord: function( slug ) {
+		// Sometimes we want to mark a step as complete without recording the completion in our tracking data.
+		var step = SetupProgressStore.getStepFromSlug(slug);
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.STEP_COMPLETE,
+			slug: slug
+		});
+	},
+
 	completeStep: function(slug, meta) {
 		var step = SetupProgressStore.getStepFromSlug(slug);
 		AppDispatcher.dispatch({
@@ -128,15 +137,6 @@ var SetupProgressActions = {
 		SiteActions.saveBusinessAddress( businessAddress );
 		this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
 		this.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
-	},
-
-	submitWoocommerce: function( woocommerce ) {
-		SiteActions.saveWoocommerce( woocommerce );
-		if ( woocommerce.install_woo ) {
-			SiteActions.installWooCommerce();
-		}
-		this.completeStep(Paths.WOOCOMMERCE_SLUG);
-		this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 
 	submitLayoutStep: function( layout ) {

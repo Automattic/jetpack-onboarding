@@ -2,7 +2,8 @@ var React = require( 'react' ),
 	SiteStore = require( 'stores/site-store' ),
 	Button = require( '@automattic/dops-components/client/components/button' ),
 	WelcomeSection = require( '../page/container' ),
-	SetupProgressActions = require( 'actions/setup-progress-actions' );
+	SetupProgressActions = require( 'actions/setup-progress-actions' ),
+	Paths = require('../../constants/jetpack-onboarding-paths');
 
 function getSiteContactState() {
 	return {
@@ -42,6 +43,7 @@ var ContactPageStep = React.createClass( {
 
 	handleContinue: function( e ) {
 		e.preventDefault();
+		SetupProgressActions.completeStepNoRecord( Paths.CONTACT_PAGE_STEP_SLUG );
 		SetupProgressActions.selectNextStep();
 	},
 

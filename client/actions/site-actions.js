@@ -66,29 +66,29 @@ var SiteActions = {
 
 		return jQuery.Deferred().resolve(); // XXX HACK
 	},
-
-	saveWoocommerce: function( woocommerce ) {
-		const { install_woo } = woocommerce;
-		JPS.bloginfo = Object.assign( {}, JPS.bloginfo, { install_woo } );
-
+	
+	redirectToWooCommerceSetup: function() {
 		AppDispatcher.dispatch({
-			actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
-			data: woocommerce
-	    });
-
-		return jQuery.Deferred().resolve(); // XXX HACK
+			actionType: JPSConstants.SITE_REDIRECT_TO_WOOCOMMERCE_SETUP
+		});
 	},
 
 	installWooCommerce: function() {
 		SpinnerActions.show( "Installing WooCommerce" );
+		AppDispatcher.dispatch({
+			actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+		});
 		return WPAjax.
 			post( JPS.site_actions.install_woocommerce ).
 			done( function ( ) {
 				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE_SUCCESS
 				});
 			}).
 			fail( function ( msg ) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE_FAIL
+				});
 				FlashActions.error( msg );
 			}).
 			always( function() {

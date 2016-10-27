@@ -1,15 +1,20 @@
 var React = require( 'react' ),
 	SkipButton = require( '../skip-button' ),
 	SiteStore = require( 'stores/site-store' ),
-	WelcomeSection = require( '../page/container' ),
 	SetupProgressActions = require( 'actions/setup-progress-actions' ),
+	WelcomeSection = require( '../page/container' ),
+	SiteActions = require( 'actions/site-actions' ),
+	Paths = require('constants/jetpack-onboarding-paths'),
 	Button = require( '@automattic/dops-components/client/components/button' );
 
 function getJetpackState() {
+	const { is_shop, redirect_to_woocommerce_setup } = JPS.bloginfo;
 	return {
 		site_title: SiteStore.getTitle(),
 		wooCommerceStatus: SiteStore.getWooCommerceStatus(),
 		wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl(),
+		is_shop,
+		redirect_to_woocommerce_setup
 	};
 }
 
@@ -26,34 +31,29 @@ module.exports = React.createClass( {
 
 	_onChange: function() {
 		this.setState( getJetpackState() );
+		if ( this.state.wooCommerceStatus && this.state.redirect_to_woocommerce_setup ) {
+			window.setTimeout( this.goToWooSetup, 10 );
+		}
 	},
 
 	getInitialState: function() {
-		let state = getJetpackState();
-
-		const { install_woo } = JPS.bloginfo;
-		let business_name = JPS.bloginfo.business_name;
-		if ( 'undefined' === typeof business_name ) {
-			business_name = state.site_title;
-		}
-
-		state = Object.assign( {}, state, { business_name, install_woo } );
-		return state;
+		return getJetpackState();
 	},
 
-	handleChange: function( e ) {
-		var newValue = {};
-		if ( 'checkbox' === e.currentTarget.type ) {
-			newValue[ e.currentTarget.name ] = e.currentTarget.checked;
-		} else {
-			newValue[ e.currentTarget.name ] = e.currentTarget.value;
-		}
-		this.setState( newValue );
+	goToWooSetup: function() {
+		jQuery(window).off('beforeunload');
+		SiteActions.redirectToWooCommerceSetup();
+		SetupProgressActions.completeStep( Paths.WOOCOMMERCE_SLUG );
+		window.location = this.state.wooCommerceSetupUrl;
 	},
 
-	handleSubmit: function( e ) {
-		e.preventDefault();
-		SetupProgressActions.submitWoocommerce( this.state );
+	goToJpoReview: function() {
+		SetupProgressActions.setCurrentStep( Path.REVIEW_STEP_SLUG );
+	},
+
+	handleSubmit: function( event ) {
+		event.preventDefault();
+		SiteActions.installWooCommerce();
 	},
 
 	renderInstall: function() {
@@ -61,14 +61,9 @@ module.exports = React.createClass( {
 			<div>
 				<p className="welcome__callout welcome__jetpack--callout">Are you looking to sell online?</p>
 				<form onSubmit={ this.handleSubmit } className="welcome__woocommerce--form">
-						
-					<div className="welcome__woocommerce--install-container">
-						<input className="welcome__woocommerce--checkbox" type="checkbox" name="install_woo" id="install_woo" checked={ this.state.install_woo } onChange={ this.handleChange } />
-						<label htmlFor="install_woo">Install WooCommerce now</label>
-					</div>
 
 					<div className="welcome__button-container">
-						<Button className='welcome-submit' primary type="submit">Next Step</Button>
+						<Button className='welcome-submit' primary type="submit">Install WooCommerce</Button>
 						<SkipButton />
 					</div>
 				</form>
@@ -79,16 +74,17 @@ module.exports = React.createClass( {
 	renderAlreadyInstalled: function() {
 		return (
 			<div>
-				<p className="welcome__callout welcome__jetpack--callout">WooCommerce has already been installed.</p>
+				<p className="welcome__callout welcome__jetpack--callout">WooCommerce is ready to go</p>
 				<div className="welcome__button-container">
-					<Button className='welcome-submit' primary type="submit" href={ this.state.wooCommerceSetupUrl }>Setup your store</Button>
-					<SkipButton />
+					<Button className='welcome-submit' primary onClick={ this.goToWooSetup }>Setup your store</Button>
+					<Button onClick={ this.goToJpoReview }>Not right now</Button>
 				</div>
 			</div>
 		);
 	},
 
 	render: function() {
+
 		return (
 			<WelcomeSection id="welcome__jetpack">
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>

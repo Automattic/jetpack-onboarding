@@ -229,6 +229,7 @@ class Jetpack_Onboarding_EndPoints {
 
 		delete_option( self::STEP_STATUS_KEY );
 		delete_option( self::STARTED_KEY );
+		delete_option( self::CONTACTPAGE_ID_KEY );
 
 		wp_send_json_success( 'deleted' );
 	}
@@ -426,11 +427,15 @@ class Jetpack_Onboarding_EndPoints {
 	static function set_title() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
-		$title = wp_unslash( $_REQUEST['title'] ); // sanitization (sanitize_option) is run in update_option
-		$description = wp_unslash( $_REQUEST['description'] ); // sanitization (sanitize_option) is run in update_option
+		$title = wp_unslash( $_REQUEST['title'] );
+		$description = wp_unslash( $_REQUEST['description'] );
 
-		$updated_title = get_option( 'blogname' ) === $title || update_option( 'blogname', $title );
-		$updated_description = get_option( 'blogdescription' ) === $description || update_option( 'blogdescription', $description );
+		// User input is sanitized before comparing to ensure an accurate differential.
+		// If they are not equal, the option is updated.
+		$updated_title = get_option( 'blogname' ) === sanitize_option( 'blogname', $title )
+			|| update_option( 'blogname', $title );
+		$updated_description = get_option( 'blogdescription' ) === sanitize_option( 'blogdescription', $description )
+			|| update_option( 'blogdescription', $description );
 
 		if ( $updated_title && $updated_description ) {
 			wp_send_json_success( $title );

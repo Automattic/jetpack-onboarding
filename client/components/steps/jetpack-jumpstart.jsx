@@ -22,15 +22,15 @@ function getJetpackState() {
 var JetpackJumpstart = React.createClass({
 
 	componentDidMount: function() {
-		SiteStore.addChangeListener(this._onChange);
+		SiteStore.addChangeListener( this._onChange );
 	},
 
 	componentWillUnmount: function() {
-		SiteStore.removeChangeListener(this._onChange);
+		SiteStore.removeChangeListener( this._onChange );
 	},
 
 	_onChange: function() {
-		this.setState(getJetpackState());
+		this.setState( getJetpackState() );
 	},
 
 	getInitialState: function() {
@@ -40,8 +40,8 @@ var JetpackJumpstart = React.createClass({
 		return state;
 	},
 
-	handleJetpackConnect: function (e) {
-		e.preventDefault();
+	handleJetpackConnect: function( event ) {
+		event.preventDefault();
 		const path = JPS.bloginfo.type === 'business' ?
 			Paths.BUSINESS_ADDRESS_SLUG :
 			Paths.REVIEW_STEP_SLUG;
@@ -54,39 +54,45 @@ var JetpackJumpstart = React.createClass({
 			}.bind( this ) );
 	},
 
-	handleNext: function (e) {
-		e.preventDefault();
-		const path = JPS.bloginfo.type === 'business' ?
-			Paths.BUSINESS_ADDRESS_SLUG :
-			Paths.REVIEW_STEP_SLUG;
-
-		SetupProgressActions.completeAndNextStep( path );
+	handleNext: function( event ) {
+		event.preventDefault();
+		SetupProgressActions.completeStepNoRecord( Paths.JETPACK_MODULES_STEP_SLUG );
+		SetupProgressActions.selectNextStep();
 	},
 
 	handleSkip: function() {
+		SetupProgressActions.skipStep();
 		if ( JPS.bloginfo.type !== 'business' ) {
 			return SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 		}
-		return SetupProgressActions.setCurrentStep( Paths.WOOCOMMERCE_SLUG );
+		return SetupProgressActions.setCurrentStep( Paths.BUSINESS_ADDRESS_SLUG );
 	},
 
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__jetpack">
-				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
-				<p className="welcome__callout welcome__jetpack--callout">Connect your Jetpack profile to improve security, track stats, and grow traffic</p>
-				{ this.state.jetpackConfigured ?
-					<div>
-						<p>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
-						<p><a href={ this.state.settingsUrl }>Check out the settings page…</a></p>
-						<div className="welcome__submit">
-							<Button primary onClick={this.handleNext}>Next Step</Button>
-						</div>
-					</div> :
-					<div className='welcome__submit'>
-						<Button disabled={this.state.jetpackConnecting} onClick={ this.handleJetpackConnect } primary>{ this.state.jetpackConnecting ? 'Connecting' : 'Connect' } to WordPress.com</Button>
-						{ !this.state.jetpackConnecting && <SkipButton handleSkip={ this.handleSkip } /> }
-					</div>
+				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
+				<p className="welcome__callout welcome__jetpack--callout">
+					Connect your Jetpack profile to improve security, track stats, and grow traffic
+				</p>
+				{
+					this.state.jetpackConfigured
+						?	<div>
+								<p>Congratulations! You&apos;ve enabled Jetpack and unlocked dozens of powerful features.</p>
+								<p><a href={ this.state.settingsUrl }>Check out the settings page…</a></p>
+								<div className="welcome__submit">
+									<Button primary onClick={ this.handleNext }>Next Step</Button>
+								</div>
+							</div>
+						:	<div className='welcome__submit'>
+								<Button
+									disabled={ this.state.jetpackConnecting }
+									onClick={ this.handleJetpackConnect }
+									primary>
+									{ this.state.jetpackConnecting ? 'Connecting' : 'Connect' } to WordPress.com
+								</Button>
+								{ ! this.state.jetpackConnecting && <SkipButton handleSkip={ this.handleSkip } /> }
+							</div>
 				}
 				<div className='jetpack_connect_info'>
 					<h2>Grow and Track Your Community</h2>

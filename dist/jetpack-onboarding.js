@@ -1289,8 +1289,10 @@ webpackJsonp([1],[
 		SITE_SET_TYPE: null,
 		SITE_SET_DESCRIPTION: null,
 		SITE_ADD_BUSINESS_ADDRESS: null,
-		SITE_SAVE_WOOCOMMERCE: null,
 		SITE_INSTALL_WOOCOMMERCE: null,
+		SITE_INSTALL_WOOCOMMERCE_SUCCESS: null,
+		SITE_INSTALL_WOOCOMMERCE_FAIL: null,
+		SITE_REDIRECT_TO_WOOCOMMERCE_SETUP: null,
 		SITE_SAVE_TITLE_AND_DESCRIPTION: null,
 		SITE_CONTACT_PAGE_ID: null,
 		SITE_SET_THEME: null,
@@ -1404,6 +1406,15 @@ webpackJsonp([1],[
 			});
 		},
 	
+		completeStepNoRecord: function completeStepNoRecord(slug) {
+			// Sometimes we want to mark a step as complete without recording the completion in our tracking data.
+			var step = SetupProgressStore.getStepFromSlug(slug);
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.STEP_COMPLETE,
+				slug: slug
+			});
+		},
+	
 		completeStep: function completeStep(slug, meta) {
 			var step = SetupProgressStore.getStepFromSlug(slug);
 			AppDispatcher.dispatch({
@@ -1503,15 +1514,6 @@ webpackJsonp([1],[
 			SiteActions.saveBusinessAddress(businessAddress);
 			this.completeStep(Paths.BUSINESS_ADDRESS_SLUG);
 			this.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
-		},
-	
-		submitWoocommerce: function submitWoocommerce(woocommerce) {
-			SiteActions.saveWoocommerce(woocommerce);
-			if (woocommerce.install_woo) {
-				SiteActions.installWooCommerce();
-			}
-			this.completeStep(Paths.WOOCOMMERCE_SLUG);
-			this.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 		},
 	
 		submitLayoutStep: function submitLayoutStep(layout) {
@@ -1727,26 +1729,25 @@ webpackJsonp([1],[
 			return jQuery.Deferred().resolve(); // XXX HACK
 		},
 	
-		saveWoocommerce: function saveWoocommerce(woocommerce) {
-			var install_woo = woocommerce.install_woo;
-	
-			JPS.bloginfo = Object.assign({}, JPS.bloginfo, { install_woo: install_woo });
-	
+		redirectToWooCommerceSetup: function redirectToWooCommerceSetup() {
 			AppDispatcher.dispatch({
-				actionType: JPSConstants.SITE_SAVE_WOOCOMMERCE,
-				data: woocommerce
+				actionType: JPSConstants.SITE_REDIRECT_TO_WOOCOMMERCE_SETUP
 			});
-	
-			return jQuery.Deferred().resolve(); // XXX HACK
 		},
 	
 		installWooCommerce: function installWooCommerce() {
 			SpinnerActions.show("Installing WooCommerce");
+			AppDispatcher.dispatch({
+				actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+			});
 			return WPAjax.post(JPS.site_actions.install_woocommerce).done(function () {
 				AppDispatcher.dispatch({
-					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE_SUCCESS
 				});
 			}).fail(function (msg) {
+				AppDispatcher.dispatch({
+					actionType: JPSConstants.SITE_INSTALL_WOOCOMMERCE_FAIL
+				});
 				FlashActions.error(msg);
 			}).always(function () {
 				SpinnerActions.hide();
@@ -1939,286 +1940,305 @@ webpackJsonp([1],[
 	var layout = JPS.steps.layout.current;
 	
 	function setType(newType) {
-	  JPS.bloginfo.type = newType;
+		JPS.bloginfo.type = newType;
 	}
 	
 	function setTitle(newTitle) {
-	  JPS.bloginfo.name = newTitle;
+		JPS.bloginfo.name = newTitle;
 	}
 	
 	function setDescription(newDescription) {
-	  JPS.bloginfo.description = newDescription;
+		JPS.bloginfo.description = newDescription;
 	}
 	
 	function setActiveTheme(activeThemeId) {
-	  JPS.themes.forEach(function (theme) {
-	    if (theme.id === activeThemeId) {
-	      theme.active = true;
-	    } else {
-	      theme.active = false;
-	    }
-	  });
+		JPS.themes.forEach(function (theme) {
+			if (theme.id === activeThemeId) {
+				theme.active = true;
+			} else {
+				theme.active = false;
+			}
+		});
 	}
 	
 	function installedTheme(theme) {
-	  JPS.themes.unshift(theme);
-	  JPS.themes = JPS.themes.slice(0, 3);
+		JPS.themes.unshift(theme);
+		JPS.themes = JPS.themes.slice(0, 3);
 	}
 	
 	function setJetpackModuleActivated(slug) {
-	  if (_.indexOf(JPS.jetpack.active_modules, slug) === -1) {
-	    JPS.jetpack.active_modules.push(slug);
-	  }
+		if (_.indexOf(JPS.jetpack.active_modules, slug) === -1) {
+			JPS.jetpack.active_modules.push(slug);
+		}
 	}
 	
 	function setJetpackModuleDectivated(slug) {
-	  var index = _.indexOf(JPS.jetpack.active_modules, slug);
-	  if (index >= 0) {
-	    JPS.jetpack.active_modules.splice(index, 1);
-	  }
+		var index = _.indexOf(JPS.jetpack.active_modules, slug);
+		if (index >= 0) {
+			JPS.jetpack.active_modules.splice(index, 1);
+		}
 	}
 	
 	function setJetpackAdditionalModules(modules) {
-	  JPS.jetpack.additional_modules = _.filter(modules, function (module) {
-	    return _.indexOf(JPS.jetpack.jumpstart_modules.map(function (mod) {
-	      return mod.slug;
-	    }), module.slug) === -1;
-	  });
+		JPS.jetpack.additional_modules = _.filter(modules, function (module) {
+			return _.indexOf(JPS.jetpack.jumpstart_modules.map(function (mod) {
+				return mod.slug;
+			}), module.slug) === -1;
+		});
 	}
 	
 	function setLayout(layoutName) {
-	  layout = layoutName; // XXX TODO: get this value dynamically from the server!
+		layout = layoutName; // XXX TODO: get this value dynamically from the server!
 	}
 	
 	function setJetpackConfigured() {
-	  JPS.jetpack.configured = true;
+		JPS.jetpack.configured = true;
 	}
 	
 	function setJetpackJumpstartActivated() {
-	  JPS.jetpack.jumpstart_modules.forEach(function (module) {
-	    setJetpackModuleActivated(module.slug);
-	  });
+		JPS.jetpack.jumpstart_modules.forEach(function (module) {
+			setJetpackModuleActivated(module.slug);
+		});
 	}
 	
 	function setContactUsPage(pageInfo) {
-	  JPS.steps.contact_page = pageInfo;
+		JPS.steps.contact_page = pageInfo;
 	}
 	
 	function setLayoutPages(pageInfo) {
-	  JPS.steps.layout.welcomeEditUrl = pageInfo.welcome;
-	  JPS.steps.layout.postsEditUrl = pageInfo.posts;
+		JPS.steps.layout.welcomeEditUrl = pageInfo.welcome;
+		JPS.steps.layout.postsEditUrl = pageInfo.posts;
+	}
+	
+	function setShopStatus() {
+		JPS.bloginfo = Object.assign({}, JPS.bloginfo, { is_shop: true });
 	}
 	
 	function setWooCommerceStatus() {
-	  JPS.woocommerce_status = true;
+		JPS.woocommerce_status = true;
+		JPS.bloginfo = Object.assign({}, JPS.bloginfo, { redirect_to_woocommerce_setup: true });
+	}
+	
+	function setWooCommerceRedirectStatus() {
+		JPS.bloginfo = Object.assign({}, JPS.bloginfo, { redirect_to_woocommerce_setup: false });
 	}
 	
 	var SiteStore = _.extend({}, EventEmitter.prototype, {
 	
-	  getTitle: function getTitle() {
-	    return JPS.bloginfo.name;
-	  },
+		getTitle: function getTitle() {
+			return JPS.bloginfo.name;
+		},
 	
-	  getType: function getType() {
-	    return JPS.bloginfo.type;
-	  },
+		getType: function getType() {
+			return JPS.bloginfo.type;
+		},
 	
-	  getDescription: function getDescription() {
-	    return JPS.bloginfo.description;
-	  },
+		getDescription: function getDescription() {
+			return JPS.bloginfo.description;
+		},
 	
-	  getContactPageURL: function getContactPageURL() {
-	    return JPS.steps.contact_page && JPS.steps.contact_page.url;
-	  },
+		getContactPageURL: function getContactPageURL() {
+			return JPS.steps.contact_page && JPS.steps.contact_page.url;
+		},
 	
-	  getContactPageEditURL: function getContactPageEditURL() {
-	    if (JPS.steps.contact_page && JPS.steps.contact_page.editUrl) {
-	      return JPS.steps.contact_page.editUrl.replace('&amp;', '&');
-	    }
-	  },
+		getContactPageEditURL: function getContactPageEditURL() {
+			if (JPS.steps.contact_page && JPS.steps.contact_page.editUrl) {
+				return JPS.steps.contact_page.editUrl.replace('&amp;', '&');
+			}
+		},
 	
-	  getWelcomePageEditURL: function getWelcomePageEditURL() {
-	    if (JPS.steps.layout && JPS.steps.layout.welcomeEditUrl) {
-	      return JPS.steps.layout.welcomeEditUrl.replace('&amp;', '&');
-	    }
-	  },
+		getWelcomePageEditURL: function getWelcomePageEditURL() {
+			if (JPS.steps.layout && JPS.steps.layout.welcomeEditUrl) {
+				return JPS.steps.layout.welcomeEditUrl.replace('&amp;', '&');
+			}
+		},
 	
-	  getNewsPageEditURL: function getNewsPageEditURL() {
-	    if (JPS.steps.layout && JPS.steps.layout.postsEditUrl) {
-	      return JPS.steps.layout.postsEditUrl.replace('&amp;', '&');
-	    }
-	  },
+		getNewsPageEditURL: function getNewsPageEditURL() {
+			if (JPS.steps.layout && JPS.steps.layout.postsEditUrl) {
+				return JPS.steps.layout.postsEditUrl.replace('&amp;', '&');
+			}
+		},
 	
-	  getThemes: function getThemes() {
-	    return JPS.themes;
-	  },
+		getThemes: function getThemes() {
+			return JPS.themes;
+		},
 	
-	  getActiveThemeId: function getActiveThemeId() {
-	    for (var i = 0; i < JPS.themes.length; i++) {
-	      var theme = JPS.themes[i];
-	      if (theme.active) {
-	        return theme.id;
-	      }
-	    }
-	    return null;
-	  },
+		getActiveThemeId: function getActiveThemeId() {
+			for (var i = 0; i < JPS.themes.length; i++) {
+				var theme = JPS.themes[i];
+				if (theme.active) {
+					return theme.id;
+				}
+			}
+			return null;
+		},
 	
-	  getWooCommerceStatus: function getWooCommerceStatus() {
-	    return JPS.woocommerce_status;
-	  },
+		getWooCommerceStatus: function getWooCommerceStatus() {
+			return JPS.woocommerce_status;
+		},
 	
-	  getWooCommerceSetupUrl: function getWooCommerceSetupUrl() {
-	    return JPS.steps.advanced_settings.woocommerce_setup_url;
-	  },
+		getWooCommerceSetupUrl: function getWooCommerceSetupUrl() {
+			return JPS.steps.advanced_settings.woocommerce_setup_url;
+		},
 	
-	  getJetpackConfigured: function getJetpackConfigured() {
-	    return JPS.jetpack.configured;
-	  },
+		getJetpackConfigured: function getJetpackConfigured() {
+			return JPS.jetpack.configured;
+		},
 	
-	  getActiveModuleSlugs: function getActiveModuleSlugs() {
-	    return JPS.jetpack.active_modules;
-	  },
+		getActiveModuleSlugs: function getActiveModuleSlugs() {
+			return JPS.jetpack.active_modules;
+		},
 	
-	  isJetpackModuleEnabled: function isJetpackModuleEnabled(slug) {
-	    return _.indexOf(JPS.jetpack.active_modules, slug) >= 0;
-	  },
+		isJetpackModuleEnabled: function isJetpackModuleEnabled(slug) {
+			return _.indexOf(JPS.jetpack.active_modules, slug) >= 0;
+		},
 	
-	  getJetpackAdditionalModules: function getJetpackAdditionalModules() {
-	    return JPS.jetpack.additional_modules;
-	  },
+		getJetpackAdditionalModules: function getJetpackAdditionalModules() {
+			return JPS.jetpack.additional_modules;
+		},
 	
-	  getJumpstartModuleSlugs: function getJumpstartModuleSlugs() {
-	    return JPS.jetpack.jumpstart_modules.map(function (module) {
-	      return module.slug;
-	    });
-	  },
+		getJumpstartModuleSlugs: function getJumpstartModuleSlugs() {
+			return JPS.jetpack.jumpstart_modules.map(function (module) {
+				return module.slug;
+			});
+		},
 	
-	  getJumpstartModules: function getJumpstartModules() {
-	    return JPS.jetpack.jumpstart_modules;
-	  },
+		getJumpstartModules: function getJumpstartModules() {
+			return JPS.jetpack.jumpstart_modules;
+		},
 	
-	  getJetpackSettingsUrl: function getJetpackSettingsUrl() {
-	    return JPS.steps.advanced_settings && JPS.steps.advanced_settings.jetpack_modules_url;
-	  },
+		getJetpackSettingsUrl: function getJetpackSettingsUrl() {
+			return JPS.steps.advanced_settings && JPS.steps.advanced_settings.jetpack_modules_url;
+		},
 	
-	  getPluginsUrl: function getPluginsUrl() {
-	    return JPS.steps.advanced_settings.plugins_url;
-	  },
+		getPluginsUrl: function getPluginsUrl() {
+			return JPS.steps.advanced_settings.plugins_url;
+		},
 	
-	  getPopularThemes: function getPopularThemes() {
-	    return WPAjax.post(JPS.site_actions.get_popular_themes, {}, { quiet: true });
-	  },
+		getPopularThemes: function getPopularThemes() {
+			return WPAjax.post(JPS.site_actions.get_popular_themes, {}, { quiet: true });
+		},
 	
-	  getJetpackJumpstartEnabled: function getJetpackJumpstartEnabled() {
-	    for (var i = 0; i < JPS.jetpack.jumpstart_modules.length; i++) {
-	      var module = JPS.jetpack.jumpstart_modules[i];
-	      if (!this.isJetpackModuleEnabled(module.slug)) {
-	        return false;
-	      }
-	    }
-	    return true;
-	  },
+		getJetpackJumpstartEnabled: function getJetpackJumpstartEnabled() {
+			for (var i = 0; i < JPS.jetpack.jumpstart_modules.length; i++) {
+				var module = JPS.jetpack.jumpstart_modules[i];
+				if (!this.isJetpackModuleEnabled(module.slug)) {
+					return false;
+				}
+			}
+			return true;
+		},
 	
-	  getLayout: function getLayout() {
-	    return layout;
-	  },
+		getLayout: function getLayout() {
+			return layout;
+		},
 	
-	  emitChange: function emitChange() {
-	    this.emit(CHANGE_EVENT);
-	  },
+		emitChange: function emitChange() {
+			this.emit(CHANGE_EVENT);
+		},
 	
-	  addChangeListener: function addChangeListener(callback) {
-	    this.on(CHANGE_EVENT, callback);
-	  },
+		addChangeListener: function addChangeListener(callback) {
+			this.on(CHANGE_EVENT, callback);
+		},
 	
-	  removeChangeListener: function removeChangeListener(callback) {
-	    this.removeListener(CHANGE_EVENT, callback);
-	  }
+		removeChangeListener: function removeChangeListener(callback) {
+			this.removeListener(CHANGE_EVENT, callback);
+		}
 	});
 	
 	// Register callback to handle all updates
 	AppDispatcher.register(function (action) {
 	
-	  switch (action.actionType) {
-	    case JPSConstants.SITE_SET_TYPE:
-	      setType(action.type);
-	      SiteStore.emitChange();
-	      break;
+		switch (action.actionType) {
+			case JPSConstants.SITE_SET_TYPE:
+				setType(action.type);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_SET_TITLE:
-	      setTitle(action.title);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_SET_TITLE:
+				setTitle(action.title);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_SET_DESCRIPTION:
-	      setDescription(action.description);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_SET_DESCRIPTION:
+				setDescription(action.description);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION:
-	      setTitle(action.title);
-	      setDescription(action.description);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_SAVE_TITLE_AND_DESCRIPTION:
+				setTitle(action.title);
+				setDescription(action.description);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_SET_THEME:
-	      setActiveTheme(action.themeId);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_SET_THEME:
+				setActiveTheme(action.themeId);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_INSTALL_THEME:
-	      installedTheme(action.theme);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_INSTALL_THEME:
+				installedTheme(action.theme);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_JETPACK_CONFIGURED:
-	      setJetpackConfigured();
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_JETPACK_CONFIGURED:
+				setJetpackConfigured();
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_JETPACK_ADD_MODULES:
-	      setJetpackAdditionalModules(action.modules);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_JETPACK_ADD_MODULES:
+				setJetpackAdditionalModules(action.modules);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
-	      setJetpackModuleActivated(action.slug);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_JETPACK_MODULE_ENABLED:
+				setJetpackModuleActivated(action.slug);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_JETPACK_MODULE_DISABLED:
-	      setJetpackModuleDectivated(action.slug);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_JETPACK_MODULE_DISABLED:
+				setJetpackModuleDectivated(action.slug);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED:
-	      setJetpackJumpstartActivated();
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_JETPACK_JUMPSTART_ENABLED:
+				setJetpackJumpstartActivated();
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_SET_LAYOUT:
-	      setLayout(action.layout);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_SET_LAYOUT:
+				setLayout(action.layout);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
-	      setContactUsPage(action.data);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_CREATE_CONTACT_US_PAGE:
+				setContactUsPage(action.data);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
-	      setLayoutPages(action.data);
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_CREATE_LAYOUT_PAGES:
+				setLayoutPages(action.data);
+				SiteStore.emitChange();
+				break;
 	
-	    case JPSConstants.SITE_INSTALL_WOOCOMMERCE:
-	      setWooCommerceStatus();
-	      SiteStore.emitChange();
-	      break;
+			case JPSConstants.SITE_INSTALL_WOOCOMMERCE:
+				setShopStatus();
+				SiteStore.emitChange();
+				break;
 	
-	    default:
-	    // no op
-	  }
+			case JPSConstants.SITE_INSTALL_WOOCOMMERCE_SUCCESS:
+				setWooCommerceStatus();
+				SiteStore.emitChange();
+				break;
+	
+			case JPSConstants.SITE_REDIRECT_TO_WOOCOMMERCE_SETUP:
+				setWooCommerceRedirectStatus();
+				SiteStore.emitChange();
+				break;
+	
+			default:
+			// no op
+		}
 	});
 	
 	module.exports = SiteStore;
@@ -2629,7 +2649,8 @@ webpackJsonp([1],[
 	var React = __webpack_require__(4),
 	    SetupProgressStore = __webpack_require__(158),
 	    SetupProgressActions = __webpack_require__(166),
-	    Button = __webpack_require__(179);
+	    Button = __webpack_require__(179),
+	    Paths = __webpack_require__(167);
 	
 	function getSetupState() {
 		return {};
@@ -2656,6 +2677,14 @@ webpackJsonp([1],[
 	
 		handleGetStarted: function handleGetStarted(sitePurpose, e) {
 			e.preventDefault();
+	
+			if ('personal' === sitePurpose) {
+				// We want to mark business only steps as complete, so they don't linger as pending steps
+				// within the personal flow.
+				SetupProgressActions.completeStepNoRecord(Paths.BUSINESS_ADDRESS_SLUG);
+				SetupProgressActions.completeStepNoRecord(Paths.WOOCOMMERCE_SLUG);
+			}
+	
 			SetupProgressActions.getStarted(sitePurpose);
 		},
 	
@@ -4042,9 +4071,13 @@ webpackJsonp([1],[
 					),
 					React.createElement('input', { type: 'text', name: 'site_description', id: 'site-description', autoComplete: 'off', onChange: this.handleChangeDescription, value: this.state.description, placeholder: 'e.g. Just another WordPress blog', required: true }),
 					React.createElement(
-						Button,
-						{ className: 'welcome-submit', primary: true, type: 'submit' },
-						'Next Step'
+						'div',
+						{ className: 'welcome__submit' },
+						React.createElement(
+							Button,
+							{ primary: true, type: 'submit' },
+							'Next Step'
+						)
 					)
 				)
 			);
@@ -4302,7 +4335,8 @@ webpackJsonp([1],[
 	    SiteStore = __webpack_require__(170),
 	    Button = __webpack_require__(179),
 	    WelcomeSection = __webpack_require__(214),
-	    SetupProgressActions = __webpack_require__(166);
+	    SetupProgressActions = __webpack_require__(166),
+	    Paths = __webpack_require__(167);
 	
 	function getSiteContactState() {
 		return {
@@ -4343,6 +4377,7 @@ webpackJsonp([1],[
 	
 		handleContinue: function handleContinue(e) {
 			e.preventDefault();
+			SetupProgressActions.completeStepNoRecord(Paths.CONTACT_PAGE_STEP_SLUG);
 			SetupProgressActions.selectNextStep();
 		},
 	
@@ -4476,8 +4511,8 @@ webpackJsonp([1],[
 			return state;
 		},
 	
-		handleJetpackConnect: function handleJetpackConnect(e) {
-			e.preventDefault();
+		handleJetpackConnect: function handleJetpackConnect(event) {
+			event.preventDefault();
 			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
 	
 			this.setState({ jetpackConnecting: true });
@@ -4486,18 +4521,18 @@ webpackJsonp([1],[
 			}).bind(this));
 		},
 	
-		handleNext: function handleNext(e) {
-			e.preventDefault();
-			var path = JPS.bloginfo.type === 'business' ? Paths.BUSINESS_ADDRESS_SLUG : Paths.REVIEW_STEP_SLUG;
-	
-			SetupProgressActions.completeAndNextStep(path);
+		handleNext: function handleNext(event) {
+			event.preventDefault();
+			SetupProgressActions.completeStepNoRecord(Paths.JETPACK_MODULES_STEP_SLUG);
+			SetupProgressActions.selectNextStep();
 		},
 	
 		handleSkip: function handleSkip() {
+			SetupProgressActions.skipStep();
 			if (JPS.bloginfo.type !== 'business') {
 				return SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 			}
-			return SetupProgressActions.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
+			return SetupProgressActions.setCurrentStep(Paths.BUSINESS_ADDRESS_SLUG);
 		},
 	
 		render: function render() {
@@ -4550,7 +4585,10 @@ webpackJsonp([1],[
 					{ className: 'welcome__submit' },
 					React.createElement(
 						Button,
-						{ disabled: this.state.jetpackConnecting, onClick: this.handleJetpackConnect, primary: true },
+						{
+							disabled: this.state.jetpackConnecting,
+							onClick: this.handleJetpackConnect,
+							primary: true },
 						this.state.jetpackConnecting ? 'Connecting' : 'Connect',
 						' to WordPress.com'
 					),
@@ -4810,15 +4848,23 @@ webpackJsonp([1],[
 	var React = __webpack_require__(4),
 	    SkipButton = __webpack_require__(219),
 	    SiteStore = __webpack_require__(170),
-	    WelcomeSection = __webpack_require__(214),
 	    SetupProgressActions = __webpack_require__(166),
+	    WelcomeSection = __webpack_require__(214),
+	    SiteActions = __webpack_require__(169),
+	    Paths = __webpack_require__(167),
 	    Button = __webpack_require__(179);
 	
 	function getJetpackState() {
+		var _JPS$bloginfo = JPS.bloginfo;
+		var is_shop = _JPS$bloginfo.is_shop;
+		var redirect_to_woocommerce_setup = _JPS$bloginfo.redirect_to_woocommerce_setup;
+	
 		return {
 			site_title: SiteStore.getTitle(),
 			wooCommerceStatus: SiteStore.getWooCommerceStatus(),
-			wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl()
+			wooCommerceSetupUrl: SiteStore.getWooCommerceSetupUrl(),
+			is_shop: is_shop,
+			redirect_to_woocommerce_setup: redirect_to_woocommerce_setup
 		};
 	}
 	
@@ -4836,35 +4882,29 @@ webpackJsonp([1],[
 	
 		_onChange: function _onChange() {
 			this.setState(getJetpackState());
+			if (this.state.wooCommerceStatus && this.state.redirect_to_woocommerce_setup) {
+				window.setTimeout(this.goToWooSetup, 10);
+			}
 		},
 	
 		getInitialState: function getInitialState() {
-			var state = getJetpackState();
-	
-			var install_woo = JPS.bloginfo.install_woo;
-	
-			var business_name = JPS.bloginfo.business_name;
-			if ('undefined' === typeof business_name) {
-				business_name = state.site_title;
-			}
-	
-			state = Object.assign({}, state, { business_name: business_name, install_woo: install_woo });
-			return state;
+			return getJetpackState();
 		},
 	
-		handleChange: function handleChange(e) {
-			var newValue = {};
-			if ('checkbox' === e.currentTarget.type) {
-				newValue[e.currentTarget.name] = e.currentTarget.checked;
-			} else {
-				newValue[e.currentTarget.name] = e.currentTarget.value;
-			}
-			this.setState(newValue);
+		goToWooSetup: function goToWooSetup() {
+			jQuery(window).off('beforeunload');
+			SiteActions.redirectToWooCommerceSetup();
+			SetupProgressActions.completeStep(Paths.WOOCOMMERCE_SLUG);
+			window.location = this.state.wooCommerceSetupUrl;
 		},
 	
-		handleSubmit: function handleSubmit(e) {
-			e.preventDefault();
-			SetupProgressActions.submitWoocommerce(this.state);
+		goToJpoReview: function goToJpoReview() {
+			SetupProgressActions.setCurrentStep(Path.REVIEW_STEP_SLUG);
+		},
+	
+		handleSubmit: function handleSubmit(event) {
+			event.preventDefault();
+			SiteActions.installWooCommerce();
 		},
 	
 		renderInstall: function renderInstall() {
@@ -4881,21 +4921,11 @@ webpackJsonp([1],[
 					{ onSubmit: this.handleSubmit, className: 'welcome__woocommerce--form' },
 					React.createElement(
 						'div',
-						{ className: 'welcome__woocommerce--install-container' },
-						React.createElement('input', { className: 'welcome__woocommerce--checkbox', type: 'checkbox', name: 'install_woo', id: 'install_woo', checked: this.state.install_woo, onChange: this.handleChange }),
-						React.createElement(
-							'label',
-							{ htmlFor: 'install_woo' },
-							'Install WooCommerce now'
-						)
-					),
-					React.createElement(
-						'div',
 						{ className: 'welcome__button-container' },
 						React.createElement(
 							Button,
 							{ className: 'welcome-submit', primary: true, type: 'submit' },
-							'Next Step'
+							'Install WooCommerce'
 						),
 						React.createElement(SkipButton, null)
 					)
@@ -4910,22 +4940,27 @@ webpackJsonp([1],[
 				React.createElement(
 					'p',
 					{ className: 'welcome__callout welcome__jetpack--callout' },
-					'WooCommerce has already been installed.'
+					'WooCommerce is ready to go'
 				),
 				React.createElement(
 					'div',
 					{ className: 'welcome__button-container' },
 					React.createElement(
 						Button,
-						{ className: 'welcome-submit', primary: true, type: 'submit', href: this.state.wooCommerceSetupUrl },
+						{ className: 'welcome-submit', primary: true, onClick: this.goToWooSetup },
 						'Setup your store'
 					),
-					React.createElement(SkipButton, null)
+					React.createElement(
+						Button,
+						{ onClick: this.goToJpoReview },
+						'Not right now'
+					)
 				)
 			);
 		},
 	
 		render: function render() {
+	
 			return React.createElement(
 				WelcomeSection,
 				{ id: 'welcome__jetpack' },
@@ -5003,7 +5038,7 @@ webpackJsonp([1],[
 	
 		renderWooCommerceStatus: function renderWooCommerceStatus() {
 			var _JPS$bloginfo = JPS.bloginfo;
-			var install_woo = _JPS$bloginfo.install_woo;
+			var is_shop = _JPS$bloginfo.is_shop;
 			var type = _JPS$bloginfo.type;
 	
 			if (type !== 'business') {
@@ -5022,7 +5057,7 @@ webpackJsonp([1],[
 						'Set up shop'
 					)
 				);
-			} else if (!install_woo) {
+			} else if (!is_shop) {
 				return React.createElement(
 					'li',
 					null,
