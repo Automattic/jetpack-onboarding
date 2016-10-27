@@ -1516,13 +1516,6 @@ webpackJsonp([1],[
 			this.setCurrentStep(Paths.WOOCOMMERCE_SLUG);
 		},
 	
-		installWoocommerce: function installWoocommerce() {
-			//SiteActions.saveWoocommerce();
-			//SiteActions.installWooCommerce();
-			//this.completeStep(Paths.WOOCOMMERCE_SLUG);
-			//this.setCurrentStep( Paths.REVIEW_STEP_SLUG );
-		},
-	
 		submitLayoutStep: function submitLayoutStep(layout) {
 			SiteActions.setLayout(layout).done((function () {
 				var step = SetupProgressStore.getStepFromSlug(Paths.IS_BLOG_STEP_SLUG);
