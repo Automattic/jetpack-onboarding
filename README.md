@@ -89,9 +89,10 @@ add_action( 'init',  array('JetpackOnboardingTracking', 'track_jpo_usage') );
 cd /path/to/jetpack-onboarding
 npm install -g gulp # if you don't have it
 npm install         # install local dependencies
-gulp sass           # build the stylesheets
-gulp webpack:build  # build the javascript
+npm run build       # to build the css and javascript
 ```
+
+`npm run build-css` or `npm run build-react` can also be run to build just the CSS or JS, respectively. Check out `scripts` in `package.json` for a few other commands.
 
 Directory structure:
 
