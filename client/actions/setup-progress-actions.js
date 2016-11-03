@@ -3,6 +3,7 @@ var AppDispatcher = require('../dispatcher/app-dispatcher'),
 	Paths = require('../constants/jetpack-onboarding-paths'),
 	FlashActions = require('./flash-actions'),
 	SiteActions = require('./site-actions'),
+	afterSavingData = require('../utils/after-save'),
 	WPAjax = require('../utils/wp-ajax'),
 	SpinnerActions = require('./spinner-actions'),
 	SetupProgressStore = require('stores/setup-progress-store'),
@@ -102,7 +103,9 @@ var SetupProgressActions = {
 				FlashActions.error(msg);
 			}).
 			always(function() {
-				window.location.reload();
+				afterSavingData( () => {
+					window.location.reload();
+				} );
 			});
 	},
 
