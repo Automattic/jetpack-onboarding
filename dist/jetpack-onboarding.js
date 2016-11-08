@@ -5438,7 +5438,7 @@ webpackJsonp([1],[
 		},
 
 		goToJpoReview: function goToJpoReview() {
-			SetupProgressActions.setCurrentStep(Path.REVIEW_STEP_SLUG);
+			SetupProgressActions.setCurrentStep(Paths.REVIEW_STEP_SLUG);
 		},
 
 		handleSubmit: function handleSubmit(event) {
@@ -5499,7 +5499,6 @@ webpackJsonp([1],[
 		},
 
 		render: function render() {
-
 			return React.createElement(
 				WelcomeSection,
 				{ id: 'welcome__jetpack' },

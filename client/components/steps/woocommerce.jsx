@@ -4,7 +4,7 @@ var React = require( 'react' ),
 	SetupProgressActions = require( 'actions/setup-progress-actions' ),
 	WelcomeSection = require( '../page/container' ),
 	SiteActions = require( 'actions/site-actions' ),
-	Paths = require('constants/jetpack-onboarding-paths'),
+	Paths = require( 'constants/jetpack-onboarding-paths' ),
 	Button = require( '@automattic/dops-components/client/components/button' );
 
 function getJetpackState() {
@@ -41,14 +41,14 @@ module.exports = React.createClass( {
 	},
 
 	goToWooSetup: function() {
-		jQuery(window).off('beforeunload');
+		jQuery( window ).off( 'beforeunload' );
 		SiteActions.redirectToWooCommerceSetup();
 		SetupProgressActions.completeStep( Paths.WOOCOMMERCE_SLUG );
 		window.location = this.state.wooCommerceSetupUrl;
 	},
 
 	goToJpoReview: function() {
-		SetupProgressActions.setCurrentStep( Path.REVIEW_STEP_SLUG );
+		SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 
 	handleSubmit: function( event ) {
@@ -84,13 +84,12 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-
 		return (
 			<WelcomeSection id="welcome__jetpack">
 				<h1>Let&apos;s launch <em>{this.state.site_title}</em></h1>
-				{ this.state.wooCommerceStatus
-					? this.renderAlreadyInstalled()
-					: this.renderInstall()
+				{ this.state.wooCommerceStatus ?
+					this.renderAlreadyInstalled() :
+					this.renderInstall()
 				}
 			</WelcomeSection>
 		);
