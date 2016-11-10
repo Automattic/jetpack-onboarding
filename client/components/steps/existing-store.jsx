@@ -76,8 +76,8 @@ module.exports = React.createClass( {
 					<SelectDropdown selectedText="Yes, it's powered by…" className="welcome__existing-store--dropdown">
 						{ platformSelections }
 					</SelectDropdown>
-					<Button primary>Next</Button>
-					<Button>Nope</Button>
+					<Button primary onClick={ this.goToJpoReview }>Next</Button>
+					<Button onClick={ this.goToJpoReview }>Nope</Button>
 				</div>
 			</WelcomeSection>
 		);

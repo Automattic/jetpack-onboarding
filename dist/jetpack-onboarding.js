@@ -5628,12 +5628,12 @@ webpackJsonp([1],[
 					),
 					React.createElement(
 						Button,
-						{ primary: true },
+						{ primary: true, onClick: this.goToJpoReview },
 						'Next'
 					),
 					React.createElement(
 						Button,
-						null,
+						{ onClick: this.goToJpoReview },
 						'Nope'
 					)
 				)
