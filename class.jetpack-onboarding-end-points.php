@@ -128,7 +128,7 @@ class Jetpack_Onboarding_EndPoints {
 				'contact_page' => $contact_page_info,
 				'business_address' => ( bool ) $business_address_saved,
 				'advanced_settings' => array(
-					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack_modules' ),
+					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack#/settings' ),
 					'jetpack_dash' => admin_url( 'admin.php?page=jetpack' ),
 					'widgets_url' => admin_url( 'widgets.php' ),
 					'themes_url' => admin_url( 'themes.php' ),
