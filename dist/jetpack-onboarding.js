@@ -5586,6 +5586,9 @@ webpackJsonp([1],[
 		render: function render() {
 			var _this = this;
 
+			if (!this.state.is_store) {
+				this.goToJpoReview();
+			}
 			var platformSelections = platforms.map(function (platform, i) {
 				return React.createElement(
 					DropdownItem,

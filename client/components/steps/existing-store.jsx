@@ -56,6 +56,10 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
+		if ( ! this.state.is_store ) {
+			this.goToJpoReview();
+		}
+
 		const platformSelections = platforms.map( ( platform, i ) => {
 			return (
 				<DropdownItem key={ i } onClick={ () => {
