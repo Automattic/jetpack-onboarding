@@ -22,7 +22,7 @@ const platforms = [
 	'Shopify',
 	'BigCommerce',
 	'Magento',
-	'Woo',
+	'WooCommerce',
 	'osCommerce',
 	'Wix',
 	'Other'
@@ -56,7 +56,7 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		if ( ! this.state.is_store ) {
+		if ( ! this.state.wooCommerceStatus ) {
 			this.goToJpoReview();
 		}
 

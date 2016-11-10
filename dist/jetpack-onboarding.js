@@ -5552,7 +5552,7 @@ webpackJsonp([1],[
 		};
 	}
 
-	var platforms = ['Shopify', 'BigCommerce', 'Magento', 'Woo', 'osCommerce', 'Wix', 'Other'];
+	var platforms = ['Shopify', 'BigCommerce', 'Magento', 'WooCommerce', 'osCommerce', 'Wix', 'Other'];
 
 	module.exports = React.createClass({
 		displayName: 'exports',
@@ -5586,9 +5586,10 @@ webpackJsonp([1],[
 		render: function render() {
 			var _this = this;
 
-			if (!this.state.is_store) {
+			if (!this.state.wooCommerceStatus) {
 				this.goToJpoReview();
 			}
+
 			var platformSelections = platforms.map(function (platform, i) {
 				return React.createElement(
 					DropdownItem,
