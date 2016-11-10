@@ -11,5 +11,6 @@ module.exports = {
 	JETPACK_MODULES_STEP_SLUG: 'jetpack',
 	CONTACT_PAGE_STEP_SLUG: 'contact-page',
 	BUSINESS_ADDRESS_SLUG: 'business-address',
-	WOOCOMMERCE_SLUG: 'woocommerce'
+	WOOCOMMERCE_SLUG: 'woocommerce',
+	EXISTING_STORE_STEP_SLUG: 'existing-store'
 };

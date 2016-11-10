@@ -51,6 +51,10 @@ module.exports = React.createClass( {
 		SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
 	},
 
+	goToMigrateStep: function() {
+		SetupProgressActions.setCurrentStep( Paths.EXISTING_STORE_STEP_SLUG );
+	},
+
 	handleSubmit: function( event ) {
 		event.preventDefault();
 		SiteActions.installWooCommerce();
@@ -64,7 +68,7 @@ module.exports = React.createClass( {
 
 					<div className="welcome__button-container">
 						<Button className='welcome-submit' primary type="submit">Install WooCommerce</Button>
-						<SkipButton />
+						<SkipButton handleSkip={ this.goToJpoReview } />
 					</div>
 				</form>
 			</div>
@@ -77,7 +81,7 @@ module.exports = React.createClass( {
 				<p className="welcome__callout welcome__jetpack--callout">WooCommerce is ready to go</p>
 				<div className="welcome__button-container">
 					<Button className='welcome-submit' primary onClick={ this.goToWooSetup }>Setup your store</Button>
-					<Button onClick={ this.goToJpoReview }>Not right now</Button>
+					<Button onClick={ this.goToMigrateStep }>Not right now</Button>
 				</div>
 			</div>
 		);
