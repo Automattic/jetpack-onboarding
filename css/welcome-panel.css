@@ -582,3 +582,25 @@ img.welcome__get-started-image {
   .welcome__container .welcome__woocommerce--install-container .welcome__woocommerce--checkbox {
     float: none;
     margin: 1px 8px 0 0; }
+
+.welcome__container .dops-select-dropdown__header {
+  height: auto; }
+
+.welcome__existing-store--dropdown .dops-select-dropdown__header {
+  height: auto; }
+
+.welcome__existing-store--button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+  max-width: 400px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+  .welcome__existing-store--button-container > * {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 auto;
+            flex: 0 auto; }
+  .welcome__existing-store--button-container button + button {
+    margin-left: 0; }

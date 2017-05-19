@@ -1,0 +1,20 @@
+.welcome__existing-store--dropdown {
+	.dops-select-dropdown__header {
+		height: auto;
+	}
+}
+
+.welcome__existing-store--button-container {
+	display: flex;
+	margin: auto;
+	max-width: 400px;
+	justify-content: space-between;
+
+	& > * {
+		flex: 0 auto;
+	}
+
+	button + button {
+		margin-left: 0;
+	}
+}
