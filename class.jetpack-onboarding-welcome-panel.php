@@ -28,6 +28,10 @@ class Jetpack_Onboarding_WelcomePanel {
 	static function add_dashboard_widgets() {
 		self::reset_data_if_necessary();
 
+		if ( get_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION ) ) {
+			return;
+		}
+
 		wp_add_dashboard_widget( self::DASHBOARD_WIDGET_ID, 'Jetpack Onboarding Wizard', array( __CLASS__, 'render_widget' ) ); //, $control_callback = null
 
 		// Add to Screen menu
@@ -72,6 +76,7 @@ class Jetpack_Onboarding_WelcomePanel {
 			delete_option( Jetpack_Onboarding_EndPoints::STARTED_KEY );
 			Jetpack_Onboarding_EndPoints::show_dashboard_widget();
 			delete_option( Jetpack_Onboarding_EndPoints::CONTACTPAGE_ID_KEY );
+			delete_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION );
 
 			delete_option( 'jetpack_blog_token' );
 			delete_option( 'jetpack_id' );

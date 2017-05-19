@@ -12,6 +12,7 @@ class Jetpack_Onboarding_EndPoints {
 	const VERSION = "1.5";
 	const WOOCOMMERCE_ID = 'woocommerce/woocommerce.php';
 	const WOOCOMMERCE_SLUG = 'woocommerce';
+	const HIDE_FOR_ALL_USERS_OPTION = 'jpo_hide_always';
 
 	//static $default_themes = array( 'writr', 'flounder', 'sorbet', 'motif', 'hexa', 'twentyfourteen', 'twentytwelve', 'responsive', 'bushwick', 'singl', 'tonal', 'fontfolio', 'hemingway-rewritten', 'skylark' , 'twentythirteen' , 'twentyeleven' );
 	static $themes;
@@ -23,7 +24,7 @@ class Jetpack_Onboarding_EndPoints {
 	}
 
 	static function init_ajax() {
-		if ( is_admin() ) {
+		if ( is_admin() && current_user_can( 'administrator' ) ) {
 			add_action( 'wp_ajax_jpo_set_title', array( __CLASS__, 'set_title' ) );
 			add_action( 'wp_ajax_jpo_set_layout', array( __CLASS__, 'set_layout' ) );
 			add_action( 'wp_ajax_jpo_build_contact_page', array( __CLASS__, 'build_contact_page' ) );
@@ -369,9 +370,14 @@ class Jetpack_Onboarding_EndPoints {
 			$setting[] = Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID;
 			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true);
 		}
+
+		// hide for all users
+		update_option( self::HIDE_FOR_ALL_USERS_OPTION, 1 );
 	}
 
 	static function show_dashboard_widget() {
+		delete_option( self::HIDE_FOR_ALL_USERS_OPTION );
+		
 		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
 
 		if ( !$setting || !is_array( $setting ) ) {

@@ -17,6 +17,7 @@ function jpo_start() {
 	if ( is_admin() && current_user_can( 'administrator' ) ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-onboarding-end-points.php' );
 		require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-onboarding-welcome-panel.php' );
+
 		Jetpack_Onboarding_EndPoints::init();
 		Jetpack_Onboarding_WelcomePanel::init();
 	}
