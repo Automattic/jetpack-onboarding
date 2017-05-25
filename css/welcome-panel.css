@@ -445,7 +445,7 @@ img.welcome__get-started-image {
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%); }
-  @media (max-width: 550px), (max-height: 550px) {
+  @media (max-width: 550px), (max-height: 750px) {
     img.welcome__get-started-image {
       display: none; } }
 

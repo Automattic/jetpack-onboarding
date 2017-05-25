@@ -20,7 +20,7 @@ img.welcome__get-started-image {
 
 	// preventing the image from covering actions on smaller views
 	@media ( max-width: 550px ),
-		( max-height: 550px ) {
+		( max-height: 750px ) {
 		display: none;
 	}
 }
