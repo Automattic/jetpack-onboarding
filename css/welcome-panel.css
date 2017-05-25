@@ -547,7 +547,7 @@ img.welcome__get-started-image {
   .welcome__dismiss * {
     vertical-align: middle; }
 
-.welcome__review-themes img {
+.welcome__review-cta img {
   max-width: 320px;
   border: 1px solid #ccd8e1; }
 

@@ -24,4 +24,3 @@ function jpo_start() {
 }
 
 add_action( 'init',  'jpo_start' );
-

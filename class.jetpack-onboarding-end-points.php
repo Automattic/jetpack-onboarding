@@ -129,6 +129,10 @@ class Jetpack_Onboarding_EndPoints {
 				'contact_page' => $contact_page_info,
 				'business_address' => ( bool ) $business_address_saved,
 				'advanced_settings' => array(
+					'show_cta' => apply_filters( 'jpo_review_show_cta', true ),
+					'cta_image' => apply_filters( 'jpo_review_cta_image', JETPACK_ONBOARDING_BASE_URL . '/img/jpo-themes.png' ),
+					'cta_button_text' => apply_filters( 'jpo_review_cta_button_text', 'Customize your site' ),
+					'cta_button_url' => apply_filters( 'jpo_review_cta_button_url', wp_customize_url() ),
 					'jetpack_modules_url' => admin_url( 'admin.php?page=jetpack#/settings' ),
 					'jetpack_dash' => admin_url( 'admin.php?page=jetpack' ),
 					'widgets_url' => admin_url( 'widgets.php' ),

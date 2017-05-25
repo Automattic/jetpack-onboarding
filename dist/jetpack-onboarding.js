@@ -4643,20 +4643,20 @@ var AdvancedSettingsStep = React.createClass({
 						this.renderWooCommerceStatus()
 					)
 				),
-				React.createElement(
+				JPS.steps.advanced_settings.show_cta ? React.createElement(
 					'div',
-					{ className: 'welcome__review-col welcome__review-themes' },
-					React.createElement('img', { src: JPS.base_url + '/img/jpo-themes.png' }),
+					{ className: 'welcome__review-col welcome__review-cta' },
+					React.createElement('img', { src: JPS.steps.advanced_settings.cta_image }),
 					React.createElement(
 						'p',
 						null,
 						React.createElement(
 							Button,
-							{ href: JPS.steps.advanced_settings.customize_url },
-							'Customize your site'
+							{ href: JPS.steps.advanced_settings.cta_button_url },
+							JPS.steps.advanced_settings.cta_button_text
 						)
 					)
-				)
+				) : null
 			)
 		);
 	}

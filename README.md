@@ -122,3 +122,37 @@ Directory structure:
 If you load the dashboard with the parameter "jpo_reset=1", then all Jetpack Onboarding *AND* Jetpack data will be reset. 
 
 If you enable WP_DEBUG in wp-config.php, then you'll see some additional buttons on the wizard UI for resetting wizard progress data (just the wizard progress in this case, not Jetpack itself) and showing and hiding the spinner overlay.
+
+## Filters
+
+There's a few ways you can customise behaviour of JPO via filters.
+
+### Final step call-to-action
+
+The final step has a "call to action" on the right which by default encourages the user to enter the customizer. The following filters allow hiding or modifying this behaviour.
+
+#### Hiding the final step call to action
+
+```php
+add_filter( 'jpo_review_show_cta', '__return_false' );
+```
+
+#### Replacing the image and button text/link on final call to action
+
+```php
+add_filter( 'jpo_review_cta_image', 'my_cta_image_url' );
+add_filter( 'jpo_review_cta_button_text', 'my_cta_button_text' );
+add_filter( 'jpo_review_cta_button_url', 'my_cta_button_url' );
+
+function my_cta_image_url() {
+	return '/my-images/cta-promo.png';
+}
+
+function my_cta_button_text() {
+	return 'Install our Premium Plugin';
+}
+
+function my_cta_button_url() {
+	return 'http://example.com';
+}
+```

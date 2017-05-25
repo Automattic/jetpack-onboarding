@@ -132,10 +132,12 @@ var AdvancedSettingsStep = React.createClass({
 						</ul>
 					</div>
 
-					<div className="welcome__review-col welcome__review-themes">
-						<img src={ `${ JPS.base_url }/img/jpo-themes.png` } />
-						<p><Button href={ JPS.steps.advanced_settings.customize_url } >Customize your site</Button></p>
-					</div>
+					{ JPS.steps.advanced_settings.show_cta ?
+						<div className="welcome__review-col welcome__review-cta">
+							<img src={ JPS.steps.advanced_settings.cta_image } />
+							<p><Button href={ JPS.steps.advanced_settings.cta_button_url } >{ JPS.steps.advanced_settings.cta_button_text }</Button></p>
+						</div> : null
+					}
 				</div>
 			</WelcomeSection>
 		);
