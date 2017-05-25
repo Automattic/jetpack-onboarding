@@ -94,6 +94,14 @@ npm run build       # to build the css and javascript
 
 `npm run build-css` or `npm run build-react` can also be run to build just the CSS or JS, respectively. Check out `scripts` in `package.json` for a few other commands.
 
+If you get errors running `npm run build`, it could be `node-sass` issues (e.g. missing binaries like scandir). In that case, run:
+
+```bash
+npm install node-sass
+```
+
+and try again to see if that fixes your issue.
+
 Directory structure:
 
 - client - this is where you come to edit javascript

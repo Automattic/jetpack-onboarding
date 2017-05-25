@@ -7,7 +7,7 @@ var NODE_ENV = process.env.NODE_ENV || 'development';
 
 // build the plugin list, optionally excluding hot update plugins if we're building for production
 var plugins = [
-	new webpack.optimize.CommonsChunkPlugin( /* chunkName= */'vendor', /* filename= */ 'vendor.bundle.js' ),
+	new webpack.optimize.CommonsChunkPlugin( { name: 'vendor', filename: 'vendor.bundle.js' } ),
 	new ExtractTextPlugin( '[name].css' ),
 	new webpack.DefinePlugin( {
 		'process.env': {
@@ -18,7 +18,7 @@ var plugins = [
 ];
 
 module.exports = {
-	progress: true,
+	// progress: true,
 	entry: {
 		'jetpack-onboarding': './client/jetpack-onboarding.js',
 		'ie-shims': './client/ie-shims.js',
@@ -31,33 +31,34 @@ module.exports = {
 		chunkFilename: '[id].js'
 	},
 	resolve: {
-		extensions: [ '', '.js', '.jsx' ],
+		extensions: [ '.js', '.jsx' ],
 		alias: {
 			stores: path.join( __dirname, '/client/stores' ),
 			actions: path.join( __dirname, '/client/actions' ),
 		},
-		root: [
+		modules: [
 			path.resolve( __dirname, 'client' ),
-			fs.realpathSync( path.join( __dirname, 'node_modules/@automattic/dops-components/client' ) )
+			fs.realpathSync( path.join( __dirname, 'node_modules/@automattic/dops-components/client' ) ),
+			"node_modules"
 		]
-	},
-	resolveLoader: {
-		root: path.join( __dirname, 'node_modules' ),
-		alias: {
-			'custom-colors': '@automattic/custom-colors-loader'
-		}
 	},
 	node: {
 		fs: 'empty'
 	},
 	stats: { colors: true, reasons: true },
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx?$/,
-				loaders: [
+				use: [
 					require.resolve( 'babel-loader' ),
-					require.resolve( 'eslint-loader' )
+					{
+						loader: require.resolve( 'eslint-loader' ),
+						options: {
+							configFile: path.join( __dirname, '.eslintrc' ),
+							quiet: true
+						}
+					}
 				],
 
 				// include both typical npm-linked locations and default module locations to handle both cases
@@ -70,28 +71,36 @@ module.exports = {
 			},
 			{
 				test: /\.json$/,
-				loader: require.resolve( 'json-loader' ),
-			},
-			{
-				test: /\.css$/,
-				loader: ExtractTextPlugin.extract( 'css?sourceMap!autoprefixer!' ),
-			},
-			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract( 'css?sourceMap!autoprefixer!sass?sourceMap!custom-colors' ),
+				use: require.resolve( 'json-loader' )
 			},
 			{
 				test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-				loader: require.resolve( 'url-loader' ) + '?limit=20000&mimetype=image/svg+xml'
-			}
+				use: require.resolve( 'url-loader' ) + '?limit=20000&mimetype=image/svg+xml'
+			},
+			{
+				test: /\.css$/,
+				use: ExtractTextPlugin.extract( {
+					use: ['css-loader', 'autoprefixer-loader' ]
+				} ),
+			},
+			{
+				test: /\.scss$/,
+				use: ExtractTextPlugin.extract( {
+					fallback: "style-loader",
+          			use: [
+						'css-loader', 
+						'autoprefixer-loader', 
+						'sass-loader', 
+						{ 
+							loader: '@automattic/custom-colors-loader',
+							options: {
+								file: path.join( __dirname, './css/scss/color-overrides.scss' )
+							}
+						}
+					]
+				} ),
+			},
 		]
-	},
-	customColorsLoader: {
-		file: path.join( __dirname, './css/scss/color-overrides.scss' )
-	},
-	eslint: {
-		configFile: path.join( __dirname, '.eslintrc' ),
-		quiet: true
 	},
 	plugins: plugins
 };

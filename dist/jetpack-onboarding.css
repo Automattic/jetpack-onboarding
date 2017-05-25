@@ -109,6 +109,8 @@
     color: #555; }
   .dops-button.is-borderless:focus {
     box-shadow: none; }
+  .dops-accessible-focus .dops-button.is-borderless:focus {
+    outline: thin dotted; }
   .dops-button.is-borderless .gridicon {
     width: 24px;
     height: 24px;
