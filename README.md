@@ -127,6 +127,19 @@ If you enable WP_DEBUG in wp-config.php, then you'll see some additional buttons
 
 There's a few ways you can customise behaviour of JPO via filters.
 
+### Skipping wizard steps
+
+You can selectively disable any step with a filter, `jpo_wizard_step_enabled_{$STEP_SLUG}`. The step slugs are listed in `jetpack-onboarding-paths.js`.
+
+e.g. to skip the title and layout (blog vs website) step:
+
+```php
+add_filter( 'jpo_wizard_step_enabled_title', '__return_false' );
+add_filter( 'jpo_wizard_step_enabled_is-blog', '__return_false' );
+```
+
+These will also remove the corresponding review items from the final "review" page.
+
 ### Final step call-to-action
 
 The final step has a "call to action" on the right which by default encourages the user to enter the customizer. The following filters allow hiding or modifying this behaviour.

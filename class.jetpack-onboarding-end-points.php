@@ -87,6 +87,30 @@ class Jetpack_Onboarding_EndPoints {
 			$step_statuses['jetpack'] = array('completed' => true);
 		}
 
+		$step_slugs = array(
+			'title',
+			'is-blog',
+			'homepage',
+			'traffic',
+			'stats-monitoring',
+			'design',
+			'advanced',
+			'review',
+			'jetpack',
+			'contact-page',
+			'business-address',
+			'woocommerce'
+		);
+
+		// create an assoc array of step_key => apply_filters( 'jpo_step_enabled_$slug', true );
+		$steps_enabled = array_combine( 
+			$step_slugs,
+			array_map( 
+				array( 'Jetpack_Onboarding_EndPoints', 'filter_wizard_step_enabled' ), 
+				$step_slugs 
+			)
+		);
+
 		return array(
 			'base_url' => JETPACK_ONBOARDING_BASE_URL,
 			'site_url' => site_url(),
@@ -124,6 +148,7 @@ class Jetpack_Onboarding_EndPoints {
 			'woocommerce_status' => is_plugin_active( self::WOOCOMMERCE_ID ),
 			'started' => $started,
 			'step_status' => $step_statuses,
+			'step_enabled' => $steps_enabled,
 			'steps' => array(
 				'layout' => self::get_layout(),
 				'contact_page' => $contact_page_info,
@@ -147,6 +172,10 @@ class Jetpack_Onboarding_EndPoints {
 				)
 			),
 		);
+	}
+
+	static function filter_wizard_step_enabled( $step_slug ) {
+		return apply_filters( "jpo_wizard_step_enabled_$step_slug", true );
 	}
 
 	static function get_layout() {

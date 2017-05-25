@@ -820,6 +820,10 @@ function setSteps(steps) {
     if (typeof step.includeInProgress === 'undefined') {
       step.includeInProgress = true;
     }
+
+    if (typeof step.enabled === 'undefined') {
+      step.enabled = JPS.step_enabled[step.slug] || false;
+    }
   });
 
   _steps = steps;
@@ -879,13 +883,13 @@ function _getNextPendingStep() {
   // if the _next_ step is neverSkip, we proceed to it
   var stepIndex = currentStepIndex();
   if (stepIndex !== false) {
-    if (_steps[stepIndex + 1] && _steps[stepIndex + 1].neverSkip === true) {
+    if (_steps[stepIndex + 1] && _steps[stepIndex + 1].enabled && _steps[stepIndex + 1].neverSkip === true) {
       return _steps[stepIndex + 1];
     }
   }
 
   // otherwise find the next uncompleted, unskipped step
-  var nextPendingStep = _.findWhere(_steps, { completed: false, skipped: false });
+  var nextPendingStep = _.findWhere(_steps, { enabled: true, completed: false, skipped: false });
   return nextPendingStep;
 }
 
@@ -4445,7 +4449,7 @@ var AdvancedSettingsStep = React.createClass({
 		    is_shop = _JPS$bloginfo.is_shop,
 		    type = _JPS$bloginfo.type;
 
-		if (type !== 'business') {
+		if (type !== 'business' || !JPS.step_enabled[Paths.WOOCOMMERCE_SLUG]) {
 			return null;
 		}
 
@@ -4537,7 +4541,7 @@ var AdvancedSettingsStep = React.createClass({
 					React.createElement(
 						'ul',
 						{ className: 'welcome__review-list' },
-						React.createElement(
+						JPS.step_enabled[Paths.SITE_TITLE_STEP_SLUG] && React.createElement(
 							'li',
 							null,
 							React.createElement(Dashicon, { name: 'yes' }),
@@ -4548,7 +4552,7 @@ var AdvancedSettingsStep = React.createClass({
 								'(edit)'
 							)
 						),
-						React.createElement(
+						JPS.step_enabled[Paths.IS_BLOG_STEP_SLUG] && React.createElement(
 							'li',
 							null,
 							React.createElement(Dashicon, { name: 'yes' }),
@@ -4558,7 +4562,7 @@ var AdvancedSettingsStep = React.createClass({
 								{ href: '#', onClick: this.handleSkipTo.bind(this, Paths.IS_BLOG_STEP_SLUG) },
 								'(edit)'
 							),
-							this.state.layout !== 'blog' ? React.createElement(
+							JPS.step_enabled[Paths.IS_BLOG_STEP_SLUG] && this.state.layout !== 'blog' ? React.createElement(
 								'ul',
 								null,
 								React.createElement(
@@ -4581,7 +4585,7 @@ var AdvancedSettingsStep = React.createClass({
 								) : null
 							) : null
 						),
-						React.createElement(
+						JPS.step_enabled[Paths.CONTACT_PAGE_STEP_SLUG] && React.createElement(
 							'li',
 							null,
 							React.createElement(Dashicon, { name: 'yes' }),
@@ -4603,7 +4607,7 @@ var AdvancedSettingsStep = React.createClass({
 								' Requires a Jetpack Connection '
 							) : null
 						),
-						React.createElement(
+						JPS.step_enabled[Paths.JETPACK_MODULES_STEP_SLUG] && React.createElement(
 							'li',
 							null,
 							React.createElement(Dashicon, { name: 'yes' }),
@@ -4618,7 +4622,7 @@ var AdvancedSettingsStep = React.createClass({
 							),
 							'increase visitors and improve security'
 						),
-						JPS.bloginfo.type === 'business' ? React.createElement(
+						JPS.step_enabled[Paths.BUSINESS_ADDRESS_SLUG] && JPS.bloginfo.type === 'business' ? React.createElement(
 							'li',
 							null,
 							JPS.steps.business_address ? React.createElement(Dashicon, { name: 'yes' }) : React.createElement(Dashicon, { name: 'no' }),

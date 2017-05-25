@@ -37,6 +37,10 @@ function setSteps(steps) {
     if ( typeof( step.includeInProgress ) === 'undefined') {
       step.includeInProgress = true;
     }
+
+    if ( typeof( step.enabled ) === 'undefined' ) {
+      step.enabled = (JPS.step_enabled[step.slug]) || false;  
+    }
   }); 
   
   _steps = steps;
@@ -96,13 +100,13 @@ function getNextPendingStep() {
   // if the _next_ step is neverSkip, we proceed to it
   var stepIndex = currentStepIndex();
   if ( stepIndex !== false ) {
-    if ( _steps[stepIndex+1] && _steps[stepIndex+1].neverSkip === true ) {
+    if ( _steps[stepIndex+1] && _steps[stepIndex+1].enabled && _steps[stepIndex+1].neverSkip === true ) {
       return _steps[stepIndex+1];
     }
   }
 
   // otherwise find the next uncompleted, unskipped step
-  var nextPendingStep = _.findWhere( _steps, { completed: false, skipped: false } );
+  var nextPendingStep = _.findWhere( _steps, { enabled: true, completed: false, skipped: false } );
   return nextPendingStep;
 }
 

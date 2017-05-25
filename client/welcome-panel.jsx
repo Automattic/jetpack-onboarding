@@ -18,12 +18,12 @@ module.exports = function() {
 			{
 				name: 'Site title',
 				slug: Paths.SITE_TITLE_STEP_SLUG,
-				welcomeView: require('./components/steps/site-title')
+				welcomeView: require('./components/steps/site-title'),
 			},
 			{
 				name: 'Is this a blog?',
 				slug: Paths.IS_BLOG_STEP_SLUG,
-				welcomeView: require('./components/steps/layout')
+				welcomeView: require('./components/steps/layout'),
 			},
 			{
 				name: 'Set your homepage',

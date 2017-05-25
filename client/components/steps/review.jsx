@@ -50,7 +50,7 @@ var AdvancedSettingsStep = React.createClass({
 
 	renderWooCommerceStatus: function() {
 		const { is_shop, type } = JPS.bloginfo;
-		if ( type !== 'business' ) {
+		if ( type !== 'business' || ! JPS.step_enabled[Paths.WOOCOMMERCE_SLUG] ) {
 			return null;
 		}
 
@@ -95,29 +95,40 @@ var AdvancedSettingsStep = React.createClass({
 				<div className="welcome__review-cols">
 					<div className="welcome__review-col">
 						<ul className="welcome__review-list">
-							<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
-							<li><Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
-							{ this.state.layout !== 'blog' ?
-								<ul>
-									<li><a href={ this.state.welcomeUrl }>Edit your Welcome page</a></li>
-								{ ( this.state.layout !== 'website' ) ?
-									<li><a href={ this.state.newsUrl }>Edit your News and Updates page</a></li> : null
-								}
-								</ul> :
-								null
+							{ JPS.step_enabled[Paths.SITE_TITLE_STEP_SLUG] &&
+								<li><Dashicon name="yes" /> Title and description <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.SITE_TITLE_STEP_SLUG ) }>(edit)</a></li>
 							}
-							</li>
-							<li>
-								<Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a>
-								{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
-							</li>
-							<li><Dashicon name="yes" />
-							{ this.state.isJPConnected ?
-								<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack: </a> :
-								<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
+							{ JPS.step_enabled[Paths.IS_BLOG_STEP_SLUG] &&
+								<li>
+									<Dashicon name="yes" /> Homepage layout <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.IS_BLOG_STEP_SLUG ) }>(edit)</a>
+									{ ( JPS.step_enabled[Paths.IS_BLOG_STEP_SLUG] && this.state.layout !== 'blog' ) ?
+										<ul>
+											<li><a href={ this.state.welcomeUrl }>Edit your Welcome page</a></li>
+										{ ( this.state.layout !== 'website' ) ?
+											<li><a href={ this.state.newsUrl }>Edit your News and Updates page</a></li> : null
+										}
+										</ul> :
+										null
+									}
+								</li>
 							}
-							increase visitors and improve security</li>
-							{ JPS.bloginfo.type === 'business' ?
+							{ JPS.step_enabled[Paths.CONTACT_PAGE_STEP_SLUG] &&
+								<li>
+									<Dashicon name="yes" /> <em>Contact Us</em> page <a { ...contactProps }>(edit)</a>
+									{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
+								</li>
+							}
+							{ JPS.step_enabled[Paths.JETPACK_MODULES_STEP_SLUG] &&
+								<li>
+									<Dashicon name="yes" />
+									{ this.state.isJPConnected ?
+										<a href={ JPS.steps.advanced_settings.jetpack_dash }>Jetpack: </a> :
+										<a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }>Connect Jetpack: </a>
+									}
+									increase visitors and improve security
+								</li>
+							}
+							{ ( JPS.step_enabled[Paths.BUSINESS_ADDRESS_SLUG] && JPS.bloginfo.type === 'business' ) ?
 								<li>
 									{ JPS.steps.business_address
 										? <Dashicon name="yes" />
@@ -126,7 +137,6 @@ var AdvancedSettingsStep = React.createClass({
 									{ ! this.state.isJPConnected ? <a href="#" onClick={ this.handleSkipTo.bind(this, Paths.JETPACK_MODULES_STEP_SLUG ) }> Requires a Jetpack Connection </a> : null }
  								</li> :
 								null
-
 							}
 							{ this.renderWooCommerceStatus() }
 						</ul>
