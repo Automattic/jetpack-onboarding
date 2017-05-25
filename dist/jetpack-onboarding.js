@@ -4812,9 +4812,6 @@ module.exports = React.createClass({
 
 	_onChange: function _onChange() {
 		this.setState(getJetpackState());
-		if (this.state.wooCommerceStatus && this.state.redirect_to_woocommerce_setup) {
-			window.setTimeout(this.goToWooSetup, 10);
-		}
 	},
 
 	getInitialState: function getInitialState() {
