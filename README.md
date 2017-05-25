@@ -169,3 +169,19 @@ function my_cta_button_url() {
 	return 'http://example.com';
 }
 ```
+
+## Inserting the JPO wizard onto other pages
+
+By default, JPO runs in the welcome panel, but you can run it by inserting a div with the id 'jpo-welcome-panel' into any other page, like this:
+
+```php
+// add assets
+add_action( 'admin_enqueue_scripts', array( 'Jetpack_Onboarding_WelcomePanel', 'add_wizard_assets' ) );
+// add wizard HTML
+add_action( 'admin_notices', 'add_jpo_wizard' );
+function add_jpo_wizard() {
+	?>
+	<div id='jpo-welcome-panel'><span class='screen-reader-text'>Loading Welcome Wizard</span></div>
+	<?php
+}
+```
