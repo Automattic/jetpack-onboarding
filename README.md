@@ -185,3 +185,29 @@ function add_jpo_wizard() {
 	<?php
 }
 ```
+
+## Styling
+
+### Move the top of the wizard down to expose top elements in dashboard
+
+Inject this CSS:
+
+```css
+#jpo-welcome-panel {
+	top: 100px !important;
+}
+```
+
+### Add a logo inside the wizard panel as a background
+
+Given a logo an image, e.g. http://example.com/wp-content/uploads/2017/MyHost_Logo.png, let's scale the logo, move it to the middle at the top, and move the content down:
+
+```css
+#jpo-welcome-panel {
+    background-image: url( http://local.wordpress.goldsounds.wpvm.io/wp-content/uploads/2017/05/MyHost_Logo.png );
+    background-repeat: no-repeat;
+    background-position: 50% 30px;
+    padding-top: 120px;
+    background-size: 400px;
+}
+```
