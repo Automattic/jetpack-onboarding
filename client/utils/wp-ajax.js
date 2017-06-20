@@ -36,6 +36,11 @@ var WPAjax = (function() {
 			}
 
 			jQuery.post( ajaxurl, data )
+				.always( function () {
+					if ( !options.quiet ) {
+						DataActions.requestFinished();
+					}
+				})
 				.success( function( response ) {
 					if ( ! response.success ) {
 						deferred.reject(response.data);
@@ -45,12 +50,7 @@ var WPAjax = (function() {
 				})
 				.fail( function() {
 					deferred.reject("Server error");
-				})
-				.always( function () {
-					if ( !options.quiet ) {
-						DataActions.requestFinished();
-					}
-				});	
+				});
 
 			return deferred;
 		}

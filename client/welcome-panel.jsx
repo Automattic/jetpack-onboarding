@@ -7,6 +7,10 @@ var React = require( 'react' ),
 module.exports = function() {
 	jQuery( document ).ready( function () {
 
+		if ( ! document.getElementById( 'jpo-welcome-panel' ) ) {
+			return;
+		}
+
 		SetupProgressStore.init( [
 			// NOTE: You can have "static: true" to include un-clickable
 			// prefilled steps that act as though they've already been completed

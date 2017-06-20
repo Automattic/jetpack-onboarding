@@ -413,13 +413,13 @@ class Jetpack_Onboarding_EndPoints {
 		
 		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
 
-		if ( !$setting || !is_array( $setting ) ) {
+		if ( ! $setting || ! is_array( $setting ) ) {
 			$setting = array();
 		}
 
 		if ( in_array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID, $setting ) ) {
-			$setting = array_diff( $setting, array(Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID) );
-			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true);
+			$setting = array_diff( $setting, array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID ) );
+			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true );
 		}
 	}
 

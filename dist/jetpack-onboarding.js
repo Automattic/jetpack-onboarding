@@ -107,7 +107,7 @@ var SetupProgressActions = {
 		WPAjax.post(JPS.step_actions.close).fail(function (msg) {
 			SpinnerActions.hide();
 			FlashActions.error(msg);
-		}).always(function () {
+		}).then(function () {
 			window.location.reload();
 		});
 	},
@@ -1848,7 +1848,11 @@ var WPAjax = function () {
 				DataActions.requestStarted();
 			}
 
-			jQuery.post(ajaxurl, data).success(function (response) {
+			jQuery.post(ajaxurl, data).always(function () {
+				if (!options.quiet) {
+					DataActions.requestFinished();
+				}
+			}).success(function (response) {
 				if (!response.success) {
 					deferred.reject(response.data);
 				} else {
@@ -1856,10 +1860,6 @@ var WPAjax = function () {
 				}
 			}).fail(function () {
 				deferred.reject("Server error");
-			}).always(function () {
-				if (!options.quiet) {
-					DataActions.requestFinished();
-				}
 			});
 
 			return deferred;
@@ -2447,6 +2447,10 @@ var React = __webpack_require__(5),
 
 module.exports = function () {
 	jQuery(document).ready(function () {
+
+		if (!document.getElementById('jpo-welcome-panel')) {
+			return;
+		}
 
 		SetupProgressStore.init([
 		// NOTE: You can have "static: true" to include un-clickable

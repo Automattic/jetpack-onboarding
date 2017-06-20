@@ -101,7 +101,7 @@ var SetupProgressActions = {
 				SpinnerActions.hide();
 				FlashActions.error(msg);
 			}).
-			always(function() {
+			then(function() {
 				window.location.reload();
 			});
 	},
