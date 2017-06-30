@@ -180,6 +180,9 @@ add_action( 'admin_enqueue_scripts', array( 'Jetpack_Onboarding_WelcomePanel', '
 // add wizard HTML
 add_action( 'admin_notices', 'add_jpo_wizard' );
 function add_jpo_wizard() {
+	if ( get_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION ) ) {
+		return;
+	}
 	?>
 	<div id='jpo-welcome-panel'><span class='screen-reader-text'>Loading Welcome Wizard</span></div>
 	<?php
