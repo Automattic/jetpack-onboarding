@@ -20,6 +20,12 @@ module.exports = function() {
 			// 	static: true
 			// },
 			{
+				name: 'Enable Jetpack',
+				slug: Paths.JETPACK_MODULES_STEP_SLUG,
+				neverSkip: true, // don't skip this even if it's been completed
+				welcomeView: require('./components/steps/jetpack-jumpstart'),
+			},
+			{
 				name: 'Site title',
 				slug: Paths.SITE_TITLE_STEP_SLUG,
 				welcomeView: require('./components/steps/site-title'),
@@ -38,12 +44,6 @@ module.exports = function() {
 				name: "Contact Info",
 				slug: Paths.CONTACT_PAGE_STEP_SLUG,
 				welcomeView: require('./components/steps/contact')
-			},
-			{
-				name: 'Enable Jetpack',
-				slug: Paths.JETPACK_MODULES_STEP_SLUG,
-				neverSkip: true, // don't skip this even if it's been completed
-				welcomeView: require('./components/steps/jetpack-jumpstart'),
 			},
 			{
 				name: 'Business Address',
