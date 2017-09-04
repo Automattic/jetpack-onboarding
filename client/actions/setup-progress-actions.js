@@ -186,12 +186,12 @@ var SetupProgressActions = {
 
 	_recordStepViewed: function( step ) {
 		// record analytics to say we viewed the next step
-  		return WPAjax.
-  			post(JPS.step_actions.view, {
-  				step: step.slug
-  			}, {
-  				quiet: true
-  			});
+		return WPAjax.
+			post( JPS.step_actions.view, {
+				step: step.slug
+			}, {
+				quiet: true
+			} );
 	},
 
 	_recordStepComplete: function( step, meta ) {
