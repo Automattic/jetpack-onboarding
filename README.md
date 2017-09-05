@@ -3,11 +3,9 @@ Jetpack Onboarding
 
 Jetpack Onboarding is our attempt at exploring a better New User Experience flow when a user first sets up WordPress.
 
-![alt tag](https://raw.github.com/Automattic/jetpack-start/master/img/jpo_started.png)
-
 It is designed to be extensible, so that hosting companies that choose to bundle it can easily modify, add, or remove any of the steps that we've included by default.
 
-Most of the code lives in the client, and uses [ReactJS](https://github.com/facebook/react) and Facebook's [Flux Dispatcher](https://github.com/facebook/flux) to manage the flow of data and UI updates. 
+Most of the code lives in the client, and uses [ReactJS](https://github.com/facebook/react) and Facebook's [Flux Dispatcher](https://github.com/facebook/flux) to manage the flow of data and UI updates.
 
 This initiative is currently being led by Daniel Walmsley [@gravityrail](http://github.com/gravityrail) and Jesse Friedman [@jessefriedman](http://github.com/jessefriedman), with design by Dan Hauk [@danhauk](https://github.com/danhauk).
 
@@ -22,7 +20,7 @@ This plugin publishes three hooks:
 - jpo_step_skipped
 - jpo_step_complete
 
-jpo_started is invoked when the user clicks the "Get Started ->" link on the front page of the wizard. The latter two "step" hooks are invoked with a string (a "slug") which names the step. 
+jpo_started is invoked when the user clicks the "Get Started ->" link on the front page of the wizard. The latter two "step" hooks are invoked with a string (a "slug") which names the step.
 
 Each "jpo_step_completed" step is accompanied by a data hash, which at a minimum includes an entry called "completion", which is the % completion of the wizard. For example, a step completion hash for the "design" step might look like this:
 
@@ -119,7 +117,7 @@ Directory structure:
 
 ## Debugging
 
-If you load the dashboard with the parameter "jpo_reset=1", then all Jetpack Onboarding *AND* Jetpack data will be reset. 
+If you load the dashboard with the parameter "jpo_reset=1", then all Jetpack Onboarding *AND* Jetpack data will be reset.
 
 If you enable WP_DEBUG in wp-config.php, then you'll see some additional buttons on the wizard UI for resetting wizard progress data (just the wizard progress in this case, not Jetpack itself) and showing and hiding the spinner overlay.
 
