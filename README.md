@@ -85,12 +85,11 @@ add_action( 'init',  array('JetpackOnboardingTracking', 'track_jpo_usage') );
 
 ```bash
 cd /path/to/jetpack-onboarding
-npm install -g gulp # if you don't have it
 npm install         # install local dependencies
 npm run build       # to build the css and javascript
 ```
 
-`npm run build-css` or `npm run build-react` can also be run to build just the CSS or JS, respectively. Check out `scripts` in `package.json` for a few other commands.
+Alternatively, `npm run watch` can be used to watch JS and SCSS files while actively developing, and `npm run build-production` can be used to build for production.
 
 If you get errors running `npm run build`, it could be `node-sass` issues (e.g. missing binaries like scandir). In that case, run:
 
