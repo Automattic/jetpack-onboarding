@@ -1,0 +1,12 @@
+/.git/
+/node_modules/
+/bin/
+/client/
+/css/scss/
+.babelrc
+.editorconfig
+.eslintrc
+.gitignore
+gulpfile.js
+package.json
+webpack.config.js
