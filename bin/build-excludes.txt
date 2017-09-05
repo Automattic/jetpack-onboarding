@@ -2,7 +2,7 @@
 /node_modules/
 /bin/
 /client/
-/css/scss/
+/scss/
 .babelrc
 .editorconfig
 .eslintrc

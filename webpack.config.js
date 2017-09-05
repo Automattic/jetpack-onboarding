@@ -87,14 +87,14 @@ module.exports = {
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract( {
 					fallback: "style-loader",
-          			use: [
-						'css-loader', 
-						'autoprefixer-loader', 
-						'sass-loader', 
-						{ 
+					use: [
+						'css-loader',
+						'autoprefixer-loader',
+						'sass-loader',
+						{
 							loader: '@automattic/custom-colors-loader',
 							options: {
-								file: path.join( __dirname, './css/scss/color-overrides.scss' )
+								file: path.join( __dirname, './scss/color-overrides.scss' )
 							}
 						}
 					]

@@ -12,7 +12,7 @@ function doSass() {
 	}
 	var start = new Date();
 	console.log( 'Building CSS bundle' );
-	gulp.src( './css/scss/welcome-panel.scss' )
+	gulp.src( './scss/welcome-panel.scss' )
 		.pipe( sass().on( 'error', sass.logError ) )
 		.pipe( autoprefixer() )
 		.pipe( sourcemaps.write( '.' ) )
@@ -28,7 +28,7 @@ gulp.task( 'sass:build', function() {
 
 gulp.task( 'sass:watch', function() {
 	doSass();
-	gulp.watch( [ './css/**/*.scss' ], doSass );
+	gulp.watch( [ './**/*.scss' ], doSass );
 } );
 
 gulp.task( 'webpack:build', function( cb ) {
