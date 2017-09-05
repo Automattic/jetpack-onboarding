@@ -64,7 +64,7 @@ var JetpackJumpstart = React.createClass({
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__jetpack">
-				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
+				<h1>Let&apos;s launch your new website</h1>
 				<p className="welcome__callout welcome__jetpack--callout">
 					Connect your Jetpack profile to improve security, track stats, and grow traffic
 				</p>

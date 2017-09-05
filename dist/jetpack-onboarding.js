@@ -3115,12 +3115,7 @@ var JetpackJumpstart = React.createClass({
 			React.createElement(
 				'h1',
 				null,
-				'Let\'s launch ',
-				React.createElement(
-					'em',
-					null,
-					this.state.site_title
-				)
+				'Let\'s launch your new website'
 			),
 			React.createElement(
 				'p',
