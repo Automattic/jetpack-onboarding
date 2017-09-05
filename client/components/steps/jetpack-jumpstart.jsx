@@ -42,13 +42,9 @@ var JetpackJumpstart = React.createClass({
 
 	handleJetpackConnect: function( event ) {
 		event.preventDefault();
-		const path = JPS.bloginfo.type === 'business' ?
-			Paths.BUSINESS_ADDRESS_SLUG :
-			Paths.REVIEW_STEP_SLUG;
-
 		this.setState( { jetpackConnecting: true } );
 		SiteActions
-			.configureJetpack( path )
+			.configureJetpack( Paths.SITE_TITLE_STEP_SLUG )
 			.always(function() {
 				this.setState( { jetpackConnecting: false } );
 			}.bind( this ) );
@@ -62,16 +58,13 @@ var JetpackJumpstart = React.createClass({
 
 	handleSkip: function() {
 		SetupProgressActions.skipStep();
-		if ( JPS.bloginfo.type !== 'business' ) {
-			return SetupProgressActions.setCurrentStep( Paths.REVIEW_STEP_SLUG );
-		}
-		return SetupProgressActions.setCurrentStep( Paths.BUSINESS_ADDRESS_SLUG );
+		return SetupProgressActions.setCurrentStep( Paths.SITE_TITLE_STEP_SLUG );
 	},
 
 	render: function() {
 		return (
 			<WelcomeSection id="welcome__jetpack">
-				<h1>Let&apos;s launch <em>{ this.state.site_title }</em></h1>
+				<h1>Let&apos;s launch your new website</h1>
 				<p className="welcome__callout welcome__jetpack--callout">
 					Connect your Jetpack profile to improve security, track stats, and grow traffic
 				</p>
