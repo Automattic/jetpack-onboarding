@@ -4,6 +4,7 @@ var gulp = require( 'gulp' );
 var sass = require( 'gulp-sass' );
 var autoprefixer = require( 'gulp-autoprefixer' );
 var sourcemaps = require( 'gulp-sourcemaps' );
+var childProcess = require( 'child_process' );
 
 function doSass() {
 	if ( arguments.length ) {
@@ -30,5 +31,34 @@ gulp.task( 'sass:watch', function() {
 	gulp.watch( [ './css/**/*.scss' ], doSass );
 } );
 
-gulp.task( 'default', [ 'sass:build' ] );
-gulp.task( 'watch',   [ 'sass:watch' ] );
+gulp.task( 'webpack:build', function( cb ) {
+	var env = process.env.NODE_ENV;
+	var command = ( 'undefined' !== env && 'production' === 'env' )
+		? 'webpack --color'
+		: 'webpack -p --color';
+
+	childProcess.exec( command, function( err, stdout, stderr ) {
+		console.log( stdout );
+		console.log( stderr );
+		cb( err );
+	} );
+} );
+
+gulp.task( 'webpack:watch', ( cb ) => {
+	const webpack_watch = childProcess.spawn( 'webpack', [ '--watch', '--color' ] );
+
+	webpack_watch.stdout.on( 'data', ( data ) => {
+		console.log( `stdout: ${data}` );
+	} );
+
+	webpack_watch.stderr.on( 'data', ( data ) => {
+		console.log( `stderr: ${data}` );
+	} );
+
+	webpack_watch.on( 'close', ( code ) => {
+		console.log( `child process exited with code ${code}` );
+	} );
+} );
+
+gulp.task( 'default', [ 'sass:build', 'webpack:build' ] );
+gulp.task( 'watch',   [ 'sass:watch', 'webpack:watch' ] );

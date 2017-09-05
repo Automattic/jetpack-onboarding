@@ -2,13 +2,9 @@
   "name": "jetpack-onboarding",
   "version": "0.1.0",
   "scripts": {
-    "build-css": "gulp",
-    "build-react": "webpack",
-    "build-react-production": "NODE_ENV=production webpack -p",
-    "build": "npm run build-css && npm run build-react",
-    "build-production": "npm run build-css && npm run build-react-production",
-    "dev": "webpack",
-    "watch": "webpack --watch",
+    "build": "gulp",
+    "build-production": "NODE_ENV=production gulp",
+    "watch": "gulp watch",
     "lint": "eslint client --ext=js,jsx"
   },
   "devDependencies": {
