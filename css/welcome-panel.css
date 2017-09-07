@@ -354,7 +354,7 @@
   position: relative;
   background: #fff;
   border: 1px solid #ddd;
-  margin: 56px 10px 10px;
+  margin: 10px;
   padding: 52px 16px;
   min-height: 600px;
   min-height: calc( 100vh - 66px); }
@@ -387,17 +387,32 @@
   border: 1px solid #eee; }
 
 .welcome__debug {
+  margin: 56px 0 0 10px;
   position: relative;
   z-index: 11; }
+  @media (min-width: 782px) {
+    .welcome__debug {
+      margin: 10px 0 -10px 20px; } }
+  .welcome__debug a.button {
+    margin-left: 8px;
+    margin-bottom: 0; }
+    .welcome__debug a.button:first-child {
+      margin-left: 0; }
 
 .welcome__loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.6); }
+  @media (min-width: 782px) {
+    .welcome__loading-overlay {
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px; } }
 
 .welcome__loading-message {
   position: absolute;
