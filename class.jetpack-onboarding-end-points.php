@@ -9,7 +9,7 @@ class Jetpack_Onboarding_EndPoints {
 	const BUSINESS_ADDRESS_SAVED_KEY = 'jpo_business_address_saved';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
-	const VERSION = "1.5";
+	const VERSION = '1.6';
 	const WOOCOMMERCE_ID = 'woocommerce/woocommerce.php';
 	const WOOCOMMERCE_SLUG = 'woocommerce';
 	const HIDE_FOR_ALL_USERS_OPTION = 'jpo_hide_always';
@@ -103,11 +103,11 @@ class Jetpack_Onboarding_EndPoints {
 		);
 
 		// create an assoc array of step_key => apply_filters( 'jpo_step_enabled_$slug', true );
-		$steps_enabled = array_combine( 
+		$steps_enabled = array_combine(
 			$step_slugs,
-			array_map( 
-				array( 'Jetpack_Onboarding_EndPoints', 'filter_wizard_step_enabled' ), 
-				$step_slugs 
+			array_map(
+				array( 'Jetpack_Onboarding_EndPoints', 'filter_wizard_step_enabled' ),
+				$step_slugs
 			)
 		);
 
@@ -410,7 +410,7 @@ class Jetpack_Onboarding_EndPoints {
 
 	static function show_dashboard_widget() {
 		delete_option( self::HIDE_FOR_ALL_USERS_OPTION );
-		
+
 		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
 
 		if ( ! $setting || ! is_array( $setting ) ) {
