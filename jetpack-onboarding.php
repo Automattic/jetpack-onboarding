@@ -32,6 +32,7 @@ function jpo_reset() {
 	delete_option( Jetpack_Onboarding_EndPoints::STARTED_KEY );
 	delete_option( Jetpack_Onboarding_EndPoints::CONTACTPAGE_ID_KEY );
 	delete_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION );
+	delete_option( Jetpack_Onboarding_EndPoints::SITE_TYPE );
 
 	// If we have a current user, reset JPO for only the current user.
 	// Otherwise, reset for all admins.
