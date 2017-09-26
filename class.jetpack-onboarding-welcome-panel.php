@@ -27,8 +27,6 @@ class Jetpack_Onboarding_WelcomePanel {
 	}
 
 	static function add_dashboard_widgets() {
-		self::reset_data_if_necessary();
-
 		if ( get_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION ) ) {
 			return;
 		}
@@ -65,38 +63,6 @@ class Jetpack_Onboarding_WelcomePanel {
 		wp_enqueue_style( 'jetpack-onboarding-components', plugins_url( 'dist/jetpack-onboarding.css', __FILE__ ), array( 'wp-admin' ) );
 		wp_enqueue_style( 'jetpack-onboarding-panel', plugins_url( 'css/welcome-panel.css', __FILE__ ), array( 'wp-admin', 'wp-pointer', 'dashicons' ) );
 		wp_enqueue_style( 'ie8' );
-	}
-
-	static function reset_data_if_necessary() {
-		//reset data
-		if ( isset( $_GET['jpo_reset'] ) ) {
-			delete_option( Jetpack_Onboarding_EndPoints::STEP_STATUS_KEY );
-			delete_option( Jetpack_Onboarding_EndPoints::FIRSTRUN_KEY );
-			delete_option( Jetpack_Onboarding_EndPoints::STARTED_KEY );
-			Jetpack_Onboarding_EndPoints::show_dashboard_widget();
-			delete_option( Jetpack_Onboarding_EndPoints::CONTACTPAGE_ID_KEY );
-			delete_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION );
-
-			delete_option( 'jetpack_blog_token' );
-			delete_option( 'jetpack_id' );
-
-			//also reset JP data
-			delete_option( 'jetpack_options'        );
-
-			// Delete all non-compact options
-			delete_option( 'jetpack_register'       );
-			delete_option( 'jetpack_activated'      );
-			delete_option( 'jetpack_active_modules' );
-			delete_option( 'jetpack_do_activate'    );
-
-			// Delete all legacy options
-			delete_option( 'jetpack_was_activated'  );
-			delete_option( 'jetpack_auto_installed' );
-			delete_transient( 'jetpack_register'    );
-
-			wp_redirect(remove_query_arg('jpo_reset'));
-			die();
-		}
 	}
 
 	static function render_widget() {
