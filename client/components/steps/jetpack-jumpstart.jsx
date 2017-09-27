@@ -44,7 +44,7 @@ var JetpackJumpstart = React.createClass({
 		event.preventDefault();
 		this.setState( { jetpackConnecting: true } );
 		SiteActions
-			.configureJetpack( Paths.SITE_TITLE_STEP_SLUG )
+			.configureJetpack( Paths.JETPACK_MODULES_STEP_SLUG )
 			.always(function() {
 				this.setState( { jetpackConnecting: false } );
 			}.bind( this ) );
@@ -58,7 +58,7 @@ var JetpackJumpstart = React.createClass({
 
 	handleSkip: function() {
 		SetupProgressActions.skipStep();
-		return SetupProgressActions.setCurrentStep( Paths.SITE_TITLE_STEP_SLUG );
+		SetupProgressActions.selectNextStep();
 	},
 
 	render: function() {
