@@ -261,9 +261,7 @@ class Jetpack_Onboarding_EndPoints {
 	static function reset_data() {
 		check_ajax_referer( self::AJAX_NONCE, 'nonce' );
 
-		delete_option( self::STEP_STATUS_KEY );
-		delete_option( self::STARTED_KEY );
-		delete_option( self::CONTACTPAGE_ID_KEY );
+		jpo_reset();
 
 		wp_send_json_success( 'deleted' );
 	}
@@ -406,21 +404,6 @@ class Jetpack_Onboarding_EndPoints {
 
 		// hide for all users
 		update_option( self::HIDE_FOR_ALL_USERS_OPTION, 1 );
-	}
-
-	static function show_dashboard_widget() {
-		delete_option( self::HIDE_FOR_ALL_USERS_OPTION );
-
-		$setting = get_user_option( get_current_user_id(), "metaboxhidden_dashboard" );
-
-		if ( ! $setting || ! is_array( $setting ) ) {
-			$setting = array();
-		}
-
-		if ( in_array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID, $setting ) ) {
-			$setting = array_diff( $setting, array( Jetpack_Onboarding_WelcomePanel::DASHBOARD_WIDGET_ID ) );
-			update_user_option( get_current_user_id(), "metaboxhidden_dashboard", $setting, true );
-		}
 	}
 
 	static function step_view() {
