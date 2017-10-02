@@ -7,8 +7,18 @@ class Jetpack_Onboarding_WelcomePanel {
 
 	static function init() {
 		add_filter( 'update_user_metadata', array( __CLASS__, 'check_for_widget_visibility' ), 10, 5 );
-		add_action( 'wp_dashboard_setup', array( __CLASS__, 'add_dashboard_widgets' ) );
-		add_action( 'wp_dashboard_setup', array( __CLASS__, 'add_wizard_assets' ) );
+
+		/**
+		 * Should the Jetpack Onboarding wizard be displayed on the dashboard?
+		 *
+		 * @since 1.7.3
+		 *
+		 * @param bool true Should the wizard be shown on the dashboard?
+		 */
+		if ( apply_filters( 'jetpack_onboarding_show_on_dashboard', true ) ) {
+			add_action( 'wp_dashboard_setup', array( __CLASS__, 'add_dashboard_widgets' ) );
+			add_action( 'wp_dashboard_setup', array( __CLASS__, 'add_wizard_assets' ) );
+		}
 	}
 
 	static function check_for_widget_visibility( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
