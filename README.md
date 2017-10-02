@@ -186,6 +186,12 @@ function add_jpo_wizard() {
 }
 ```
 
+If you decide to show the wizard on another page, you may also want to disable showing the wizard on the dashboard. To do this, you can do the following:
+
+```php
+add_filter( 'jetpack_onboarding_show_on_dashboard', '__return_false' );
+```
+
 ## Styling
 
 ### Move the top of the wizard down to expose top elements in dashboard
