@@ -181,8 +181,30 @@ function add_jpo_wizard() {
 		return;
 	}
 	?>
-	<div id='jpo-welcome-panel'><span class='screen-reader-text'>Loading Welcome Wizard</span></div>
+	Jetpack_Onboarding_WelcomePanel::render_widget();
 	<?php
+}
+```
+
+Here's a more complete example that shows how to show the wizard on the Profile screen, as opposed to all screens:
+
+```php
+add_action( 'current_screen', 'jetpack_onboarding_show_on_profile' );
+function jetpack_onboarding_show_on_profile( $screen ) {
+	if ( 'profile' == $screen->base ) {
+		// add assets
+		add_action( 'admin_enqueue_scripts', array( 'Jetpack_Onboarding_WelcomePanel', 'add_wizard_assets' ) );
+		// add wizard HTML
+		add_action( 'admin_notices', 'add_jpo_wizard' );
+	}
+}
+
+function add_jpo_wizard() {
+	if ( get_option( Jetpack_Onboarding_EndPoints::HIDE_FOR_ALL_USERS_OPTION ) ) {
+		return;
+	}
+
+	Jetpack_Onboarding_WelcomePanel::render_widget();
 }
 ```
 
