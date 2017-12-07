@@ -3,7 +3,7 @@
  * Plugin Name: Jetpack Onboarding
  * Plugin URI: https://github.com/automattic/jetpack-onboarding
  * Description: Jetpack Onboarding Wizard.
- * Version: 1.5
+ * Version: 1.6.1
  */
 
 defined( 'JETPACK_ONBOARDING_BASE_DIR' )         or define( 'JETPACK_ONBOARDING_BASE_DIR', dirname( __FILE__ ) );
