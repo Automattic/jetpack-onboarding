@@ -3,7 +3,7 @@
  * Plugin Name: Jetpack Onboarding
  * Plugin URI: https://github.com/automattic/jetpack-onboarding
  * Description: Jetpack Onboarding Wizard.
- * Version: 1.7.3
+ * Version: 1.7.4
  */
 
 require_once( plugin_dir_path( __FILE__ ) . 'class.jetpack-onboarding-end-points.php' );
