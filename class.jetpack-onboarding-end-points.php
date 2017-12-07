@@ -9,7 +9,7 @@ class Jetpack_Onboarding_EndPoints {
 	const BUSINESS_ADDRESS_SAVED_KEY = 'jpo_business_address_saved';
 	const MAX_THEMES = 3;
 	const NUM_RAND_THEMES = 3;
-	const VERSION = '1.7.3';
+	const VERSION = '1.7.4';
 	const WOOCOMMERCE_ID = 'woocommerce/woocommerce.php';
 	const WOOCOMMERCE_SLUG = 'woocommerce';
 	const HIDE_FOR_ALL_USERS_OPTION = 'jpo_hide_always';
@@ -774,7 +774,9 @@ Warwick, RI 02889
 
 			$connect_url = add_query_arg( 'host', JETPACK_ONBOARDING_VENDOR_CODE, $connect_url );
 			$connect_url = add_query_arg( 'product', JETPACK_ONBOARDING_PRODUCT_CODE, $connect_url );
-			$connect_url = add_query_arg( 'from', 'jpo-' . self::VERSION, $connect_url );
+
+			$from_arg = apply_filters( 'jpo_tracking_from_arg', sprintf( 'jpo-%s', self::VERSION ), self::VERSION );
+			$connect_url = add_query_arg( 'from', $from_arg, $connect_url );
 
 			wp_send_json_success( array('next' => $connect_url) );
 		} else {

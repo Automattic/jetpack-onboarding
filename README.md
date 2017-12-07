@@ -167,6 +167,21 @@ function my_cta_button_url() {
 }
 ```
 
+### Customizing the from tracking argument
+
+By default, when a site is connected to WordPress.com, a `from` argument gets appeneded to the connection URL which is used to track where the connection came from. Originally, this argument was simply `from=jpo`, but recently we started appending the version number to allow differentiating between versions. This looked like, `from=jpo-1.7.1`.
+
+While that has helped, we've found that it didn't all use cases. So, we are adding the `jpo_tracking_from_arg` filter which will allow hosts that use Jetpack Onboarding to fine-tune the `from` argument.
+
+Here is some example usage:
+
+```php
+add_filter( 'jpo_tracking_from_arg', 'modify_jpo_from', 10, 2 );
+function modify_jpo_from( $from, $version ) {
+	return sprintf( 'jpo-%d-my-cool-host', $version );
+}
+```
+
 ## Inserting the JPO wizard onto other pages
 
 By default, JPO runs in the welcome panel, but you can run it by inserting a div with the id 'jpo-welcome-panel' into any other page, like this:
