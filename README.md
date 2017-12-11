@@ -178,7 +178,7 @@ Here is some example usage:
 ```php
 add_filter( 'jpo_tracking_from_arg', 'modify_jpo_from', 10, 2 );
 function modify_jpo_from( $from, $version ) {
-	return sprintf( 'jpo-%d-my-cool-host', $version );
+	return sprintf( 'jpo-%s-my-cool-host', $version );
 }
 ```
 
